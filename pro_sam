@@ -1,4 +1,4 @@
-#
+
 create database if not exists pro_sam_bw_19;
 Use pro_sam_bw_19;
 
@@ -599,6 +599,35 @@ references user_db(Db_user_id)#Tablaorigen(PK)
 On update cascade #Cuidado con ek valor not null del User_db*/
 )engine=INNODB;
 
+
+
+create table IF NOT exists Skill_m_t_m_delta(
+OLD_Reg_id bigint  not null, #revisar
+OLD_Slalom int DEFAULT NULL,
+OLD_Projection int DEFAULT NULL,
+OLD_Braking int DEFAULT NULL,
+OLD_Evasion int DEFAULT NULL,
+OLD_Mobility int DEFAULT NULL,
+OLD_Result int DEFAULT NULL,
+OLD_ws_name varchar(20) DEFAULT NULL,
+OLD_Start_date timestamp DEFAULT NULL,
+OLD_Operation enum("A","U","D") DEFAULT NULL,
+OLD_version double DEFAULT NULL,	
+OLD_User_information_DNI_id bigint DEFAULT NULL, #Creacion FK (PK_TablaOrigen)
+
+NEW_Reg_id bigint  not null, #revisar
+NEW_Slalom int DEFAULT NULL,
+NEW_Projection int DEFAULT NULL,
+NEW_Braking int DEFAULT NULL,
+NEW_Evasion int DEFAULT NULL,
+NEW_Mobility int DEFAULT NULL,
+NEW_Result int DEFAULT NULL,
+NEW_ws_name varchar(20) DEFAULT NULL,
+NEW_Start_date timestamp DEFAULT NULL,
+NEW_Operation enum("A","U","D") DEFAULT NULL,
+NEW_version double DEFAULT NULL,	
+NEW_User_information_DNI_id bigint DEFAULT NULL #Creacion FK (PK_TablaOrigen)
+)engine=INNODB;
 
 
 create table IF NOT exists Skill_m_t_c(
