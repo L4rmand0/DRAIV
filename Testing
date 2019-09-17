@@ -50,12 +50,16 @@ select * from Driving_licence;
 select * from Vehicle;
 select * from Vehicle_evaluation;
 select * from safely_car_field;
+select * from motorcycle_mechanical_conditions;
+select * from Skill_m_t_m;
 select * from user_information_delta;
 select * from driving_licence_delta;
 select * from Vehicle_delta;
 select * from vehicle_evaluation_delta;
 select * from safely_car_field_delta;
 select * from safely_car_field_delta;
+select * from Motorcycle_Mechanical_conditions_delta;
+select * from Skill_m_t_m_delta;
 
 #INER JOIN-----------------------------------------------------------------------------------------------------
 select U.DNi_id,
@@ -660,6 +664,173 @@ NEW.Vehicle_Plate_id
 END IF;  
 END;$$
 DELIMITER ;
+
+
+#Ttrigger 8 Motorcycle_Mechanical_conditions
+#DROP TRIGGER Motorcycle_Mechanical_conditions_BU ;
+DELIMITER $$
+CREATE TRIGGER Motorcycle_Mechanical_conditions_BU 
+   BEFORE UPDATE ON motorcycle_mechanical_conditions
+   FOR EACH ROW 
+BEGIN
+IF  NEW.Start_date<>OLD.Start_date
+THEN
+  SET NEW.Operation="U";
+
+  INSERT INTO  Motorcycle_Mechanical_conditions_delta(
+OLD_Evaluation_Id, #cedula
+OLD_row_id,
+OLD_Name_evaluator,
+OLD_Tires,
+OLD_Monigueta_guaya,
+OLD_Braking_system,
+OLD_Kit,
+OLD_Stee_Susp,
+OLD_Oil_leak,
+OLD_Other_components,
+OLD_Horn,
+OLD_Lights,
+OLD_M_Results, #valor total para las motos
+OLD_ws_name,
+OLD_Start_date,
+OLD_Operation,
+OLD_version,	
+OLD_Vehicle_Plate_id,
+
+NEW_Evaluation_Id, #cedula
+NEW_row_id,
+NEW_Name_evaluator,
+NEW_Tires,
+NEW_Monigueta_guaya,
+NEW_Braking_system,
+NEW_Kit,
+NEW_Stee_Susp,
+NEW_Oil_leak,
+NEW_Other_components,
+NEW_Horn,
+NEW_Lights,
+NEW_M_Results, #valor total para las motos
+NEW_ws_name,
+NEW_Start_date,
+NEW_Operation,
+NEW_version,	
+NEW_Vehicle_Plate_id
+)
+  values(
+OLD.Evaluation_Id, #cedula
+OLD.row_id,
+OLD.Name_evaluator,
+OLD.Tires,
+OLD.Monigueta_guaya,
+OLD.Braking_system,
+OLD.Kit,
+OLD.Stee_Susp,
+OLD.Oil_leak,
+OLD.Other_components,
+OLD.Horn,
+OLD.Lights,
+OLD.M_Results, #valor total para las motos
+OLD.ws_name,
+OLD.Start_date,
+OLD.Operation,
+OLD.version,	
+OLD.Vehicle_Plate_id,
+
+NEW.Evaluation_Id, #cedula
+NEW.row_id,
+NEW.Name_evaluator,
+NEW.Tires,
+NEW.Monigueta_guaya,
+NEW.Braking_system,
+NEW.Kit,
+NEW.Stee_Susp,
+NEW.Oil_leak,
+NEW.Other_components,
+NEW.Horn,
+NEW.Lights,
+NEW.M_Results, #valor total para las motos
+NEW.ws_name,
+NEW.Start_date,
+NEW.Operation,
+NEW.version,	
+NEW.Vehicle_Plate_id
+  );
+END IF;  
+END;$$
+DELIMITER ;
+
+
+
+#Ttrigger 9 skill_m_t_m
+#DROP TRIGGER skill_m_t_m_delta_BU ;
+DELIMITER $$
+CREATE TRIGGER skill_m_t_m_delta_BU 
+   BEFORE UPDATE ON skill_m_t_m
+   FOR EACH ROW 
+BEGIN
+IF  NEW.Start_date<>OLD.Start_date
+THEN
+  SET NEW.Operation="U";
+
+  INSERT INTO  skill_m_t_m_delta(
+OLD_Reg_id, #revisar
+OLD_Slalom,
+OLD_Projection,
+OLD_Braking,
+OLD_Evasion,
+OLD_Mobility,
+OLD_Result,
+OLD_ws_name,
+OLD_Start_date,
+OLD_Operation,
+OLD_version,	
+OLD_User_information_DNI_id,
+
+NEW_Reg_id, #revisar
+NEW_Slalom,
+NEW_Projection,
+NEW_Braking,
+NEW_Evasion,
+NEW_Mobility,
+NEW_Result,
+NEW_ws_name,
+NEW_Start_date,
+NEW_Operation,
+NEW_version,	
+NEW_User_information_DNI_id
+)
+  values(
+OLD.Reg_id, #revisar
+OLD.Slalom,
+OLD.Projection,
+OLD.Braking,
+OLD.Evasion,
+OLD.Mobility,
+OLD.Result,
+OLD.ws_name,
+OLD.Start_date,
+OLD.Operation,
+OLD.version,	
+OLD.User_information_DNI_id,
+
+NEW.Reg_id, #revisar
+NEW.Slalom,
+NEW.Projection,
+NEW.Braking,
+NEW.Evasion,
+NEW.Mobility,
+NEW.Result,
+NEW.ws_name,
+NEW.Start_date,
+NEW.Operation,
+NEW.version,	
+NEW.User_information_DNI_id
+  );
+END IF;  
+END;$$
+DELIMITER ;
+
+
 
 
 
