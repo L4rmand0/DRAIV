@@ -1,0 +1,675 @@
+
+CREATE SCHEMA `pro_sam_bw_19` DEFAULT CHARACTER SET utf8 ;
+Use pro_sam_bw_19;
+SHOW COLLATION;
+SHOW CHARACTER SET;
+ALTER DATABASE mydatabasename charset=utf8;
+
+INSERT INTO user_db (password_db,E_mail,User_name,User_profile,Operation,version) VALUES ('1111','icgarmando@hotmail.com','luañ','User','A','1.0'),
+ ('123456','s@hotmail.com','laninobe','User','A','1.0'),('1234567','armando@gmail.com','laninobe2','User','A','1.0')
+ ,('123456','s.com','laninobe3','User','A','1.0'),('123456','armando4@gmail.com','laninobe4','User','A','1.0');
+
+INSERT INTO user_db  (password_db,E_mail,User_name,User_profile,Operation,version) VALUES ('1111','luisa2.ninyobeltrarn@hotmail.com','lan','Master','A','1.0');
+
+select * from user_db;
+select * from user_information;
+Select * From image;
+select * From Driving_licence;
+select * From Vehicle; 
+select * From Vehicle_evaluation; 
+select * from Safely_car_field;
+select * from Motorcycle_Mechanical_conditions;
+select* from epp;
+select * from Skill_m_t_m;
+select * from Skill_m_t_c;
+select * from Drive_Behaviors_car;
+SELECT * FROM user_information_delta;
+
+show tables;
+describe user_db;
+#Information
+#set @Db_user_id=( SELECT Db_user_id FROM user_db ORDER by Db_user_id DESC LIMIT 1);
+#select @Db_user_id;
+
+INSERT INTO User_information 
+(DNI_id, First_name,Second_name,F_last_name,S_last_name,Gender,E_mail_address,address,country_born,
+City_born,phone,Civil_state,Current_company,ws_name,Operation,version,Db_user_id) 
+VALUES ('20305335310','José','Armando','Niño','Beltran','0','icgarmadndo11@hotmail.com','Calle 145A#10-10',
+'Colombia','Bogotá','3183610186','Soltero','Smart taxí','pro_bw_sam_1903','A','1',@Db_user_id);
+
+
+
+UPDATE user_db
+SET E_mail = 'icgarmando@gmail.com', User_name= 'lanb'
+WHERE Db_user_id = 1402800662;
+
+select * from image;
+Select * from user_db;
+select * from User_information;
+select * from Driving_licence;
+select * from Vehicle;
+select * from Vehicle_evaluation;
+select * from safely_car_field;
+select * from user_information_delta;
+select * from driving_licence_delta;
+select * from Vehicle_delta;
+select * from vehicle_evaluation_delta;
+select * from safely_car_field_delta;
+select * from safely_car_field_delta;
+
+#INER JOIN-----------------------------------------------------------------------------------------------------
+select U.DNi_id,
+U.First_name,
+U.E_mail_address,
+U.Db_user_id, 
+D.Licence_id,
+D.Category,
+v.Plate_id
+from  User_information U
+inner join Driving_licence D on (U.DNI_id=D.User_information_DNI_id)
+inner join vehicle v on (U.DNI_id=v.User_information_DNI_id);
+
+select v.Brand, v.Plate_id,v.User_information_DNI_id, v.Service, v.Type_V,
+U.First_name, U.F_last_name, U.Db_user_id 
+FROM Vehicle v 
+inner join  User_information u  on (v.User_information_DNI_id= U.DNI_id);
+#-----------------------------------------------------------------------------------------------------------
+SELECT Db_user_id from user_db
+where Db_user_id=Db_user_id;
+SELECT @Db_user_id;
+
+
+
+
+Show create table user_db;
+describe Prueba;
+
+CALL  Add_user_database_information("AAA1","I2CGRR@HOTMAIL.COM","lni3no");
+
+Call Add_user_information("1113456","Luis","Almandini","Niñooo","Beltrano","0","Licgarmando@hotmail.com","Calle 145A 191-0","Colombia","Bogotá","7777777","Soltero", "Smart","Prueba numero 1",@_Db_user_id);
+ 
+Call Add_user_information("1113456888","Luis","Almandini","Niñooo","Beltrano","0","pLicgarmando@hotmail.com","Calle 145A 191-0","Colombia","Bogotá","7777777","Soltero", "Smart","Prueba numero 1",@_Db_user_id);
+
+Call Add_Image_information("_Cedula_frente","_Cedula_reverso" ,"_EPS_frente","_EPS_reverso","_Fondo_pension","_ARL","_Tarjeton_taxi" ,"_Image_address",4.5,"_Type_image",  @_DNI_id);
+
+
+CALL User_information_update(1113456,"luis.ninyobeltran@here1.com",2223344,"Soltero","Here_mobility");
+
+CALL Add_Driving_licence(@_DNI_id,"VSAN2576","Colombia" ,"B1","Vigente","2014-03-05","2022-03-5",@_DNI_id);
+
+CALL Add_vehicle( "abc440","Carro","Taxi amarillo","2019-12-14",4,"Transporte_Publico",4.5,"Campero","2019","Sedan","Honda","2019-01-12",@_DNI_id);
+
+#Estos parametros dependen de otro cliente, porende no sirve pasar el  @_Plate_id o el @_DNI_id
+
+CALL Add_vehicle_information ("Camilo",1,2,3,4,5,1,2,5,"null",@_Plate_id); 
+
+#'["JSON", "ES6", "JavaScript"]'
+ #select @_DNI_id; 
+
+CALL Add_Safely_car_field (@_DNI_id,1,2,3,4,5,1,2,3,4,5,5,@_Plate_id); 
+
+
+
+
+
+
+_C_Results,
+_Vehicle_Plate_id
+
+
+Select current_user();
+select user();
+select User  from mysql.user;
+SELECT SESSION_USER();
+#-----------------------------------------------------
+-- CREAR TABLA CLIENTES
+/*
+CREATE SCHEMA `ventas` DEFAULT CHARACTER SET utf8 ;
+
+create database Sis_Ventas;
+
+use ventas;
+
+CREATE TABLE Clientes (
+    IdCliente INT NOT NULL AUTO_INCREMENT,
+    Nombre VARCHAR(50) NOT NULL,
+    Apellido VARCHAR(45) NOT NULL,
+    Fecha_Nacimiento DATE NOT NULL,
+    Direccion VARCHAR(100),
+    PRIMARY KEY (IdCliente)
+)  ENGINE=InnoDB;
+
+CREATE TABLE Ventas (
+    IdVenta INT NOT NULL AUTO_INCREMENT,
+    Fecha DATE,
+    IdCliente INT NOT NULL,
+    PRIMARY KEY (IdVenta),
+    CONSTRAINT IdCliente FOREIGN KEY (IdCliente)
+        REFERENCES Clientes (IdCliente)
+)  ENGINE=InnoDB;
+
+
+
+CREATE TABLE Productos (
+    IdProducto INT NOT NULL AUTO_INCREMENT,
+    Nombre VARCHAR(45) NOT NULL,
+    Precio DECIMAL(18 , 2 ) NOT NULL,
+    PRIMARY KEY (IdProducto)
+)  ENGINE=InnoDB;
+
+CREATE  TABLE DetalleVentas
+ (
+  IdDetalle INT NOT NULL AUTO_INCREMENT ,
+  IdVenta INT NOT NULL ,
+  IdProducto INT NOT NULL ,
+  Cantidad INT NOT NULL ,
+  Descuento DECIMAL(18,2),
+  PRIMARY KEY (IdDetalle),
+CONSTRAINT IdVenta    FOREIGN KEY (IdVenta)    REFERENCES Ventas    (IdVenta),
+CONSTRAINT IdProducto FOREIGN KEY (IdProducto) REFERENCES Productos (IdProducto)
+  
+)
+select * from Clientes;
+select * from ventas;
+select * from DetalleVentas;
+*/
+
+#CREATE TRIGGER USER_DB_A_I AFTER INSERT ON user_db  FOR EACH ROW INSERT 
+
+#INTO user_information(Db_user_id) VALUES (NEW.Db_user_id);
+
+/*#TABLA Db_user_id
+select Db_user_id from  user_db where current_user()= CONCAT(User_name,Lhost);
+insert into user_information(,,,,)values (,,,,variable)
+*/
+#-----------------------------------------------------------------------------------------------------
+#TRIGGERS
+
+#Trigger #1 Almacenar DNI del ultimo insert) 
+DELIMITER $$
+CREATE TRIGGER   user_information_AI
+   AFTER INSERT ON user_information
+   FOR EACH ROW 
+BEGIN
+SET @_DNI_id= NEW.DNI_id;
+END;$$
+DELIMITER ;
+#SELECT   @_DNI_id;
+#DROP TRIGGER user_information_AI;
+
+#Trigger #2 Almacenar valores actualizados y viejos de usuarios (No toma los insertados) 
+
+DELIMITER $$
+CREATE TRIGGER   user_information_BU
+   BEFORE UPDATE ON user_information
+   FOR EACH ROW 
+BEGIN
+IF  NEW.Start_date<>OLD.Start_date
+THEN
+  SET NEW.Operation="U";
+  INSERT INTO user_information_delta(
+  OLD_DNI_id,
+  OLD_row_id,
+  OLD_First_name,
+  OLD_Second_name,
+  OLD_F_last_name,
+  OLD_S_last_name,
+  OLD_Gender, 
+  OLD_E_mail_address,
+  OLD_address, 
+  OLD_Country_born ,
+  OLD_City_born,
+  OLD_phone,
+  OLD_Civil_state,
+  OLD_Current_company, 
+  OLD_Seguimiento,
+  OLD_ws_name,
+  OLD_Operation,
+  OLD_version,	
+  OLD_Db_user_id,
+  OLD_Start_date,
+
+  NEW_DNI_id,
+  NEW_row_id, 
+  NEW_First_name,
+  NEW_Second_name,
+  NEW_F_last_name,
+  NEW_S_last_name,
+  NEW_Gender,
+  NEW_E_mail_address,
+  NEW_address, 
+  NEW_Country_born,
+  NEW_City_born,
+  NEW_phone,
+  NEW_Civil_state,
+  NEW_Current_company, 
+  NEW_Seguimiento,
+  NEW_ws_name,
+  NEW_Operation,
+  NEW_version,	
+  NEW_Db_user_id,
+  NEW_Start_date)
+  values(
+  OLD.DNI_id,
+  OLD.row_id,
+  OLD.First_name,
+  OLD.Second_name,
+  OLD.F_last_name,
+  OLD.S_last_name,
+  OLD.Gender, 
+  OLD.E_mail_address,
+  OLD.address, 
+  OLD.Country_born ,
+  OLD.City_born,
+  OLD.phone,
+  OLD.Civil_state,
+  OLD.Current_company, 
+  OLD.Seguimiento,
+  OLD.ws_name,
+  OLD.Operation,
+  OLD.version,	
+  OLD.Db_user_id,
+  OLD.Start_date,
+
+  NEW.DNI_id,
+  NEW.row_id,
+  NEW.First_name,
+  NEW.Second_name ,
+  NEW.F_last_name,
+  NEW.S_last_name,
+  NEW.Gender,
+  NEW.E_mail_address,
+  NEW.address, 
+  NEW.Country_born,
+  NEW.City_born,
+  NEW.phone,
+  NEW.Civil_state,
+  NEW.Current_company, 
+  NEW.Seguimiento,
+  NEW.ws_name,
+  NEW.Operation,
+  NEW.version,	
+  NEW.Db_user_id,
+  NEW.Start_date);
+END IF;  
+END;$$
+DELIMITER ;
+
+#DROP TRIGGER user_information_BU;
+
+#Trigger #3 Almacenar Plate_id del ultimo insert 
+DELIMITER $$
+CREATE TRIGGER   Plate_id_AI
+   AFTER INSERT ON Vehicle
+   FOR EACH ROW 
+BEGIN
+SET @_Plate_id= NEW.Plate_id;
+END;$$
+DELIMITER ;
+
+
+#Trigger #4 Driving licence
+#DROP TRIGGER Driving_licence_BU;
+DELIMITER $$
+CREATE TRIGGER   Driving_licence_BU
+   BEFORE UPDATE ON driving_licence
+   FOR EACH ROW 
+BEGIN
+IF  NEW.Start_date<>OLD.Start_date
+THEN
+  SET NEW.Operation="U";
+  INSERT INTO driving_licence_delta(
+  OLD_Licence_id,
+  OLD_row_id,
+  OLD_Licence_num, 
+  OLD_Country_expedition,
+  OLD_Category,
+  OLD_State,
+  OLD_Expedition_day,
+  OLD_Expi_date,
+  OLD_ws_name,
+  OLD_Start_date,
+  OLD_Operation,
+  OLD_version,	
+  OLD_User_information_DNI_id,
+
+  NEW_Licence_id,
+  NEW_row_id,
+  NEW_Licence_num, 
+  NEW_Country_expedition,
+  NEW_Category,
+  NEW_State,
+  NEW_Expedition_day,
+  NEW_Expi_date,
+  NEW_ws_name,
+  NEW_Start_date,
+  NEW_Operation,
+  NEW_version,	
+  NEW_User_information_DNI_id
+)
+  values(
+  OLD.Licence_id,
+  OLD.row_id,
+  OLD.Licence_num, 
+  OLD.Country_expedition,
+  OLD.Category,
+  OLD.State,
+  OLD.Expedition_day,
+  OLD.Expi_date,
+  OLD.ws_name,
+  OLD.Start_date,
+  OLD.Operation,
+  OLD.version,	
+  OLD.User_information_DNI_id,
+
+  NEW.Licence_id,
+  NEW.row_id ,
+  NEW.Licence_num, 
+  NEW.Country_expedition,
+  NEW.Category,
+  NEW.State,
+  NEW.Expedition_day,
+  NEW.Expi_date,
+  NEW.ws_name,
+  NEW.Start_date,
+  NEW.Operation,
+  NEW.version,	
+  NEW.User_information_DNI_id);
+END IF;  
+END;$$
+DELIMITER ;
+
+
+#Trigger 5 vehicle
+#DROP TRIGGER Vehicle_BU;
+
+DELIMITER $$
+CREATE TRIGGER   Vehicle_BU
+   BEFORE UPDATE ON vehicle
+   FOR EACH ROW 
+BEGIN
+IF  NEW.Start_date<>OLD.Start_date
+THEN
+  SET NEW.Operation="U";
+  INSERT INTO Vehicle_delta(
+OLD_Plate_id,
+OLD_row_id,
+OLD_Type_V,
+OLD_Taxi_type,
+OLD_Soat_expi_date, 
+OLD_Capacity, #Número de pasajeros
+OLD_Service,
+OLD_Cylindrical_cc,
+OLD_V_class,
+OLD_Model, # podría ser un date year
+OLD_Line,
+OLD_Brand,
+#Color
+OLD_technomechanical_date, #MDY 
+#Name_evaluator varchar(35),#
+OLD_ws_name,
+OLD_Start_date, # Cuando ingreso el primer dato a la DB
+OLD_Operation,
+OLD_version,	
+OLD_User_information_DNI_id,#Creacion FK (PK_TablaOrigen)
+
+NEW_Plate_id,
+NEW_row_id,
+NEW_Type_V,
+NEW_Taxi_type,
+NEW_Soat_expi_date, #MDY
+NEW_Capacity, #Número de pasajeros
+NEW_Service,
+NEW_Cylindrical_cc,
+NEW_V_class,
+NEW_Model, # podría ser un date year
+NEW_Line,
+NEW_Brand,
+#Color
+NEW_technomechanical_date, #MDY 
+#Name_evaluator varchar(35),#
+NEW_ws_name,
+NEW_Start_date, # Cuando ingreso el primer dato a la DB
+NEW_Operation,
+NEW_version,	
+NEW_User_information_DNI_id
+)
+  values(
+OLD.Plate_id,
+OLD.row_id,
+OLD.Type_V,
+OLD.Taxi_type,
+OLD.Soat_expi_date, 
+OLD.Capacity, #Número de pasajeros
+OLD.Service,
+OLD.Cylindrical_cc,
+OLD.V_class,
+OLD.Model, # podría ser un date year
+OLD.Line,
+OLD.Brand,
+#Color
+OLD.technomechanical_date, #MDY 
+#Name_evaluator varchar(35),#
+OLD.ws_name,
+OLD.Start_date, # Cuando ingreso el primer dato a la DB
+OLD.Operation,
+OLD.version,	
+OLD.User_information_DNI_id,#Creacion FK (PK_TablaOrigen)
+
+NEW.Plate_id,
+NEW.row_id,
+NEW.Type_V,
+NEW.Taxi_type,
+NEW.Soat_expi_date, #MDY
+NEW.Capacity, #Número de pasajeros
+NEW.Service,
+NEW.Cylindrical_cc,
+NEW.V_class,
+NEW.Model, # podría ser un date year
+NEW.Line,
+NEW.Brand,
+#Color
+NEW.technomechanical_date, #MDY 
+#Name_evaluator varchar(35),#
+NEW.ws_name,
+NEW.Start_date, # Cuando ingreso el primer dato a la DB
+NEW.Operation,
+NEW.version,	
+NEW.User_information_DNI_id  
+  );
+END IF;  
+END;$$
+DELIMITER ;
+
+#Trigger 6
+#Vehicle_evaluation
+
+DELIMITER $$
+CREATE TRIGGER Vehicle_evaluation_BU 
+   BEFORE UPDATE ON vehicle_evaluation
+   FOR EACH ROW 
+BEGIN
+IF  NEW.Start_date<>OLD.Start_date
+THEN
+  SET NEW.Operation="U";
+
+  INSERT INTO  vehicle_evaluation_delta(
+OLD_Vehicle_evaluation_id, 
+OLD_Evaluator_name,
+OLD_V_class_value, 
+OLD_Soat_value, 
+OLD_Brand_value,
+OLD_technomechanical_value, 
+OLD_Model_value,
+OLD_Line_value,
+OLD_Cylindrical_value, 
+OLD_V_Results,
+OLD_Docs,
+OLD_ws_name,
+OLD_Start_date, 
+OLD_Operation,
+OLD_version,	
+OLD_Vehicle_Plate_id,
+
+NEW_Vehicle_evaluation_id, 
+NEW_Evaluator_name,
+NEW_V_class_value, 
+NEW_Soat_value, 
+NEW_Brand_value,
+NEW_technomechanical_value, 
+NEW_Model_value,
+NEW_Line_value,
+NEW_Cylindrical_value, 
+NEW_V_Results,
+NEW_Docs,
+NEW_ws_name,
+NEW_Start_date,
+NEW_Operation,
+NEW_version,	
+NEW_Vehicle_Plate_id
+  )
+  values(
+OLD.Vehicle_evaluation_id, 
+OLD.Evaluator_name,
+OLD.V_class_value, 
+OLD.Soat_value, 
+OLD.Brand_value,
+OLD.technomechanical_value, 
+OLD.Model_value,
+OLD.Line_value,
+OLD.Cylindrical_value, 
+OLD.V_Results,
+OLD.Docs,
+OLD.ws_name,
+OLD.Start_date, 
+OLD.Operation,
+OLD.version,	
+OLD.Vehicle_Plate_id,
+
+NEW.Vehicle_evaluation_id, 
+NEW.Evaluator_name,
+NEW.V_class_value, 
+NEW.Soat_value, 
+NEW.Brand_value,
+NEW.technomechanical_value, 
+NEW.Model_value,
+NEW.Line_value,
+NEW.Cylindrical_value, 
+NEW.V_Results,
+NEW.Docs,
+NEW.ws_name,
+NEW.Start_date,
+NEW.Operation,
+NEW.version,	
+NEW.Vehicle_Plate_id
+  );
+END IF;  
+END;$$
+DELIMITER ;
+
+
+#Ttrigger 7 safely_car_field
+#DROP TRIGGER Safely_car_field_BU ;
+DELIMITER $$
+CREATE TRIGGER Safely_car_field_BU 
+   BEFORE UPDATE ON safely_car_field
+   FOR EACH ROW 
+BEGIN
+IF  NEW.Start_date<>OLD.Start_date
+THEN
+  SET NEW.Operation="U";
+
+  INSERT INTO  safely_car_field_delta(
+OLD_Safely_car_Id, 
+OLD_row_id,
+OLD_Brake_verification,
+OLD_Batery_and_connections,
+OLD_Chair_steering_wheel,
+OLD_Petron_Oil_level, 
+OLD_Safety_belt,
+OLD_Mirror,
+OLD_Lights,
+OLD_P_tires,
+OLD_S_tires,
+OLD_Coolant,
+OLD_C_Results,
+OLD_ws_name,
+OLD_Start_date,
+OLD_Operation,
+OLD_version,	
+OLD_Vehicle_Plate_id,
+
+NEW_Safely_car_Id, #Cedula
+NEW_row_id,
+NEW_Brake_verification,
+NEW_Batery_and_connections,
+NEW_Chair_steering_wheel,
+NEW_Petron_Oil_level, 
+NEW_Safety_belt,
+NEW_Mirror,
+NEW_Lights,
+NEW_P_tires,
+NEW_S_tires,
+NEW_Coolant,
+NEW_C_Results,
+NEW_ws_name,
+NEW_Start_date,
+NEW_Operation,
+NEW_version,	
+NEW_Vehicle_Plate_id
+)
+  values(
+OLD.Safely_car_Id, 
+OLD.row_id,
+OLD.Brake_verification,
+OLD.Batery_and_connections,
+OLD.Chair_steering_wheel,
+OLD.Petron_Oil_level, 
+OLD.Safety_belt,
+OLD.Mirror,
+OLD.Lights,
+OLD.P_tires,
+OLD.S_tires,
+OLD.Coolant,
+OLD.C_Results,
+OLD.ws_name,
+OLD.Start_date,
+OLD.Operation,
+OLD.version,	
+OLD.Vehicle_Plate_id,
+
+NEW.Safely_car_Id, #Cedula
+NEW.row_id,
+NEW.Brake_verification,
+NEW.Batery_and_connections,
+NEW.Chair_steering_wheel,
+NEW.Petron_Oil_level, 
+NEW.Safety_belt,
+NEW.Mirror,
+NEW.Lights,
+NEW.P_tires,
+NEW.S_tires,
+NEW.Coolant,
+NEW.C_Results,
+NEW.ws_name,
+NEW.Start_date,
+NEW.Operation,
+NEW.version,	
+NEW.Vehicle_Plate_id
+  );
+END IF;  
+END;$$
+DELIMITER ;
+
+
+
+/*
+CREATE
+    TRIGGER `event_name` BEFORE/AFTER INSERT/UPDATE/DELETE
+    ON `database`.`table`
+    FOR EACH ROW BEGIN
+		-- trigger body
+		-- this code is applied to every 
+		-- inserted/updated/deleted row
+    END;
+*/
