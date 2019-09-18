@@ -23,7 +23,7 @@ select* from epp;
 select * from Skill_m_t_m;
 select * from Skill_m_t_c;
 select * from Drive_Behaviors_car;
-SELECT * FROM user_information_delta;
+
 
 show tables;
 describe user_db;
@@ -52,6 +52,8 @@ select * from Vehicle_evaluation;
 select * from safely_car_field;
 select * from motorcycle_mechanical_conditions;
 select * from Skill_m_t_m;
+select * from skill_m_t_c;
+select * from drive_behaviors_car;
 select * from user_information_delta;
 select * from driving_licence_delta;
 select * from Vehicle_delta;
@@ -60,7 +62,12 @@ select * from safely_car_field_delta;
 select * from safely_car_field_delta;
 select * from Motorcycle_Mechanical_conditions_delta;
 select * from Skill_m_t_m_delta;
-
+select * from user_information_delta;
+select * from epp;
+select * from skill_m_t_c_delta;
+select * from drive_behaviors_car_delta;
+select * from image_delta;
+Select * from user_db_delta;
 #INER JOIN-----------------------------------------------------------------------------------------------------
 select U.DNi_id,
 U.First_name,
@@ -125,68 +132,7 @@ Select current_user();
 select user();
 select User  from mysql.user;
 SELECT SESSION_USER();
-#-----------------------------------------------------
--- CREAR TABLA CLIENTES
-/*
-CREATE SCHEMA `ventas` DEFAULT CHARACTER SET utf8 ;
 
-create database Sis_Ventas;
-
-use ventas;
-
-CREATE TABLE Clientes (
-    IdCliente INT NOT NULL AUTO_INCREMENT,
-    Nombre VARCHAR(50) NOT NULL,
-    Apellido VARCHAR(45) NOT NULL,
-    Fecha_Nacimiento DATE NOT NULL,
-    Direccion VARCHAR(100),
-    PRIMARY KEY (IdCliente)
-)  ENGINE=InnoDB;
-
-CREATE TABLE Ventas (
-    IdVenta INT NOT NULL AUTO_INCREMENT,
-    Fecha DATE,
-    IdCliente INT NOT NULL,
-    PRIMARY KEY (IdVenta),
-    CONSTRAINT IdCliente FOREIGN KEY (IdCliente)
-        REFERENCES Clientes (IdCliente)
-)  ENGINE=InnoDB;
-
-
-
-CREATE TABLE Productos (
-    IdProducto INT NOT NULL AUTO_INCREMENT,
-    Nombre VARCHAR(45) NOT NULL,
-    Precio DECIMAL(18 , 2 ) NOT NULL,
-    PRIMARY KEY (IdProducto)
-)  ENGINE=InnoDB;
-
-CREATE  TABLE DetalleVentas
- (
-  IdDetalle INT NOT NULL AUTO_INCREMENT ,
-  IdVenta INT NOT NULL ,
-  IdProducto INT NOT NULL ,
-  Cantidad INT NOT NULL ,
-  Descuento DECIMAL(18,2),
-  PRIMARY KEY (IdDetalle),
-CONSTRAINT IdVenta    FOREIGN KEY (IdVenta)    REFERENCES Ventas    (IdVenta),
-CONSTRAINT IdProducto FOREIGN KEY (IdProducto) REFERENCES Productos (IdProducto)
-  
-)
-select * from Clientes;
-select * from ventas;
-select * from DetalleVentas;
-*/
-
-#CREATE TRIGGER USER_DB_A_I AFTER INSERT ON user_db  FOR EACH ROW INSERT 
-
-#INTO user_information(Db_user_id) VALUES (NEW.Db_user_id);
-
-/*#TABLA Db_user_id
-select Db_user_id from  user_db where current_user()= CONCAT(User_name,Lhost);
-insert into user_information(,,,,)values (,,,,variable)
-*/
-#-----------------------------------------------------------------------------------------------------
 #TRIGGERS
 
 #Trigger #1 Almacenar DNI del ultimo insert) 
@@ -831,8 +777,432 @@ END;$$
 DELIMITER ;
 
 
+#Trigger 10 EPP
+#DROP TRIGGER epp_BU ;
+DELIMITER $$
+CREATE TRIGGER epp_BU 
+   BEFORE UPDATE ON epp
+   FOR EACH ROW 
+BEGIN
+IF  NEW.Start_date<>OLD.Start_date
+THEN
+  SET NEW.Operation="U";
+
+  INSERT INTO  epp_delta(
+OLD_Epp_id, #revisar
+OLD_Name_evaluator,#
+OLD_Empresa,
+OLD_Casco,
+OLD_Airbag,
+OLD_Rodilleras,
+OLD_Coderas,
+OLD_Hombreras,
+OLD_Botas,
+OLD_Guantes,
+OLD_Epp_Results,
+OLD_Risk, 
+OLD_ws_name,
+OLD_Start_date,
+OLD_Operation,
+OLD_version,	
+OLD_User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
+
+NEW_Epp_id, #revisar
+NEW_Name_evaluator,#
+NEW_Empresa,
+NEW_Casco,
+NEW_Airbag,
+NEW_Rodilleras,
+NEW_Coderas,
+NEW_Hombreras,
+NEW_Botas,
+NEW_Guantes,
+NEW_Epp_Results,
+NEW_Risk, 
+NEW_ws_name,
+NEW_Start_date,
+NEW_Operation,
+NEW_version,	
+NEW_User_information_DNI_id #Creacion FK (PK_TablaOrigen)
+)
+  values(
+OLD.Epp_id, #revisar
+OLD.Name_evaluator,#
+OLD.Empresa,
+OLD.Casco,
+OLD.Airbag,
+OLD.Rodilleras,
+OLD.Coderas,
+OLD.Hombreras,
+OLD.Botas,
+OLD.Guantes,
+OLD.Epp_Results,
+OLD.Risk, 
+OLD.ws_name,
+OLD.Start_date,
+OLD.Operation,
+OLD.version,	
+OLD.User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
+
+NEW.Epp_id, #revisar
+NEW.Name_evaluator,#
+NEW.Empresa,
+NEW.Casco,
+NEW.Airbag,
+NEW.Rodilleras,
+NEW.Coderas,
+NEW.Hombreras,
+NEW.Botas,
+NEW.Guantes,
+NEW.Epp_Results,
+NEW.Risk, 
+NEW.ws_name,
+NEW.Start_date,
+NEW.Operation,
+NEW.version,	
+NEW.User_information_DNI_id #Creacion FK (PK_TablaOrigen)
+  );
+END IF;  
+END;$$
+DELIMITER ;
 
 
+#Trigger 11 skill_m_t_c_BU
+DROP TRIGGER skill_m_t_c_BU ;
+DELIMITER $$
+CREATE TRIGGER skill_m_t_c_BU 
+   BEFORE UPDATE ON skill_m_t_c
+   FOR EACH ROW 
+BEGIN
+IF  NEW.Start_date<>OLD.Start_date
+THEN
+  SET NEW.Operation="U";
+
+  INSERT INTO  skill_m_t_c_delta(
+OLD_Reg_id_c, #unsigned mejora el rendimiento al quitar negativos
+OLD_Parking,
+OLD_Turn_and_overtaking,
+OLD_Reverse_c,
+OLD_Break,
+OLD_Gear_change,
+OLD_Slope,
+OLD_Result,
+OLD_ws_name,
+OLD_Start_date,
+OLD_Operation,
+OLD_version,	
+OLD_User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
+
+NEW_Reg_id_c, #unsigned mejora el rendimiento al quitar negativos
+NEW_Parking,
+NEW_Turn_and_overtaking,
+NEW_Reverse_c,
+NEW_Break,
+NEW_Gear_change,
+NEW_Slope,
+NEW_Result,
+NEW_ws_name,
+NEW_Start_date,
+NEW_Operation,
+NEW_version,	
+NEW_User_information_DNI_id #Creacion FK (PK_TablaOrigen)
+)
+  values(
+OLD.Reg_id_c, #unsigned mejora el rendimiento al quitar negativos
+OLD.Parking,
+OLD.Turn_and_overtaking,
+OLD.Reverse_c,
+OLD.Break,
+OLD.Gear_change,
+OLD.Slope,
+OLD.Result,
+OLD.ws_name,
+OLD.Start_date,
+OLD.Operation,
+OLD.version,	
+OLD.User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
+
+NEW.Reg_id_c, #unsigned mejora el rendimiento al quitar negativos
+NEW.Parking,
+NEW.Turn_and_overtaking,
+NEW.Reverse_c,
+NEW.Break,
+NEW.Gear_change,
+NEW.Slope,
+NEW.Result,
+NEW.ws_name,
+NEW.Start_date,
+NEW.Operation,
+NEW.version,	
+NEW.User_information_DNI_id #Creacion FK (PK_TablaOrigen)
+  );
+END IF;  
+END;$$
+DELIMITER ;
+
+
+#Trigger 12  drive_behaviors_car_BU
+DELIMITER $$
+CREATE TRIGGER drive_behaviors_car_BU 
+   BEFORE UPDATE ON drive_behaviors_car
+   FOR EACH ROW 
+BEGIN
+IF  NEW.Start_date<>OLD.Start_date
+THEN
+  SET NEW.Operation="U";
+
+  INSERT INTO  drive_behaviors_car_delta(
+OLD_Drive_beh_id,
+OLD_Stop_distance,
+OLD_Roundabouts,
+OLD_Follow_distance,
+OLD_Overtaking_Lane_changes,
+OLD_Cross_c,
+OLD_Speed,
+OLD_Aggressive_bhvior,
+OLD_Result,
+OLD_ws_name,
+OLD_Start_date,
+OLD_Operation,
+OLD_version,	
+OLD_User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
+
+NEW_Drive_beh_id,
+NEW_Stop_distance,
+NEW_Roundabouts,
+NEW_Follow_distance,
+NEW_Overtaking_Lane_changes,
+NEW_Cross_c,
+NEW_Speed,
+NEW_Aggressive_bhvior,
+NEW_Result,
+NEW_ws_name,
+NEW_Start_date,
+NEW_Operation,
+NEW_version,	
+NEW_User_information_DNI_id
+)
+  values(
+OLD.Drive_beh_id,
+OLD.Stop_distance,
+OLD.Roundabouts,
+OLD.Follow_distance,
+OLD.Overtaking_Lane_changes,
+OLD.Cross_c,
+OLD.Speed,
+OLD.Aggressive_bhvior,
+OLD.Result,
+OLD.ws_name,
+OLD.Start_date,
+OLD.Operation,
+OLD.version,	
+OLD.User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
+
+NEW.Drive_beh_id,
+NEW.Stop_distance,
+NEW.Roundabouts,
+NEW.Follow_distance,
+NEW.Overtaking_Lane_changes,
+NEW.Cross_c,
+NEW.Speed,
+NEW.Aggressive_bhvior,
+NEW.Result,
+NEW.ws_name,
+NEW.Start_date,
+NEW.Operation,
+NEW.version,	
+NEW.User_information_DNI_id
+  );
+END IF;  
+END;$$
+DELIMITER ;
+
+
+
+#Trigger 13   Image_BU
+DELIMITER $$
+CREATE TRIGGER Image_BU 
+   BEFORE UPDATE ON Image
+   FOR EACH ROW 
+BEGIN
+IF  NEW.Start_date<>OLD.Start_date
+THEN
+  SET NEW.Operation="U";
+
+  INSERT INTO  Image_delta(
+OLD_Image_id,
+OLD_Cedula_frente,
+OLD_Cedula_reverso,
+OLD_EPS_frente,
+OLD_EPS_reverso,
+OLD_Fondo_pension,
+OLD_ARL,
+OLD_Tarjeton_taxi,
+OLD_Image, # Es mejor guardar la imagen en el server 
+OLD_Image_address,
+OLD_Size_image,
+OLD_Type_image,
+OLD_ws_name,
+OLD_Start_date,
+OLD_Operation,
+OLD_version,	
+OLD_User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
+
+
+NEW_Image_id,
+NEW_Cedula_frente,
+NEW_Cedula_reverso,
+NEW_EPS_frente,
+NEW_EPS_reverso,
+NEW_Fondo_pension,
+NEW_ARL,
+NEW_Tarjeton_taxi,
+NEW_Image, # Es mejor guardar la imagen en el server 
+NEW_Image_address,
+NEW_Size_image,
+NEW_Type_image,
+NEW_ws_name,
+NEW_Start_date,
+NEW_Operation,
+NEW_version,	
+NEW_User_information_DNI_id#Creacion FK (PK_TablaOrigen)
+  
+)
+  values(
+OLD.Image_id,
+OLD.Cedula_frente,
+OLD.Cedula_reverso,
+OLD.EPS_frente,
+OLD.EPS_reverso,
+OLD.Fondo_pension,
+OLD.ARL,
+OLD.Tarjeton_taxi,
+OLD.Image, # Es mejor guardar la imagen en el server 
+OLD.Image_address,
+OLD.Size_image,
+OLD.Type_image,
+OLD.ws_name,
+OLD.Start_date,
+OLD.Operation,
+OLD.version,	
+OLD.User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
+
+
+NEW.Image_id,
+NEW.Cedula_frente,
+NEW.Cedula_reverso,
+NEW.EPS_frente,
+NEW.EPS_reverso,
+NEW.Fondo_pension,
+NEW.ARL,
+NEW.Tarjeton_taxi,
+NEW.Image, # Es mejor guardar la imagen en el server 
+NEW.Image_address,
+NEW.Size_image,
+NEW.Type_image,
+NEW.ws_name,
+NEW.Start_date,
+NEW.Operation,
+NEW.version,	
+NEW.User_information_DNI_id#Creacion FK (PK_TablaOrigen)
+  
+  );
+END IF;  
+END;$$
+DELIMITER ;
+
+
+#Trigger 14   user_db_delta_BU
+#DROP TRIGGER user_db_delta_BU;
+DELIMITER $$
+CREATE TRIGGER user_db_delta_BU 
+   BEFORE UPDATE ON user_db
+   FOR EACH ROW 
+BEGIN
+IF  NEW.Start_date<>OLD.Start_date
+THEN
+  SET NEW.Operation="U";
+
+  INSERT INTO  user_db_delta(
+OLD_Db_user_id,
+OLD_Password_db, #Masculino 0, femenido 1 
+OLD_E_mail,
+OLD_User_name,
+OLD_Lhost,
+OLD_User_profile,
+OLD_Start_date,
+OLD_Operation,
+OLD_version,
+
+NEW_Db_user_id,
+NEW_Password_db, #Masculino 0, femenido 1 
+NEW_E_mail,
+NEW_User_name,
+NEW_Lhost,
+NEW_User_profile,
+NEW_Start_date,
+NEW_Operation,
+NEW_version
+  
+)
+  values(
+OLD.Db_user_id,
+OLD.Password_db, #Masculino 0, femenido 1 
+OLD.E_mail,
+OLD.User_name,
+OLD.Lhost,
+OLD.User_profile,
+OLD.Start_date,
+OLD.Operation,
+OLD.version,
+
+NEW.Db_user_id,
+NEW.Password_db, #Masculino 0, femenido 1 
+NEW.E_mail,
+NEW.User_name,
+NEW.Lhost,
+NEW.User_profile,
+NEW.Start_date,
+NEW.Operation,
+NEW.version 
+  );
+END IF;  
+END;$$
+DELIMITER ;
+
+/*
+CREATE
+    TRIGGER `event_name` BEFORE/AFTER INSERT/UPDATE/DELETE
+    ON `database`.`table`
+    FOR EACH ROW BEGIN
+		-- trigger body
+		-- this code is applied to every 
+		-- inserted/updated/deleted row
+    END;
+
+
+
+#--------------------Estructura del trigger
+/*
+DELIMITER $$
+CREATE TRIGGER epp_BU 
+   BEFORE UPDATE ON epp
+   FOR EACH ROW 
+BEGIN
+IF  NEW.Start_date<>OLD.Start_date
+THEN
+  SET NEW.Operation="U";
+
+  INSERT INTO  epp_delta(
+  
+)
+  values(
+  
+  );
+END IF;  
+END;$$
+DELIMITER ;
+*/
 
 /*
 CREATE
@@ -844,3 +1214,65 @@ CREATE
 		-- inserted/updated/deleted row
     END;
 */
+#-----------------------------------------------------
+-- CREAR TABLA CLIENTES
+/*
+CREATE SCHEMA `ventas` DEFAULT CHARACTER SET utf8 ;
+
+create database Sis_Ventas;
+
+use ventas;
+
+CREATE TABLE Clientes (
+    IdCliente INT NOT NULL AUTO_INCREMENT,
+    Nombre VARCHAR(50) NOT NULL,
+    Apellido VARCHAR(45) NOT NULL,
+    Fecha_Nacimiento DATE NOT NULL,
+    Direccion VARCHAR(100),
+    PRIMARY KEY (IdCliente)
+)  ENGINE=InnoDB;
+
+CREATE TABLE Ventas (
+    IdVenta INT NOT NULL AUTO_INCREMENT,
+    Fecha DATE,
+    IdCliente INT NOT NULL,
+    PRIMARY KEY (IdVenta),
+    CONSTRAINT IdCliente FOREIGN KEY (IdCliente)
+        REFERENCES Clientes (IdCliente)
+)  ENGINE=InnoDB;
+
+
+
+CREATE TABLE Productos (
+    IdProducto INT NOT NULL AUTO_INCREMENT,
+    Nombre VARCHAR(45) NOT NULL,
+    Precio DECIMAL(18 , 2 ) NOT NULL,
+    PRIMARY KEY (IdProducto)
+)  ENGINE=InnoDB;
+
+CREATE  TABLE DetalleVentas
+ (
+  IdDetalle INT NOT NULL AUTO_INCREMENT ,
+  IdVenta INT NOT NULL ,
+  IdProducto INT NOT NULL ,
+  Cantidad INT NOT NULL ,
+  Descuento DECIMAL(18,2),
+  PRIMARY KEY (IdDetalle),
+CONSTRAINT IdVenta    FOREIGN KEY (IdVenta)    REFERENCES Ventas    (IdVenta),
+CONSTRAINT IdProducto FOREIGN KEY (IdProducto) REFERENCES Productos (IdProducto)
+  
+)
+select * from Clientes;
+select * from ventas;
+select * from DetalleVentas;
+*/
+
+#CREATE TRIGGER USER_DB_A_I AFTER INSERT ON user_db  FOR EACH ROW INSERT 
+
+#INTO user_information(Db_user_id) VALUES (NEW.Db_user_id);
+
+/*#TABLA Db_user_id
+select Db_user_id from  user_db where current_user()= CONCAT(User_name,Lhost);
+insert into user_information(,,,,)values (,,,,variable)
+*/
+#-----------------------------------------------------------------------------------------------------
