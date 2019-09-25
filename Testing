@@ -1,9 +1,9 @@
 
 CREATE SCHEMA `pro_sam_bw_19` DEFAULT CHARACTER SET utf8 ;
 Use pro_sam_bw_19;
-SHOW COLLATION;
-SHOW CHARACTER SET;
-ALTER DATABASE mydatabasename charset=utf8;
+#SHOW COLLATION;
+#SHOW CHARACTER SET;
+#ALTER DATABASE mydatabasename charset=utf8;
 
 INSERT INTO user_db (password_db,E_mail,User_name,User_profile,Operation,version) VALUES ('1111','icgarmando@hotmail.com','luañ','User','A','1.0'),
  ('123456','s@hotmail.com','laninobe','User','A','1.0'),('1234567','armando@gmail.com','laninobe2','User','A','1.0')
@@ -124,8 +124,8 @@ CALL Add_Safely_car_field (@_DNI_id,1,2,3,4,5,1,2,3,4,5,5,@_Plate_id);
 
 
 
-_C_Results,
-_Vehicle_Plate_id
+#_C_Results,
+#_Vehicle_Plate_id
 
 
 Select current_user();
@@ -628,7 +628,7 @@ OLD_Evaluation_Id, #cedula
 OLD_row_id,
 OLD_Name_evaluator,
 OLD_Tires,
-OLD_Monigueta_guaya,
+OLD_Manigueta_guaya,
 OLD_Braking_system,
 OLD_Kit,
 OLD_Stee_Susp,
@@ -647,7 +647,7 @@ NEW_Evaluation_Id, #cedula
 NEW_row_id,
 NEW_Name_evaluator,
 NEW_Tires,
-NEW_Monigueta_guaya,
+NEW_Manigueta_guaya,
 NEW_Braking_system,
 NEW_Kit,
 NEW_Stee_Susp,
@@ -667,7 +667,7 @@ OLD.Evaluation_Id, #cedula
 OLD.row_id,
 OLD.Name_evaluator,
 OLD.Tires,
-OLD.Monigueta_guaya,
+OLD.Manigueta_guaya,
 OLD.Braking_system,
 OLD.Kit,
 OLD.Stee_Susp,
@@ -686,7 +686,7 @@ NEW.Evaluation_Id, #cedula
 NEW.row_id,
 NEW.Name_evaluator,
 NEW.Tires,
-NEW.Monigueta_guaya,
+NEW.Manigueta_guaya,
 NEW.Braking_system,
 NEW.Kit,
 NEW.Stee_Susp,
@@ -868,7 +868,7 @@ DELIMITER ;
 
 
 #Trigger 11 skill_m_t_c_BU
-DROP TRIGGER skill_m_t_c_BU ;
+#DROP TRIGGER skill_m_t_c_BU ;
 DELIMITER $$
 CREATE TRIGGER skill_m_t_c_BU 
    BEFORE UPDATE ON skill_m_t_c
