@@ -17,7 +17,7 @@ Password_db varchar(45) not null, #Masculino 0, femenido 1
 E_mail varchar(35) UNIQUE not null,
 #UNIQUE KEY E_mail (E_mail),
 User_name varchar(35) UNIQUE  NOT NULL,
-Lhost varchar(10) default '@localhost' NOT NULL,
+Lhost varchar(10) DEFAULT '@localhost' NOT NULL,
 User_profile enum("User","Administrator","Evaluator") default 'User'not null,
 Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 Operation enum("A","U","D") default "A" not null  ,
@@ -403,7 +403,7 @@ Operation enum("A","U","D") default "A" not null,
 version double default 1 not null,	
 CONSTRAINT CHK_Values CHECK (V_class_value<=5 AND Soat_value<=5 AND Brand_value<=5 AND technomechanical_value<=5 AND Model_value<=5 AND Line_value<=5 AND Cylindrical_value<=5),
 
-Vehicle_Plate_id varchar(15) UNIQUE NULL ,#Creacion FK (PK_TablaOrigen)
+Vehicle_Plate_id varchar(15) NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKVehicle_evaluation_Vehicle #FKTabla destino_tabla origen
 foreign key(Vehicle_Plate_id)#PK_tabla origen
 references Vehicle(Plate_id)#Tablaorigen(PK)
@@ -413,11 +413,12 @@ constraint FKVehicle_evaluation_user_db #FKTabla destino_tabla origen
 foreign key(user_db_Db_user_id)#PK_tabla origen
 references user_db(Db_user_id)#Tablaorigen(PK)
 On update cascade*/
-)engine=INNODB;
+)engine=INNODB, auto_increment=1;
 #Alter table Vehicle_evaluation  modify Docs json NULL;# modificar parametros
 
 create table IF NOT exists Vehicle_evaluation_delta(
 OLD_Vehicle_evaluation_id bigint UNSIGNED not null, 
+OLD_Year_evaluation YEAR not null,
 OLD_Evaluator_name varchar(25) DEFAULT NULL,
 OLD_V_class_value int(5) UNSIGNED DEFAULT NULL, 
 OLD_Soat_value int(5) UNSIGNED DEFAULT NULL, 
@@ -435,6 +436,7 @@ OLD_version double NULL,
 OLD_Vehicle_Plate_id varchar(15) DEFAULT NULL, #Creacion FK (PK_TablaOrigen)
 
 NEW_Vehicle_evaluation_id bigint UNSIGNED not null, 
+NEW_Year_evaluation YEAR not null,
 NEW_Evaluator_name varchar(25) DEFAULT NULL,
 NEW_V_class_value int(5) UNSIGNED DEFAULT NULL, 
 NEW_Soat_value int(5) UNSIGNED DEFAULT NULL, 
@@ -455,9 +457,10 @@ NEW_Vehicle_Plate_id varchar(15) DEFAULT NULL #Creacion FK (PK_TablaOrigen)
 
 create table IF NOT exists Safely_car_field(
 Safely_car_Id  bigint UNSIGNED not null, #Cedula
-primary key(Safely_car_Id),
+primary key(Safely_car_Id, Year_evaluation),
 row_id bigint UNSIGNED auto_increment not null,
 UNIQUE KEY row_id (row_id),
+Year_evaluation year not null,
 Brake_verification int(5) UNSIGNED,
 Batery_and_connections int(5) UNSIGNED,
 Chair_steering_wheel int(5) UNSIGNED,
@@ -476,7 +479,7 @@ version double default 1 not null,
 CONSTRAINT CHK_Valuesc CHECK (Brake_verification<=5 AND Batery_and_connections<=5 AND Chair_steering_wheel <=5 AND Petron_Oil_level<=5 AND Safety_belt<=5 AND Mirror<=5 AND Lights<=5
 AND P_tires<=5 AND S_tires<=5 AND Coolant<=5),
 
-Vehicle_Plate_id varchar(15) UNIQUE NULL ,#Creacion FK (PK_TablaOrigen)
+Vehicle_Plate_id varchar(15) NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKSafely_car_Vehicle #FKTabla destino_tabla origen
 foreign key(Vehicle_Plate_id)#PK_tabla origen
 references Vehicle(Plate_id)#Tablaorigen(PK)
@@ -492,6 +495,7 @@ On update cascade*/
 create table IF NOT exists Safely_car_field_delta(
 OLD_Safely_car_Id  bigint UNSIGNED not null, #Cedula
 OLD_row_id bigint UNSIGNED not null,
+OLD_Year_evaluation year not null,
 OLD_Brake_verification int(5) UNSIGNED DEFAULT NULL,
 OLD_Batery_and_connections int(5) UNSIGNED DEFAULT NULL,
 OLD_Chair_steering_wheel int(5) UNSIGNED DEFAULT NULL,
@@ -511,6 +515,7 @@ OLD_Vehicle_Plate_id varchar(15)  DEFAULT NULL,
 
 NEW_Safely_car_Id  bigint UNSIGNED not null, #Cedula
 NEW_row_id bigint UNSIGNED not null,
+NEW_Year_evaluation year not null,
 NEW_Brake_verification int(5) UNSIGNED DEFAULT NULL,
 NEW_Batery_and_connections int(5) UNSIGNED DEFAULT NULL,
 NEW_Chair_steering_wheel int(5) UNSIGNED DEFAULT NULL,
@@ -537,28 +542,26 @@ NEW_Vehicle_Plate_id varchar(15)  DEFAULT NULL
 
 create table IF NOT exists Motorcycle_Technology(  #Nuevo Falta crear el delta.
 M_t_id bigint UNSIGNED auto_increment not null,
-primary key(M_t_id),
+Year_evaluation year not null,
+primary key(M_t_id,Year_evaluation),
 Breake_type int UNSIGNED,
 Assistence_breake int UNSIGNED,
 Automatic_lights int UNSIGNED,
-CONSTRAINT Mot_tech_Valuesm CHECK (Breake_type<=4 AND Assistence_breake<=5 AND Automatic_lights<=1 ),
+CONSTRAINT Mot_tech_Valuesm CHECK (Breake_type<=4 AND Assistence_breake<=5 AND Automatic_lights<=1),
 
-Vehicle_Plate_id varchar(15) UNIQUE NOT NULL ,#Creacion FK (PK_TablaOrigen)
+Vehicle_Plate_id varchar(15) NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKMotorcycle_Technology_Vehicle #FKTabla destino_tabla origen
 foreign key(Vehicle_Plate_id)#PK_tabla origen
 references Vehicle(Plate_id)#Tablaorigen(PK)
 On delete cascade On update cascade
-
 )engine=INNODB;
-
-
-
 
 create table IF NOT exists Motorcycle_Mechanical_conditions( # Cambio
 Evaluation_Id bigint UNSIGNED not null, #cedula
-primary key(Evaluation_Id),
+primary key(Evaluation_Id,Year_evaluation),
 row_id bigint UNSIGNED auto_increment not null,
 UNIQUE KEY row_id (row_id),
+Year_evaluation year not null,
 Name_evaluator varchar(35),
 Tires double UNSIGNED,
 Manigueta_guaya double UNSIGNED,
@@ -598,6 +601,7 @@ On update cascade #Cuidado con ek valor not null del User_db*/
 create table IF NOT exists Motorcycle_Mechanical_conditions_delta(
 OLD_Evaluation_Id bigint UNSIGNED not null, #cedula
 OLD_row_id bigint UNSIGNED not null,
+OLD_Year_evaluation year not null,
 OLD_Name_evaluator varchar(35) DEFAULT NULL,
 OLD_Tires double UNSIGNED DEFAULT NULL,
 OLD_Manigueta_guaya double UNSIGNED  DEFAULT NULL,
@@ -617,6 +621,7 @@ OLD_Vehicle_Plate_id varchar(15) NOT NULL,
 
 NEW_Evaluation_Id bigint UNSIGNED not null, #cedula
 NEW_row_id bigint UNSIGNED  not null,
+NEW_Year_evaluation  year not null,
 NEW_Name_evaluator varchar(35) DEFAULT NULL,
 NEW_Tires double UNSIGNED DEFAULT NULL,
 NEW_Manigueta_guaya double UNSIGNED DEFAULT NULL,
@@ -633,15 +638,15 @@ NEW_Start_date timestamp NULL,
 NEW_Operation enum("A","U","D") DEFAULT NULL,
 NEW_version double DEFAULT NULL,	
 NEW_Vehicle_Plate_id varchar(15) DEFAULT NULL
-
 )engine=INNODB;
 
 
 create table IF NOT exists EPP(
 Epp_id bigint UNSIGNED not null auto_increment, #revisar
-primary key(Epp_id),
+primary key(Epp_id,Year_evaluation),
 #row_id bigint auto_increment not null,
 #UNIQUE KEY row_id (row_id),
+Year_evaluation year not null,
 Name_evaluator varchar(35),#
 Empresa varchar(30),#
 Casco int UNSIGNED,    
@@ -675,6 +680,7 @@ On update cascade #Cuidado con ek valor not null del User_db*/
 
 create table IF NOT exists EPP_delta(
 OLD_Epp_id bigint UNSIGNED not null, #revisar
+OLD_Year_evaluation year not null,
 OLD_Name_evaluator varchar(35) DEFAULT NULL,#
 OLD_Empresa varchar(30) DEFAULT NULL,
 OLD_Casco int UNSIGNED DEFAULT NULL,
@@ -693,6 +699,7 @@ OLD_version double DEFAULT NULL,
 OLD_User_information_DNI_id bigint UNSIGNED DEFAULT NULL, #Creacion FK (PK_TablaOrigen)
 
 NEW_Epp_id bigint UNSIGNED not null, #revisar
+NEW_Year_evaluation year not null,
 NEW_Name_evaluator varchar(35) DEFAULT NULL,#
 NEW_Empresa varchar(30) DEFAULT NULL,
 NEW_Casco int UNSIGNED DEFAULT NULL,
@@ -713,9 +720,12 @@ NEW_User_information_DNI_id bigint UNSIGNED DEFAULT NULL #Creacion FK (PK_TablaO
 
 
 
+
+
 create table IF NOT exists Skill_m_t_m(
 Reg_id bigint UNSIGNED not null auto_increment, #revisar
-primary key(Reg_id),
+primary key(Reg_id,Year_evaluation),
+Year_evaluation year not null,
 #row_id bigint auto_increment not null,
 #UNIQUE KEY row_id (row_id),
 Slalom int UNSIGNED,
@@ -747,6 +757,7 @@ On update cascade #Cuidado con ek valor not null del User_db*/
 
 create table IF NOT exists Skill_m_t_m_delta(
 OLD_Reg_id bigint UNSIGNED not null, #revisar
+OLD_Year_evaluation year not null,
 OLD_Slalom int UNSIGNED DEFAULT NULL,
 OLD_Projection int UNSIGNED DEFAULT NULL,
 OLD_Braking int UNSIGNED DEFAULT NULL,
@@ -760,6 +771,7 @@ OLD_version double DEFAULT NULL,
 OLD_User_information_DNI_id bigint UNSIGNED DEFAULT NULL, #Creacion FK (PK_TablaOrigen)
 
 NEW_Reg_id bigint UNSIGNED not null, #revisar
+NEW_Year_evaluation year not null,
 NEW_Slalom int UNSIGNED DEFAULT NULL,
 NEW_Projection int  UNSIGNED DEFAULT NULL,
 NEW_Braking int UNSIGNED DEFAULT NULL,
@@ -776,9 +788,10 @@ NEW_User_information_DNI_id bigint UNSIGNED DEFAULT NULL #Creacion FK (PK_TablaO
 
 create table IF NOT exists Skill_m_t_c(
 Reg_id_c bigint UNSIGNED not null auto_increment, #unsigned mejora el rendimiento al quitar negativos
-primary key(Reg_id_c),
+primary key(Reg_id_c,Year_evaluation),
 #row_id bigint auto_increment not null,
 #UNIQUE KEY row_id (row_id),
+Year_evaluation year not null,
 Parking int UNSIGNED,
 Turn_and_overtaking int UNSIGNED,
 Reverse_c int UNSIGNED,
@@ -808,6 +821,7 @@ On update cascade #Cuidado con ek valor not null del User_db
 
 create table IF NOT exists Skill_m_t_c_delta(
 OLD_Reg_id_c bigint UNSIGNED not null, #unsigned mejora el rendimiento al quitar negativos
+OLD_Year_evaluation year not null,
 OLD_Parking int UNSIGNED DEFAULT NULL,
 OLD_Turn_and_overtaking int UNSIGNED DEFAULT NULL,
 OLD_Reverse_c int UNSIGNED DEFAULT NULL,
@@ -822,6 +836,7 @@ OLD_version double DEFAULT NULL,
 OLD_User_information_DNI_id bigint UNSIGNED DEFAULT NULL, #Creacion FK (PK_TablaOrigen)
 
 NEW_Reg_id_c bigint UNSIGNED not null, #unsigned mejora el rendimiento al quitar negativos
+NEW_Year_evaluation year not null,
 NEW_Parking int UNSIGNED DEFAULT NULL,
 NEW_Turn_and_overtaking int UNSIGNED DEFAULT NULL,
 NEW_Reverse_c int UNSIGNED DEFAULT NULL,
@@ -840,7 +855,8 @@ NEW_User_information_DNI_id bigint UNSIGNED DEFAULT NULL #Creacion FK (PK_TablaO
 
 create table IF NOT exists Drive_Behaviors_car(
 Drive_beh_id bigint UNSIGNED auto_increment not null,
-primary key(Drive_beh_id),
+Year_evaluation year not null,
+primary key(Drive_beh_id, Year_evaluation),
 #row_id bigint auto_increment not null,
 #UNIQUE KEY row_id (row_id),
 Stop_distance int UNSIGNED,
@@ -872,6 +888,7 @@ On update cascade #Cuidado con ek valor not null del User_db*/
 
 create table IF NOT exists Drive_Behaviors_car_delta(
 OLD_Drive_beh_id bigint UNSIGNED not null,
+OLD_Year_evaluation year not null,
 OLD_Stop_distance int UNSIGNED DEFAULT NULL,
 OLD_Roundabouts int UNSIGNED DEFAULT NULL,
 OLD_Follow_distance int UNSIGNED DEFAULT NULL,
@@ -887,6 +904,7 @@ OLD_version double DEFAULT NULL,
 OLD_User_information_DNI_id bigint UNSIGNED NOT NULL, #Creacion FK (PK_TablaOrigen)
 
 NEW_Drive_beh_id bigint UNSIGNED not null,
+NEW_Year_evaluation year not null,
 NEW_Stop_distance int UNSIGNED DEFAULT NULL,
 NEW_Roundabouts int UNSIGNED DEFAULT NULL,
 NEW_Follow_distance int UNSIGNED DEFAULT NULL,
