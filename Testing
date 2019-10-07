@@ -4,6 +4,8 @@ Use pro_sam_bw_19;
 #SHOW COLLATION;
 #SHOW CHARACTER SET;
 #ALTER DATABASE mydatabasename charset=utf8;
+#UTF8MB4
+
 
 INSERT INTO user_db (password_db,E_mail,User_name,User_profile,Operation,version) VALUES ('1111','icgarmando@hotmail.com','luañ','User','A','1.0'),
  ('123456','s@hotmail.com','laninobe','User','A','1.0'),('1234567','armando@gmail.com','laninobe2','User','A','1.0')
@@ -178,6 +180,7 @@ THEN
   OLD_version,	
   OLD_Db_user_id,
   OLD_Start_date,
+  OLD_Termns_and_conditions,
 
   NEW_DNI_id,
   NEW_row_id, 
@@ -198,7 +201,8 @@ THEN
   NEW_Operation,
   NEW_version,	
   NEW_Db_user_id,
-  NEW_Start_date)
+  NEW_Start_date,
+  NEW_Termns_and_conditions)
   values(
   OLD.DNI_id,
   OLD.row_id,
@@ -220,6 +224,7 @@ THEN
   OLD.version,	
   OLD.Db_user_id,
   OLD.Start_date,
+  OLD.Termns_and_conditions,
 
   NEW.DNI_id,
   NEW.row_id,
@@ -240,7 +245,9 @@ THEN
   NEW.Operation,
   NEW.version,	
   NEW.Db_user_id,
-  NEW.Start_date);
+  NEW.Start_date,
+  NEW.Termns_and_conditions
+);
 END IF;  
 END;$$
 DELIMITER ;
@@ -345,6 +352,7 @@ THEN
 OLD_Plate_id,
 OLD_row_id,
 OLD_Type_V,
+OLD_owner_V,
 OLD_Taxi_type,
 OLD_Soat_expi_date, 
 OLD_Capacity, #Número de pasajeros
@@ -354,7 +362,7 @@ OLD_V_class,
 OLD_Model, # podría ser un date year
 OLD_Line,
 OLD_Brand,
-#Color
+OLD_Color,
 OLD_technomechanical_date, #MDY 
 #Name_evaluator varchar(35),#
 OLD_ws_name,
@@ -366,6 +374,7 @@ OLD_User_information_DNI_id,#Creacion FK (PK_TablaOrigen)
 NEW_Plate_id,
 NEW_row_id,
 NEW_Type_V,
+NEW_owner_V,
 NEW_Taxi_type,
 NEW_Soat_expi_date, #MDY
 NEW_Capacity, #Número de pasajeros
@@ -375,7 +384,7 @@ NEW_V_class,
 NEW_Model, # podría ser un date year
 NEW_Line,
 NEW_Brand,
-#Color
+NEW_Color,
 NEW_technomechanical_date, #MDY 
 #Name_evaluator varchar(35),#
 NEW_ws_name,
@@ -388,6 +397,7 @@ NEW_User_information_DNI_id
 OLD.Plate_id,
 OLD.row_id,
 OLD.Type_V,
+OLD.owner_V,
 OLD.Taxi_type,
 OLD.Soat_expi_date, 
 OLD.Capacity, #Número de pasajeros
@@ -397,7 +407,7 @@ OLD.V_class,
 OLD.Model, # podría ser un date year
 OLD.Line,
 OLD.Brand,
-#Color
+OLD.Color,
 OLD.technomechanical_date, #MDY 
 #Name_evaluator varchar(35),#
 OLD.ws_name,
@@ -409,6 +419,7 @@ OLD.User_information_DNI_id,#Creacion FK (PK_TablaOrigen)
 NEW.Plate_id,
 NEW.row_id,
 NEW.Type_V,
+NEW.owner_V,
 NEW.Taxi_type,
 NEW.Soat_expi_date, #MDY
 NEW.Capacity, #Número de pasajeros
@@ -418,7 +429,7 @@ NEW.V_class,
 NEW.Model, # podría ser un date year
 NEW.Line,
 NEW.Brand,
-#Color
+NEW.Color,
 NEW.technomechanical_date, #MDY 
 #Name_evaluator varchar(35),#
 NEW.ws_name,
@@ -445,6 +456,7 @@ THEN
 
   INSERT INTO  vehicle_evaluation_delta(
 OLD_Vehicle_evaluation_id, 
+OLD_Year_evaluation,
 OLD_Evaluator_name,
 OLD_V_class_value, 
 OLD_Soat_value, 
@@ -462,6 +474,7 @@ OLD_version,
 OLD_Vehicle_Plate_id,
 
 NEW_Vehicle_evaluation_id, 
+NEW_Year_evaluation,
 NEW_Evaluator_name,
 NEW_V_class_value, 
 NEW_Soat_value, 
@@ -479,7 +492,8 @@ NEW_version,
 NEW_Vehicle_Plate_id
   )
   values(
-OLD.Vehicle_evaluation_id, 
+OLD.Vehicle_evaluation_id,
+OLD.Year_evaluation, 
 OLD.Evaluator_name,
 OLD.V_class_value, 
 OLD.Soat_value, 
@@ -497,6 +511,7 @@ OLD.version,
 OLD.Vehicle_Plate_id,
 
 NEW.Vehicle_evaluation_id, 
+NEW.Year_evaluation,
 NEW.Evaluator_name,
 NEW.V_class_value, 
 NEW.Soat_value, 
@@ -519,7 +534,7 @@ DELIMITER ;
 
 
 #Ttrigger 7 safely_car_field
-#DROP TRIGGER Safely_car_field_BU ;
+#DROP TRIGGER Safely_car_field_BU;
 DELIMITER $$
 CREATE TRIGGER Safely_car_field_BU 
    BEFORE UPDATE ON safely_car_field
@@ -532,6 +547,7 @@ THEN
   INSERT INTO  safely_car_field_delta(
 OLD_Safely_car_Id, 
 OLD_row_id,
+OLD_Year_evaluation,
 OLD_Brake_verification,
 OLD_Batery_and_connections,
 OLD_Chair_steering_wheel,
@@ -551,6 +567,7 @@ OLD_Vehicle_Plate_id,
 
 NEW_Safely_car_Id, #Cedula
 NEW_row_id,
+NEW_Year_evaluation,
 NEW_Brake_verification,
 NEW_Batery_and_connections,
 NEW_Chair_steering_wheel,
@@ -571,6 +588,7 @@ NEW_Vehicle_Plate_id
   values(
 OLD.Safely_car_Id, 
 OLD.row_id,
+OLD.Year_evaluation,
 OLD.Brake_verification,
 OLD.Batery_and_connections,
 OLD.Chair_steering_wheel,
@@ -590,6 +608,7 @@ OLD.Vehicle_Plate_id,
 
 NEW.Safely_car_Id, #Cedula
 NEW.row_id,
+NEW.Year_evaluation,
 NEW.Brake_verification,
 NEW.Batery_and_connections,
 NEW.Chair_steering_wheel,
@@ -626,6 +645,7 @@ THEN
   INSERT INTO  Motorcycle_Mechanical_conditions_delta(
 OLD_Evaluation_Id, #cedula
 OLD_row_id,
+OLD_Year_evaluation,
 OLD_Name_evaluator,
 OLD_Tires,
 OLD_Manigueta_guaya,
@@ -645,6 +665,7 @@ OLD_Vehicle_Plate_id,
 
 NEW_Evaluation_Id, #cedula
 NEW_row_id,
+NEW_Year_evaluation,
 NEW_Name_evaluator,
 NEW_Tires,
 NEW_Manigueta_guaya,
@@ -665,6 +686,7 @@ NEW_Vehicle_Plate_id
   values(
 OLD.Evaluation_Id, #cedula
 OLD.row_id,
+OLD.Year_evaluation,
 OLD.Name_evaluator,
 OLD.Tires,
 OLD.Manigueta_guaya,
@@ -684,6 +706,7 @@ OLD.Vehicle_Plate_id,
 
 NEW.Evaluation_Id, #cedula
 NEW.row_id,
+NEW.Year_evaluation,
 NEW.Name_evaluator,
 NEW.Tires,
 NEW.Manigueta_guaya,
@@ -720,6 +743,7 @@ THEN
 
   INSERT INTO  skill_m_t_m_delta(
 OLD_Reg_id, #revisar
+OLD_Year_evaluation,
 OLD_Slalom,
 OLD_Projection,
 OLD_Braking,
@@ -733,6 +757,7 @@ OLD_version,
 OLD_User_information_DNI_id,
 
 NEW_Reg_id, #revisar
+NEW_Year_evaluation,
 NEW_Slalom,
 NEW_Projection,
 NEW_Braking,
@@ -747,6 +772,7 @@ NEW_User_information_DNI_id
 )
   values(
 OLD.Reg_id, #revisar
+OLD.Year_evaluation,
 OLD.Slalom,
 OLD.Projection,
 OLD.Braking,
@@ -760,6 +786,7 @@ OLD.version,
 OLD.User_information_DNI_id,
 
 NEW.Reg_id, #revisar
+NEW.Year_evaluation,
 NEW.Slalom,
 NEW.Projection,
 NEW.Braking,
@@ -790,6 +817,7 @@ THEN
 
   INSERT INTO  epp_delta(
 OLD_Epp_id, #revisar
+OLD_Year_evaluation,
 OLD_Name_evaluator,#
 OLD_Empresa,
 OLD_Casco,
@@ -808,6 +836,7 @@ OLD_version,
 OLD_User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
 
 NEW_Epp_id, #revisar
+NEW_Year_evaluation,
 NEW_Name_evaluator,#
 NEW_Empresa,
 NEW_Casco,
@@ -827,6 +856,7 @@ NEW_User_information_DNI_id #Creacion FK (PK_TablaOrigen)
 )
   values(
 OLD.Epp_id, #revisar
+OLD.Year_evaluation,
 OLD.Name_evaluator,#
 OLD.Empresa,
 OLD.Casco,
@@ -845,6 +875,7 @@ OLD.version,
 OLD.User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
 
 NEW.Epp_id, #revisar
+NEW.Year_evaluation,
 NEW.Name_evaluator,#
 NEW.Empresa,
 NEW.Casco,
@@ -880,6 +911,7 @@ THEN
 
   INSERT INTO  skill_m_t_c_delta(
 OLD_Reg_id_c, #unsigned mejora el rendimiento al quitar negativos
+OLD_Year_evaluation,
 OLD_Parking,
 OLD_Turn_and_overtaking,
 OLD_Reverse_c,
@@ -894,6 +926,7 @@ OLD_version,
 OLD_User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
 
 NEW_Reg_id_c, #unsigned mejora el rendimiento al quitar negativos
+NEW_Year_evaluation,
 NEW_Parking,
 NEW_Turn_and_overtaking,
 NEW_Reverse_c,
@@ -909,6 +942,7 @@ NEW_User_information_DNI_id #Creacion FK (PK_TablaOrigen)
 )
   values(
 OLD.Reg_id_c, #unsigned mejora el rendimiento al quitar negativos
+OLD.Year_evaluation,
 OLD.Parking,
 OLD.Turn_and_overtaking,
 OLD.Reverse_c,
@@ -923,6 +957,7 @@ OLD.version,
 OLD.User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
 
 NEW.Reg_id_c, #unsigned mejora el rendimiento al quitar negativos
+NEW.Year_evaluation,
 NEW.Parking,
 NEW.Turn_and_overtaking,
 NEW.Reverse_c,
@@ -953,6 +988,7 @@ THEN
 
   INSERT INTO  drive_behaviors_car_delta(
 OLD_Drive_beh_id,
+OLD_Year_evaluation,
 OLD_Stop_distance,
 OLD_Roundabouts,
 OLD_Follow_distance,
@@ -968,6 +1004,7 @@ OLD_version,
 OLD_User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
 
 NEW_Drive_beh_id,
+NEW_Year_evaluation,
 NEW_Stop_distance,
 NEW_Roundabouts,
 NEW_Follow_distance,
@@ -984,6 +1021,7 @@ NEW_User_information_DNI_id
 )
   values(
 OLD.Drive_beh_id,
+OLD.Year_evaluation,
 OLD.Stop_distance,
 OLD.Roundabouts,
 OLD.Follow_distance,
@@ -999,6 +1037,7 @@ OLD.version,
 OLD.User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
 
 NEW.Drive_beh_id,
+NEW.Year_evaluation,
 NEW.Stop_distance,
 NEW.Roundabouts,
 NEW.Follow_distance,
@@ -1031,6 +1070,7 @@ THEN
 
   INSERT INTO  Image_delta(
 OLD_Image_id,
+OLD_Imagen_frontal,
 OLD_Cedula_frente,
 OLD_Cedula_reverso,
 OLD_EPS_frente,
@@ -1038,6 +1078,8 @@ OLD_EPS_reverso,
 OLD_Fondo_pension,
 OLD_ARL,
 OLD_Tarjeton_taxi,
+OLD_Casco,
+OLD_Foto_usuario_moto,
 OLD_Image, # Es mejor guardar la imagen en el server 
 OLD_Image_address,
 OLD_Size_image,
@@ -1050,6 +1092,7 @@ OLD_User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
 
 
 NEW_Image_id,
+NEW_Imagen_frontal,
 NEW_Cedula_frente,
 NEW_Cedula_reverso,
 NEW_EPS_frente,
@@ -1057,6 +1100,8 @@ NEW_EPS_reverso,
 NEW_Fondo_pension,
 NEW_ARL,
 NEW_Tarjeton_taxi,
+NEW_Casco,
+NEW_Foto_usuario_moto,
 NEW_Image, # Es mejor guardar la imagen en el server 
 NEW_Image_address,
 NEW_Size_image,
@@ -1070,6 +1115,7 @@ NEW_User_information_DNI_id#Creacion FK (PK_TablaOrigen)
 )
   values(
 OLD.Image_id,
+OLD.Imagen_frontal,
 OLD.Cedula_frente,
 OLD.Cedula_reverso,
 OLD.EPS_frente,
@@ -1077,6 +1123,8 @@ OLD.EPS_reverso,
 OLD.Fondo_pension,
 OLD.ARL,
 OLD.Tarjeton_taxi,
+OLD.Casco,
+OLD.Foto_usuario_moto,
 OLD.Image, # Es mejor guardar la imagen en el server 
 OLD.Image_address,
 OLD.Size_image,
@@ -1089,6 +1137,7 @@ OLD.User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
 
 
 NEW.Image_id,
+NEW.Imagen_frontal,
 NEW.Cedula_frente,
 NEW.Cedula_reverso,
 NEW.EPS_frente,
@@ -1096,6 +1145,8 @@ NEW.EPS_reverso,
 NEW.Fondo_pension,
 NEW.ARL,
 NEW.Tarjeton_taxi,
+NEW.Casco,
+NEW.Foto_usuario_moto,
 NEW.Image, # Es mejor guardar la imagen en el server 
 NEW.Image_address,
 NEW.Size_image,
@@ -1276,3 +1327,9 @@ select Db_user_id from  user_db where current_user()= CONCAT(User_name,Lhost);
 insert into user_information(,,,,)values (,,,,variable)
 */
 #-----------------------------------------------------------------------------------------------------
+
+
+
+
+
+
