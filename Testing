@@ -1,8 +1,8 @@
 
-CREATE SCHEMA `pro_sam_bw_19` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA `pro_sam_bw_19` DEFAULT CHARACTER SET UTF8MB4; #utf8 ;
 Use pro_sam_bw_19;
 #SHOW COLLATION;
-#SHOW CHARACTER SET;
+SHOW CHARACTER SET;
 #ALTER DATABASE mydatabasename charset=utf8;
 #UTF8MB4
 
@@ -12,7 +12,7 @@ INSERT INTO user_db (password_db,E_mail,User_name,User_profile,Operation,version
  ,('123456','s.com','laninobe3','User','A','1.0'),('123456','armando4@gmail.com','laninobe4','User','A','1.0');
 
 INSERT INTO user_db  (password_db,E_mail,User_name,User_profile,Operation,version) VALUES ('1111','luisa2.ninyobeltrarn@hotmail.com','lan','Master','A','1.0');
-
+select * from admin_country;
 select * from user_db;
 select * from user_information;
 Select * From image;
@@ -66,6 +66,7 @@ select * from Motorcycle_Mechanical_conditions_delta;
 select * from Skill_m_t_m_delta;
 select * from user_information_delta;
 select * from epp;
+select * from epp_delta;
 select * from skill_m_t_c_delta;
 select * from drive_behaviors_car_delta;
 select * from image_delta;
@@ -156,7 +157,7 @@ CREATE TRIGGER   user_information_BU
    BEFORE UPDATE ON user_information
    FOR EACH ROW 
 BEGIN
-IF  NEW.Start_date<>OLD.Start_date
+IF  NEW.Date_operation<>OLD.Date_operation
 THEN
   SET NEW.Operation="U";
   INSERT INTO user_information_delta(
@@ -181,6 +182,7 @@ THEN
   OLD_Seguimiento,
   OLD_ws_name,
   OLD_Start_date,
+  OLD_Date_operation,
   OLD_Termns_and_conditions,
   OLD_user_id,
   OLD_Operation,
@@ -209,6 +211,7 @@ THEN
   NEW_Seguimiento,
   NEW_ws_name,
   NEW_Start_date,
+  NEW_Date_operation,
   NEW_Termns_and_conditions,
   NEW_user_id ,
   NEW_Operation,
@@ -237,6 +240,7 @@ THEN
   OLD.Seguimiento,
   OLD.ws_name,
   OLD.Start_date,
+  OLD.Date_operation,
   OLD.Termns_and_conditions,
   OLD.user_id,
   OLD.Operation,
@@ -265,6 +269,7 @@ THEN
   NEW.Seguimiento,
   NEW.ws_name,
   NEW.Start_date,
+  NEW.Date_operation,
   NEW.Termns_and_conditions,
   NEW.user_id,
   NEW.Operation,
@@ -295,7 +300,7 @@ CREATE TRIGGER   Driving_licence_BU
    BEFORE UPDATE ON driving_licence
    FOR EACH ROW 
 BEGIN
-IF  NEW.Start_date<>OLD.Start_date
+IF  NEW.Date_operation<>OLD.Date_operation
 THEN
   SET NEW.Operation="U";
   INSERT INTO driving_licence_delta(
@@ -310,6 +315,7 @@ THEN
   OLD_user_id,
   OLD_ws_name,
   OLD_Start_date,
+  OLD_Date_operation,
   OLD_Operation,
   OLD_version,	
   OLD_User_information_DNI_id,
@@ -325,6 +331,7 @@ THEN
   NEW_user_id,
   NEW_ws_name,
   NEW_Start_date,
+  NEW_Date_operation,
   NEW_Operation,
   NEW_version,	
   NEW_User_information_DNI_id
@@ -341,6 +348,7 @@ THEN
   OLD.user_id,
   OLD.ws_name,
   OLD.Start_date,
+  OLD.Date_operation,
   OLD.Operation,
   OLD.version,	
   OLD.User_information_DNI_id,
@@ -356,6 +364,7 @@ THEN
   NEW.user_id,
   NEW.ws_name,
   NEW.Start_date,
+  NEW.Date_operation,
   NEW.Operation,
   NEW.version,	
   NEW.User_information_DNI_id);
@@ -372,7 +381,7 @@ CREATE TRIGGER   Vehicle_BU
    BEFORE UPDATE ON vehicle
    FOR EACH ROW 
 BEGIN
-IF  NEW.Start_date<>OLD.Start_date
+IF  NEW.Date_operation<>OLD.Date_operation
 THEN
   SET NEW.Operation="U";
   INSERT INTO Vehicle_delta(
@@ -394,7 +403,8 @@ OLD_technomechanical_date, #MDY
 #Name_evaluator varchar(35),#
 OLD_user_id,
 OLD_ws_name,
-OLD_Start_date, # Cuando ingreso el primer dato a la DB
+OLD_Start_date,
+OLD_Date_operation, # Cuando ingreso el primer dato a la DB
 OLD_Operation,
 OLD_version,	
 OLD_User_information_DNI_id,#Creacion FK (PK_TablaOrigen)
@@ -417,7 +427,8 @@ NEW_technomechanical_date, #MDY
 #Name_evaluator varchar(35),#
 NEW_user_id,
 NEW_ws_name,
-NEW_Start_date, # Cuando ingreso el primer dato a la DB
+NEW_Start_date,
+NEW_Date_operation, # Cuando ingreso el primer dato a la DB
 NEW_Operation,
 NEW_version,	
 NEW_User_information_DNI_id
@@ -441,7 +452,8 @@ OLD.technomechanical_date, #MDY
 #Name_evaluator varchar(35),#
 OLD.user_id,
 OLD.ws_name,
-OLD.Start_date, # Cuando ingreso el primer dato a la DB
+OLD.Start_date,
+OLD.Date_operation, # Cuando ingreso el primer dato a la DB
 OLD.Operation,
 OLD.version,	
 OLD.User_information_DNI_id,#Creacion FK (PK_TablaOrigen)
@@ -464,7 +476,8 @@ NEW.technomechanical_date, #MDY
 #Name_evaluator varchar(35),#
 NEW.user_id,
 NEW.ws_name,
-NEW.Start_date, # Cuando ingreso el primer dato a la DB
+NEW.Start_date,
+NEW.Date_operation, # Cuando ingreso el primer dato a la DB
 NEW.Operation,
 NEW.version,	
 NEW.User_information_DNI_id  
@@ -481,13 +494,14 @@ CREATE TRIGGER Vehicle_evaluation_BU
    BEFORE UPDATE ON vehicle_evaluation
    FOR EACH ROW 
 BEGIN
-IF  NEW.Start_date<>OLD.Start_date
+IF  NEW.Date_operation<>OLD.Date_operation
 THEN
   SET NEW.Operation="U";
 
   INSERT INTO  vehicle_evaluation_delta(
 OLD_Vehicle_evaluation_id, 
-OLD_Year_evaluation,
+#OLD_row_id,
+OLD_Date_evaluation,
 OLD_Evaluator_name,
 OLD_V_class_value, 
 OLD_Soat_value, 
@@ -500,13 +514,15 @@ OLD_V_Results,
 OLD_Docs,
 OLD_user_id ,
 OLD_ws_name,
-OLD_Start_date, 
+OLD_Start_date,
+OLD_Date_operation, 
 OLD_Operation,
 OLD_version,	
 OLD_Vehicle_Plate_id,
 
 NEW_Vehicle_evaluation_id, 
-NEW_Year_evaluation,
+#NEW_row_id,
+NEW_Date_evaluation,
 NEW_Evaluator_name,
 NEW_V_class_value, 
 NEW_Soat_value, 
@@ -520,13 +536,15 @@ NEW_Docs,
 NEW_user_id,
 NEW_ws_name,
 NEW_Start_date,
+NEW_Date_operation,
 NEW_Operation,
 NEW_version,	
 NEW_Vehicle_Plate_id
   )
   values(
 OLD.Vehicle_evaluation_id,
-OLD.Year_evaluation, 
+#OLD.row_id,
+OLD.Date_evaluation, 
 OLD.Evaluator_name,
 OLD.V_class_value, 
 OLD.Soat_value, 
@@ -539,13 +557,15 @@ OLD.V_Results,
 OLD.Docs,
 OLD.user_id,
 OLD.ws_name,
-OLD.Start_date, 
+OLD.Start_date,
+OLD.Date_operation, 
 OLD.Operation,
 OLD.version,	
 OLD.Vehicle_Plate_id,
 
 NEW.Vehicle_evaluation_id, 
-NEW.Year_evaluation,
+#NEW.row_id,
+NEW.Date_evaluation,
 NEW.Evaluator_name,
 NEW.V_class_value, 
 NEW.Soat_value, 
@@ -559,6 +579,7 @@ NEW.Docs,
 NEW.user_id,
 NEW.ws_name,
 NEW.Start_date,
+NEW.Date_operation,
 NEW.Operation,
 NEW.version,	
 NEW.Vehicle_Plate_id
@@ -575,14 +596,14 @@ CREATE TRIGGER Safely_car_field_BU
    BEFORE UPDATE ON safely_car_field
    FOR EACH ROW 
 BEGIN
-IF  NEW.Start_date<>OLD.Start_date
+IF  NEW.Date_operation<>OLD.Date_operation
 THEN
   SET NEW.Operation="U";
 
   INSERT INTO  safely_car_field_delta(
 OLD_Safely_car_Id, 
-OLD_row_id,
-OLD_Year_evaluation,
+#OLD_row_id,
+OLD_Date_evaluation,
 OLD_Brake_verification,
 OLD_Batery_and_connections,
 OLD_Chair_steering_wheel,
@@ -597,13 +618,14 @@ OLD_C_Results,
 OLD_user_id,
 OLD_ws_name,
 OLD_Start_date,
+OLD_Date_operation,
 OLD_Operation,
 OLD_version,	
 OLD_Vehicle_Plate_id,
 
-NEW_Safely_car_Id, #Cedula
-NEW_row_id,
-NEW_Year_evaluation,
+NEW_Safely_car_Id,
+#NEW_row_id,
+NEW_Date_evaluation,
 NEW_Brake_verification,
 NEW_Batery_and_connections,
 NEW_Chair_steering_wheel,
@@ -618,14 +640,15 @@ NEW_C_Results,
 NEW_user_id,
 NEW_ws_name,
 NEW_Start_date,
+NEW_Date_operation,
 NEW_Operation,
 NEW_version,	
 NEW_Vehicle_Plate_id
 )
   values(
 OLD.Safely_car_Id, 
-OLD.row_id,
-OLD.Year_evaluation,
+#OLD.row_id,
+OLD.Date_evaluation,
 OLD.Brake_verification,
 OLD.Batery_and_connections,
 OLD.Chair_steering_wheel,
@@ -640,13 +663,14 @@ OLD.C_Results,
 OLD.user_id,
 OLD.ws_name,
 OLD.Start_date,
+OLD.Date_operation,
 OLD.Operation,
 OLD.version,	
 OLD.Vehicle_Plate_id,
 
 NEW.Safely_car_Id, #Cedula
-NEW.row_id,
-NEW.Year_evaluation,
+#NEW.row_id,
+NEW.Date_evaluation,
 NEW.Brake_verification,
 NEW.Batery_and_connections,
 NEW.Chair_steering_wheel,
@@ -661,9 +685,81 @@ NEW.C_Results,
 NEW.user_id,
 NEW.ws_name,
 NEW.Start_date,
+NEW.Date_operation,
 NEW.Operation,
 NEW.version,	
 NEW.Vehicle_Plate_id
+  );
+END IF;  
+END;$$
+DELIMITER ;
+
+
+
+
+#Motorcycle_Technology
+#Ttrigger 7.1 Motorcycle_Technology
+#DROP TRIGGER Motorcycle_Technology_BU ;
+DELIMITER $$
+CREATE TRIGGER Motorcycle_Technology_BU 
+   BEFORE UPDATE ON Motorcycle_Technology
+   FOR EACH ROW 
+BEGIN
+IF  NEW.Date_operation<>OLD.Date_operation
+THEN
+  SET NEW.Operation="U";
+
+  INSERT INTO  Motorcycle_Technology_delta(
+OLD_M_t_id,
+OLD_Date_evaluation,
+OLD_Breake_type,
+OLD_Assistence_breake,
+OLD_Automatic_lights,
+OLD_user_id,
+OLD_ws_name,
+OLD_Start_date,
+OLD_Date_operation,
+OLD_Operation,
+OLD_version,
+OLD_Vehicle_Plate_id,
+NEW_M_t_id,
+NEW_Date_evaluation,
+NEW_Breake_type,
+NEW_Assistence_breake,
+NEW_Automatic_lights,
+NEW_user_id,
+NEW_ws_name,
+NEW_Start_date,
+NEW_Date_operation,
+NEW_Operation,
+NEW_version,
+NEW_Vehicle_Plate_id
+)
+  values(
+OLD.M_t_id,
+OLD.Date_evaluation,
+OLD.Breake_type,
+OLD.Assistence_breake,
+OLD.Automatic_lights,
+OLD.user_id,
+OLD.ws_name,
+OLD.Start_date,
+OLD.Date_operation,
+OLD.Operation,
+OLD.version,
+OLD.Vehicle_Plate_id,
+NEW.M_t_id,
+NEW.Date_evaluation,
+NEW.Breake_type,
+NEW.Assistence_breake,
+NEW.Automatic_lights,
+NEW.user_id,
+NEW.ws_name,
+NEW.Start_date,
+NEW.Date_operation,
+NEW.Operation,
+NEW.version,
+NEW.Vehicle_Plate_id  
   );
 END IF;  
 END;$$
@@ -677,14 +773,14 @@ CREATE TRIGGER Motorcycle_Mechanical_conditions_BU
    BEFORE UPDATE ON motorcycle_mechanical_conditions
    FOR EACH ROW 
 BEGIN
-IF  NEW.Start_date<>OLD.Start_date
+IF  NEW.Date_operation<>OLD.Date_operation
 THEN
   SET NEW.Operation="U";
 
   INSERT INTO  Motorcycle_Mechanical_conditions_delta(
-OLD_Evaluation_Id, #cedula
-OLD_row_id,
-OLD_Year_evaluation,
+OLD_Evaluation_Id,
+#OLD_row_id,
+OLD_Date_evaluation,
 OLD_Name_evaluator,
 OLD_Tires,
 OLD_Manigueta_guaya,
@@ -699,13 +795,14 @@ OLD_M_Results, #valor total para las motos
 OLD_user_id,
 OLD_ws_name,
 OLD_Start_date,
+OLD_Date_operation,
 OLD_Operation,
 OLD_version,	
 OLD_Vehicle_Plate_id,
 
 NEW_Evaluation_Id, #cedula
-NEW_row_id,
-NEW_Year_evaluation,
+#NEW_row_id,
+NEW_Date_evaluation,
 NEW_Name_evaluator,
 NEW_Tires,
 NEW_Manigueta_guaya,
@@ -720,14 +817,15 @@ NEW_M_Results, #valor total para las motos
 NEW_user_id,
 NEW_ws_name,
 NEW_Start_date,
+NEW_Date_operation,
 NEW_Operation,
 NEW_version,	
 NEW_Vehicle_Plate_id
 )
   values(
 OLD.Evaluation_Id, #cedula
-OLD.row_id,
-OLD.Year_evaluation,
+#OLD.row_id,
+OLD.Date_evaluation,
 OLD.Name_evaluator,
 OLD.Tires,
 OLD.Manigueta_guaya,
@@ -742,13 +840,14 @@ OLD.M_Results, #valor total para las motos
 OLD.user_id,
 OLD.ws_name,
 OLD.Start_date,
+OLD.Date_operation,
 OLD.Operation,
 OLD.version,	
 OLD.Vehicle_Plate_id,
 
 NEW.Evaluation_Id, #cedula
-NEW.row_id,
-NEW.Year_evaluation,
+#NEW.row_id,
+NEW.Date_evaluation,
 NEW.Name_evaluator,
 NEW.Tires,
 NEW.Manigueta_guaya,
@@ -763,6 +862,7 @@ NEW.M_Results, #valor total para las motos
 NEW.user_id,
 NEW.ws_name,
 NEW.Start_date,
+NEW.Date_operation,
 NEW.Operation,
 NEW.version,	
 NEW.Vehicle_Plate_id
@@ -780,13 +880,13 @@ CREATE TRIGGER skill_m_t_m_delta_BU
    BEFORE UPDATE ON skill_m_t_m
    FOR EACH ROW 
 BEGIN
-IF  NEW.Start_date<>OLD.Start_date
+IF  NEW.Date_operation<>OLD.Date_operation
 THEN
   SET NEW.Operation="U";
 
   INSERT INTO  skill_m_t_m_delta(
 OLD_Reg_id, #revisar
-OLD_Year_evaluation,
+OLD_Date_evaluation,
 OLD_Slalom,
 OLD_Projection,
 OLD_Braking,
@@ -796,12 +896,13 @@ OLD_Result,
 OLD_user_id,
 OLD_ws_name,
 OLD_Start_date,
+OLD_Date_operation,
 OLD_Operation,
 OLD_version,	
 OLD_User_information_DNI_id,
 
 NEW_Reg_id, #revisar
-NEW_Year_evaluation,
+NEW_Date_evaluation,
 NEW_Slalom,
 NEW_Projection,
 NEW_Braking,
@@ -811,13 +912,14 @@ NEW_Result,
 NEW_user_id,
 NEW_ws_name,
 NEW_Start_date,
+NEW_Date_operation,
 NEW_Operation,
 NEW_version,	
 NEW_User_information_DNI_id
 )
   values(
 OLD.Reg_id, #revisar
-OLD.Year_evaluation,
+OLD.Date_evaluation,
 OLD.Slalom,
 OLD.Projection,
 OLD.Braking,
@@ -827,12 +929,13 @@ OLD.Result,
 OLD.user_id,
 OLD.ws_name,
 OLD.Start_date,
+OLD.Date_operation,
 OLD.Operation,
 OLD.version,	
 OLD.User_information_DNI_id,
 
 NEW.Reg_id, #revisar
-NEW.Year_evaluation,
+NEW.Date_evaluation,
 NEW.Slalom,
 NEW.Projection,
 NEW.Braking,
@@ -842,6 +945,7 @@ NEW.Result,
 NEW.user_id,
 NEW.ws_name,
 NEW.Start_date,
+NEW.Date_operation,
 NEW.Operation,
 NEW.version,	
 NEW.User_information_DNI_id
@@ -858,13 +962,13 @@ CREATE TRIGGER epp_BU
    BEFORE UPDATE ON epp
    FOR EACH ROW 
 BEGIN
-IF  NEW.Start_date<>OLD.Start_date
+IF  NEW.Date_operation<>OLD.Date_operation
 THEN
   SET NEW.Operation="U";
 
   INSERT INTO  epp_delta(
 OLD_Epp_id, #revisar
-OLD_Year_evaluation,
+OLD_Date_evaluation,
 OLD_Name_evaluator,#
 OLD_Empresa,
 OLD_Casco,
@@ -879,12 +983,13 @@ OLD_Risk,
 OLD_user_id,
 OLD_ws_name,
 OLD_Start_date,
+OLD_Date_operation,
 OLD_Operation,
 OLD_version,	
 OLD_User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
 
 NEW_Epp_id, #revisar
-NEW_Year_evaluation,
+NEW_Date_evaluation,
 NEW_Name_evaluator,#
 NEW_Empresa,
 NEW_Casco,
@@ -899,13 +1004,14 @@ NEW_Risk,
 NEW_user_id,
 NEW_ws_name,
 NEW_Start_date,
+NEW_Date_operation,
 NEW_Operation,
 NEW_version,	
 NEW_User_information_DNI_id #Creacion FK (PK_TablaOrigen)
 )
   values(
 OLD.Epp_id, #revisar
-OLD.Year_evaluation,
+OLD.Date_evaluation,
 OLD.Name_evaluator,#
 OLD.Empresa,
 OLD.Casco,
@@ -920,12 +1026,13 @@ OLD.Risk,
 OLD.user_id,
 OLD.ws_name,
 OLD.Start_date,
+OLD.Date_operation,
 OLD.Operation,
 OLD.version,	
 OLD.User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
 
 NEW.Epp_id, #revisar
-NEW.Year_evaluation,
+NEW.Date_evaluation,
 NEW.Name_evaluator,#
 NEW.Empresa,
 NEW.Casco,
@@ -940,6 +1047,7 @@ NEW.Risk,
 NEW.user_id,
 NEW.ws_name,
 NEW.Start_date,
+NEW.Date_operation,
 NEW.Operation,
 NEW.version,	
 NEW.User_information_DNI_id #Creacion FK (PK_TablaOrigen)
@@ -956,13 +1064,13 @@ CREATE TRIGGER skill_m_t_c_BU
    BEFORE UPDATE ON skill_m_t_c
    FOR EACH ROW 
 BEGIN
-IF  NEW.Start_date<>OLD.Start_date
+IF  NEW.Date_operation<>OLD.Date_operation
 THEN
   SET NEW.Operation="U";
 
   INSERT INTO  skill_m_t_c_delta(
 OLD_Reg_id_c, #unsigned mejora el rendimiento al quitar negativos
-OLD_Year_evaluation,
+OLD_Date_evaluation,
 OLD_Parking,
 OLD_Turn_and_overtaking,
 OLD_Reverse_c,
@@ -973,12 +1081,13 @@ OLD_Result,
 OLD_user_id,
 OLD_ws_name,
 OLD_Start_date,
+OLD_Date_operation,
 OLD_Operation,
 OLD_version,	
 OLD_User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
 
 NEW_Reg_id_c, #unsigned mejora el rendimiento al quitar negativos
-NEW_Year_evaluation,
+NEW_Date_evaluation,
 NEW_Parking,
 NEW_Turn_and_overtaking,
 NEW_Reverse_c,
@@ -989,13 +1098,14 @@ NEW_Result,
 NEW_user_id,
 NEW_ws_name,
 NEW_Start_date,
+NEW_Date_operation,
 NEW_Operation,
 NEW_version,	
 NEW_User_information_DNI_id #Creacion FK (PK_TablaOrigen)
 )
   values(
 OLD.Reg_id_c, #unsigned mejora el rendimiento al quitar negativos
-OLD.Year_evaluation,
+OLD.Date_evaluation,
 OLD.Parking,
 OLD.Turn_and_overtaking,
 OLD.Reverse_c,
@@ -1006,12 +1116,13 @@ OLD.Result,
 OLD.user_id,
 OLD.ws_name,
 OLD.Start_date,
+OLD.Date_operation,
 OLD.Operation,
 OLD.version,	
 OLD.User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
 
 NEW.Reg_id_c, #unsigned mejora el rendimiento al quitar negativos
-NEW.Year_evaluation,
+NEW.Date_evaluation,
 NEW.Parking,
 NEW.Turn_and_overtaking,
 NEW.Reverse_c,
@@ -1022,6 +1133,7 @@ NEW.Result,
 NEW.user_id,
 NEW.ws_name,
 NEW.Start_date,
+NEW.Date_operation,
 NEW.Operation,
 NEW.version,	
 NEW.User_information_DNI_id #Creacion FK (PK_TablaOrigen)
@@ -1037,13 +1149,13 @@ CREATE TRIGGER drive_behaviors_car_BU
    BEFORE UPDATE ON drive_behaviors_car
    FOR EACH ROW 
 BEGIN
-IF  NEW.Start_date<>OLD.Start_date
+IF  NEW.Date_operation<>OLD.Date_operation
 THEN
   SET NEW.Operation="U";
 
   INSERT INTO  drive_behaviors_car_delta(
 OLD_Drive_beh_id,
-OLD_Year_evaluation,
+OLD_Date_evaluation,
 OLD_Stop_distance,
 OLD_Roundabouts,
 OLD_Follow_distance,
@@ -1055,12 +1167,13 @@ OLD_Result,
 OLD_user_id,
 OLD_ws_name,
 OLD_Start_date,
+OLD_Date_operation,
 OLD_Operation,
 OLD_version,	
 OLD_User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
 
 NEW_Drive_beh_id,
-NEW_Year_evaluation,
+NEW_Date_evaluation,
 NEW_Stop_distance,
 NEW_Roundabouts,
 NEW_Follow_distance,
@@ -1072,13 +1185,14 @@ NEW_Result,
 NEW_user_id,
 NEW_ws_name,
 NEW_Start_date,
+NEW_Date_operation,
 NEW_Operation,
 NEW_version,	
 NEW_User_information_DNI_id
 )
   values(
 OLD.Drive_beh_id,
-OLD.Year_evaluation,
+OLD.Date_evaluation,
 OLD.Stop_distance,
 OLD.Roundabouts,
 OLD.Follow_distance,
@@ -1090,12 +1204,13 @@ OLD.Result,
 OLD.user_id,
 OLD.ws_name,
 OLD.Start_date,
+OLD.Date_operation,
 OLD.Operation,
 OLD.version,	
 OLD.User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
 
 NEW.Drive_beh_id,
-NEW.Year_evaluation,
+NEW.Date_evaluation,
 NEW.Stop_distance,
 NEW.Roundabouts,
 NEW.Follow_distance,
@@ -1107,6 +1222,7 @@ NEW.Result,
 NEW.user_id,
 NEW.ws_name,
 NEW.Start_date,
+NEW.Date_operation,
 NEW.Operation,
 NEW.version,	
 NEW.User_information_DNI_id
@@ -1123,7 +1239,7 @@ CREATE TRIGGER Image_BU
    BEFORE UPDATE ON Image
    FOR EACH ROW 
 BEGIN
-IF  NEW.Start_date<>OLD.Start_date
+IF  NEW.Date_operation<>OLD.Date_operation
 THEN
   SET NEW.Operation="U";
 
@@ -1146,6 +1262,7 @@ OLD_Type_image,
 OLD_user_id,
 OLD_ws_name,
 OLD_Start_date,
+OLD_Date_operation,
 OLD_Operation,
 OLD_version,	
 OLD_User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
@@ -1169,6 +1286,7 @@ NEW_Type_image,
 NEW_user_id,
 NEW_ws_name,
 NEW_Start_date,
+NEW_Date_operation,
 NEW_Operation,
 NEW_version,	
 NEW_User_information_DNI_id#Creacion FK (PK_TablaOrigen)
@@ -1193,6 +1311,7 @@ OLD.Type_image,
 OLD.user_id,
 OLD.ws_name,
 OLD.Start_date,
+OLD.Date_operation,
 OLD.Operation,
 OLD.version,	
 OLD.User_information_DNI_id, #Creacion FK (PK_TablaOrigen)
@@ -1216,6 +1335,7 @@ NEW.Type_image,
 NEW.user_id,
 NEW.ws_name,
 NEW.Start_date,
+NEW.Date_operation,
 NEW.Operation,
 NEW.version,	
 NEW.User_information_DNI_id#Creacion FK (PK_TablaOrigen)
@@ -1233,7 +1353,7 @@ CREATE TRIGGER user_db_delta_BU
    BEFORE UPDATE ON user_db
    FOR EACH ROW 
 BEGIN
-IF  NEW.Start_date<>OLD.Start_date
+IF  NEW.Date_operation<>OLD.Date_operation
 THEN
   SET NEW.Operation="U";
 
@@ -1245,6 +1365,7 @@ OLD_User_name,
 OLD_Lhost,
 OLD_User_profile,
 OLD_Start_date,
+OLD_Date_operation,
 OLD_Operation,
 OLD_version,
 
@@ -1255,6 +1376,7 @@ NEW_User_name,
 NEW_Lhost,
 NEW_User_profile,
 NEW_Start_date,
+NEW_Date_operation,
 NEW_Operation,
 NEW_version
   
@@ -1267,6 +1389,7 @@ OLD.User_name,
 OLD.Lhost,
 OLD.User_profile,
 OLD.Start_date,
+OLD.Date_operation,
 OLD.Operation,
 OLD.version,
 
@@ -1277,6 +1400,7 @@ NEW.User_name,
 NEW.Lhost,
 NEW.User_profile,
 NEW.Start_date,
+NEW.Date_operation,
 NEW.Operation,
 NEW.version 
   );
@@ -1303,7 +1427,7 @@ CREATE TRIGGER epp_BU
    BEFORE UPDATE ON epp
    FOR EACH ROW 
 BEGIN
-IF  NEW.Start_date<>OLD.Start_date
+IF  NEW.Date_operation<>OLD.Date_operation
 THEN
   SET NEW.Operation="U";
 
