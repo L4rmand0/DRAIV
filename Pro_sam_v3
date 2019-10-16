@@ -1,4 +1,6 @@
-create database if not exists pro_sam_bw_19;
+#create database if not exists pro_sam_bw_19;
+CREATE SCHEMA `pro_sam_bw_19` DEFAULT CHARACTER SET UTF8MB4; #utf8;
+
 Use pro_sam_bw_19;
 
 #crear campo para aceptacion de terminos y condiciones
@@ -10,7 +12,7 @@ Use pro_sam_bw_19;
 #Edad
 #Gremio
 
-create table IF NOT exists user_db( # borrar enlaces de ususario
+create table IF NOT exists user_db(
 Db_user_id bigint(10) UNSIGNED auto_increment not null,
 primary key(Db_user_id),
 Password_db varchar(45) not null, #Masculino 0, femenido 1 
@@ -19,21 +21,23 @@ E_mail varchar(35) UNIQUE not null,
 User_name varchar(35) UNIQUE  NOT NULL,
 Lhost varchar(10) DEFAULT '@localhost' NOT NULL,
 User_profile enum("User","Administrator","Evaluator") default 'User'not null,
-Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
+Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 Operation enum("A","U","D") default "A" not null  ,
 version double default "1" not null
 )engine=INNODB, auto_increment=1400000000;
 
-#Alter table user_db add Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER User_profile ; 
+#Alter table user_db add Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER User_profile ; 
 
-create table IF NOT exists user_db_delta( # borrar enlaces de ususario
+create table IF NOT exists user_db_delta(
 OLD_Db_user_id bigint(10) UNSIGNED not null,
 OLD_Password_db varchar(45)  DEFAULT NULL, #Masculino 0, femenido 1 
 OLD_E_mail varchar(35) DEFAULT NULL,
 OLD_User_name varchar(35) DEFAULT NULL,
 OLD_Lhost varchar(10) DEFAULT NULL,
 OLD_User_profile enum("User","Administrator","Evaluator") DEFAULT NULL,
-OLD_Start_date timestamp DEFAULT NULL,
+OLD_Start_date datetime DEFAULT NULL,
+OLD_Date_operation timestamp DEFAULT NULL,
 OLD_Operation enum("A","U","D") DEFAULT NULL ,
 OLD_version double DEFAULT NULL,
 
@@ -43,7 +47,8 @@ NEW_E_mail varchar(35) DEFAULT NULL,
 NEW_User_name varchar(35) DEFAULT NULL,
 NEW_Lhost varchar(10) DEFAULT NULL,
 NEW_User_profile enum("User","Administrator","Evaluator") DEFAULT NULL,
-NEW_Start_date timestamp DEFAULT NULL ,
+NEW_Start_date datetime DEFAULT NULL,
+NEW_Date_operation timestamp DEFAULT NULL ,
 NEW_Operation enum("A","U","D") DEFAULT NULL,
 NEW_version double DEFAULT NULL
 )engine=INNODB;
@@ -73,17 +78,18 @@ Education enum("Ninguno","Primaria","Secundaria","Pregrado","Postgrado"),
 E_mail_address varchar(35)  UNIQUE not null,##
 address varchar(50) not null, 
 Country_born enum("Colombia","Venezuela","Peru","Ecuador","Bolivia","Argentina","Brasil","Other") not null,
-City_born bigint,
-Admin_id bigint,
-City_Residence_place bigint,
-Department bigint,
+City_born bigint DEFAULT 0000000000,
+Admin_id bigint DEFAULT 0000000000,
+City_Residence_place bigint DEFAULT 0000000000,
+Department bigint DEFAULT 0000000000,
 phone varchar(15) not null,
 Civil_state enum("Soltero","Casado","Separado","Divorciado","Viudo","Union libre") not null,
 Current_company varchar(35) default "NA", 
 Seguimiento varchar(800),
 ws_name varchar(20) default "pro_sam_bw19" not null,
-Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   #Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
-Termns_and_conditions date not null DEFAULT CURRENT_TIMESTAMP,
+Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
+Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   #Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
+Termns_and_conditions timestamp not null DEFAULT CURRENT_TIMESTAMP,
 user_id bigint(10) UNSIGNED, # Todas las tablas deben tener una columna conel identificador de la perdona que ha agregado, modificado o eliminado algun registro
 Operation enum("A","U","D") default "A" not null,
 version double default 1 not null,	
@@ -96,10 +102,10 @@ on update cascade
 )engine=INNODB;
 
 
-#ALTER TABLE User_information modify Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ;
+#ALTER TABLE User_information modify Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ;
 
 #ALTER TABLE User_information modify Db_user_id  bigint(10) not null;
-#ALTER TABLE User_information modify Start_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ;
+#ALTER TABLE User_information modify Date_operation DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ;
 #ALTER TABLE User_informationaa modify user_db_Db_user_idA bigint(10) not null unique ;
 #CREATE TABLE tabla_ejemplo1 (fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP); campo para guardar hora de actualización
 
@@ -126,7 +132,9 @@ OLD_Civil_state enum("Soltero","Casado","Separado","Divorciado","Viudo","Union l
 OLD_Current_company varchar(35) DEFAULT NULL, 
 OLD_Seguimiento varchar(800)DEFAULT NULL,
 OLD_ws_name varchar(20) default "pro_sam_bw19" DEFAULT NULL,
-OLD_Start_date timestamp default null,
+OLD_Start_date datetime DEFAULT NULL,
+OLD_Date_operation timestamp default null,
+
 OLD_Termns_and_conditions  time DEFAULT null,
 OLD_user_id bigint(10) DEFAULT NULL,
 OLD_Operation enum("A","U","D") DEFAULT NULL,
@@ -145,6 +153,7 @@ NEW_E_mail_address varchar(35) DEFAULT NULL,##
 NEW_address varchar(50) DEFAULT NULL, 
 NEW_Country_born enum("Colombia","Venezuela","Peru","Ecuador","Bolivia","Argentina","Brasil","Other") DEFAULT NULL,
 NEW_City_born bigint DEFAULT NULL,
+NEW_Admin_id bigint DEFAULT NULL,
 NEW_City_Residence_place bigint DEFAULT NULL,
 NEW_Department bigint DEFAULT NULL,
 NEW_phone varchar(15) DEFAULT NULL,
@@ -152,7 +161,8 @@ NEW_Civil_state enum("Soltero","Casado","Separado","Divorsiado","Viudo","Union l
 NEW_Current_company varchar(35) DEFAULT NULL, 
 NEW_Seguimiento varchar(800)DEFAULT NULL,
 NEW_ws_name varchar(20) DEFAULT NULL,
-NEW_Start_date timestamp default null,
+NEW_Start_date datetime DEFAULT NULL,
+NEW_Date_operation timestamp default null,
 NEW_Termns_and_conditions  time DEFAULT null,
 NEW_user_id bigint(10) DEFAULT NULL,
 NEW_Operation enum("A","U","D") DEFAULT NULL,
@@ -182,14 +192,15 @@ Size_image double,
 Type_image varchar(255),
 user_id bigint(10) UNSIGNED,
 ws_name varchar(20) default "pro_sam_bw19" not null,
-Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
+Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 Operation enum("A","U","D") default "A" not null,
 version double default 1 not null,	
 User_information_DNI_id bigint UNSIGNED NOT NULL UNIQUE ,#Creacion FK (PK_TablaOrigen)
 constraint FKImage_User_information #FKTabla destino_tabla origen
 foreign key(User_information_DNI_id)#PK_tabla origen
 references User_information(DNI_id)#Tablaorigen(PK)
-On delete cascade On update cascade
+On update cascade
 
 #user_db_Db_user_id bigint NOT NULL ,#Creacion FK (PK_TablaOrigen)
 #constraint FKimage_user_db #FKTabla destino_tabla origen
@@ -217,7 +228,8 @@ OLD_Size_image double DEFAULT NULL,
 OLD_Type_image varchar(255) DEFAULT NULL,
 OLD_user_id bigint(10)DEFAULT NULL,
 OLD_ws_name varchar(20) DEFAULT NULL,
-OLD_Start_date timestamp DEFAULT NULL,
+OLD_Start_date datetime DEFAULT NULL,
+OLD_Date_operation timestamp DEFAULT NULL,
 OLD_Operation enum("A","U","D") DEFAULT NULL,
 OLD_version double DEFAULT NULL,	
 OLD_User_information_DNI_id bigint UNSIGNED DEFAULT NULL, #Creacion FK (PK_TablaOrigen)
@@ -239,7 +251,8 @@ NEW_Size_image double DEFAULT NULL,
 NEW_Type_image varchar(255) DEFAULT NULL,
 NEW_user_id bigint(10)DEFAULT NULL,
 NEW_ws_name varchar(20) DEFAULT NULL,
-NEW_Start_date timestamp DEFAULT NULL,
+NEW_Start_date datetime DEFAULT NULL,
+NEW_Date_operation timestamp DEFAULT NULL,
 NEW_Operation enum("A","U","D") DEFAULT NULL,
 NEW_version double DEFAULT NULL,	
 NEW_User_information_DNI_id bigint  UNSIGNED DEFAULT NULL #Creacion FK (PK_TablaOrigen)
@@ -261,14 +274,15 @@ Expedition_day date not null,
 Expi_date date not null,
 user_id bigint(10) UNSIGNED,
 ws_name varchar(20) default "pro_sam_bw19" not null,
-Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
+Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 Operation enum("A","U","D") default "A" not null,
 version double default 1 not null,	
 User_information_DNI_id bigint UNSIGNED UNIQUE NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKDriving_licence_User_information #FKTabla destino_tabla origen
 foreign key(User_information_DNI_id)#PK_tabla origen
 references User_information(DNI_id)#Tablaorigen(PK)
-On delete cascade On update cascade
+On update cascade
 
 #user_db_Db_user_id bigint NOT NULL ,#Creacion FK (PK_TablaOrigen)
 #constraint FKDriving_licence_user_db #FKTabla destino_tabla origen
@@ -290,7 +304,8 @@ OLD_Expedition_day date DEFAULT NULL,
 OLD_Expi_date date null,
 OLD_user_id bigint(10) DEFAULT NULL,
 OLD_ws_name varchar(20) default "pro_sam_bw19" DEFAULT NULL,
-OLD_Start_date timestamp DEFAULT NULL,
+OLD_Start_date datetime DEFAULT NULL,
+OLD_Date_operation timestamp DEFAULT NULL,
 OLD_Operation enum("A","U","D") DEFAULT NULL,
 OLD_version double DEFAULT NULL,	
 OLD_User_information_DNI_id bigint UNSIGNED DEFAULT NULL,#Creacion FK (PK_TablaOrigen)
@@ -305,7 +320,8 @@ NEW_Expedition_day date DEFAULT NULL,
 NEW_Expi_date date null,
 NEW_user_id bigint(10)DEFAULT NULL,
 NEW_ws_name varchar(20) default "pro_sam_bw19" DEFAULT NULL,
-NEW_Start_date timestamp DEFAULT NULL,
+NEW_Start_date datetime DEFAULT NULL,
+NEW_Date_operation timestamp DEFAULT NULL,
 NEW_Operation enum("A","U","D") DEFAULT NULL,
 NEW_version double DEFAULT NULL,	
 NEW_User_information_DNI_id bigint UNSIGNED DEFAULT NULL#Creacion FK (PK_TablaOrigen)
@@ -340,14 +356,15 @@ technomechanical_date date, #MDY
 #Name_evaluator varchar(35),#
 user_id bigint(10) UNSIGNED,
 ws_name varchar(20) default "pro_sam_bw19" not null,
-Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP , # Cuando ingreso el primer dato a la DB
+Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
+Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP , # Cuando ingreso el primer dato a la DB
 Operation enum("A","U","D") default "A" not null,
 version double default 1 not null,	
 User_information_DNI_id bigint UNSIGNED UNIQUE NOT NULL  ,#Creacion FK (PK_TablaOrigen)
 constraint FKVehicle_User_information #FKTabla destino_tabla origen
 foreign key(User_information_DNI_id)#PK_tabla origen
 references User_information(DNI_id)#Tablaorigen(PK)
-On delete cascade On update cascade
+On update cascade
 )engine=INNODB;
 
 
@@ -368,13 +385,13 @@ OLD_Brand varchar(15) DEFAULT NULL,
 OLD_Color varchar (15)  DEFAULT NULL,
 OLD_technomechanical_date date DEFAULT NULL, #MDY 
 #Name_evaluator varchar(35),#
-user_id bigint(10) UNSIGNED,
+OLD_user_id bigint(10) UNSIGNED,
 OLD_ws_name varchar(20) DEFAULT NULL,
-OLD_Start_date timestamp DEFAULT NULL , # Cuando ingreso el primer dato a la DB
+OLD_Start_date datetime DEFAULT NULL,
+OLD_Date_operation timestamp DEFAULT NULL , # Cuando ingreso el primer dato a la DB
 OLD_Operation enum("A","U","D") DEFAULT NULL,
 OLD_version double DEFAULT NULL,	
 OLD_User_information_DNI_id bigint UNSIGNED DEFAULT NULL,#Creacion FK (PK_TablaOrigen)
-
 NEW_Plate_id varchar(15)  not null,
 NEW_row_id bigint UNSIGNED not null,
 NEW_Type_V enum("Carro",'Moto','Furgon','Otro')DEFAULT NULL,
@@ -391,9 +408,10 @@ NEW_Brand varchar(15) DEFAULT NULL,
 NEW_Color varchar (15) DEFAULT NULL,
 NEW_technomechanical_date date DEFAULT NULL, #MDY 
 #Name_evaluator varchar(35),#
-user_id bigint(10) DEFAULT NULL,
+NEW_user_id bigint(10) DEFAULT NULL,
 NEW_ws_name varchar(20) DEFAULT NULL,
-NEW_Start_date timestamp DEFAULT NULL , # Cuando ingreso el primer dato a la DB
+NEW_Start_date datetime DEFAULT NULL,
+NEW_Date_operation timestamp DEFAULT NULL , # Cuando ingreso el primer dato a la DB
 NEW_Operation enum("A","U","D") DEFAULT NULL,
 NEW_version double DEFAULT NULL,	
 NEW_User_information_DNI_id bigint UNSIGNED DEFAULT NULL#Creacion FK (PK_TablaOrigen)
@@ -403,12 +421,13 @@ NEW_User_information_DNI_id bigint UNSIGNED DEFAULT NULL#Creacion FK (PK_TablaOr
 
 #ALTER TABLE Vehicle DROP FOREIGN KEY FKVehicle_User_information; 
 
-create table IF NOT exists Vehicle_evaluation(# El modelo no permite evaluar el mismo carro dos veces o mas en el mismo año
+create table IF NOT exists Vehicle_evaluation(# El modelo permite evaluar el mismo carro dos veces o mas en el mismo año
 Vehicle_evaluation_id  bigint  UNSIGNED auto_increment  not null, 
-Year_evaluation DATE not null, #CREAR UN TRIGGER PARA METER EÑ VALOR POR DEFAUT  
-primary key(Vehicle_evaluation_id,Year_evaluation), 
-#row_id bigint auto_increment not null,
+UNIQUE KEY Vehicle_evaluation_id (Vehicle_evaluation_id),
+#row_id bigint unsigned auto_increment not null, 
 #UNIQUE KEY row_id (row_id),
+Date_evaluation DATE not null, #CREAR UN TRIGGER PARA METER EÑ VALOR POR DEFAUT  
+primary key(Date_evaluation,Vehicle_Plate_id),
 Evaluator_name varchar(25),
 V_class_value int(5) UNSIGNED, #CHECK (V_class_value<=5),
 Soat_value int(5) UNSIGNED, #CHECK (Soat_value<=5),
@@ -421,7 +440,8 @@ V_Results int(5),
 Docs json NULL, #link para guardar los datos: Debe existir un campo para cada documento
 user_id bigint(10) UNSIGNED,
 ws_name varchar(20) default "pro_sam_bw19" not null,
-Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, # Cuando ingreso el primer dato a la DB
+Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
+Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, # Cuando ingreso el primer dato a la DB
 Operation enum("A","U","D") default "A" not null,
 version double default 1 not null,	
 CONSTRAINT CHK_Values CHECK (V_class_value<=5 AND Soat_value<=5 AND Brand_value<=5 AND technomechanical_value<=5 AND Model_value<=5 AND Line_value<=5 AND Cylindrical_value<=5),
@@ -430,7 +450,7 @@ Vehicle_Plate_id varchar(15) NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKVehicle_evaluation_Vehicle #FKTabla destino_tabla origen
 foreign key(Vehicle_Plate_id)#PK_tabla origen
 references Vehicle(Plate_id)#Tablaorigen(PK)
-On delete cascade On update cascade/*,
+On update cascade/*,
 user_db_Db_user_id bigint  NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKVehicle_evaluation_user_db #FKTabla destino_tabla origen
 foreign key(user_db_Db_user_id)#PK_tabla origen
@@ -441,7 +461,8 @@ On update cascade*/
 
 create table IF NOT exists Vehicle_evaluation_delta(
 OLD_Vehicle_evaluation_id bigint UNSIGNED not null, 
-OLD_Year_evaluation DATE not null,
+#OLD_row_id bigint unsigned not null,
+OLD_Date_evaluation DATE not null,
 OLD_Evaluator_name varchar(25) DEFAULT NULL,
 OLD_V_class_value int(5) UNSIGNED DEFAULT NULL, 
 OLD_Soat_value int(5) UNSIGNED DEFAULT NULL, 
@@ -454,13 +475,15 @@ OLD_V_Results int(5) DEFAULT NULL,
 OLD_Docs json NULL, #link para guardar los datos: Debe existir un campo para cada documento
 OLD_user_id bigint(10) DEFAULT NULL,
 OLD_ws_name varchar(20) DEFAULT NULL,
-OLD_Start_date timestamp DEFAULT NULL, # Cuando ingreso el primer dato a la DB
+OLD_Start_date datetime default null,
+OLD_Date_operation timestamp DEFAULT NULL, # Cuando ingreso el primer dato a la DB
 OLD_Operation enum("A","U","D") DEFAULT NULL,
 OLD_version double NULL,	
 OLD_Vehicle_Plate_id varchar(15) DEFAULT NULL, #Creacion FK (PK_TablaOrigen)
 
 NEW_Vehicle_evaluation_id bigint UNSIGNED not null, 
-NEW_Year_evaluation DATE not null,
+#NEW_row_id bigint unsigned not null,
+NEW_date_evaluation DATE not null,
 NEW_Evaluator_name varchar(25) DEFAULT NULL,
 NEW_V_class_value int(5) UNSIGNED DEFAULT NULL, 
 NEW_Soat_value int(5) UNSIGNED DEFAULT NULL, 
@@ -473,7 +496,8 @@ NEW_V_Results int(5) DEFAULT NULL,
 NEW_Docs json DEFAULT NULL, #link para guardar los datos: Debe existir un campo para cada documento
 NEW_user_id bigint(10) DEFAULT NULL,
 NEW_ws_name varchar(20) DEFAULT NULL,
-NEW_Start_date timestamp DEFAULT NULL, # Cuando ingreso el primer dato a la DB
+NEW_Start_date datetime DEFAULT NULL,
+NEW_Date_operation timestamp DEFAULT NULL, # Cuando ingreso el primer dato a la DB
 NEW_Operation enum("A","U","D") DEFAULT NULL,
 NEW_version double DEFAULT NULL,	
 NEW_Vehicle_Plate_id varchar(15) DEFAULT NULL #Creacion FK (PK_TablaOrigen)
@@ -481,11 +505,11 @@ NEW_Vehicle_Plate_id varchar(15) DEFAULT NULL #Creacion FK (PK_TablaOrigen)
 
 
 create table IF NOT exists Safely_car_field(
-Safely_car_Id  bigint UNSIGNED not null, #Cedula
-primary key(Safely_car_Id, Year_evaluation),
-row_id bigint UNSIGNED auto_increment not null,
-UNIQUE KEY row_id (row_id),
-Year_evaluation DATE not null,
+Safely_car_Id  bigint UNSIGNED auto_increment not null, #Cedula
+#row_id bigint UNSIGNED auto_increment not null,
+UNIQUE KEY Safely_car_Id (Safely_car_Id),
+primary key(Vehicle_Plate_id,Date_evaluation),
+Date_evaluation DATE not null,
 Brake_verification int(5) UNSIGNED,
 Batery_and_connections int(5) UNSIGNED,
 Chair_steering_wheel int(5) UNSIGNED,
@@ -499,17 +523,17 @@ Coolant int(5) UNSIGNED,
 C_Results int(5) UNSIGNED,
 user_id bigint(10) UNSIGNED,
 ws_name varchar(20) default "pro_sam_bw19" not null,
-Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, # Cuando ingreso el primer dato a la DB
+Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
+Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, # Cuando ingreso el primer dato a la DB
 Operation enum("A","U","D") default "A" not null,
 version double default 1 not null,	
 CONSTRAINT CHK_Valuesc CHECK (Brake_verification<=5 AND Batery_and_connections<=5 AND Chair_steering_wheel <=5 AND Petron_Oil_level<=5 AND Safety_belt<=5 AND Mirror<=5 AND Lights<=5
 AND P_tires<=5 AND S_tires<=5 AND Coolant<=5),
-
 Vehicle_Plate_id varchar(15) NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKSafely_car_Vehicle #FKTabla destino_tabla origen
 foreign key(Vehicle_Plate_id)#PK_tabla origen
 references Vehicle(Plate_id)#Tablaorigen(PK)
-On delete cascade On update cascade/*,
+On update cascade/*,
 user_db_Db_user_id bigint NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKsafely_car_user_db #FKTabla destino_tabla origen
 foreign key(user_db_Db_user_id)#PK_tabla origen
@@ -519,8 +543,8 @@ On update cascade*/
 
 create table IF NOT exists Safely_car_field_delta(
 OLD_Safely_car_Id  bigint UNSIGNED not null, #Cedula
-OLD_row_id bigint UNSIGNED not null,
-OLD_Year_evaluation DATE not null,
+#OLD_row_id bigint UNSIGNED not null,
+OLD_Date_evaluation DATE not null,
 OLD_Brake_verification int(5) UNSIGNED DEFAULT NULL,
 OLD_Batery_and_connections int(5) UNSIGNED DEFAULT NULL,
 OLD_Chair_steering_wheel int(5) UNSIGNED DEFAULT NULL,
@@ -534,14 +558,15 @@ OLD_Coolant int(5) UNSIGNED DEFAULT NULL,
 OLD_C_Results int(5) DEFAULT NULL,
 OLD_user_id bigint(10) DEFAULT NULL,
 OLD_ws_name varchar(20) DEFAULT NULL,
-OLD_Start_date timestamp   DEFAULT NULL ,
+OLD_Start_date datetime DEFAULT NULL,
+OLD_Date_operation timestamp   DEFAULT NULL ,
 OLD_Operation enum("A","U","D")  DEFAULT NULL,
 OLD_version double DEFAULT NULL,	
 OLD_Vehicle_Plate_id varchar(15)  DEFAULT NULL,
 
 NEW_Safely_car_Id  bigint UNSIGNED not null, #Cedula
-NEW_row_id bigint UNSIGNED not null,
-NEW_Year_evaluation DATE not null,
+#NEW_row_id bigint UNSIGNED not null,
+NEW_Date_evaluation DATE not null,
 NEW_Brake_verification int(5) UNSIGNED DEFAULT NULL,
 NEW_Batery_and_connections int(5) UNSIGNED DEFAULT NULL,
 NEW_Chair_steering_wheel int(5) UNSIGNED DEFAULT NULL,
@@ -555,41 +580,77 @@ NEW_Coolant int(5) UNSIGNED DEFAULT NULL,
 NEW_C_Results int(5) DEFAULT NULL,
 NEW_user_id bigint(10) DEFAULT NULL,
 NEW_ws_name varchar(20) DEFAULT NULL,
-NEW_Start_date timestamp   DEFAULT NULL ,
+NEW_Start_date datetime DEFAULT NULL,
+NEW_Date_operation timestamp   DEFAULT NULL ,
 NEW_Operation enum("A","U","D")  DEFAULT NULL,
 NEW_version double DEFAULT NULL,	
 NEW_Vehicle_Plate_id varchar(15)  DEFAULT NULL
-
 )engine=INNODB;
-
-
 
 #ALTER TABLE Safely_car_field DROP FOREIGN KEY FKSafely_car_Vehicle; 
 
 
 create table IF NOT exists Motorcycle_Technology(  #Nuevo Falta crear el delta.
 M_t_id bigint UNSIGNED auto_increment not null,
-Year_evaluation DATE not null,
-primary key(M_t_id,Year_evaluation),
+UNIQUE M_t_id (M_t_id),
+Date_evaluation DATE not null,
+primary key(Vehicle_Plate_id,Date_evaluation),
 Breake_type int UNSIGNED,
 Assistence_breake int UNSIGNED,
 Automatic_lights int UNSIGNED,
 user_id bigint(10) UNSIGNED,
+ws_name varchar(20) default "pro_sam_bw19" not null,
+Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
+Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+Operation enum("A","U","D") default "A" not null,
+version double default 1 not null,	
 CONSTRAINT Mot_tech_Valuesm CHECK (Breake_type<=4 AND Assistence_breake<=5 AND Automatic_lights<=1),
 
 Vehicle_Plate_id varchar(15) NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKMotorcycle_Technology_Vehicle #FKTabla destino_tabla origen
 foreign key(Vehicle_Plate_id)#PK_tabla origen
 references Vehicle(Plate_id)#Tablaorigen(PK)
-On delete cascade On update cascade
+On update cascade
 )engine=INNODB;
 
+
+create table IF NOT exists Motorcycle_Technology_delta(  #Nuevo Falta crear el delta.
+OLD_M_t_id bigint UNSIGNED not null,
+OLD_Date_evaluation DATE DEFAULT NULL,
+OLD_Breake_type int UNSIGNED DEFAULT NULL,
+OLD_Assistence_breake int UNSIGNED DEFAULT NULL,
+OLD_Automatic_lights int UNSIGNED DEFAULT NULL,
+OLD_user_id bigint(10) UNSIGNED DEFAULT NULL,
+OLD_ws_name varchar(20) DEFAULT NULL,
+OLD_Start_date datetime DEFAULT NULL,
+OLD_Date_operation timestamp DEFAULT NULL,
+OLD_Operation enum("A","U","D") DEFAULT NULL,
+OLD_version double default 1 DEFAULT NULL,
+OLD_Vehicle_Plate_id varchar(15) DEFAULT NULL,#Creacion FK (PK_TablaOrigen)
+
+NEW_M_t_id bigint UNSIGNED not null,
+NEW_Date_evaluation DATE DEFAULT NULL,
+NEW_Breake_type int UNSIGNED DEFAULT NULL,
+NEW_Assistence_breake int UNSIGNED DEFAULT NULL,
+NEW_Automatic_lights int UNSIGNED DEFAULT NULL,
+NEW_user_id bigint(10) UNSIGNED DEFAULT NULL,
+NEW_ws_name varchar(20) DEFAULT NULL,
+NEW_Start_date datetime DEFAULT NULL,
+NEW_Date_operation timestamp DEFAULT NULL,
+NEW_Operation enum("A","U","D") DEFAULT NULL,
+NEW_version double default 1 DEFAULT NULL,
+NEW_Vehicle_Plate_id varchar(15) DEFAULT NULL#Creacion FK (PK_TablaOrigen)
+)engine=INNODB;
+
+
+
 create table IF NOT exists Motorcycle_Mechanical_conditions( # Cambio
-Evaluation_Id bigint UNSIGNED not null, #cedula
-primary key(Evaluation_Id,Year_evaluation),
-row_id bigint UNSIGNED auto_increment not null,
-UNIQUE KEY row_id (row_id),
-Year_evaluation DATE not null,
+Evaluation_Id bigint UNSIGNED auto_increment not null, #cedula
+UNIQUE KEY Evaluation_Id (Evaluation_Id),
+primary key(Vehicle_Plate_id,Date_evaluation),
+#row_id bigint UNSIGNED auto_increment not null,
+#UNIQUE KEY row_id (row_id),
+Date_evaluation DATE not null,
 Name_evaluator varchar(35),
 Tires double UNSIGNED,
 Manigueta_guaya double UNSIGNED,
@@ -603,7 +664,8 @@ Lights double UNSIGNED,
 M_Results double, #valor total para las motos
 user_id bigint(10) UNSIGNED,
 ws_name varchar(20) default "pro_sam_bw19" not null,
-Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
+Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 Operation enum("A","U","D") default "A" not null,
 version double default 1 not null,	
 
@@ -614,7 +676,7 @@ Vehicle_Plate_id varchar(15) NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKmotorcycle_mechanical_Vehicle #FKTabla destino_tabla origen
 foreign key(Vehicle_Plate_id)#PK_tabla origen
 references Vehicle(Plate_id)#Tablaorigen(PK)
-On delete cascade On update cascade/*,
+On update cascade/*,
 user_db_Db_user_id bigint NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKmotorcycle_mechanical_user_db #FKTabla destino_tabla origen
 foreign key(user_db_Db_user_id)#PK_tabla origen
@@ -628,8 +690,8 @@ On update cascade #Cuidado con ek valor not null del User_db*/
 
 create table IF NOT exists Motorcycle_Mechanical_conditions_delta(
 OLD_Evaluation_Id bigint UNSIGNED not null, #cedula
-OLD_row_id bigint UNSIGNED not null,
-OLD_Year_evaluation DATE not null,
+#OLD_row_id bigint UNSIGNED not null,
+OLD_Date_evaluation DATE not null,
 OLD_Name_evaluator varchar(35) DEFAULT NULL,
 OLD_Tires double UNSIGNED DEFAULT NULL,
 OLD_Manigueta_guaya double UNSIGNED  DEFAULT NULL,
@@ -643,14 +705,15 @@ OLD_Lights double UNSIGNED  DEFAULT NULL,
 OLD_M_Results double DEFAULT NULL, #valor total para las motos
 OLD_user_id bigint(10) DEFAULT NULL,
 OLD_ws_name varchar(20) DEFAULT NULL,
-OLD_Start_date timestamp NULL ,
+OLD_Start_date datetime DEFAULT NULL,
+OLD_Date_operation timestamp NULL ,
 OLD_Operation enum("A","U","D") DEFAULT NULL,
 OLD_version double DEFAULT NULL,	
 OLD_Vehicle_Plate_id varchar(15) NOT NULL,
 
 NEW_Evaluation_Id bigint UNSIGNED not null, #cedula
-NEW_row_id bigint UNSIGNED  not null,
-NEW_Year_evaluation  year not null,
+#NEW_row_id bigint UNSIGNED  not null,
+NEW_Date_evaluation  DATE not null,
 NEW_Name_evaluator varchar(35) DEFAULT NULL,
 NEW_Tires double UNSIGNED DEFAULT NULL,
 NEW_Manigueta_guaya double UNSIGNED DEFAULT NULL,
@@ -662,9 +725,10 @@ NEW_Other_components double UNSIGNED DEFAULT NULL,
 NEW_Horn double UNSIGNED DEFAULT NULL,
 NEW_Lights double UNSIGNED DEFAULT NULL,
 NEW_M_Results double DEFAULT NULL, #valor total para las motos
-user_id bigint(10) DEFAULT NULL,
+NEW_user_id bigint(10) DEFAULT NULL,
 NEW_ws_name varchar(20) DEFAULT NULL,
-NEW_Start_date timestamp NULL,
+NEW_Start_date datetime DEFAULT NULL,
+NEW_Date_operation timestamp NULL,
 NEW_Operation enum("A","U","D") DEFAULT NULL,
 NEW_version double DEFAULT NULL,	
 NEW_Vehicle_Plate_id varchar(15) DEFAULT NULL
@@ -673,10 +737,11 @@ NEW_Vehicle_Plate_id varchar(15) DEFAULT NULL
 
 create table IF NOT exists EPP(
 Epp_id bigint UNSIGNED not null auto_increment, #revisar
-primary key(Epp_id,Year_evaluation),
+UNIQUE KEY Epp_id (Epp_id),
+primary key(User_information_DNI_id, Date_evaluation),
 #row_id bigint auto_increment not null,
 #UNIQUE KEY row_id (row_id),
-Year_evaluation DATE not null,
+Date_evaluation DATE not null,
 Name_evaluator varchar(35),#
 Empresa varchar(30),#
 Casco int UNSIGNED,    
@@ -691,7 +756,8 @@ Epp_Results int,
 Risk enum("Alto","Medio","Bajo"),
 user_id bigint(10) UNSIGNED,
 ws_name varchar(20) default "pro_sam_bw19" not null,
-Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
+Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 Operation enum("A","U","D") default "A" not null,
 version double default 1 not null,	
 CONSTRAINT CHK_Valuesepp CHECK (Casco <=3 AND Airbag<=3 AND Rodilleras<=1 AND Coderas<=1 AND Hombreras<=1  AND Espalda <=1
@@ -700,7 +766,7 @@ User_information_DNI_id bigint UNSIGNED NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKEPP_User_information #FKTabla destino_tabla origen
 foreign key(User_information_DNI_id)#PK_tabla origen
 references User_information(DNI_id)#Tablaorigen(PK)
-On delete cascade On update cascade/*,
+On update cascade/*,
 user_db_Db_user_id bigint NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKEPP_user_db #FKTabla destino_tabla origen
 foreign key(user_db_Db_user_id)#PK_tabla origen
@@ -710,7 +776,7 @@ On update cascade #Cuidado con ek valor not null del User_db*/
 
 create table IF NOT exists EPP_delta(
 OLD_Epp_id bigint UNSIGNED not null, #revisar
-OLD_Year_evaluation DATE not null,
+OLD_Date_evaluation DATE not null,
 OLD_Name_evaluator varchar(35) DEFAULT NULL,#
 OLD_Empresa varchar(30) DEFAULT NULL,
 OLD_Casco int UNSIGNED DEFAULT NULL,
@@ -724,13 +790,14 @@ OLD_Epp_Results int DEFAULT NULL,
 OLD_Risk enum("Alto","Medio","Bajo") DEFAULT NULL, 
 OLD_user_id bigint(10) DEFAULT NULL,
 OLD_ws_name varchar(20) default "pro_sam_bw19" DEFAULT NULL,
-OLD_Start_date timestamp DEFAULT NULL,
+OLD_Start_date datetime DEFAULT NULL,
+OLD_Date_operation timestamp DEFAULT NULL,
 OLD_Operation enum("A","U","D") DEFAULT NULL,
 OLD_version double DEFAULT NULL,	
 OLD_User_information_DNI_id bigint UNSIGNED DEFAULT NULL, #Creacion FK (PK_TablaOrigen)
 
 NEW_Epp_id bigint UNSIGNED not null, #revisar
-NEW_Year_evaluation DATE not null,
+NEW_Date_evaluation DATE not null,
 NEW_Name_evaluator varchar(35) DEFAULT NULL,#
 NEW_Empresa varchar(30) DEFAULT NULL,
 NEW_Casco int UNSIGNED DEFAULT NULL,
@@ -744,20 +811,19 @@ NEW_Epp_Results int DEFAULT NULL,
 NEW_Risk enum("Alto","Medio","Bajo") DEFAULT NULL, 
 NEW_user_id bigint(10) DEFAULT NULL,
 NEW_ws_name varchar(20) default "pro_sam_bw19" DEFAULT NULL,
-NEW_Start_date timestamp DEFAULT NULL,
+NEW_Start_date datetime DEFAULT NULL,
+NEW_Date_operation timestamp DEFAULT NULL,
 NEW_Operation enum("A","U","D") DEFAULT NULL,
 NEW_version double DEFAULT NULL,	
 NEW_User_information_DNI_id bigint UNSIGNED DEFAULT NULL #Creacion FK (PK_TablaOrigen)
 )engine=INNODB;
 
 
-
-
-
 create table IF NOT exists Skill_m_t_m(
 Reg_id bigint UNSIGNED not null auto_increment, #revisar
-primary key(Reg_id,Year_evaluation),
-Year_evaluation DATE not null,
+UNIQUE KEY Reg_id (Reg_id),
+primary key(User_information_DNI_id,Date_evaluation),
+Date_evaluation DATE not null,
 #row_id bigint auto_increment not null,
 #UNIQUE KEY row_id (row_id),
 Slalom int UNSIGNED,
@@ -768,7 +834,8 @@ Mobility int UNSIGNED,# Por el momento no va a ser usado.
 Result int,
 user_id bigint(10) UNSIGNED,
 ws_name varchar(20) default "pro_sam_bw19" not null,
-Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
+Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 Operation enum("A","U","D") default "A" not null,
 version double default 1 not null,	
 
@@ -778,7 +845,7 @@ User_information_DNI_id bigint UNSIGNED NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKskill_m_t_m_User_information #FKTabla destino_tabla origen
 foreign key(User_information_DNI_id)#PK_tabla origen
 references User_information(DNI_id)#Tablaorigen(PK)
-On delete cascade On update cascade/*,
+On update cascade/*,
 user_db_Db_user_id bigint NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKskill_m_t_m_user_db #FKTabla destino_tabla origenPRIMARY
 foreign key(user_db_Db_user_id)#PK_tabla origen
@@ -787,10 +854,9 @@ On update cascade #Cuidado con ek valor not null del User_db*/
 )engine=INNODB;
 
 
-
 create table IF NOT exists Skill_m_t_m_delta(
 OLD_Reg_id bigint UNSIGNED not null, #revisar
-OLD_Year_evaluation DATE not null,
+OLD_Date_evaluation DATE not null,
 OLD_Slalom int UNSIGNED DEFAULT NULL,
 OLD_Projection int UNSIGNED DEFAULT NULL,
 OLD_Braking int UNSIGNED DEFAULT NULL,
@@ -799,13 +865,14 @@ OLD_Mobility int  UNSIGNED DEFAULT NULL,
 OLD_Result int  DEFAULT NULL,
 OLD_user_id bigint(10) DEFAULT NULL,
 OLD_ws_name varchar(20) DEFAULT NULL,
-OLD_Start_date timestamp DEFAULT NULL,
+OLD_Start_date datetime DEFAULT NULL,
+OLD_Date_operation timestamp DEFAULT NULL,
 OLD_Operation enum("A","U","D") DEFAULT NULL,
 OLD_version double DEFAULT NULL,	
 OLD_User_information_DNI_id bigint UNSIGNED DEFAULT NULL, #Creacion FK (PK_TablaOrigen)
 
 NEW_Reg_id bigint UNSIGNED not null, #revisar
-NEW_Year_evaluation DATE not null,
+NEW_Date_evaluation DATE not null,
 NEW_Slalom int UNSIGNED DEFAULT NULL,
 NEW_Projection int  UNSIGNED DEFAULT NULL,
 NEW_Braking int UNSIGNED DEFAULT NULL,
@@ -814,7 +881,8 @@ NEW_Mobility int UNSIGNED DEFAULT NULL,
 NEW_Result int DEFAULT NULL,
 NEW_user_id bigint(10) DEFAULT NULL,
 NEW_ws_name varchar(20) DEFAULT NULL,
-NEW_Start_date timestamp DEFAULT NULL,
+NEW_Start_date datetime DEFAULT NULL,
+NEW_Date_operation timestamp DEFAULT NULL,
 NEW_Operation enum("A","U","D") DEFAULT NULL,
 NEW_version double DEFAULT NULL,	
 NEW_User_information_DNI_id bigint UNSIGNED DEFAULT NULL #Creacion FK (PK_TablaOrigen)
@@ -823,10 +891,11 @@ NEW_User_information_DNI_id bigint UNSIGNED DEFAULT NULL #Creacion FK (PK_TablaO
 
 create table IF NOT exists Skill_m_t_c(
 Reg_id_c bigint UNSIGNED not null auto_increment, #unsigned mejora el rendimiento al quitar negativos
-primary key(Reg_id_c,Year_evaluation),
+UNIQUE KEY Reg_id_c (Reg_id_c),
+primary key(User_information_DNI_id,Date_evaluation),
 #row_id bigint auto_increment not null,
 #UNIQUE KEY row_id (row_id),
-Year_evaluation DATE not null,
+Date_evaluation DATE not null,
 Parking int UNSIGNED,
 Turn_and_overtaking int UNSIGNED,
 Reverse_c int UNSIGNED,
@@ -836,7 +905,8 @@ Slope int UNSIGNED,
 Result int UNSIGNED,
 user_id bigint(10) UNSIGNED,
 ws_name varchar(20) default "pro_sam_bw19" not null,
-Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
+Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
+Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 Operation enum("A","U","D") default "A" not null,
 version double default 1 not null,	
 CONSTRAINT CHK_Valuesmtc CHECK (Parking <=5 AND Turn_and_overtaking<=5 AND Reverse_c<=5 AND Break<=5 AND Gear_change<=5 AND Slope<=5),
@@ -845,7 +915,7 @@ User_information_DNI_id bigint UNSIGNED NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKskill_m_t_c_User_information #FKTabla destino_tabla origen
 foreign key(User_information_DNI_id)#PK_tabla origen
 references User_information(DNI_id)#Tablaorigen(PK)
-On delete cascade On update cascade/*,
+On update cascade/*,
 user_db_Db_user_id bigint NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKskill_m_t_c_user_db #FKTabla destino_tabla origen
 foreign key(user_db_Db_user_id)#PK_tabla origen
@@ -856,7 +926,7 @@ On update cascade #Cuidado con ek valor not null del User_db
 
 create table IF NOT exists Skill_m_t_c_delta(
 OLD_Reg_id_c bigint UNSIGNED not null, #unsigned mejora el rendimiento al quitar negativos
-OLD_Year_evaluation DATE not null,
+OLD_Date_evaluation DATE not null,
 OLD_Parking int UNSIGNED DEFAULT NULL,
 OLD_Turn_and_overtaking int UNSIGNED DEFAULT NULL,
 OLD_Reverse_c int UNSIGNED DEFAULT NULL,
@@ -866,13 +936,14 @@ OLD_Slope int UNSIGNED DEFAULT NULL,
 OLD_Result int DEFAULT NULL,
 OLD_user_id bigint(10) DEFAULT NULL,
 OLD_ws_name varchar(20) DEFAULT NULL,
-OLD_Start_date timestamp DEFAULT NULL,
+OLD_Start_date datetime DEFAULT NULL,
+OLD_Date_operation timestamp DEFAULT NULL,
 OLD_Operation enum("A","U","D") DEFAULT NULL,
 OLD_version double DEFAULT NULL,	
 OLD_User_information_DNI_id bigint UNSIGNED DEFAULT NULL, #Creacion FK (PK_TablaOrigen)
 
 NEW_Reg_id_c bigint UNSIGNED not null, #unsigned mejora el rendimiento al quitar negativos
-NEW_Year_evaluation DATE not null,
+NEW_Date_evaluation DATE not null,
 NEW_Parking int UNSIGNED DEFAULT NULL,
 NEW_Turn_and_overtaking int UNSIGNED DEFAULT NULL,
 NEW_Reverse_c int UNSIGNED DEFAULT NULL,
@@ -882,7 +953,8 @@ NEW_Slope int UNSIGNED DEFAULT NULL,
 NEW_Result int DEFAULT NULL,
 NEW_user_id bigint(10)  DEFAULT NULL,
 NEW_ws_name varchar(20) DEFAULT NULL,
-NEW_Start_date timestamp DEFAULT NULL,
+NEW_Start_date datetime DEFAULT NULL,
+NEW_Date_operation timestamp DEFAULT NULL,
 NEW_Operation enum("A","U","D") DEFAULT NULL,
 NEW_version double DEFAULT NULL,	
 NEW_User_information_DNI_id bigint UNSIGNED DEFAULT NULL #Creacion FK (PK_TablaOrigen)
@@ -892,8 +964,9 @@ NEW_User_information_DNI_id bigint UNSIGNED DEFAULT NULL #Creacion FK (PK_TablaO
 
 create table IF NOT exists Drive_Behaviors_car(
 Drive_beh_id bigint UNSIGNED auto_increment not null,
-Year_evaluation DATE not null,
-primary key(Drive_beh_id, Year_evaluation),
+UNIQUE KEY Drive_beh_id (Drive_beh_id),
+Date_evaluation DATE not null,
+primary key(User_information_DNI_id,Date_evaluation),
 #row_id bigint auto_increment not null,
 #UNIQUE KEY row_id (row_id),
 Stop_distance int UNSIGNED,
@@ -906,7 +979,8 @@ Aggressive_bhvior int UNSIGNED,
 Result int,
 user_id bigint(10) UNSIGNED,
 ws_name varchar(20) default "pro_sam_bw19" not null ,
-Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
+Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 Operation enum("A","U","D") default "A" not null,
 version double default 1 not null,	
 CONSTRAINT CHK_Valuesbhs CHECK (Stop_distance <=5 AND Roundabouts<=5 AND Follow_distance<=5 AND Overtaking_Lane_changes<=5 AND Cross_c<=5 AND Speed<=5
@@ -915,7 +989,7 @@ User_information_DNI_id bigint UNSIGNED  NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKdrive_behaviors_car_User_information #FKTabla destino_tabla origen
 foreign key(User_information_DNI_id)#PK_tabla origen
 references User_information(DNI_id)#Tablaorigen(PK)
-On delete cascade On update cascade/*,
+On update cascade/*,
 user_db_Db_user_id bigint NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKdrive_behaviors_car_user_db #FKTabla destino_tabla origen
 foreign key(user_db_Db_user_id)#PK_tabla origen
@@ -925,7 +999,7 @@ On update cascade #Cuidado con ek valor not null del User_db*/
 
 create table IF NOT exists Drive_Behaviors_car_delta(
 OLD_Drive_beh_id bigint UNSIGNED not null,
-OLD_Year_evaluation DATE not null,
+OLD_Date_evaluation DATE not null,
 OLD_Stop_distance int UNSIGNED DEFAULT NULL,
 OLD_Roundabouts int UNSIGNED DEFAULT NULL,
 OLD_Follow_distance int UNSIGNED DEFAULT NULL,
@@ -936,13 +1010,14 @@ OLD_Aggressive_bhvior int UNSIGNED DEFAULT NULL,
 OLD_Result int DEFAULT NULL,
 OLD_user_id bigint(10) DEFAULT NULL,
 OLD_ws_name varchar(20) DEFAULT NULL,
-OLD_Start_date timestamp DEFAULT NULL,
+OLD_Start_date datetime DEFAULT NULL,
+OLD_Date_operation timestamp DEFAULT NULL,
 OLD_Operation enum("A","U","D") DEFAULT NULL,
 OLD_version double DEFAULT NULL,	
 OLD_User_information_DNI_id bigint UNSIGNED NOT NULL, #Creacion FK (PK_TablaOrigen)
 
 NEW_Drive_beh_id bigint UNSIGNED not null,
-NEW_Year_evaluation DATE not null,
+NEW_Date_evaluation DATE not null,
 NEW_Stop_distance int UNSIGNED DEFAULT NULL,
 NEW_Roundabouts int UNSIGNED DEFAULT NULL,
 NEW_Follow_distance int UNSIGNED DEFAULT NULL,
@@ -953,26 +1028,31 @@ NEW_Aggressive_bhvior int UNSIGNED DEFAULT NULL,
 NEW_Result int DEFAULT NULL,
 NEW_user_id bigint(10) DEFAULT NULL,
 NEW_ws_name varchar(20) DEFAULT NULL,
-NEW_Start_date timestamp DEFAULT NULL,
+NEW_Start_date datetime DEFAULT NULL,
+NEW_Date_operation timestamp DEFAULT NULL,
 NEW_Operation enum("A","U","D") DEFAULT NULL,
 NEW_version double DEFAULT NULL,	
 NEW_User_information_DNI_id bigint UNSIGNED DEFAULT NULL #Creacion FK (PK_TablaOrigen)
 )engine=INNODB;
 
+
 create table IF NOT exists Admin_Country( #Un admin puede tener muchos usuarios y  un usuario solo puede pertenercer a un admin
 Admin_id bigint UNSIGNED auto_increment not null,
 country_code varchar(3),
-admin1 bigint UNSIGNED ,
-admin2 bigint UNSIGNED ,
-admin3 bigint UNSIGNED ,
-admin4 bigint UNSIGNED ,
+admin1 varchar(35),
+admin2 varchar(35),
+admin3 varchar(35),
+admin4 varchar(35),
+admin5 varchar(35),
 adm1_id bigint UNSIGNED ,
-adm1_2d bigint UNSIGNED ,
+adm2_id bigint UNSIGNED ,
 adm3_id bigint UNSIGNED ,
 adm4_id bigint UNSIGNED ,
+adm5_id bigint UNSIGNED ,
 user_id bigint(10) UNSIGNED,
-ws_name varchar(20) default "pro_sam_bw19" not null ,
-Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ws_name varchar(20) default "pro_sam_bw19" not null,
+Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
+Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 Operation enum("A","U","D") default "A" not null,
 version double default 1 not null,
 primary key(Admin_id)
@@ -996,25 +1076,27 @@ access_taxis boolean,
 data3 varchar(25),
 data4 varchar(25),
 data5 varchar(25),
-shape_vector varchar(65000), 
+shape_vector varchar(10000),  # es mu pequeño ,
 user_id bigint(10) UNSIGNED,
 ws_name varchar(20) default "pro_sam_bw19" not null ,
-Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
+Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 Operation enum("A","U","D") default "A" not null,
 version double default 1 not null,
 primary key(Asset_id),
-Admin_Country_Admin_id bigint UNSIGNED UNIQUE NOT NULL ,#Creacion FK (PK_TablaOrigen)
+Admin_Country_Admin_id bigint UNSIGNED NOT NULL,#Creacion FK (PK_TablaOrigen)
 constraint FKDrive_Telematics_Admin_Country #FKTabla destino_tabla origen
 foreign key(Admin_Country_Admin_id)#PK_tabla origen
 references Admin_Country(Admin_id)#Tablaorigen(PK)
 )engine=INNODB;
 
+
 create table IF NOT exists Doc_verification(
 Doc_id bigint UNSIGNED auto_increment not null,
 Valid_licence enum("Y","N"),
+Category enum ("A1","A2","B1","B2","B3","C1", "C2" ,"C3","Otro" ) not null,
 SOAT enum("Y","N"),
 Technom_review enum("Y","N"),
-Category enum ("A1","A2","B1","B2","B3","C1", "C2" ,"C3","Otro" ) not null,
 Expi_date date not null,
 RUN_State enum("Vigente","Vencida","Suspendida") not null,
 accident_rate int  UNSIGNED,
@@ -1031,35 +1113,34 @@ Code_penality_4 char(5),
 Code_penality_5 char(5),
 user_id bigint(10) UNSIGNED,
 ws_name varchar(20) default "pro_sam_bw19" not null ,
-Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
+Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 Operation enum("A","U","D") default "A" not null,
 version double default 1 not null,
 primary key(Doc_id),
-
-Vehicle_Plate_id varchar(15) NOT NULL ,#Creacion FK (PK_TablaOrigen)
+Vehicle_Plate_id varchar(15) UNIQUE NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKDoc_verification_Vehicle #FKTabla destino_tabla origen
 foreign key(Vehicle_Plate_id)#PK_tabla origen
 references Vehicle(Plate_id),#Tablaorigen(PK)
-User_information_DNI_id bigint UNSIGNED NOT NULL ,#Creacion FK (PK_TablaOrigen)
+User_information_DNI_id bigint UNSIGNED UNIQUE NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKDoc_verification_User_information #FKTabla destino_tabla origen
 foreign key(User_information_DNI_id)#PK_tabla origen
 references User_information(DNI_id)#Tablaorigen(PK)
-
 )engine=INNODB;
 
 create table IF NOT exists Theorical_test(
 Test_id bigint UNSIGNED auto_increment not null,
+UNIQUE KEY Drive_beh_id (Test_id),
 Theoretical_test int UNSIGNED,
-Year_evaluation DATE not null,
+Date_evaluation DATE not null,
 user_id bigint(10) UNSIGNED,
 ws_name varchar(20) default "pro_sam_bw19" not null ,
-Start_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 Operation enum("A","U","D") default "A" not null,
 version double default 1 not null,
-primary key(Test_id,Year_evaluation),
+primary key(User_information_DNI_id,Date_evaluation),
 User_information_DNI_id bigint UNSIGNED NOT NULL ,#Creacion FK (PK_TablaOrigen)
 constraint FKTheorical_test_User_information #FKTabla destino_tabla origen
 foreign key(User_information_DNI_id)#PK_tabla origen
 references User_information(DNI_id)#Tablaorigen(PK)
-
 )engine=INNODB;
