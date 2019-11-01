@@ -27,6 +27,8 @@ Operation enum("A","U","D") default "A" not null  ,
 version double default "1" not null
 )engine=INNODB, auto_increment=1400000000;
 
+
+
 #Alter table user_db add Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER User_profile ; 
 
 create table IF NOT exists user_db_delta(
@@ -42,7 +44,7 @@ OLD_Operation enum("A","U","D") DEFAULT NULL ,
 OLD_version double DEFAULT NULL,
 
 NEW_Db_user_id bigint(10) UNSIGNED DEFAULT NULL,
-NEW_Password_db varchar(45) DEFAULT NULL, #Masculino 0, femenido 1 
+NEW_Password_db varchar(45) DEFAULT NULL, 
 NEW_E_mail varchar(35) DEFAULT NULL,
 NEW_User_name varchar(35) DEFAULT NULL,
 NEW_Lhost varchar(10) DEFAULT NULL,
@@ -74,23 +76,24 @@ Second_name varchar(20),
 F_last_name varchar(20) not null default "NA",
 S_last_name varchar(20) not null default "NA",
 Gender boolean  not null, #Masculino 0, femenido 1
-Education enum("Ninguno","Primaria","Secundaria","Pregrado","Postgrado"),
+Education enum("Ninguno","Primaria","Secundaria","Pregrado","Postgrado","Sin información"), #DEBERÍA SER NOT NULL
 E_mail_address varchar(35)  UNIQUE not null,##
 address varchar(50) not null, 
-Country_born enum("Colombia","Venezuela","Peru","Ecuador","Bolivia","Argentina","Brasil","Other") not null,
+Country_born enum("Colombia","Venezuela","Peru","Ecuador","Bolivia","Argentina","Brasil","Otro") not null,
 City_born bigint DEFAULT 0000000000,
 Admin_id bigint DEFAULT 0000000000,
 City_Residence_place bigint DEFAULT 0000000000,
 Department bigint DEFAULT 0000000000,
-phone varchar(15) not null,
-Civil_state enum("Soltero","Casado","Separado","Divorciado","Viudo","Union libre") not null,
+phone varchar(30) not null,
+Civil_state enum("Soltero","Casado","Separado","Divorciado","Viudo","Union libre","Sin información") not null,
 Current_company varchar(35) default "NA", 
+Score decimal(3,2) default null,
 Seguimiento varchar(800),
 ws_name varchar(20) default "pro_sam_bw19" not null,
 Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
 Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   #Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
 Termns_and_conditions timestamp not null DEFAULT CURRENT_TIMESTAMP,
-user_id bigint(10) UNSIGNED, # Todas las tablas deben tener una columna conel identificador de la perdona que ha agregado, modificado o eliminado algun registro
+user_id bigint(10) UNSIGNED, # Todas las tablas deben tener una columna conel identificador de la persona que ha agregado, modificado o eliminado algun registro
 Operation enum("A","U","D") default "A" not null,
 version double default 1 not null,	
 Db_user_id bigint(10) UNSIGNED not null,#Creacion FK (PK_TablaOrigen)
@@ -100,6 +103,7 @@ references user_db(Db_user_id)#Tablaorigen(PK)
 On delete cascade
 on update cascade	
 )engine=INNODB;
+
 
 
 #ALTER TABLE User_information modify Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ;
@@ -119,17 +123,18 @@ OLD_Second_name varchar(20) DEFAULT NULL,
 OLD_F_last_name varchar(20) DEFAULT NULL,
 OLD_S_last_name varchar(20) DEFAULT NULL,
 OLD_Gender boolean DEFAULT NULL, #Masculino 0, femenido 1
-OLD_Education enum("Ninguno","Primaria","Secundaria","Pregrado","Postgrado")DEFAULT NULL,
+OLD_Education enum("Ninguno","Primaria","Secundaria","Pregrado","Postgrado","Sin información")DEFAULT NULL,
 OLD_E_mail_address varchar(35) DEFAULT NULL,##
 OLD_address varchar(50) DEFAULT NULL, 
-OLD_Country_born enum("Colombia","Venezuela","Peru","Ecuador","Bolivia","Argentina","Brasil","Other") DEFAULT NULL,
+OLD_Country_born enum("Colombia","Venezuela","Peru","Ecuador","Bolivia","Argentina","Brasil","Otro") DEFAULT NULL,
 OLD_City_born bigint DEFAULT NULL,
 OLD_Admin_id bigint DEFAULT NULL,
 OLD_City_Residence_place bigint DEFAULT NULL,
 OLD_Department bigint DEFAULT NULL,
 OLD_phone varchar(15) DEFAULT NULL,
-OLD_Civil_state enum("Soltero","Casado","Separado","Divorciado","Viudo","Union libre") DEFAULT NULL,
+OLD_Civil_state enum("Soltero","Casado","Separado","Divorciado","Viudo","Union libre","Sin información") DEFAULT NULL,
 OLD_Current_company varchar(35) DEFAULT NULL, 
+OLD_Score decimal(3,2),
 OLD_Seguimiento varchar(800)DEFAULT NULL,
 OLD_ws_name varchar(20) default "pro_sam_bw19" DEFAULT NULL,
 OLD_Start_date datetime DEFAULT NULL,
@@ -148,17 +153,18 @@ NEW_Second_name varchar(20) DEFAULT NULL ,
 NEW_F_last_name varchar(20) DEFAULT NULL ,
 NEW_S_last_name varchar(20) DEFAULT NULL,
 NEW_Gender boolean DEFAULT NULL, #Masculino 0, femenido 1
-NEW_Education enum("Ninguno","Primaria","Secundaria","Pregrado","Postgrado")DEFAULT NULL,
+NEW_Education enum("Ninguno","Primaria","Secundaria","Pregrado","Postgrado","Sin información")DEFAULT NULL,
 NEW_E_mail_address varchar(35) DEFAULT NULL,##
 NEW_address varchar(50) DEFAULT NULL, 
-NEW_Country_born enum("Colombia","Venezuela","Peru","Ecuador","Bolivia","Argentina","Brasil","Other") DEFAULT NULL,
+NEW_Country_born enum("Colombia","Venezuela","Peru","Ecuador","Bolivia","Argentina","Brasil","Otro") DEFAULT NULL,
 NEW_City_born bigint DEFAULT NULL,
 NEW_Admin_id bigint DEFAULT NULL,
 NEW_City_Residence_place bigint DEFAULT NULL,
 NEW_Department bigint DEFAULT NULL,
 NEW_phone varchar(15) DEFAULT NULL,
-NEW_Civil_state enum("Soltero","Casado","Separado","Divorsiado","Viudo","Union libre") DEFAULT NULL,
+NEW_Civil_state enum("Soltero","Casado","Separado","Divorciado","Viudo","Union libre","Sin información") DEFAULT NULL,
 NEW_Current_company varchar(35) DEFAULT NULL, 
+NEW_Score decimal(3,2) DEFAULT NULL,
 NEW_Seguimiento varchar(800)DEFAULT NULL,
 NEW_ws_name varchar(20) DEFAULT NULL,
 NEW_Start_date datetime DEFAULT NULL,
@@ -170,8 +176,10 @@ NEW_version double DEFAULT NULL,
 NEW_Db_user_id bigint(10) DEFAULT NULL#Creacion FK (PK_TablaOrigen)
   )engine=INNODB;
   
+  
+#ALTER TABLE User_information_delta add NEW_Score double default null after NEW_Current_company;
 
-create table IF NOT exists Image(
+create table IF NOT exists Image(# el el backend colocar una restriccion para subir unicamente JPG.
 Image_id bigint(12) UNSIGNED auto_increment not null,
 primary key(Image_id),
 #row_id bigint auto_increment not null,
@@ -343,6 +351,7 @@ UNIQUE KEY row_id (row_id),
 Type_V enum("Carro",'Moto','Furgon','Otro'),
 Owner_V boolean , # 1 si, 0 no
 Taxi_type enum("Taxi amarillo","Taxi blanco","NA"),
+taxi_Number_of_drivers varchar (10) default 1, #Nuevo
 Soat_expi_date date not null, #MDY
 Capacity int, #Número de pasajeros
 Service enum("Particular","Transporte_mercancia","Transporte_publico","Otros"),
@@ -419,9 +428,26 @@ NEW_User_information_DNI_id bigint UNSIGNED DEFAULT NULL#Creacion FK (PK_TablaOr
 )engine=INNODB;
 
 
+create table IF NOT exists taxí(
+row_id bigint UNSIGNED auto_increment not null,
+key(row_id),
+Number_drivers_ varchar (5),
+Driver1 varchar (35),
+Driver2 varchar (35),
+Driver3 varchar (35),
+Driver4 varchar (35),
+Driver5 varchar (35),
+Plate varchar (35),
+year_id date,
+Company varchar (35)
+)engine=INNODB;
+
+
+
 #ALTER TABLE Vehicle DROP FOREIGN KEY FKVehicle_User_information; 
 
-create table IF NOT exists Vehicle_evaluation(# El modelo permite evaluar el mismo carro dos veces o mas en el mismo año
+create table IF NOT exists Vehicle_evaluation(
+# El modelo permite evaluar el mismo carro dos veces o mas en el mismo año
 Vehicle_evaluation_id  bigint  UNSIGNED auto_increment  not null, 
 UNIQUE KEY Vehicle_evaluation_id (Vehicle_evaluation_id),
 #row_id bigint unsigned auto_increment not null, 
@@ -1044,6 +1070,7 @@ admin2 varchar(35),
 admin3 varchar(35),
 admin4 varchar(35),
 admin5 varchar(35),
+
 adm1_id bigint UNSIGNED ,
 adm2_id bigint UNSIGNED ,
 adm3_id bigint UNSIGNED ,
