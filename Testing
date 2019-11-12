@@ -7,6 +7,10 @@ SHOW CHARACTER SET;
 #UTF8MB4
 
 
+with
+project as ( select  * from admin_country b limit 1)
+Select admin1 from project limit 10;
+
 INSERT INTO user_db (password_db,E_mail,User_name,User_profile,Operation,version) VALUES ('1111','icgarmando@hotmail.com','luañ','User','A','1.0'),
  ('123456','s@hotmail.com','laninobe','User','A','1.0'),('1234567','armando@gmail.com','laninobe2','User','A','1.0')
  ,('123456','s.com','laninobe3','User','A','1.0'),('123456','armando4@gmail.com','laninobe4','User','A','1.0');
@@ -25,6 +29,7 @@ select* from epp;
 select * from Skill_m_t_m;
 select * from Skill_m_t_c;
 select * from Drive_Behaviors_car;
+select * from Admin_Country;
 
 
 show tables;
@@ -179,6 +184,7 @@ THEN
   OLD_phone,
   OLD_Civil_state,
   OLD_Current_company, 
+  OLD_Score,
   OLD_Seguimiento,
   OLD_ws_name,
   OLD_Start_date,
@@ -208,6 +214,7 @@ THEN
   NEW_phone,
   NEW_Civil_state,
   NEW_Current_company, 
+  NEW_Score,
   NEW_Seguimiento,
   NEW_ws_name,
   NEW_Start_date,
@@ -237,6 +244,7 @@ THEN
   OLD.phone,
   OLD.Civil_state,
   OLD.Current_company, 
+  OLD.Score,
   OLD.Seguimiento,
   OLD.ws_name,
   OLD.Start_date,
@@ -266,6 +274,7 @@ THEN
   NEW.phone,
   NEW.Civil_state,
   NEW.Current_company, 
+  NEW.Score,
   NEW.Seguimiento,
   NEW.ws_name,
   NEW.Start_date,
