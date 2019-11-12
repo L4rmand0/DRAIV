@@ -27,8 +27,6 @@ Operation enum("A","U","D") default "A" not null  ,
 version double default "1" not null
 )engine=INNODB, auto_increment=1400000000;
 
-
-
 #Alter table user_db add Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER User_profile ; 
 
 create table IF NOT exists user_db_delta(
@@ -93,7 +91,7 @@ ws_name varchar(20) default "pro_sam_bw19" not null,
 Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
 Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   #Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
 Termns_and_conditions timestamp not null DEFAULT CURRENT_TIMESTAMP,
-user_id bigint(10) UNSIGNED, # Todas las tablas deben tener una columna conel identificador de la persona que ha agregado, modificado o eliminado algun registro
+user_id bigint(10) UNSIGNED, # Todas las tablas deben tener una columna con el identificador de la persona que ha agregado, modificado o eliminado algun registro
 Operation enum("A","U","D") default "A" not null,
 version double default 1 not null,	
 Db_user_id bigint(10) UNSIGNED not null,#Creacion FK (PK_TablaOrigen)
