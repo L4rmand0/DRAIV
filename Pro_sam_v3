@@ -1,3 +1,4 @@
+use sam;
 #create database if not exists pro_sam_bw_19;
 CREATE SCHEMA `pro_sam_bw_19` DEFAULT CHARACTER SET UTF8MB4; #utf8;
 
@@ -18,8 +19,8 @@ primary key(Db_user_id),
 Password_db varchar(45) not null, #Masculino 0, femenido 1 
 E_mail varchar(35) UNIQUE not null,
 #UNIQUE KEY E_mail (E_mail),
-User_name varchar(35) UNIQUE  NOT NULL,
-Lhost varchar(10) DEFAULT '@localhost' NOT NULL,
+#User_name varchar(35) UNIQUE  NOT NULL,
+#Lhost varchar(10) DEFAULT '@localhost' NOT NULL,
 User_profile enum("User","Administrator","Evaluator") default 'User'not null,
 Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
 Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -27,6 +28,8 @@ Operation enum("A","U","D") default "A" not null  ,
 version double default "1" not null
 )engine=INNODB, auto_increment=1400000000;
 
+#alter table user_db drop User_name ;
+#alter table user_db drop  Lhost ;
 #Alter table user_db add Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER User_profile ; 
 
 create table IF NOT exists user_db_delta(
