@@ -1,4 +1,3 @@
-
 CREATE SCHEMA `pro_sam_bw_19` DEFAULT CHARACTER SET UTF8MB4; #utf8 ;
 Use pro_sam_bw_19;
 #SHOW COLLATION;
@@ -306,7 +305,7 @@ DELIMITER ;
 #DROP TRIGGER Driving_licence_BU;
 DELIMITER $$
 CREATE TRIGGER   Driving_licence_BU
-   BEFORE UPDATE ON driving_licence
+   BEFORE UPDATE ON Driving_licence
    FOR EACH ROW 
 BEGIN
 IF  NEW.Date_operation<>OLD.Date_operation
@@ -314,7 +313,7 @@ THEN
   SET NEW.Operation="U";
   INSERT INTO driving_licence_delta(
   OLD_Licence_id,
-  OLD_row_id,
+  #OLD_row_id,
   OLD_Licence_num, 
   OLD_Country_expedition,
   OLD_Category,
@@ -330,7 +329,7 @@ THEN
   OLD_User_information_DNI_id,
 
   NEW_Licence_id,
-  NEW_row_id,
+  #NEW_row_id,
   NEW_Licence_num, 
   NEW_Country_expedition,
   NEW_Category,
@@ -347,7 +346,7 @@ THEN
 )
   values(
   OLD.Licence_id,
-  OLD.row_id,
+  #OLD.row_id,
   OLD.Licence_num, 
   OLD.Country_expedition,
   OLD.Category,
@@ -363,7 +362,7 @@ THEN
   OLD.User_information_DNI_id,
 
   NEW.Licence_id,
-  NEW.row_id ,
+  #NEW.row_id ,
   NEW.Licence_num, 
   NEW.Country_expedition,
   NEW.Category,
@@ -1509,23 +1508,3 @@ CONSTRAINT IdVenta    FOREIGN KEY (IdVenta)    REFERENCES Ventas    (IdVenta),
 CONSTRAINT IdProducto FOREIGN KEY (IdProducto) REFERENCES Productos (IdProducto)
   
 )
-select * from Clientes;
-select * from ventas;
-select * from DetalleVentas;
-*/
-
-#CREATE TRIGGER USER_DB_A_I AFTER INSERT ON user_db  FOR EACH ROW INSERT 
-
-#INTO user_information(Db_user_id) VALUES (NEW.Db_user_id);
-
-/*#TABLA Db_user_id
-select Db_user_id from  user_db where current_user()= CONCAT(User_name,Lhost);
-insert into user_information(,,,,)values (,,,,variable)
-*/
-#-----------------------------------------------------------------------------------------------------
-
-
-
-
-
-
