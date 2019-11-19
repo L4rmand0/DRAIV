@@ -3,7 +3,7 @@ use sam;
 CREATE SCHEMA `pro_sam_bw_19` DEFAULT CHARACTER SET UTF8MB4; #utf8;
 
 Use pro_sam_bw_19;
-
+use sam;
 #crear campo para aceptacion de terminos y condiciones
 #Campo para coordenadas
 #Nivel educativo academico
@@ -16,7 +16,7 @@ Use pro_sam_bw_19;
 create table IF NOT exists user_db(
 Db_user_id bigint(10) UNSIGNED auto_increment not null,
 primary key(Db_user_id),
-Password_db varchar(45) not null, #Masculino 0, femenido 1 
+Password_db varchar(200) not null, #Masculino 0, femenido 1 
 E_mail varchar(35) UNIQUE not null,
 #UNIQUE KEY E_mail (E_mail),
 #User_name varchar(35) UNIQUE  NOT NULL,
@@ -27,6 +27,9 @@ Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TI
 Operation enum("A","U","D") default "A" not null  ,
 version double default "1" not null
 )engine=INNODB, auto_increment=1400000000;
+
+#Alter table user_db modify Password_db varchar(100) not null ; 
+
 
 #alter table user_db drop User_name ;
 #alter table user_db drop  Lhost ;
@@ -271,10 +274,11 @@ NEW_User_information_DNI_id bigint  UNSIGNED DEFAULT NULL #Creacion FK (PK_Tabla
 #ALTER TABLE image modify Nombre_documento enum("Cedula_frente","Cedula_reverso","EPS_frente","EPS_reverso","Fondo_pension","ARL","Tarjeton_taxi") default"Cedula_frente" ;
 
 create table IF NOT exists Driving_licence(
-Licence_id bigint UNSIGNED not null, #Cedula
+#Licence_id bigint UNSIGNED not null, #Cedula
+#primary key(Licence_id),
+Licence_id bigint UNSIGNED auto_increment not null,
 primary key(Licence_id),
-row_id bigint UNSIGNED auto_increment not null,
-UNIQUE KEY row_id (row_id),
+#UNIQUE KEY row_id (row_id),
 Licence_num varchar(20) not null, 
 Country_expedition enum("Colombia","Venezuela","Argentina","Brasil","Ecuador","Bolivia","Otro") not null,
 Category enum ("A1","A2","B1","B2","B3","C1", "C2" ,"C3","Otro" ) not null,
@@ -304,7 +308,7 @@ On update cascade
 
 create table IF NOT exists Driving_licence_delta(
 OLD_Licence_id bigint UNSIGNED not null, #Cedula
-OLD_row_id bigint UNSIGNED not null,
+#OLD_row_id bigint UNSIGNED not null,
 OLD_Licence_num varchar(20) DEFAULT NULL, 
 OLD_Country_expedition enum("Colombia","Venezuela","Argentina","Brasil","Ecuador","Bolivia","Otro") DEFAULT NULL,
 OLD_Category enum ("A1","A2","B1" , "B2","B3","C1", "C2" ,"C3", "Otro" ) DEFAULT NULL,
@@ -320,7 +324,7 @@ OLD_version double DEFAULT NULL,
 OLD_User_information_DNI_id bigint UNSIGNED DEFAULT NULL,#Creacion FK (PK_TablaOrigen)
 
 NEW_Licence_id bigint UNSIGNED not null, #Cedula
-NEW_row_id bigint UNSIGNED not null,
+#NEW_row_id bigint UNSIGNED not null,
 NEW_Licence_num varchar(20) DEFAULT NULL, 
 NEW_Country_expedition enum("Colombia","Venezuela","Argentina","Brasil","Ecuador","Bolivia","Otro") DEFAULT NULL,
 NEW_Category  enum ("A1","A2","B1","B2","B3","C1", "C2" ,"C3", "Otro" ) DEFAULT NULL,
