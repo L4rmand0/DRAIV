@@ -1,9 +1,8 @@
-use sam;
-#create database if not exists pro_sam_bw_19;
-CREATE SCHEMA `pro_sam_bw_19` DEFAULT CHARACTER SET UTF8MB4; #utf8;
 
-Use pro_sam_bw_19;
+#create database if not exists pro_sam_bw_19;
+CREATE SCHEMA `sam` DEFAULT CHARACTER SET UTF8MB4; #utf8;
 use sam;
+#Use pro_sam_bw_19;
 #crear campo para aceptacion de terminos y condiciones
 #Campo para coordenadas
 #Nivel educativo academico
@@ -13,14 +12,17 @@ use sam;
 #Edad
 #Gremio
 
-create table IF NOT exists user_db(
-Db_user_id bigint(10) UNSIGNED auto_increment not null,
-primary key(Db_user_id),
+create table IF NOT exists users(
+id bigint(10) UNSIGNED auto_increment not null,
+primary key(id),
+name VARCHAR(255) NOT NULL COLLATE 'utf8mb4_unicode_ci',
 Password_db varchar(200) not null, #Masculino 0, femenido 1 
 E_mail varchar(35) UNIQUE not null,
 #UNIQUE KEY E_mail (E_mail),
 #User_name varchar(35) UNIQUE  NOT NULL,
 #Lhost varchar(10) DEFAULT '@localhost' NOT NULL,
+email_verified_at TIMESTAMP NULL DEFAULT NULL,
+remember_token VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
 User_profile enum("User","Administrator","Evaluator") default 'User'not null,
 Start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
 Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -36,23 +38,29 @@ version double default "1" not null
 #Alter table user_db add Date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER User_profile ; 
 
 create table IF NOT exists user_db_delta(
-OLD_Db_user_id bigint(10) UNSIGNED not null,
+OLD_id bigint(10) UNSIGNED not null,
+OLD_name VARCHAR(255)  COLLATE 'utf8mb4_unicode_ci' default NULL,
 OLD_Password_db varchar(45)  DEFAULT NULL, #Masculino 0, femenido 1 
 OLD_E_mail varchar(35) DEFAULT NULL,
-OLD_User_name varchar(35) DEFAULT NULL,
-OLD_Lhost varchar(10) DEFAULT NULL,
+OLD_email_verified_at TIMESTAMP DEFAULT NULL,
+OLD_remember_token VARCHAR(100)  COLLATE 'utf8mb4_unicode_ci' DEFAULT NULL,
+#OLD_User_name varchar(35) DEFAULT NULL,
+#OLD_Lhost varchar(10) DEFAULT NULL,
 OLD_User_profile enum("User","Administrator","Evaluator") DEFAULT NULL,
 OLD_Start_date datetime DEFAULT NULL,
 OLD_Date_operation timestamp DEFAULT NULL,
 OLD_Operation enum("A","U","D") DEFAULT NULL ,
 OLD_version double DEFAULT NULL,
 
-NEW_Db_user_id bigint(10) UNSIGNED DEFAULT NULL,
+NEW_id bigint(10) UNSIGNED DEFAULT NULL,
+NEW_name VARCHAR(255)  COLLATE 'utf8mb4_unicode_ci' default NULL,
 NEW_Password_db varchar(45) DEFAULT NULL, 
 NEW_E_mail varchar(35) DEFAULT NULL,
-NEW_User_name varchar(35) DEFAULT NULL,
-NEW_Lhost varchar(10) DEFAULT NULL,
+NEW_email_verified_at TIMESTAMP DEFAULT NULL,
+NEW_remember_token VARCHAR(100) COLLATE 'utf8mb4_unicode_ci' DEFAULT NULL,
 NEW_User_profile enum("User","Administrator","Evaluator") DEFAULT NULL,
+#NEW_User_name varchar(35) DEFAULT NULL,
+#NEW_Lhost varchar(10) DEFAULT NULL,
 NEW_Start_date datetime DEFAULT NULL,
 NEW_Date_operation timestamp DEFAULT NULL ,
 NEW_Operation enum("A","U","D") DEFAULT NULL,
@@ -103,7 +111,7 @@ version double default 1 not null,
 Db_user_id bigint(10) UNSIGNED not null,#Creacion FK (PK_TablaOrigen)
 constraint FK_Db_user_id #FKTabla destino_tabla origen
 foreign key(Db_user_id)#PK_tabla origen
-references user_db(Db_user_id)#Tablaorigen(PK)
+references users(id)#Tablaorigen(PK)
 On delete cascade
 on update cascade	
 )engine=INNODB;
@@ -1067,6 +1075,9 @@ NEW_User_information_DNI_id bigint UNSIGNED DEFAULT NULL #Creacion FK (PK_TablaO
 )engine=INNODB;
 
 
+
+select count(Admin_id) from Admin_Country;
+select * from Admin_Country;
 create table IF NOT exists Admin_Country( #Un admin puede tener muchos usuarios y  un usuario solo puede pertenercer a un admin
 Admin_id bigint UNSIGNED auto_increment not null,
 country_code varchar(3),
@@ -1075,7 +1086,6 @@ admin2 varchar(35),
 admin3 varchar(35),
 admin4 varchar(35),
 admin5 varchar(35),
-
 adm1_id bigint UNSIGNED ,
 adm2_id bigint UNSIGNED ,
 adm3_id bigint UNSIGNED ,
@@ -1090,6 +1100,8 @@ version double default 1 not null,
 primary key(Admin_id)
 )engine=INNODB auto_increment 13000;
 
+
+select * from Drive_Telematics;
 create table IF NOT exists Drive_Telematics(
 Asset_id bigint UNSIGNED auto_increment not null,
 lat_start varchar(25),
