@@ -30,6 +30,11 @@ select * from Skill_m_t_c;
 select * from Drive_Behaviors_car;
 select * from Admin_Country;
 
+select count(Admin_id) from Admin_Country;
+
+SELECT *
+FROM  Admin_Country
+ORDER by Admin_id DESC;
 
 show tables;
 describe user_db;
@@ -134,15 +139,18 @@ CALL Add_Safely_car_field (@_DNI_id,1,2,3,4,5,1,2,3,4,5,5,@_Plate_id);
 #_C_Results,
 #_Vehicle_Plate_id
 
-
+/*
 Select current_user();
 select user();
 select User  from mysql.user;
 SELECT SESSION_USER();
+*/
+
 
 #TRIGGERS
-
+/*
 #Trigger #1 Almacenar DNI del ultimo insert) 
+
 DELIMITER $$
 CREATE TRIGGER   user_information_AI
    AFTER INSERT ON user_information
@@ -150,9 +158,10 @@ CREATE TRIGGER   user_information_AI
 BEGIN
 SET @_DNI_id= NEW.DNI_id;
 END;$$
-DELIMITER ;
+DELIMITER;
 #SELECT   @_DNI_id;
 #DROP TRIGGER user_information_AI;
+*/
 
 #Trigger #2 Almacenar valores actualizados y viejos de usuarios (No toma los insertados) 
 #DROP TRIGGER user_information_BU;
@@ -161,9 +170,9 @@ CREATE TRIGGER   user_information_BU
    BEFORE UPDATE ON user_information
    FOR EACH ROW 
 BEGIN
-IF  NEW.Date_operation<>OLD.Date_operation
-THEN
-  SET NEW.Operation="U";
+#IF  NEW.Date_operation<>OLD.Date_operation
+#THEN
+  #SET NEW.Operation="U";
   INSERT INTO user_information_delta(
   OLD_DNI_id,
   OLD_row_id,
@@ -284,12 +293,13 @@ THEN
   NEW.version,	
   NEW.Db_user_id
 );
-END IF;  
+#END IF;  
 END;$$
 DELIMITER ;
 
 #DROP TRIGGER user_information_BU;
 
+/*
 #Trigger #3 Almacenar Plate_id del ultimo insert 
 DELIMITER $$
 CREATE TRIGGER   Plate_id_AI
@@ -299,7 +309,7 @@ BEGIN
 SET @_Plate_id= NEW.Plate_id;
 END;$$
 DELIMITER ;
-
+*/
 
 #Trigger #4 Driving licence
 #DROP TRIGGER Driving_licence_BU;
@@ -308,9 +318,9 @@ CREATE TRIGGER   Driving_licence_BU
    BEFORE UPDATE ON Driving_licence
    FOR EACH ROW 
 BEGIN
-IF  NEW.Date_operation<>OLD.Date_operation
-THEN
-  SET NEW.Operation="U";
+#IF  NEW.Date_operation<>OLD.Date_operation
+#THEN
+  #SET NEW.Operation="U";
   INSERT INTO driving_licence_delta(
   OLD_Licence_id,
   #OLD_row_id,
@@ -376,7 +386,7 @@ THEN
   NEW.Operation,
   NEW.version,	
   NEW.User_information_DNI_id);
-END IF;  
+#END IF;  
 END;$$
 DELIMITER ;
 
@@ -389,9 +399,9 @@ CREATE TRIGGER   Vehicle_BU
    BEFORE UPDATE ON vehicle
    FOR EACH ROW 
 BEGIN
-IF  NEW.Date_operation<>OLD.Date_operation
-THEN
-  SET NEW.Operation="U";
+#IF  NEW.Date_operation<>OLD.Date_operation
+#THEN
+  #SET NEW.Operation="U";
   INSERT INTO Vehicle_delta(
 OLD_Plate_id,
 OLD_row_id,
@@ -490,7 +500,7 @@ NEW.Operation,
 NEW.version,	
 NEW.User_information_DNI_id  
   );
-END IF;  
+#END IF;  
 END;$$
 DELIMITER ;
 
@@ -502,9 +512,9 @@ CREATE TRIGGER Vehicle_evaluation_BU
    BEFORE UPDATE ON vehicle_evaluation
    FOR EACH ROW 
 BEGIN
-IF  NEW.Date_operation<>OLD.Date_operation
-THEN
-  SET NEW.Operation="U";
+#IF  NEW.Date_operation<>OLD.Date_operation
+#THEN
+  #SET NEW.Operation="U";
 
   INSERT INTO  vehicle_evaluation_delta(
 OLD_Vehicle_evaluation_id, 
@@ -592,7 +602,7 @@ NEW.Operation,
 NEW.version,	
 NEW.Vehicle_Plate_id
   );
-END IF;  
+#END IF;  
 END;$$
 DELIMITER ;
 
@@ -604,9 +614,9 @@ CREATE TRIGGER Safely_car_field_BU
    BEFORE UPDATE ON safely_car_field
    FOR EACH ROW 
 BEGIN
-IF  NEW.Date_operation<>OLD.Date_operation
-THEN
-  SET NEW.Operation="U";
+#IF  NEW.Date_operation<>OLD.Date_operation
+#THEN
+ # SET NEW.Operation="U";
 
   INSERT INTO  safely_car_field_delta(
 OLD_Safely_car_Id, 
@@ -698,7 +708,7 @@ NEW.Operation,
 NEW.version,	
 NEW.Vehicle_Plate_id
   );
-END IF;  
+#END IF;  
 END;$$
 DELIMITER ;
 
@@ -713,9 +723,9 @@ CREATE TRIGGER Motorcycle_Technology_BU
    BEFORE UPDATE ON Motorcycle_Technology
    FOR EACH ROW 
 BEGIN
-IF  NEW.Date_operation<>OLD.Date_operation
-THEN
-  SET NEW.Operation="U";
+#IF  NEW.Date_operation<>OLD.Date_operation
+#THEN
+ # SET NEW.Operation="U";
 
   INSERT INTO  Motorcycle_Technology_delta(
 OLD_M_t_id,
@@ -769,7 +779,7 @@ NEW.Operation,
 NEW.version,
 NEW.Vehicle_Plate_id  
   );
-END IF;  
+#END IF;  
 END;$$
 DELIMITER ;
 
@@ -781,9 +791,9 @@ CREATE TRIGGER Motorcycle_Mechanical_conditions_BU
    BEFORE UPDATE ON motorcycle_mechanical_conditions
    FOR EACH ROW 
 BEGIN
-IF  NEW.Date_operation<>OLD.Date_operation
-THEN
-  SET NEW.Operation="U";
+#IF  NEW.Date_operation<>OLD.Date_operation
+#THEN
+#SET NEW.Operation="U";
 
   INSERT INTO  Motorcycle_Mechanical_conditions_delta(
 OLD_Evaluation_Id,
@@ -875,7 +885,7 @@ NEW.Operation,
 NEW.version,	
 NEW.Vehicle_Plate_id
   );
-END IF;  
+#END IF;  
 END;$$
 DELIMITER ;
 
@@ -888,9 +898,9 @@ CREATE TRIGGER skill_m_t_m_delta_BU
    BEFORE UPDATE ON skill_m_t_m
    FOR EACH ROW 
 BEGIN
-IF  NEW.Date_operation<>OLD.Date_operation
-THEN
-  SET NEW.Operation="U";
+#IF  NEW.Date_operation<>OLD.Date_operation
+#THEN
+#SET NEW.Operation="U";
 
   INSERT INTO  skill_m_t_m_delta(
 OLD_Reg_id, #revisar
@@ -958,7 +968,7 @@ NEW.Operation,
 NEW.version,	
 NEW.User_information_DNI_id
   );
-END IF;  
+#END IF;  
 END;$$
 DELIMITER ;
 
@@ -970,9 +980,9 @@ CREATE TRIGGER epp_BU
    BEFORE UPDATE ON epp
    FOR EACH ROW 
 BEGIN
-IF  NEW.Date_operation<>OLD.Date_operation
-THEN
-  SET NEW.Operation="U";
+#IF  NEW.Date_operation<>OLD.Date_operation
+#THEN
+  #SET NEW.Operation="U";
 
   INSERT INTO  epp_delta(
 OLD_Epp_id, #revisar
@@ -1060,7 +1070,7 @@ NEW.Operation,
 NEW.version,	
 NEW.User_information_DNI_id #Creacion FK (PK_TablaOrigen)
   );
-END IF;  
+#END IF;  
 END;$$
 DELIMITER ;
 
@@ -1072,9 +1082,9 @@ CREATE TRIGGER skill_m_t_c_BU
    BEFORE UPDATE ON skill_m_t_c
    FOR EACH ROW 
 BEGIN
-IF  NEW.Date_operation<>OLD.Date_operation
-THEN
-  SET NEW.Operation="U";
+#IF  NEW.Date_operation<>OLD.Date_operation
+#THEN
+  #SET NEW.Operation="U";
 
   INSERT INTO  skill_m_t_c_delta(
 OLD_Reg_id_c, #unsigned mejora el rendimiento al quitar negativos
@@ -1146,7 +1156,7 @@ NEW.Operation,
 NEW.version,	
 NEW.User_information_DNI_id #Creacion FK (PK_TablaOrigen)
   );
-END IF;  
+#END IF;  
 END;$$
 DELIMITER ;
 
@@ -1157,11 +1167,11 @@ CREATE TRIGGER drive_behaviors_car_BU
    BEFORE UPDATE ON drive_behaviors_car
    FOR EACH ROW 
 BEGIN
-IF  NEW.Date_operation<>OLD.Date_operation
-THEN
-  SET NEW.Operation="U";
+#IF  NEW.Date_operation<>OLD.Date_operation
+#THEN
+#SET NEW.Operation="U";
 
-  INSERT INTO  drive_behaviors_car_delta(
+INSERT INTO  drive_behaviors_car_delta(
 OLD_Drive_beh_id,
 OLD_Date_evaluation,
 OLD_Stop_distance,
@@ -1235,7 +1245,7 @@ NEW.Operation,
 NEW.version,	
 NEW.User_information_DNI_id
   );
-END IF;  
+#END IF;  
 END;$$
 DELIMITER ;
 
@@ -1247,9 +1257,9 @@ CREATE TRIGGER Image_BU
    BEFORE UPDATE ON Image
    FOR EACH ROW 
 BEGIN
-IF  NEW.Date_operation<>OLD.Date_operation
-THEN
-  SET NEW.Operation="U";
+#IF  NEW.Date_operation<>OLD.Date_operation
+#THEN
+  #SET NEW.Operation="U";
 
   INSERT INTO  Image_delta(
 OLD_Image_id,
@@ -1349,7 +1359,7 @@ NEW.version,
 NEW.User_information_DNI_id#Creacion FK (PK_TablaOrigen)
   
   );
-END IF;  
+#END IF;  
 END;$$
 DELIMITER ;
 
@@ -1361,9 +1371,9 @@ CREATE TRIGGER user_db_delta_BU
    BEFORE UPDATE ON user_db
    FOR EACH ROW 
 BEGIN
-IF  NEW.Date_operation<>OLD.Date_operation
-THEN
-  SET NEW.Operation="U";
+#IF  NEW.Date_operation<>OLD.Date_operation
+#THEN
+  #SET NEW.Operation="U";
 
   INSERT INTO  user_db_delta(
 OLD_Db_user_id,
@@ -1412,7 +1422,7 @@ NEW.Date_operation,
 NEW.Operation,
 NEW.version 
   );
-END IF;  
+#END IF;  
 END;$$
 DELIMITER ;
 
