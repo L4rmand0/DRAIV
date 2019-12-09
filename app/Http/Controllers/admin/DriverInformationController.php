@@ -4,9 +4,20 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use DB;
 
 class DriverInformationController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    // public function __construct()
+    // {
+    //     $this->middleware('guest');
+    // }
     /**
      * Display a listing of the resource.
      *
@@ -69,7 +80,6 @@ class DriverInformationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        echo ' buenas mi perro ';
         die;
     }
 

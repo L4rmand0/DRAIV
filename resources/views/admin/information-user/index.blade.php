@@ -2,16 +2,16 @@
 @section('content')
 <!-- Begin Page Content -->
 <div class="container-fluid">
-    <input type="hidden" name="users-list-route" value="{{ route ('users-list') }}" id="users-list-route">
+    <input type="hidden" name="driver-info-list-route" value="{{ route ('driver-info-list') }}" id="driver-info-list-route">
     <input type="hidden" name="update-users-route" value="{{ route ('users.update') }}" id="update-users-route">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Usuarios</h1>
+        <h1 class="h3 mb-0 text-gray-800">Información de Conductores</h1>
     </div>
-
     <table class="table table-bordered" id="drive_information_datatable">
         <thead class="thead-dark">
             <tr>
+                <th>Cédula</th>
                 <th>Primer Nombre</th>
                 <th>Segundo Nombre</th>
                 <th>Primer Apellido</th>
@@ -24,11 +24,11 @@
     </table>
     <div class="container text-center">
         <button class="btn btn-dark" type="button" style="margin-top: 17px;" data-toggle="modal"
-            data-target="#form_create_user">Agregar Usuario</button>
+            data-target="#form_create_driver_information">Registrar Información</button>
     </div>
 </div>
 
-<div class="modal fade" id="form_create_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="form_create_driver_information" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -42,109 +42,120 @@
 
                 <form method="POST" action="" id="form_user_admin">
                     @csrf
-                    <div class="form-group row">
-                        <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Nombre') }}</label>
-
-                        <div class="col-md-6">
-                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
-                                name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                            <span class="error_admin input_user_admin" role="alert" id="name-error">
-                                <strong id="name-error-strong" class="error-strong"> </strong>
-                            </span>
+                    <div class="form-card">
+                        <h2 class="fs-title" style="margin-bottom: 20px">Información de Usuario</h2>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" name="userInformation[First_name]" id="First_name"
+                                    class="form-control form-dataconductores" placeholder="Primer Nombre">
+                                <small class="text-danger small_forms" id="small_f_name"></small>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" name="userInformation[Second_name]" id="Second_name"
+                                    class="form-control form-dataconductores" placeholder="Segundo Nombre">
+                                <small class="text-danger small_forms" id="small_s_name"></small>
+                            </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" name="userInformation[F_last_name]" id="F_last_name"
+                                    class="form-control form-dataconductores" placeholder="Primer Apellido">
+                                <small class="text-danger small_forms" id="small_f_lastname"></small>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" name="userInformation[S_last_name]" id="S_last_name"
+                                    class="form-control form-dataconductores" placeholder="Segundo Apellido">
+                                <small class="text-danger small_forms" id="small_s_lastname"></small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" name="userInformation[DNI_id]" id="DNI_id"
+                                    class="form-control form-dataconductores" placeholder="Cédula">
+                                <small class="text-danger small_forms" id="small_dni_id"></small>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="email" name="userInformation[E_mail_address]" id="E_mail_address"
+                                    class="form-control form-dataconductores" placeholder="Correo Electrónico">
+                                <small class="text-danger small_forms" id="small_email"></small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form_select_conductores">
+                                <label for="Gender">Género</label>
+                                <select name="userInformation[Gender]" class="form-control form-dataconductores"
+                                    id="Gender">
+                                    <option value="">Seleccionar</option>
+                                    <option value="0">Masculino</option>
+                                    <option value="1">Femenino</option>
+                                </select>
+                                <small class="text-danger small_forms" id="small_gender"></small>
+                            </div>
+                            <div class="col-md-6 form_select_conductores">
+                                <label for="Education">Educación</label>
+                                <select name="userInformation[Education]" class="form-control form-dataconductores"
+                                    id="Education">
+                                    <option value="">Seleccionar</option>
+                                    <option value="Ninguno">Ninguno</option>
+                                    <option value="Primaria">Primaria</option>
+                                    <option value="Secundaria">Secundaria</option>
+                                    <option value="Pregrado">Pregrado</option>
+                                    <option value="Postgrado">Postgrado</option>
+                                </select>
+                                <small class="text-danger small_forms" id="small_education"></small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form_select_conductores">
+                                <label for="Country_born">País</label>
+                                <select name="userInformation[Country_born]" class="form-control form-dataconductores"
+                                    id="Country_born">
+                                    <option value="">Seleccionar</option>
+                                    <option value="Colombia">Colombia</option>
+                                    <option value="Venezuela">Venezuela</option>
+                                    <option value="Peru">Peru</option>
+                                    <option value="Ecuador">Ecuador</option>
+                                    <option value="Bolivia">Bolivia</option>
+                                    <option value="Argentina">Argentina</option>
+                                    <option value="Brasil">Brasil</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                                <small class="text-danger small_forms" id="small_country"></small>
+                            </div>
+                            <div class="col-md-6 form_select_conductores">
+                                <label for="Civil_state">Estado Civil</label>
+                                <select name="userInformation[Civil_state]" class="form-control form-dataconductores"
+                                    id="Civil_state">
+                                    <option value="">Seleccionar</option>
+                                    <option value="Soltero">Soltero</option>
+                                    <option value="Casado">Casado</option>
+                                    <option value="Separado">Separado</option>
+                                    <option value="Divorciado">Divorciado</option>
+                                    <option value="Viudo">Viudo</option>
+                                    <option value="Union libre">Union libre</option>
+                                    <option value="Sin información">Sin información</option>
+                                </select>
+                                <small class="text-danger small_forms" id="small_civil_state"></small>
+                            </div>
+                        </div>
+                        <div class="row row_form_input_conductores">
+                            <div class="col-md-6">
+                                <input type="text" name="userInformation[address]"
+                                    class="form-control form-dataconductores" id="address" placeholder="Dirección" />
+                                <small class="text-danger small_forms" id="small_address"></small>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="tel" name="userInformation[phone]"
+                                    class="form-control form-dataconductores" id="phone" placeholder="Teléfono" />
+                                <small class="text-danger small_forms" id="small_phone"></small>
+                            </div>
+                        </div>
+                        <input type="hidden" name="userInformation[Db_user_id]" id="Db_user_id"
+                            value="{{auth()->id()}}">
                     </div>
-
-                    <div class="form-group row">
-                        <label for="email"
-                            class="col-md-4 col-form-label text-md-right">{{ __('Correo Electrónico') }}</label>
-
-                        <div class="col-md-6">
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                                name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                            <span class="error_admin" role="alert" id="email-error">
-                                <strong id="email-error-strong" class="error-strong"></strong>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="password"
-                            class="col-md-4 col-form-label text-md-right">{{ __('Contraseña') }}</label>
-
-                        <div class="col-md-6">
-                            <input id="password" type="password"
-                                class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                            <span class="error_admin" role="alert" id="password-error">
-                                <strong id="password-error-strong" class="error-strong"></strong>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="password-confirm"
-                            class="col-md-4 col-form-label text-md-right">{{ __('Confirmar Contraseña') }}</label>
-
-                        <div class="col-md-6">
-                            <input id="password-confirm" type="password" class="form-control"
-                                name="password_confirmation" required autocomplete="new-password">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="Company_id"
-                            class="col-md-4 col-form-label text-md-right">{{ __('Compañía') }}</label>
-                        <div class="col-md-6">
-                            <select class="form-control" name="Company_id" id="Company_id">
-                                <option value="">Seleccionar ...</option>
-                                <option value="9013380301">DRAIV</option>
-                                <option value="9013380302">Smart</option>
-                            </select>
-                            <span class="error_admin" role="alert" id="Company_id-error">
-                                <strong id="Company_id-error-strong" class="error-strong"></strong>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="User_profile" class="col-md-4 col-form-label text-md-right">{{ __('Perfil') }}</label>
-                        <div class="col-md-6">
-                            <select class="form-control" name="User_profile" id="User_profile">
-                                <option value="">Seleccionar ...</option>
-                                <option value="Administrator">Administrator</option>
-                                <option value="Evaluator">Evaluator</option>
-                                <option value="User">User</option>
-                            </select>
-                            <span class="error_admin" role="alert" id="User_profile-error">
-                                <strong id="User_profile-error-strong" class="error-strong"></strong>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-12 col-md-4">
-                        </div>
-                        <div class="custom-control custom-checkbox col-4 col-md-6" style="margin-top: 17px;">
-                            <input type="checkbox" name="checkdata" class="custom-control-input" id="defaultChecked2">
-                            <label class="custom-control-label" for="defaultChecked2">Aceptar Términos y condiciones</label>
-                            <span class="error_admin" role="alert" id="checkdata-error">
-                                <strong id="checkdata-error-strong" class="error-strong"></strong>
-                            </span>    
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-12 col-md-4">
-                        </div>
-                        <a class="" data-toggle="modal" data-target="#data_agree"
-                            style="cursor: pointer; text-decoration: underline">Ver política de datos</a>
-                    </div>
-                    <div class="form-group row mb-0">
-                        <div class="col-md-6 offset-md-4">
-                            <button type="submit" class="btn btn-primary" data-url="{{ route('register-user') }}"
-                                id="btn_admin_user">
-                                Registrarse
-                            </button>
-                        </div>
-                    </div>
+                    <input type="button" name="next" class="next action-button form-dataconductores" value="Next Step"
+                        id="fieldset_infouser" data-url="{{ route('user-information.validate') }}"
+                        data-error="info_user" />
                     <!-- Button trigger modal -->
 
                 </form>
@@ -156,6 +167,6 @@
     </div>
 </div>
 <!-- /.container-fluid -->
-<script src="{{ asset('js/admin/users.js') }}" defer></script>
+<script src="{{ asset('js/admin/drive-information.js') }}" defer></script>
 @endsection
 <!-- End of Main Content -->

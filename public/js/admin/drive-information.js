@@ -9,98 +9,56 @@
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
     $(function () {
-
-        $("#form_user_admin").submit(function (event) {
-            event.preventDefault();
-            let data_form = $(this).serialize();
-            $.ajax({
-                type: 'POST',
-                url: $("#btn_admin_user ").data('url'),
-                data: data_form,
-                success: function (data) {
-                    console.log(data);
-                    $(".error-strong").text("");
-                    if (Object.keys(data.errors).length > 0) {
-                        let arr_errores = data.errors;
-                        console.log(arr_errores);
-                        $.each(arr_errores, function (index, value) {
-                            let selector = "#" + index + "-error";
-                            let selector_strong = "#" + index + "-error-strong";
-                            $(selector).show();
-                            $(selector_strong).text(value[0]);
-                            // $(selector).show();
-                            // $(selector).text(value);
-                            // error_founds = error_founds + 1;
-                        });
-                    } else {
-                        $("#form_user_admin input[type=text]").val("");
-                        $("#form_user_admin input[type=password]").val("");
-                        $("#form_user_admin select").val("");
-                        $("#form_user_admin input[type=email]").val("");
-                        $("#defaultChecked2").prop('checked', false); 
-                        swal(
-                            'Proceso Completado!',
-                            data.success,
-                            'success'
-                        )
-                    }
-                }
-            });
-        });
-        // const createdCell = function (cell, cellData) {
-
-        //     if (cell._DT_CellIndex.column == 1) {
-        //         $(cell).attr('id','idUser')
-        //     }
-        //     let original
-        //     cell.setAttribute('contenteditable', true)
-        //     cell.setAttribute('spellcheck', false)
-
-        //     cell.addEventListener('focus', function (e) {
-        //         original = e.target.textContent
-        //         $(this).css("background-color", "#FFFFFF"); 
-        //     })
-
-        //     cell.addEventListener('blur', function (e) {
-        //         if (original !== e.target.textContent) {
-        //             const row = table_user.row(e.target.parentElement)
-        //             // row.invalidate()
-        //             debugger
-        //             console.log('Row changed: ', row.data())
-        //             console.log('Row changed: ', row.data())
-        //             console.log('change', e.target.textContent);
+        // $("#form_user_admin").submit(function (event) {
+        //     event.preventDefault();
+        //     let data_form = $(this).serialize();
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: $("#btn_admin_user ").data('url'),
+        //         data: data_form,
+        //         success: function (data) {
+        //             console.log(data);
+        //             $(".error-strong").text("");
+        //             if (Object.keys(data.errors).length > 0) {
+        //                 let arr_errores = data.errors;
+        //                 console.log(arr_errores);
+        //                 $.each(arr_errores, function (index, value) {
+        //                     let selector = "#" + index + "-error";
+        //                     let selector_strong = "#" + index + "-error-strong";
+        //                     $(selector).show();
+        //                     $(selector_strong).text(value[0]);
+        //                     // $(selector).show();
+        //                     // $(selector).text(value);
+        //                     // error_founds = error_founds + 1;
+        //                 });
+        //             } else {
+        //                 $("#form_user_admin input[type=text]").val("");
+        //                 $("#form_user_admin input[type=password]").val("");
+        //                 $("#form_user_admin select").val("");
+        //                 $("#form_user_admin input[type=email]").val("");
+        //                 $("#defaultChecked2").prop('checked', false); 
+        //                 swal(
+        //                     'Proceso Completado!',
+        //                     data.success,
+        //                     'success'
+        //                 )
+        //             }
         //         }
-        //         $(this).css("background-color", "#f8f9fc"); 
-        //     })
-        // }
-
-        // var table_user = $('#user_datatable').DataTable({
-        //     processing: true,
-        //     serverSide: true,
-        //     ajax: $('#users-list-route').val(),
-        //     columns: [
-        //         { data: 'id', name: 'id', "visible": false },
-        //         { data: 'name', name: 'name' },
-        //         { data: 'email', name: 'email' }
-        //     ],
-        // columnDefs: [{
-        //     targets: '_all',
-        //     createdCell: createdCell
-        // }],
-        //     createdRow: function( row, data, dataIndex ) {
-        //         $( row ).find('td:eq(0)').attr({'data-id': data.id});
-        //     }
+        //     });
         // });
 
-        var table = $('#user_datatable').DataTable({
+        var table = $('#drive_information_datatable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: $('#users-list-route').val(),
+            ajax: $('#driver-info-list-route').val(),
             columns: [
-                { data: 'id', name: 'id', "visible": false },
-                { data: 'name', name: 'name' },
-                { data: 'email', name: 'email' },
-                { data: 'User_profile', name: 'User_profile' }
+                { data: 'DNI_id', name: 'DNI_id', "visible": false },
+                { data: 'First_name', name: 'First_name' },
+                { data: 'Second_name', name: 'Second_name' },
+                { data: 'F_last_name', name: 'F_last_name' },
+                { data: 'S_last_name', name: 'S_last_name' },
+                { data: 'Gender', name: 'Gender' },
+                { data: 'Education', name: 'Education' },
             ],
             language: language_dt
             // columnDefs: [{
