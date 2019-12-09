@@ -1,0 +1,53 @@
+.user_icon:before {
+    font-family: FontAwesome;
+    content: "\f0c0"
+}
+
+.user_circle_icon:before {
+    font-family: FontAwesome;
+    content: "\f2bd"
+}
+
+.drivers_info_icon:before {
+    font-family: FontAwesome;
+    content: "\f0ce"
+}
+
+.licence_icon:before {
+    font-family: FontAwesome;
+    content: "\f2c1"
+}
+
+.search_icon:before {
+    font-family: FontAwesome;
+    content: "\f002"
+}
+
+.angle_up_icon:before {
+    font-family: FontAwesome;
+    content: "\f106"
+}
+
+.car_icon:before {
+    font-family: FontAwesome;
+    content: "\f1b9"
+}
+
+.img_icon:before {
+    font-family: FontAwesome;
+    content: "\f03e"
+}
+
+.bell_icon:before {
+    font-family: FontAwesome;
+    content: "\f0f3"
+}
+
+.envelop_icon:before {
+    font-family: FontAwesome;
+    content: "\f0e0"
+}
+
+.icons-fa{
+    font-style: normal !important;
+}
