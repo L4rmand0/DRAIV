@@ -33,4 +33,4 @@ require('./bootstrap');
 //     el: '#app',
 // });
 
-window.swal = require('sweetalert2');
+// window.swal = require('sweetalert2');

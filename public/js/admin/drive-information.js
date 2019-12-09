@@ -50,6 +50,7 @@
         var table = $('#drive_information_datatable').DataTable({
             processing: true,
             serverSide: true,
+            scrollX: true,
             ajax: $('#driver-info-list-route').val(),
             columns: [
                 { data: 'DNI_id', name: 'DNI_id', "visible": false },
@@ -59,8 +60,20 @@
                 { data: 'S_last_name', name: 'S_last_name' },
                 { data: 'Gender', name: 'Gender' },
                 { data: 'Education', name: 'Education' },
+                { data: 'E_mail_address', name: 'E_mail_address' },
+                { data: 'address', name: 'address' },
+                { data: 'Country_born', name: 'Country_born' },
+                { data: 'City_born', name: 'City_born' },
+                { data: 'City_Residence_place', name: 'City_Residence_place' },
+                { data: 'Department', name: 'Department' },
+                { data: 'phone', name: 'phone' },
+                { data: 'Civil_state', name: 'Civil_state' },
+                { data: 'Score', name: 'Score' },
+                { data: 'Db_user_id', name: 'Db_user_id' },
+                { data: 'Company_id', name: 'Company_id' },
             ],
-            language: language_dt
+            language: language_dt,
+            
             // columnDefs: [{
             //     targets: '_all',
             //     createdCell: createdCell

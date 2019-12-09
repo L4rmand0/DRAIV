@@ -98,6 +98,8 @@ class DriverInformationController extends Controller
     {
         $company_id = Auth::user()->Company_id;
         $drive_information = DB::table('User_information')->where('Company_id', '=', $company_id)->get();
+        // echo '<pre>';
+        // print_r($drive_information);
         return datatables()->of($drive_information)->make(true);
     }
 }

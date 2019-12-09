@@ -1,14 +1,15 @@
 @extends('layouts-admin.app')
 @section('content')
 <!-- Begin Page Content -->
-<div class="container-fluid">
-    <input type="hidden" name="driver-info-list-route" value="{{ route ('driver-info-list') }}" id="driver-info-list-route">
+<div class="container">
+    <input type="hidden" name="driver-info-list-route" value="{{ route ('driver-info-list') }}"
+        id="driver-info-list-route">
     <input type="hidden" name="update-users-route" value="{{ route ('users.update') }}" id="update-users-route">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Información de Conductores</h1>
     </div>
-    <table class="table table-bordered" id="drive_information_datatable">
+    <table id="drive_information_datatable" class="table table-bordered table-hover nowrap" style="width:100%">
         <thead class="thead-dark">
             <tr>
                 <th>Cédula</th>
@@ -17,8 +18,18 @@
                 <th>Primer Apellido</th>
                 <th>Segundo Apellido</th>
                 <th>Género</th>
-                <th>Eduación</th>
+                <th>Educación</th>
                 <th>Email</th>
+                <th>Dirección</th>
+                <th>País</th>
+                <th>Ciudad</th>
+                <th>Ciudad Res</th>
+                <th>Departamento</th>
+                <th>Teléfono</th>
+                <th>Estado Civil</th>
+                <th>Puntaje</th>
+                <th>user_id</th>
+                <th>company_id</th>
             </tr>
         </thead>
     </table>
@@ -28,8 +39,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="form_create_driver_information" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="form_create_driver_information" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
