@@ -10,4 +10,20 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    // Revisar si se puede quitar
+    public function findFieldUpdated($data)
+    {
+        // print_r($data);
+        // die;
+        $value_changed = $data['valuech'];
+        unset($data['valuech']);
+        $field = '';
+        foreach ($data as $key => $value) {
+            if ($value == $value_changed) {
+                $field = $key;
+            }
+        }
+        return trim($field);
+    }
 }

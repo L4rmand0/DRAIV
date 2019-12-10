@@ -4,7 +4,7 @@
 <div class="container">
     <input type="hidden" name="driver-info-list-route" value="{{ route ('driver-info-list') }}"
         id="driver-info-list-route">
-    <input type="hidden" name="update-users-route" value="{{ route ('users.update') }}" id="update-users-route">
+    <input type="hidden" name="update-driver-info-route" value="{{ route ('driver-info.update') }}" id="update-driver-info-route">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Información de Conductores</h1>
@@ -28,8 +28,8 @@
                 <th>Teléfono</th>
                 <th>Estado Civil</th>
                 <th>Puntaje</th>
-                <th>user_id</th>
-                <th>company_id</th>
+                <th>User</th>
+                <th>Compañía</th>
             </tr>
         </thead>
     </table>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\UserInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DB;
@@ -78,9 +79,19 @@ class DriverInformationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        die;
+        $data_updated = $request->all();
+        // print_r($data_updated);
+        // die;
+        $field = $data_updated['fieldch'];
+        $value = $data_updated['valuech'];
+        $response = UserInformation::where('DNI_id', $data_updated['DNI_id'])->update([$field => $value]);
+        if ($response) {
+            return response()->json(['response' => 'Información actualizada']);
+        } else {
+            return response()->json(['error' => 'No se pudo actualizar la información']);
+        }
     }
 
     /**

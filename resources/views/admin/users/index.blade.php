@@ -9,7 +9,7 @@
         <h1 class="h3 mb-0 text-gray-800">Usuarios</h1>
     </div>
 
-    <table class="table table-bordered" id="user_datatable">
+    <table id="user_datatable" class="table table-bordered table-hover nowrap" style="width:100%">
         <thead class="thead-dark">
             <tr>
                 <th>Id</th>

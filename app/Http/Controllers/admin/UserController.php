@@ -76,26 +76,14 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $data_updated = $request->all();
-        $field = $this->findFieldUpdated($data_updated);
-        $response = User::where('id', $data_updated['id'])->update([$field => $data_updated[$field]]);
+        $field = $data_updated['fieldch'];
+        $value = $data_updated['valuech'];
+        $response = User::where('id', $data_updated['id'])->update([$field => $value]);
         if ($response) {
             return response()->json(['response' => 'Usuario actualizado']);
         } else {
-            return response()->json(['error' => 'validación correcta']);
+            return response()->json(['error' => 'No se pudo actualizar el usuario']);
         }
-    }
-
-    public function findFieldUpdated($data)
-    {
-        $value_changed = $data['valuech'];
-        unset($data['valuech']);
-        $field = '';
-        foreach ($data as $key => $value) {
-            if ($value == $value_changed) {
-                $field = $key;
-            }
-        }
-        return trim($field);
     }
 
     public function updateUser(Request $request)

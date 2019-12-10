@@ -37,7 +37,7 @@
                         $("#form_user_admin input[type=password]").val("");
                         $("#form_user_admin select").val("");
                         $("#form_user_admin input[type=email]").val("");
-                        $("#defaultChecked2").prop('checked', false); 
+                        $("#defaultChecked2").prop('checked', false);
                         $('#form_create_user').modal('hide');
                         swal(
                             'Proceso Completado!',
@@ -92,7 +92,12 @@
         //         $( row ).find('td:eq(0)').attr({'data-id': data.id});
         //     }
         // });
-
+        var fields = [
+            'id',
+            'name',
+            'email',
+            'User_profile',
+        ];
         var table = $('#user_datatable').DataTable({
             processing: true,
             serverSide: true,
@@ -103,7 +108,13 @@
                 { data: 'email', name: 'email' },
                 { data: 'User_profile', name: 'User_profile' }
             ],
-            language: language_dt
+            language: language_dt,
+            columnDefs: [{
+                targets: '_all',
+                createdCell: function (td, cellData, rowData, row, col) {
+                    $(td).attr("id", fields[col])
+                }
+            }],
             // columnDefs: [{
             //     targets: '_all',
             //     createdCell: createdCell
@@ -122,6 +133,7 @@
             if (oldValue != updatedCell.data()) {
                 dataSend = updatedRow.data();
                 dataSend.valuech = updatedCell.data();
+                dataSend.fieldch = updatedCell.nodes()[0].id;
                 $.ajax({
                     type: 'POST',
                     url: $("#update-users-route").val(),
@@ -143,10 +155,6 @@
             "onUpdate": myCallbackFunction
         });
 
-        // $('#user_datatable').on('click', 'tbody td', function () {
-        //     alert('oye mi perro')
-        //     table_user.cell( this ).edit();
-        // } );
     });
 
 
