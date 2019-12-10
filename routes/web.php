@@ -37,10 +37,11 @@ Route::prefix('admin')->group(function () {
     Route::get('users', 'admin\UserController@index')->name('admin.users');
     Route::post('users/update', 'admin\UserController@update')->name('users.update');
     Route::get('users-list', 'admin\UserController@usersList')->name('users-list'); 
+    Route::post('/register-user','admin\UserController@storeUserAdmin')->name('register-user');
     Route::get('driver_info', 'admin\DriverInformationController@index')->name('admin.driver_info');
     Route::post('driver-info/update', 'admin\DriverInformationController@update')->name('driver-info.update'); 
     Route::get('driver-info-list', 'admin\DriverInformationController@driveInformationList')->name('driver-info-list'); 
-    Route::post('/register-user','admin\UserController@storeUserAdmin')->name('register-user');
+    Route::post('driver-info/store','admin\DriverInformationController@store')->name('driver-info.store');
 });
 
 Route::post('/saveimg', 'ImageController@saveImgS3')->name('saveimg');

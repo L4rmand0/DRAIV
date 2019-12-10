@@ -9,43 +9,43 @@
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
     $(function () {
-        // $("#form_user_admin").submit(function (event) {
-        //     event.preventDefault();
-        //     let data_form = $(this).serialize();
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: $("#btn_admin_user ").data('url'),
-        //         data: data_form,
-        //         success: function (data) {
-        //             console.log(data);
-        //             $(".error-strong").text("");
-        //             if (Object.keys(data.errors).length > 0) {
-        //                 let arr_errores = data.errors;
-        //                 console.log(arr_errores);
-        //                 $.each(arr_errores, function (index, value) {
-        //                     let selector = "#" + index + "-error";
-        //                     let selector_strong = "#" + index + "-error-strong";
-        //                     $(selector).show();
-        //                     $(selector_strong).text(value[0]);
-        //                     // $(selector).show();
-        //                     // $(selector).text(value);
-        //                     // error_founds = error_founds + 1;
-        //                 });
-        //             } else {
-        //                 $("#form_user_admin input[type=text]").val("");
-        //                 $("#form_user_admin input[type=password]").val("");
-        //                 $("#form_user_admin select").val("");
-        //                 $("#form_user_admin input[type=email]").val("");
-        //                 $("#defaultChecked2").prop('checked', false); 
-        //                 swal(
-        //                     'Proceso Completado!',
-        //                     data.success,
-        //                     'success'
-        //                 )
-        //             }
-        //         }
-        //     });
-        // });
+        $("#form_driver_info_admin").submit(function (event) {
+            event.preventDefault();
+            let data_form = $(this).serialize();
+            $.ajax({
+                type: 'POST',
+                url: $("#form_driver_info_admin").data('url'),
+                data: data_form,
+                success: function (data) {
+                    console.log(data);
+                    // $(".error-strong").text("");
+                    // if (Object.keys(data.errors).length > 0) {
+                    //     let arr_errores = data.errors;
+                    //     console.log(arr_errores);
+                    //     $.each(arr_errores, function (index, value) {
+                    //         let selector = "#" + index + "-error";
+                    //         let selector_strong = "#" + index + "-error-strong";
+                    //         $(selector).show();
+                    //         $(selector_strong).text(value[0]);
+                    //         // $(selector).show();
+                    //         // $(selector).text(value);
+                    //         // error_founds = error_founds + 1;
+                    //     });
+                    // } else {
+                    //     $("#form_user_admin input[type=text]").val("");
+                    //     $("#form_user_admin input[type=password]").val("");
+                    //     $("#form_user_admin select").val("");
+                    //     $("#form_user_admin input[type=email]").val("");
+                    //     $("#defaultChecked2").prop('checked', false); 
+                    //     swal(
+                    //         'Proceso Completado!',
+                    //         data.success,
+                    //         'success'
+                    //     )
+                    // }
+                }
+            });
+        });
 
         var fields=[
             'DNI_id',
@@ -100,8 +100,10 @@
                 { data: 'phone', name: 'phone' },
                 { data: 'Civil_state', name: 'Civil_state' },
                 { data: 'Score', name: 'Score' },
-                { data: 'Db_user_id', name: 'Db_user_id' },
-                { data: 'Company_id', name: 'Company_id' },
+                { data: 'Db_user_id', name: 'Db_user_id', "visible": false },
+                { data: 'Company_id', name: 'Company_id', "visible": false },
+                { data: 'user', name: 'user' },
+                { data: 'company', name: 'company' },
             ],
             language: language_dt,
 

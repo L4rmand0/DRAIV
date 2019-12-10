@@ -4,7 +4,8 @@
 <div class="container">
     <input type="hidden" name="driver-info-list-route" value="{{ route ('driver-info-list') }}"
         id="driver-info-list-route">
-    <input type="hidden" name="update-driver-info-route" value="{{ route ('driver-info.update') }}" id="update-driver-info-route">
+    <input type="hidden" name="update-driver-info-route" value="{{ route ('driver-info.update') }}"
+        id="update-driver-info-route">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Información de Conductores</h1>
@@ -28,7 +29,9 @@
                 <th>Teléfono</th>
                 <th>Estado Civil</th>
                 <th>Puntaje</th>
-                <th>User</th>
+                <th>Db_user_id</th>
+                <th>Company_id</th>
+                <th>Registro User</th>
                 <th>Compañía</th>
             </tr>
         </thead>
@@ -44,58 +47,68 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Registrar un nuevo usuario</h5>
+                <h4 class="modal-title" id="exampleModalLabel">Registrar Información de Conductor</h4>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-
-                <form method="POST" action="" id="form_user_admin">
+                <form method="POST" action="" id="form_driver_info_admin" data-url="{{ route('driver-info.store') }}">
                     @csrf
                     <div class="form-card">
-                        <h2 class="fs-title" style="margin-bottom: 20px">Información de Usuario</h2>
                         <div class="row">
                             <div class="col-md-6">
                                 <input type="text" name="userInformation[First_name]" id="First_name"
-                                    class="form-control form-dataconductores" placeholder="Primer Nombre">
+                                    class="form-control form-dataconductores" placeholder="Primer Nombre" required>
                                 <small class="text-danger small_forms" id="small_f_name"></small>
                             </div>
                             <div class="col-md-6">
                                 <input type="text" name="userInformation[Second_name]" id="Second_name"
-                                    class="form-control form-dataconductores" placeholder="Segundo Nombre">
+                                    class="form-control form-dataconductores" placeholder="Segundo Nombre" required>
                                 <small class="text-danger small_forms" id="small_s_name"></small>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" style="margin-top: 15px;">
                             <div class="col-md-6">
                                 <input type="text" name="userInformation[F_last_name]" id="F_last_name"
-                                    class="form-control form-dataconductores" placeholder="Primer Apellido">
+                                    class="form-control form-dataconductores" placeholder="Primer Apellido" required>
                                 <small class="text-danger small_forms" id="small_f_lastname"></small>
                             </div>
                             <div class="col-md-6">
                                 <input type="text" name="userInformation[S_last_name]" id="S_last_name"
-                                    class="form-control form-dataconductores" placeholder="Segundo Apellido">
+                                    class="form-control form-dataconductores" placeholder="Segundo Apellido" required>
                                 <small class="text-danger small_forms" id="small_s_lastname"></small>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" style="margin-top: 15px;">
                             <div class="col-md-6">
                                 <input type="text" name="userInformation[DNI_id]" id="DNI_id"
-                                    class="form-control form-dataconductores" placeholder="Cédula">
+                                    class="form-control form-dataconductores" placeholder="Cédula" required>
                                 <small class="text-danger small_forms" id="small_dni_id"></small>
                             </div>
                             <div class="col-md-6">
                                 <input type="email" name="userInformation[E_mail_address]" id="E_mail_address"
-                                    class="form-control form-dataconductores" placeholder="Correo Electrónico">
+                                    class="form-control form-dataconductores" placeholder="Correo Electrónico" required>
                                 <small class="text-danger small_forms" id="small_email"></small>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row row_form_input_conductores" style="margin-top: 15px;">
+                            <div class="col-md-6">
+                                <input type="text" name="userInformation[address]"
+                                    class="form-control form-dataconductores" id="address" placeholder="Dirección" />
+                                <small class="text-danger small_forms" id="small_address"></small>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="tel" name="userInformation[phone]"
+                                    class="form-control form-dataconductores" id="phone" placeholder="Teléfono" required/>
+                                <small class="text-danger small_forms" id="small_phone"></small>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 15px;">
                             <div class="col-md-6 form_select_conductores">
                                 <label for="Gender">Género</label>
                                 <select name="userInformation[Gender]" class="form-control form-dataconductores"
-                                    id="Gender">
+                                    id="Gender" required>
                                     <option value="">Seleccionar</option>
                                     <option value="0">Masculino</option>
                                     <option value="1">Femenino</option>
@@ -105,7 +118,7 @@
                             <div class="col-md-6 form_select_conductores">
                                 <label for="Education">Educación</label>
                                 <select name="userInformation[Education]" class="form-control form-dataconductores"
-                                    id="Education">
+                                    id="Education" required>
                                     <option value="">Seleccionar</option>
                                     <option value="Ninguno">Ninguno</option>
                                     <option value="Primaria">Primaria</option>
@@ -116,11 +129,11 @@
                                 <small class="text-danger small_forms" id="small_education"></small>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" style="margin-top: 15px;">
                             <div class="col-md-6 form_select_conductores">
                                 <label for="Country_born">País</label>
                                 <select name="userInformation[Country_born]" class="form-control form-dataconductores"
-                                    id="Country_born">
+                                    id="Country_born" required>
                                     <option value="">Seleccionar</option>
                                     <option value="Colombia">Colombia</option>
                                     <option value="Venezuela">Venezuela</option>
@@ -136,7 +149,7 @@
                             <div class="col-md-6 form_select_conductores">
                                 <label for="Civil_state">Estado Civil</label>
                                 <select name="userInformation[Civil_state]" class="form-control form-dataconductores"
-                                    id="Civil_state">
+                                    id="Civil_state" required>
                                     <option value="">Seleccionar</option>
                                     <option value="Soltero">Soltero</option>
                                     <option value="Casado">Casado</option>
@@ -149,24 +162,14 @@
                                 <small class="text-danger small_forms" id="small_civil_state"></small>
                             </div>
                         </div>
-                        <div class="row row_form_input_conductores">
-                            <div class="col-md-6">
-                                <input type="text" name="userInformation[address]"
-                                    class="form-control form-dataconductores" id="address" placeholder="Dirección" />
-                                <small class="text-danger small_forms" id="small_address"></small>
-                            </div>
-                            <div class="col-md-6">
-                                <input type="tel" name="userInformation[phone]"
-                                    class="form-control form-dataconductores" id="phone" placeholder="Teléfono" />
-                                <small class="text-danger small_forms" id="small_phone"></small>
-                            </div>
-                        </div>
+
                         <input type="hidden" name="userInformation[Db_user_id]" id="Db_user_id"
                             value="{{auth()->id()}}">
+                            <div class="d-flex justify-content-center" style="margin-top: 25px;">
+                                <input type="submit" value="Registrar" class="btn btn-primary">
+                            </div>
                     </div>
-                    <input type="button" name="next" class="next action-button form-dataconductores" value="Next Step"
-                        id="fieldset_infouser" data-url="{{ route('user-information.validate') }}"
-                        data-error="info_user" />
+
                     <!-- Button trigger modal -->
 
                 </form>
