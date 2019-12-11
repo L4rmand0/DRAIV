@@ -9,6 +9,53 @@
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
     $(function () {
+        var table_search;
+        $("#btn_search_company").on("click", function () {
+            $(this).hide();
+            // let company = $("#search_name_company").val();
+            // let nit_company = $("#search_nit").val();
+            // data_send = { 'company': company, 'nit_company': nit_company }
+            table_search = $("#search_company_datatable").DataTable({
+                processing: true,
+                serverSide: true,
+                scrollX: true,
+                ajax: $('#btn_search_company').data('url'),
+                columns: [
+                    { data: 'nit', name: 'nit' },
+                    { data: 'company', name: 'company' },
+                ],
+                language: language_dt,
+                // columnDefs: [{
+                //     targets: '_all',
+                //     createdCell: function (td, cellData, rowData, row, col) {
+                //         $(td).attr("id", fields[col])
+                //     }
+                // }],
+            });
+
+            
+
+            $('#search_company_datatable tbody').on('click', 'tr', function () {
+                var data = table_search.row( this ).data();
+                $("#Company_id").val(data['nit']);
+            } );
+
+            // $.ajax({
+            //     type: 'POST',
+            //     url: $(this).data('url'),
+            //     data: data_send,
+            //     success: function (data) {
+            //         console.log(data);
+
+            //     }
+            // });
+        });
+
+        $("#modal_form_drive_info").on("click", function(){
+            $("#btn_search_company").show();
+        });
+       
+
         $("#form_driver_info_admin").submit(function (event) {
             event.preventDefault();
             let data_form = $(this).serialize();
@@ -18,36 +65,28 @@
                 data: data_form,
                 success: function (data) {
                     console.log(data);
-                    // $(".error-strong").text("");
-                    // if (Object.keys(data.errors).length > 0) {
-                    //     let arr_errores = data.errors;
-                    //     console.log(arr_errores);
-                    //     $.each(arr_errores, function (index, value) {
-                    //         let selector = "#" + index + "-error";
-                    //         let selector_strong = "#" + index + "-error-strong";
-                    //         $(selector).show();
-                    //         $(selector_strong).text(value[0]);
-                    //         // $(selector).show();
-                    //         // $(selector).text(value);
-                    //         // error_founds = error_founds + 1;
-                    //     });
-                    // } else {
-                    //     $("#form_user_admin input[type=text]").val("");
-                    //     $("#form_user_admin input[type=password]").val("");
-                    //     $("#form_user_admin select").val("");
-                    //     $("#form_user_admin input[type=email]").val("");
-                    //     $("#defaultChecked2").prop('checked', false); 
-                    //     swal(
-                    //         'Proceso Completado!',
-                    //         data.success,
-                    //         'success'
-                    //     )
-                    // }
+                    if (Object.keys(data.errors).length > 0) {
+                        let arr_errores = data.errors;
+                        console.log(arr_errores);
+                        $.each(arr_errores, function (index, value) {
+                            let selector = "#" + index + "-error";
+                            let selector_strong = "#" + index + "-error-strong";
+                            $(selector).show();
+                            $(selector_strong).text(value[0]);
+                            // $(selector).show();
+                            // $(selector).text(value);
+                            // error_founds = error_founds + 1;
+                        });
+                    } else {
+                        $(".form-dataconductores").val("");
+                        $("#form_create_driver_information").modal('hide');
+                        table_search.destroy();
+                    }
                 }
             });
         });
 
-        var fields=[
+        var fields = [
             'DNI_id',
             'First_name',
             'Second_name',
@@ -67,13 +106,13 @@
             'Db_user_id',
             'Company_id'
         ];
-        
-        var enums ={
-            'Education':{
-                'Primaria':'Primaria','Secundaria':'Secundaria','Pregrado':'Pregrado','Postgrado':'Postgrado','Sin informacion':'Sin informacion'
+
+        var enums = {
+            'Education': {
+                'Primaria': 'Primaria', 'Secundaria': 'Secundaria', 'Pregrado': 'Pregrado', 'Postgrado': 'Postgrado', 'Sin informacion': 'Sin informacion'
             },
-            'Civil_state':{
-                'Soltero':'Soltero','Casado':'Casado','Separado':'Separado','Divorciado':'Divorciado','Viudo':'Viudo','Union libre':'Union libre','Sin información':'Sin información'
+            'Civil_state': {
+                'Soltero': 'Soltero', 'Casado': 'Casado', 'Separado': 'Separado', 'Divorciado': 'Divorciado', 'Viudo': 'Viudo', 'Union libre': 'Union libre', 'Sin información': 'Sin información'
             }
         }
 
@@ -109,8 +148,8 @@
 
             columnDefs: [{
                 targets: '_all',
-                createdCell: function(td, cellData, rowData, row, col) {
-                    $(td).attr("id",fields[col])
+                createdCell: function (td, cellData, rowData, row, col) {
+                    $(td).attr("id", fields[col])
                 }
             }],
             // createdRow: function( row, data, dataIndex ) {
@@ -154,9 +193,9 @@
             columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
             "inputTypes": [
                 {
-                    "column":6, 
+                    "column": 6,
                     "type": "list",
-                    "options":[
+                    "options": [
                         { "value": enums.Education['Primaria'], "display": enums.Education['Primaria'] },
                         { "value": enums.Education['Secundaria'], "display": enums.Education['Secundaria'] },
                         { "value": enums.Education['Pregrado'], "display": enums.Education['Pregrado'] },
@@ -165,9 +204,9 @@
                     ]
                 },
                 {
-                    "column":14, 
+                    "column": 14,
                     "type": "list",
-                    "options":[
+                    "options": [
                         { "value": enums.Civil_state['Soltero'], "display": enums.Civil_state['Soltero'] },
                         { "value": enums.Civil_state['Casado'], "display": enums.Civil_state['Casado'] },
                         { "value": enums.Civil_state['Separado'], "display": enums.Civil_state['Separado'] },
@@ -177,7 +216,7 @@
                         { "value": enums.Civil_state['Sin información'], "display": enums.Civil_state['Sin información'] },
                     ]
                 }
-                
+
             ]
         });
 

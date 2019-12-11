@@ -10,6 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// DB::listen(function($query){
+//     //Imprimimos la consulta ejecutada
+//     echo "<pre> {$query->sql } </pre>";
+//   });
+
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
@@ -42,6 +48,7 @@ Route::prefix('admin')->group(function () {
     Route::post('driver-info/update', 'admin\DriverInformationController@update')->name('driver-info.update'); 
     Route::get('driver-info-list', 'admin\DriverInformationController@driveInformationList')->name('driver-info-list'); 
     Route::post('driver-info/store','admin\DriverInformationController@store')->name('driver-info.store');
+    Route::get('company-search-list', 'admin\CompanyController@getCompanies')->name('company-search-list'); 
 });
 
 Route::post('/saveimg', 'ImageController@saveImgS3')->name('saveimg');

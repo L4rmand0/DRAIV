@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\UserInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use DB;
 
 class DriverInformationController extends Controller
@@ -47,21 +48,27 @@ class DriverInformationController extends Controller
      */
     public function store(Request $request)
     {
-        $data_input = $request->all();
+        $data_input = $request->all()['userInformation'];
         // print_r($data_input);
         // die;
         $validator = Validator::make(
             $data_input,
             [
-                'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'password' => ['required', 'string', 'min:5', 'confirmed'],
-                'checkdata' => ['accepted'],
-                'Company_id' => ['required'],
-                'User_profile' => ['required']
+                'First_name' => 'required|max:255',
+                'F_last_name' => 'required|max:255',
+                'S_last_name' => 'required|max:255',
+                'E_mail_address' => ['required','max:255','unique:User_information'],
+                'DNI_id' => ['required','max:255','unique:User_information'],
+                'Gender' => 'required|max:255',
+                'Education' => 'required|max:255',
+                'Country_born' => 'required|max:255',
+                'Civil_state' => 'required|max:255',
+                'address' => 'required|max:255',
+                'phone' => 'required|max:255'
             ],
             [
-                'checkdata.accepted' => "Debe aceptar los términos y condiciones.",
+                'DNI_id.unique:User_information' => "La cédula ya está en uso.",
+                'E_mail_address.unique:User_information' => "El email ya está en uso."
             ]
         );
 
@@ -69,16 +76,25 @@ class DriverInformationController extends Controller
         if (!empty($errors)) {
             return response()->json(['errors' => $errors]);
         } else {
-            $user = User::create([
-                'name' => $data_input['name'],
-                'email' => $data_input['email'],
-                'password' => Hash::make($data_input['password']),
-                'Company_id' => $data_input['Company_id'],
-                'User_profile' => $data_input['User_profile']
+            $user_information = UserInformation::create([
+                'DNI_id' => $data_input['DNI_id'],
+                'First_name' => $data_input['First_name'],
+                'Second_name' =>  $data_input['Second_name'] != "" ? $data_input['Second_name'] : "",
+                'F_last_name' => $data_input['F_last_name'],
+                'S_last_name' => $data_input['S_last_name'],
+                'E_mail_address' => $data_input['E_mail_address'],
+                'Gender' => $data_input['Gender'],
+                'Education' => $data_input['Education'],
+                'Country_born' => $data_input['Country_born'],
+                'Civil_state' => $data_input['Civil_state'],
+                'address' => $data_input['address'],
+                'phone' => $data_input['phone'],
+                'Db_user_id' => $data_input['Db_user_id'],
+                'Company_id' => $data_input['Company_id']
             ]);
-            if ($user->id > 0) {
+            if ($user_information->DNI_id > 0) {
                 return response()->json([
-                    'success' => 'Usuario registrado.',
+                    'success' => 'Información registrada.',
                     'errors' => $errors
                 ]);
             }

@@ -24,6 +24,7 @@ class UserInformation extends Model
         'phone',
         'Civil_state',
         'Operation',
-        'Db_user_id'
+        'Db_user_id',
+        'Company_id'
     ];
 }

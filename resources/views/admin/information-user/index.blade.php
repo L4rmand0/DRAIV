@@ -38,7 +38,7 @@
     </table>
     <div class="container text-center">
         <button class="btn btn-dark" type="button" style="margin-top: 17px;" data-toggle="modal"
-            data-target="#form_create_driver_information">Registrar Información</button>
+            data-target="#form_create_driver_information" id="modal_form_drive_info">Registrar Información</button>
     </div>
 </div>
 
@@ -89,7 +89,9 @@
                             <div class="col-md-6">
                                 <input type="email" name="userInformation[E_mail_address]" id="E_mail_address"
                                     class="form-control form-dataconductores" placeholder="Correo Electrónico" required>
-                                <small class="text-danger small_forms" id="small_email"></small>
+                                <span class="error_admin input_user_admin" role="alert" id="E_mail_address-error">
+                                    <strong id="E_mail_address-error-strong" class="error-strong"> </strong>
+                                </span>
                             </div>
                         </div>
                         <div class="row row_form_input_conductores" style="margin-top: 15px;">
@@ -100,7 +102,8 @@
                             </div>
                             <div class="col-md-6">
                                 <input type="tel" name="userInformation[phone]"
-                                    class="form-control form-dataconductores" id="phone" placeholder="Teléfono" required/>
+                                    class="form-control form-dataconductores" id="phone" placeholder="Teléfono"
+                                    required />
                                 <small class="text-danger small_forms" id="small_phone"></small>
                             </div>
                         </div>
@@ -162,17 +165,49 @@
                                 <small class="text-danger small_forms" id="small_civil_state"></small>
                             </div>
                         </div>
+                        <div class="row" style="margin-top: 18px;">
+                            <div class="col-md-6">
+                                <div class="input-group mb-3" id="div_input_company">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text build_icon" id="basic-addon1"></span>
+                                    </div>
+                                    <input type="text" class="form-control form-dataconductores"
+                                        name="userInformation[Company_id]" placeholder="Ingresar compañía"
+                                        id="Company_id" required readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card border-secondary">
+                            <h5 class="card-header">Buscar Compañías</h5>
+                            <div class="card-body">
+                                {{-- <input type="text" name="search_name_company" class="form-control"
+                                    id="search_name_company" placeholder="Nombre de la Compañía" style="margin-top: 10px"> --}}
+                                {{-- <input type="text" name="search_nit" class="form-control" id="search_nit"
+                                    placeholder="Nit" style="margin-top: 10px"> --}}
+                                <button type="button" class="btn btn-primary" style="margin-top: 10px"
+                                    id="btn_search_company"
+                                    data-url="{{ route('company-search-list') }}">Buscar</button>
+                                <table id="search_company_datatable" class="table table-bordered table-hover nowrap"
+                                    style="width:100%; margin-top: 10px">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>Nit</th>
+                                            <th>Nombre</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
 
                         <input type="hidden" name="userInformation[Db_user_id]" id="Db_user_id"
                             value="{{auth()->id()}}">
-                            <div class="d-flex justify-content-center" style="margin-top: 25px;">
-                                <input type="submit" value="Registrar" class="btn btn-primary">
-                            </div>
+                        <div class="d-flex justify-content-center" style="margin-top: 25px;">
+                            <input type="submit" value="Registrar" class="btn btn-primary">
+                        </div>
                     </div>
-
                     <!-- Button trigger modal -->
-
                 </form>
+
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>

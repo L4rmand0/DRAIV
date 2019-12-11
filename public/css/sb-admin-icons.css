@@ -48,6 +48,11 @@
     content: "\f0e0"
 }
 
+.build_icon:before {
+    font-family: FontAwesome;
+    content: "\f1ad"
+}
+
 .icons-fa{
     font-style: normal !important;
 }
