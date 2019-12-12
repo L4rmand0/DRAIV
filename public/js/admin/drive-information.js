@@ -10,8 +10,6 @@
     // Listen for the jQuery ready event on the document
     $(function () {
         var table_search;
-
-
         $('#Company_id').select2({
             ajax: {
               url: $('#Company_id').data('url'),
@@ -25,6 +23,8 @@
             // let company = $("#search_name_company").val();
             // let nit_company = $("#search_nit").val();
             // data_send = { 'company': company, 'nit_company': nit_company }
+
+            // DELETE
             table_search = $("#search_company_datatable").DataTable({
                 processing: true,
                 serverSide: true,
@@ -44,11 +44,17 @@
             });
 
             
-
+            // DELETE
             $('#search_company_datatable tbody').on('click', 'tr', function () {
                 var data = table_search.row( this ).data();
                 $("#Company_id").val(data['nit']);
-            } );
+            });
+
+
+         
+            // $('#button').click( function () {
+            //     table.row('.selected').remove().draw( false );
+            // } );
 
             // $.ajax({
             //     type: 'POST',
@@ -60,6 +66,9 @@
             //     }
             // });
         });
+
+
+       
 
         $("#modal_form_drive_info").on("click", function(){
             $("#btn_search_company").show();
@@ -89,7 +98,7 @@
                     } else {
                         $(".form-dataconductores").val("");
                         $("#form_create_driver_information").modal('hide');
-                        table_search.destroy();
+                        $('#drive_information_datatable').DataTable().ajax.reload();
                     }
                 }
             });
@@ -170,6 +179,17 @@
             //     $( row ).attr({'data-id': data.id, id:'idUser'});
             // }
 
+        });
+
+        $('#drive_information_datatable tbody').on( 'click', 'tr', function () {
+            debugger
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+            }
+            $(this).addClass('selected');
         });
         // var table = $('#user_datatable').DataTable();
 

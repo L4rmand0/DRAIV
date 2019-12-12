@@ -86,12 +86,7 @@ class CompanyController extends Controller
 
     public function getCompanies(Request $request)
     {
-        // DB::connection()->enableQueryLog();
         $nit = $request['nit_company'];
-
-        // SELECT company.Company_id AS nit, company.Name_company AS company 
-        // FROM sam.company 
-        // WHERE company.Name_company LIKE '%dra%' OR company.Company_id LIKE '%90%';
 
         $companies = DB::table('company')
             ->where('company.Company_id', 'like', '%' . $nit . '%')
@@ -123,6 +118,5 @@ class CompanyController extends Controller
             $data['results'][$key]['text'] = $value->company;
         }
         return $data;
-        // print_r($data);
     }
 }

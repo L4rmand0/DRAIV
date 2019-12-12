@@ -12,6 +12,7 @@
     <table id="user_datatable" class="table table-bordered table-hover nowrap" style="width:100%">
         <thead class="thead-dark">
             <tr>
+                <th></th>
                 <th>Id</th>
                 <th>Nombre</th>
                 <th>Correo</th>
@@ -115,17 +116,6 @@
                             <span class="error_admin" role="alert" id="User_profile-error">
                                 <strong id="User_profile-error-strong" class="error-strong"></strong>
                             </span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-12 col-md-4">
-                        </div>
-                        <div class="custom-control custom-checkbox col-4 col-md-6" style="margin-top: 17px;">
-                            <input type="checkbox" name="checkdata" class="custom-control-input" id="defaultChecked2">
-                            <label class="custom-control-label" for="defaultChecked2">Aceptar Términos y condiciones</label>
-                            <span class="error_admin" role="alert" id="checkdata-error">
-                                <strong id="checkdata-error-strong" class="error-strong"></strong>
-                            </span>    
                         </div>
                     </div>
                     <div class="form-group row mb-0">

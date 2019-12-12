@@ -53,6 +53,11 @@
     content: "\f1ad"
 }
 
+.trash_icon:before {
+    font-family: FontAwesome;
+    content: "\f1f8"
+}
+
 .icons-fa{
     font-style: normal !important;
 }

@@ -93,6 +93,7 @@
         //     }
         // });
         var fields = [
+            'delete_row',
             'id',
             'name',
             'email',
@@ -103,27 +104,35 @@
             serverSide: true,
             ajax: $('#users-list-route').val(),
             columns: [
-                { data: 'id', name: 'id', "visible": false },
+                { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-danger"><span class="trash_icon"></span></button></center>'},
+                { data: 'id', name: 'id', "visible":false },
                 { data: 'name', name: 'name' },
                 { data: 'email', name: 'email' },
                 { data: 'User_profile', name: 'User_profile' }
             ],
             language: language_dt,
-            columnDefs: [{
-                targets: '_all',
-                createdCell: function (td, cellData, rowData, row, col) {
-                    $(td).attr("id", fields[col])
-                }
-            }],
+            columnDefs: [
+                {
+                    targets: '_all',
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).attr("id", fields[col])
+                    }
+                },
+                {
+                    "targets": [0],
+                    "data": null,
+                    "defaultContent": '<input id="check" type="checkbox">'
+                }       
+            ],
             // columnDefs: [{
             //     targets: '_all',
             //     createdCell: createdCell
             // }],
-            // createdRow: function( row, data, dataIndex ) {
-            //     // if( data.hasOwnProperty("id") ) {
-            //     //     row.id = "row-" + data.id;
-            //     // } 
-            //     $( row ).attr({'data-id': data.id, id:'idUser'});
+            // createdRow: function (row, data, dataIndex) {
+                // if( data.hasOwnProperty("id") ) {
+                //     row.id = "row-" + data.id;
+                // } 
+            //     $(row).attr({ 'data-id': data.id, id: 'idUser' });
             // }
         });
         // var table = $('#user_datatable').DataTable();

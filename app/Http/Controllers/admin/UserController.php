@@ -106,7 +106,16 @@ class UserController extends Controller
     {
         $company_id = Auth::user()->Company_id;
         $users = DB::table('users')->where('Company_id', '=', $company_id)->get();
+        $users = $this->addDeleteButtonDatatable($users);
         return datatables()->of($users)->make(true);
+    }
+
+
+    public function addDeleteButtonDatatable($data){
+        foreach ($data as $key => $value) {
+            $data[$key]->delete_row = "";
+        }
+        return $data;
     }
 
     public function storeUserAdmin(Request $request)
@@ -120,12 +129,8 @@ class UserController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:5', 'confirmed'],
-                'checkdata' => ['accepted'],
                 'Company_id' => ['required'],
                 'User_profile' => ['required']
-            ],
-            [
-                'checkdata.accepted' => "Debe aceptar los términos y condiciones.",
             ]
         );
 
