@@ -166,7 +166,7 @@
                             </div>
                         </div>
                         <div class="row" style="margin-top: 18px;">
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <div class="input-group mb-3" id="div_input_company">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text build_icon" id="basic-addon1"></span>
@@ -175,15 +175,22 @@
                                         name="userInformation[Company_id]" placeholder="Ingresar compañía"
                                         id="Company_id" required readonly>
                                 </div>
+                            </div> --}}
+                            <div class="col-md-6 form_select_conductores">
+                                <label for="Company_id">Compañía:</label><br>
+                                <select name="userInformation[Company_id]" class="form-control form-dataconductores" id="Company_id" data-url="{{ route('company-select-list') }}" style="width: 100%" required>
+
+                                </select>
+                                <small class="text-danger small_forms" id="small_civil_state"></small>
                             </div>
                         </div>
-                        <div class="card border-secondary">
+                        {{-- <div class="card border-secondary">
                             <h5 class="card-header">Buscar Compañías</h5>
                             <div class="card-body">
                                 {{-- <input type="text" name="search_name_company" class="form-control"
                                     id="search_name_company" placeholder="Nombre de la Compañía" style="margin-top: 10px"> --}}
                                 {{-- <input type="text" name="search_nit" class="form-control" id="search_nit"
-                                    placeholder="Nit" style="margin-top: 10px"> --}}
+                                    placeholder="Nit" style="margin-top: 10px"> 
                                 <button type="button" class="btn btn-primary" style="margin-top: 10px"
                                     id="btn_search_company"
                                     data-url="{{ route('company-search-list') }}">Buscar</button>
@@ -197,7 +204,7 @@
                                     </thead>
                                 </table>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <input type="hidden" name="userInformation[Db_user_id]" id="Db_user_id"
                             value="{{auth()->id()}}">

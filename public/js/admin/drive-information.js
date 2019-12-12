@@ -10,6 +10,16 @@
     // Listen for the jQuery ready event on the document
     $(function () {
         var table_search;
+
+
+        $('#Company_id').select2({
+            ajax: {
+              url: $('#Company_id').data('url'),
+              dataType: 'json'
+              // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+            }
+          });
+
         $("#btn_search_company").on("click", function () {
             $(this).hide();
             // let company = $("#search_name_company").val();
@@ -30,7 +40,7 @@
                 //     createdCell: function (td, cellData, rowData, row, col) {
                 //         $(td).attr("id", fields[col])
                 //     }
-                // }],
+                // }]
             });
 
             
@@ -54,7 +64,6 @@
         $("#modal_form_drive_info").on("click", function(){
             $("#btn_search_company").show();
         });
-       
 
         $("#form_driver_info_admin").submit(function (event) {
             event.preventDefault();

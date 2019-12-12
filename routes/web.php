@@ -49,6 +49,7 @@ Route::prefix('admin')->group(function () {
     Route::get('driver-info-list', 'admin\DriverInformationController@driveInformationList')->name('driver-info-list'); 
     Route::post('driver-info/store','admin\DriverInformationController@store')->name('driver-info.store');
     Route::get('company-search-list', 'admin\CompanyController@getCompanies')->name('company-search-list'); 
+    Route::get('company-select-list', 'admin\CompanyController@getCompaniestoSelect2')->name('company-select-list'); 
 });
 
 Route::post('/saveimg', 'ImageController@saveImgS3')->name('saveimg');

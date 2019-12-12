@@ -23,7 +23,9 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
     <link href="{{ asset('css/sb-admin-icons.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/admin.css') }}" rel="stylesheet">    
+    <link href="{{ asset('select2/css/select2.css') }}" rel="stylesheet">
+    <script src="{{ asset('select2/js/select2.js') }}" defer></script>
 </head>
 
 <body id="page-top">
@@ -76,22 +78,23 @@
                 </li> --}}
 
                 <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('admin.users') }}"
-                        aria-expanded="true" aria-controls="collapseTwo">
+                    <a class="nav-link collapsed" href="{{ route('admin.users') }}" aria-expanded="true"
+                        aria-controls="collapseTwo">
                         <i class="user_icon icons-fa"></i>
                         <span>Usuarios</span>
                     </a>
                 </li>
 
-                 <!-- Divider -->
+                <!-- Divider -->
                 <hr class="sidebar-divider">
 
                 <div class="sidebar-heading">
-                        Información
-                    </div>
+                    Información
+                </div>
                 <!-- Nav Item - Utilities Collapse Menu -->
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="{{ route('admin.driver_info') }}" aria-expanded="true" aria-controls="collapseUtilities">
+                    <a class="nav-link collapsed" href="{{ route('admin.driver_info') }}" aria-expanded="true"
+                        aria-controls="collapseUtilities">
                         <i class="licence_icon icons-fa"></i>
                         <span>Informacion Conductores</span>
                     </a>
@@ -357,8 +360,10 @@
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }} <br> ( {{ Auth::user()->Company_id }} ) </span>
-                            <img class="img-profile rounded-circle" src="{{ asset('img/profile_default.png') }}">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}
+                                        <br> ( {{ Auth::user()->Company_id }} ) </span>
+                                    <img class="img-profile rounded-circle"
+                                        src="{{ asset('img/profile_default.png') }}">
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
