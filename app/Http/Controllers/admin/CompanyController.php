@@ -119,8 +119,8 @@ class CompanyController extends Controller
     public function createSelect2($query_data)
     {
         foreach ($query_data as $key => $value) {
-            $data['results'][$key + 1]['id'] = $value->nit;
-            $data['results'][$key + 1]['text'] = $value->company;
+            $data['results'][$key]['id'] = $value->nit;
+            $data['results'][$key]['text'] = $value->company;
         }
         return $data;
         // print_r($data);
