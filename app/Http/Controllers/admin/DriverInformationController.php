@@ -186,9 +186,6 @@ class DriverInformationController extends Controller
                 'company.Name_company as company'
             )
             ->get();
-        // echo '<pre>';
-        // print_r($drive_information);
-        // die;
         return datatables()->of($drive_information)->make(true);
     }
 

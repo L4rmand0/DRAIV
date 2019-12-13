@@ -40,6 +40,9 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     encrypted: true
 // });
 
+
+window.swal = require('sweetalert2'); 
+
 require('datatables.net-bs4');
 require('datatables.net-responsive-bs4')();
 require('datatables.net-scroller-bs4')();

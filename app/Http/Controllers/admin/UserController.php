@@ -86,36 +86,29 @@ class UserController extends Controller
         }
     }
 
-    public function updateUser(Request $request)
-    {
-        //
-    }
-
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $data_delete = $request->all();
+        $delete = User::where('id', $data_delete['id'])->update(['Operation' => 'D']);
+        if ($delete) {
+            return response()->json(['response' => 'Usuario eliminado','error'=>'']);
+        } else {
+            return response()->json(['error' => 'No se pudo eliminar el usuario']);
+        }
     }
 
     public function usersList()
     {
         $company_id = Auth::user()->Company_id;
-        $users = DB::table('users')->where('Company_id', '=', $company_id)->get();
+        $users = DB::table('users')->where('Company_id', '=', $company_id)->where('Operation', '!=','D')->get();
         $users = $this->addDeleteButtonDatatable($users);
         return datatables()->of($users)->make(true);
-    }
-
-
-    public function addDeleteButtonDatatable($data){
-        foreach ($data as $key => $value) {
-            $data[$key]->delete_row = "";
-        }
-        return $data;
     }
 
     public function storeUserAdmin(Request $request)
