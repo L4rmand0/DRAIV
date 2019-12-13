@@ -21,6 +21,8 @@ class UserInformation extends Model
         'E_mail_address',
         'address',
         'Country_born',
+        'City_born',
+        'Department',
         'phone',
         'Civil_state',
         'Operation',

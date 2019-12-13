@@ -11,34 +11,63 @@
     $(function () {
         var table_search;
 
+        // $.ajax({
+        //     type: 'GET',
+        //     url: $('#Country_born').data('url'),
+        //     data: { 'type': 'select_admin1' },
+        //     success: function (data) {
+        //         $('#Country_born').select2({
+        //             data: data
+        //         });
+        //     }
+        // });
+
         $.ajax({
             type: 'GET',
             url: $('#Department').data('url'),
-            data: { 'type': 'select_admin3' },
+            data: { 'type': 'select_admin2' },
             success: function (data) {
-                console.log(data);
                 $('#Department').select2({
-                    ajax: {
-                        url: $('#Department').data('url'),
-                        data: data
-                    }
+                    data: data
+                });
+            }
+        });
+        
+        $.ajax({
+            type: 'GET',
+            url: $('#Company_id').data('url'),
+            data: { 'type': 'companies' },
+            success: function (data) {
+                $('#Company_id').select2({
+                    data: data
                 });
             }
         });
 
-        $('#Company_id').select2({
-            ajax: {
-                url: $('#Company_id').data('url'),
-                dataType: 'json'
+        $.ajax({
+            type: 'GET',
+            url: $('#City_born').data('url'),
+            data: { 'type': 'admin3' },
+            success: function (data) {
+                $('#City_born').select2({
+                    data: data
+                });
             }
         });
 
-        $('#City_born').select2({
-            ajax: {
-                url: $('#City_born').data('url'),
-                dataType: 'json'
-            }
-        });
+        // $('#Company_id').select2({
+        //     ajax: {
+        //         url: $('#Company_id').data('url'),
+        //         dataType: 'json'
+        //     }
+        // });
+
+        // $('#City_born').select2({
+        //     ajax: {
+        //         url: $('#City_born').data('url'),
+        //         dataType: 'json'
+        //     }
+        // });
 
 
         // $('#Company_id').select2({

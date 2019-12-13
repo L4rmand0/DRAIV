@@ -179,21 +179,32 @@
                                 </select>
                                 <small class="text-danger small_forms" id="small_civil_state"></small>
                             </div>
+
                             <div class="col-md-6 form_select_conductores">
-                                <label for="City_born">País de Nacimiento:</label><br>
-                                <select name="userInformation[City_born]" class="form-control form-dataconductores"
-                                    id="City_born" data-url="{{ route('admin1-select-lists') }}" style="width: 100%"
+                                <label for="Department">Departamento:</label><br>
+                                <select name="userInformation[Department]" class="form-control form-dataconductores"
+                                    id="Department" data-url="{{ route('admin2-select-lists') }}" style="width: 100%"
                                     required>
 
                                 </select>
                                 <small class="text-danger small_forms" id="small_civil_state"></small>
                             </div>
+                            {{-- <div class="col-md-6 form_select_conductores">
+                                <label for="Country_born">País de Nacimiento:</label><br>
+                                <select name="userInformation[Country_born]" class="form-control form-dataconductores"
+                                    id="Country_born" data-url="{{ route('admin1-select-lists') }}" style="width: 100%"
+                            required>
+
+                            </select>
+                            <small class="text-danger small_forms" id="small_civil_state"></small>
+                        </div> --}}
                         </div>
                         <div class="row" style="margin-top: 18px;">
+
                             <div class="col-md-6 form_select_conductores">
-                                <label for="Department">Departamento:</label><br>
-                                <select name="userInformation[Department]" class="form-control form-dataconductores"
-                                    id="Department" data-url="{{ route('admin2-select-lists') }}" style="width: 100%"
+                                <label for="City_born">Ciudad de Nacimiento:</label><br>
+                                <select name="userInformation[City_born]" class="form-control form-dataconductores"
+                                    id="City_born" data-url="{{ route('admin3-select-lists') }}" style="width: 100%"
                                     required>
 
                                 </select>

@@ -62,6 +62,8 @@ class DriverInformationController extends Controller
                 'Gender' => 'required|max:255',
                 'Education' => 'required|max:255',
                 'Country_born' => 'required|max:255',
+                'City_born' => 'required|max:255',
+                'Department' => 'required|max:255',
                 'Civil_state' => 'required|max:255',
                 'address' => 'required|max:255',
                 'phone' => 'required|max:255'
@@ -86,6 +88,8 @@ class DriverInformationController extends Controller
                 'Gender' => $data_input['Gender'],
                 'Education' => $data_input['Education'],
                 'Country_born' => $data_input['Country_born'],
+                'City_born' => $data_input['City_born'],
+                'Department' => $data_input['Department'],
                 'Civil_state' => $data_input['Civil_state'],
                 'address' => $data_input['address'],
                 'phone' => $data_input['phone'],

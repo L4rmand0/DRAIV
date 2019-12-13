@@ -98,8 +98,8 @@ class Admin1Controller extends Controller
     public function createSelect2($query_data)
     {
         foreach ($query_data as $key => $value) {
-            $data['results'][$key]['id'] = $value->adm1_id;
-            $data['results'][$key]['text'] = $value->name;
+            $data[$key]['id'] = $value->adm1_id;
+            $data[$key]['text'] = $value->name;
         }
         return $data;
     }

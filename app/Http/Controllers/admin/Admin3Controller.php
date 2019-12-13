@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -81,5 +82,25 @@ class Admin3Controller extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getAdmin3toSelect2(Request $request)
+    {
+        $admin3 = DB::table('admin3')
+            ->select(
+                'admin3.adm3_id',
+                'admin3.name'
+            )
+            ->get()->toArray();
+        return response()->json($this->createSelect2($admin3));
+    }
+
+    public function createSelect2($query_data)
+    {
+        foreach ($query_data as $key => $value) {
+            $data[$key]['id'] = $value->adm3_id;
+            $data[$key]['text'] = $value->name;
+        }
+        return $data;
     }
 }
