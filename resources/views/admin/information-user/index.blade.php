@@ -13,6 +13,7 @@
     <table id="drive_information_datatable" class="table table-bordered table-hover nowrap" style="width:100%">
         <thead class="thead-dark">
             <tr>
+                <th></th>
                 <th>Cédula</th>
                 <th>Primer Nombre</th>
                 <th>Segundo Nombre</th>
@@ -53,7 +54,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="" id="form_driver_info_admin" data-url="{{ route('driver-info.store') }}">
+                <form method="POST" action="" id="form_driver_info_admin" data-url="{{ route('driver-info.store') }}" data-url-delete="{{ route('driver-info.destroy') }}">
                     @csrf
                     <div class="form-card">
                         <div class="row">

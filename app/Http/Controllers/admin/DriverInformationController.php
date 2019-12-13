@@ -151,9 +151,15 @@ class DriverInformationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $data_delete = $request->all();
+        $delete = UserInformation::where('DNI_id', $data_delete['DNI_id'])->update(['Operation' => 'D']);
+        if ($delete) {
+            return response()->json(['response' => 'Usuario eliminado','error'=>'']);
+        } else {
+            return response()->json(['error' => 'No se pudo eliminar el usuario']);
+        }
     }
 
     public function driveInformationList()
@@ -163,6 +169,7 @@ class DriverInformationController extends Controller
             ->join('users', 'User_information.Db_user_id', '=', 'users.id')
             ->join('company', 'company.Company_id', '=', 'User_information.Company_id')
             ->where('User_information.Company_id', '=', $company_id)
+            ->where('User_information.Operation', '!=','D')
             ->select(
                 'User_information.DNI_id',
                 'User_information.First_name',
@@ -186,6 +193,7 @@ class DriverInformationController extends Controller
                 'company.Name_company as company'
             )
             ->get();
+            $drive_information = $this->addDeleteButtonDatatable($drive_information);
         return datatables()->of($drive_information)->make(true);
     }
 

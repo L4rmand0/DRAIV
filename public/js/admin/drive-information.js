@@ -12,11 +12,11 @@
         var table_search;
         $('#Company_id').select2({
             ajax: {
-              url: $('#Company_id').data('url'),
-              dataType: 'json'
-              // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+                url: $('#Company_id').data('url'),
+                dataType: 'json'
+                // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
             }
-          });
+        });
 
         $("#btn_search_company").on("click", function () {
             $(this).hide();
@@ -43,15 +43,15 @@
                 // }]
             });
 
-            
+
             // DELETE
             $('#search_company_datatable tbody').on('click', 'tr', function () {
-                var data = table_search.row( this ).data();
+                var data = table_search.row(this).data();
                 $("#Company_id").val(data['nit']);
             });
 
 
-         
+
             // $('#button').click( function () {
             //     table.row('.selected').remove().draw( false );
             // } );
@@ -68,9 +68,9 @@
         });
 
 
-       
 
-        $("#modal_form_drive_info").on("click", function(){
+
+        $("#modal_form_drive_info").on("click", function () {
             $("#btn_search_company").show();
         });
 
@@ -141,6 +141,7 @@
             scrollX: true,
             ajax: $('#driver-info-list-route').val(),
             columns: [
+                { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-danger" id="btn_delete_drive_info"><span class="trash_icon"></span></button></center>' },
                 { data: 'DNI_id', name: 'DNI_id' },
                 { data: 'First_name', name: 'First_name' },
                 { data: 'Second_name', name: 'Second_name' },
@@ -181,20 +182,50 @@
 
         });
 
-        // $('#drive_information_datatable tbody').on('click', 'tr #Education', function () {
-        //     alert("click");
-        // })
-
-        $('#drive_information_datatable tbody').on( 'click', 'tr', function () {
-            if ( $(this).hasClass('selected') ) {
-                $(this).removeClass('selected');
-            }
-            else {
-                table.$('tr.selected').removeClass('selected');
-            }
-            $(this).addClass('selected');
+        $('#drive_information_datatable').on('click', 'tr td #btn_delete_drive_info', function () {
+            let row = $(this).parents('tr')
+            let data_delete = table.row(row).data();
+            swal.fire({
+                title: '<strong>Eliminar Información</strong>',
+                icon: 'warning',
+                html:
+                    '¿Está seguro que desea eliminar este registro? ',
+                showCloseButton: true,
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText:
+                    'Confirmar',
+                confirmButtonAriaLabel: 'Thumbs up, great!',
+                cancelButtonText:
+                    'Cancelar',
+                cancelButtonAriaLabel: 'Thumbs down'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: 'POST',
+                        url: $("#form_driver_info_admin").data("url-delete"),
+                        data: data_delete,
+                        success: function (data) {
+                            if (data.error == "") {
+                                swal.fire(
+                                    'Proceso Completado',
+                                    'El usuario ha sido eliminado.',
+                                    'success'
+                                );
+                                $('#drive_information_datatable').DataTable().ajax.reload();
+                            } else {
+                                swal.fire(
+                                    'Ocurrió un error',
+                                    'La operación no pudo completarse, por favor intente de nuevo.',
+                                    'error'
+                                );
+                            }
+                        }
+                    });
+                }
+            });
         });
-        // var table = $('#user_datatable').DataTable();
+
 
         function myCallbackFunction(updatedCell, updatedRow, oldValue) {
             console.log("The new value for the cell is: " + updatedCell.data());

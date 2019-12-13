@@ -183,9 +183,8 @@
                         }
                     });
                 }
-            })
+            });
         });
-        // var table = $('#user_datatable').DataTable();
 
         function myCallbackFunction(updatedCell, updatedRow, oldValue) {
             console.log("The new value for the cell is: " + updatedCell.data());
