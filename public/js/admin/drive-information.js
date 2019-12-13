@@ -10,13 +10,43 @@
     // Listen for the jQuery ready event on the document
     $(function () {
         var table_search;
+
+        $.ajax({
+            type: 'GET',
+            url: $('#Department').data('url'),
+            data: { 'type': 'select_admin3' },
+            success: function (data) {
+                console.log(data);
+                $('#Department').select2({
+                    ajax: {
+                        url: $('#Department').data('url'),
+                        data: data
+                    }
+                });
+            }
+        });
+
         $('#Company_id').select2({
             ajax: {
                 url: $('#Company_id').data('url'),
                 dataType: 'json'
-                // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
             }
         });
+
+        $('#City_born').select2({
+            ajax: {
+                url: $('#City_born').data('url'),
+                dataType: 'json'
+            }
+        });
+
+
+        // $('#Company_id').select2({
+        //     ajax: {
+        //         url: $('#Company_id').data('url'),
+        //         dataType: 'json'
+        //     }
+        // });
 
         $("#btn_search_company").on("click", function () {
             $(this).hide();

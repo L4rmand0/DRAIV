@@ -39,7 +39,6 @@ Route::prefix('news')->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::get('/', 'admin\AdminController@index')->name("admin");
-    // Route::resource('user', 'admin\UserController');
     Route::get('users', 'admin\UserController@index')->name('admin.users');
     Route::post('users/update', 'admin\UserController@update')->name('users.update');
     Route::get('users-list', 'admin\UserController@usersList')->name('users-list'); 
@@ -52,6 +51,8 @@ Route::prefix('admin')->group(function () {
     Route::post('driver-info/destroy','admin\DriverInformationController@destroy')->name('driver-info.destroy');
     Route::get('company-search-list', 'admin\CompanyController@getCompanies')->name('company-search-list'); 
     Route::get('company-select-list', 'admin\CompanyController@getCompaniestoSelect2')->name('company-select-list'); 
+    Route::get('driver-info/admin1-select-lists', 'admin\Admin1Controller@getAdmin1toSelect2')->name('admin1-select-lists'); 
+    Route::get('driver-info/admin2-select-lists', 'admin\Admin2Controller@getAdmin2toSelect2')->name('admin2-select-lists'); 
 });
 
 Route::post('/saveimg', 'ImageController@saveImgS3')->name('saveimg');

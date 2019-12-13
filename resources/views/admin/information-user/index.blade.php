@@ -170,20 +170,30 @@
                             </div>
                         </div>
                         <div class="row" style="margin-top: 18px;">
-                            {{-- <div class="col-md-6">
-                                <div class="input-group mb-3" id="div_input_company">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text build_icon" id="basic-addon1"></span>
-                                    </div>
-                                    <input type="text" class="form-control form-dataconductores"
-                                        name="userInformation[Company_id]" placeholder="Ingresar compañía"
-                                        id="Company_id" required readonly>
-                                </div>
-                            </div> --}}
                             <div class="col-md-6 form_select_conductores">
                                 <label for="Company_id">Compañía:</label><br>
                                 <select name="userInformation[Company_id]" class="form-control form-dataconductores"
                                     id="Company_id" data-url="{{ route('company-select-list') }}" style="width: 100%"
+                                    required>
+
+                                </select>
+                                <small class="text-danger small_forms" id="small_civil_state"></small>
+                            </div>
+                            <div class="col-md-6 form_select_conductores">
+                                <label for="City_born">País de Nacimiento:</label><br>
+                                <select name="userInformation[City_born]" class="form-control form-dataconductores"
+                                    id="City_born" data-url="{{ route('admin1-select-lists') }}" style="width: 100%"
+                                    required>
+
+                                </select>
+                                <small class="text-danger small_forms" id="small_civil_state"></small>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 18px;">
+                            <div class="col-md-6 form_select_conductores">
+                                <label for="Department">Departamento:</label><br>
+                                <select name="userInformation[Department]" class="form-control form-dataconductores"
+                                    id="Department" data-url="{{ route('admin2-select-lists') }}" style="width: 100%"
                                     required>
 
                                 </select>
