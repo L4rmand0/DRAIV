@@ -172,6 +172,8 @@ class DriverInformationController extends Controller
         $drive_information = DB::table('User_information')
             ->join('users', 'User_information.Db_user_id', '=', 'users.id')
             ->join('company', 'company.Company_id', '=', 'User_information.Company_id')
+            ->join('admin2', 'admin2.adm2_id', '=', 'User_information.Department')
+            ->join('admin3', 'admin3.adm3_id', '=', 'User_information.City_born')
             ->where('User_information.Company_id', '=', $company_id)
             ->where('User_information.Operation', '!=','D')
             ->select(DB::raw('User_information.DNI_id,
@@ -184,9 +186,9 @@ class DriverInformationController extends Controller
             User_information.E_mail_address,
             User_information.address,
             User_information.Country_born,
-            User_information.City_born,
+            admin3.name AS City_born,
             User_information.City_Residence_place,
-            User_information.Department,
+            admin2.name AS Department,
             User_information.phone,
             User_information.Civil_state,
             User_information.Score,
