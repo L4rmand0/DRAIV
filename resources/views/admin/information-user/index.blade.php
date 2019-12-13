@@ -54,7 +54,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="" id="form_driver_info_admin" data-url="{{ route('driver-info.store') }}" data-url-delete="{{ route('driver-info.destroy') }}">
+                <form method="POST" action="" id="form_driver_info_admin" data-url="{{ route('driver-info.store') }}"
+                    data-url-delete="{{ route('driver-info.destroy') }}">
                     @csrf
                     <div class="form-card">
                         <div class="row">
@@ -85,7 +86,9 @@
                             <div class="col-md-6">
                                 <input type="text" name="userInformation[DNI_id]" id="DNI_id"
                                     class="form-control form-dataconductores" placeholder="Cédula" required>
-                                <small class="text-danger small_forms" id="small_dni_id"></small>
+                                <span class="error_admin input_user_admin" role="alert" id="DNI_id-error">
+                                    <strong id="DNI_id-error-strong" class="error-strong"> </strong>
+                                </span>
                             </div>
                             <div class="col-md-6">
                                 <input type="email" name="userInformation[E_mail_address]" id="E_mail_address"
@@ -179,7 +182,9 @@
                             </div> --}}
                             <div class="col-md-6 form_select_conductores">
                                 <label for="Company_id">Compañía:</label><br>
-                                <select name="userInformation[Company_id]" class="form-control form-dataconductores" id="Company_id" data-url="{{ route('company-select-list') }}" style="width: 100%" required>
+                                <select name="userInformation[Company_id]" class="form-control form-dataconductores"
+                                    id="Company_id" data-url="{{ route('company-select-list') }}" style="width: 100%"
+                                    required>
 
                                 </select>
                                 <small class="text-danger small_forms" id="small_civil_state"></small>
@@ -190,38 +195,37 @@
                             <div class="card-body">
                                 {{-- <input type="text" name="search_name_company" class="form-control"
                                     id="search_name_company" placeholder="Nombre de la Compañía" style="margin-top: 10px"> --}}
-                                {{-- <input type="text" name="search_nit" class="form-control" id="search_nit"
+                        {{-- <input type="text" name="search_nit" class="form-control" id="search_nit"
                                     placeholder="Nit" style="margin-top: 10px"> 
                                 <button type="button" class="btn btn-primary" style="margin-top: 10px"
                                     id="btn_search_company"
                                     data-url="{{ route('company-search-list') }}">Buscar</button>
-                                <table id="search_company_datatable" class="table table-bordered table-hover nowrap"
-                                    style="width:100%; margin-top: 10px">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th>Nit</th>
-                                            <th>Nombre</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div> --}}
-
-                        <input type="hidden" name="userInformation[Db_user_id]" id="Db_user_id"
-                            value="{{auth()->id()}}">
-                        <div class="d-flex justify-content-center" style="margin-top: 25px;">
-                            <input type="submit" value="Registrar" class="btn btn-primary">
-                        </div>
+                        <table id="search_company_datatable" class="table table-bordered table-hover nowrap"
+                            style="width:100%; margin-top: 10px">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Nit</th>
+                                    <th>Nombre</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
-                    <!-- Button trigger modal -->
-                </form>
+            </div> --}}
 
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+            <input type="hidden" name="userInformation[Db_user_id]" id="Db_user_id" value="{{auth()->id()}}">
+            <div class="d-flex justify-content-center" style="margin-top: 25px;">
+                <input type="submit" value="Registrar" class="btn btn-primary">
             </div>
         </div>
+        <!-- Button trigger modal -->
+        </form>
+
     </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+    </div>
+</div>
+</div>
 </div>
 <!-- /.container-fluid -->
 <script src="{{ asset('js/admin/drive-information.js') }}" defer></script>

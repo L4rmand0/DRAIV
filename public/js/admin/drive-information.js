@@ -97,6 +97,7 @@
                         });
                     } else {
                         $(".form-dataconductores").val("");
+                        $(".error-strong").text("");
                         $("#form_create_driver_information").modal('hide');
                         $('#drive_information_datatable').DataTable().ajax.reload();
                     }
@@ -105,6 +106,7 @@
         });
 
         var fields = [
+            'delete_row',
             'DNI_id',
             'First_name',
             'Second_name',
@@ -252,10 +254,10 @@
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+            columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
             "inputTypes": [
                 {
-                    "column": 6,
+                    "column": 7,
                     "type": "list",
                     "options": [
                         { "value": enums.Education['Primaria'], "display": enums.Education['Primaria'] },
@@ -266,7 +268,7 @@
                     ]
                 },
                 {
-                    "column": 14,
+                    "column": 15,
                     "type": "list",
                     "options": [
                         { "value": enums.Civil_state['Soltero'], "display": enums.Civil_state['Soltero'] },

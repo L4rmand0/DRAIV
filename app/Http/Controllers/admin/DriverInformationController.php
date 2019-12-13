@@ -67,8 +67,8 @@ class DriverInformationController extends Controller
                 'phone' => 'required|max:255'
             ],
             [
-                'DNI_id.unique:User_information' => "La cédula ya está en uso.",
-                'E_mail_address.unique:User_information' => "El email ya está en uso."
+                'DNI_id.unique' => "Esta cédula ya está en uso.",
+                'E_mail_address.unique' => "Este email ya está en uso."
             ]
         );
 
@@ -170,29 +170,26 @@ class DriverInformationController extends Controller
             ->join('company', 'company.Company_id', '=', 'User_information.Company_id')
             ->where('User_information.Company_id', '=', $company_id)
             ->where('User_information.Operation', '!=','D')
-            ->select(
-                'User_information.DNI_id',
-                'User_information.First_name',
-                'User_information.Second_name',
-                'User_information.F_last_name',
-                'User_information.S_last_name',
-                'User_information.Gender',
-                'User_information.Education',
-                'User_information.E_mail_address',
-                'User_information.address',
-                'User_information.Country_born',
-                'User_information.City_born',
-                'User_information.City_Residence_place',
-                'User_information.Department',
-                'User_information.phone',
-                'User_information.Civil_state',
-                'User_information.Score',
-                'User_information.Db_user_id',
-                'User_information.Company_id',
-                'users.name as user',
-                'company.Name_company as company'
-            )
-            ->get();
+            ->select(DB::raw('User_information.DNI_id,
+            User_information.First_name,
+            User_information.Second_name,
+            User_information.F_last_name,
+            User_information.S_last_name,
+            IF(User_information.Gender=1,"Masculino","Femenino") as Gender,
+            User_information.Education,
+            User_information.E_mail_address,
+            User_information.address,
+            User_information.Country_born,
+            User_information.City_born,
+            User_information.City_Residence_place,
+            User_information.Department,
+            User_information.phone,
+            User_information.Civil_state,
+            User_information.Score,
+            User_information.Db_user_id,
+            User_information.Company_id,
+            users.name as user,
+            company.Name_company as company'))->get();
             $drive_information = $this->addDeleteButtonDatatable($drive_information);
         return datatables()->of($drive_information)->make(true);
     }
