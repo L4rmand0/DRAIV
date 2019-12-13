@@ -9,6 +9,14 @@
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
     $(function () {
+
+        var enums = {
+            'User_profile': {
+                'User': 'User', 'Administrator': 'Administrator', 'Evaluator': 'Evaluator'
+            }
+        }
+
+
         $("#form_user_admin").submit(function (event) {
             event.preventDefault();
             let data_form = $(this).serialize();
@@ -98,6 +106,7 @@
         var table = $('#user_datatable').DataTable({
             processing: true,
             serverSide: true,
+            pageLength: 5,
             ajax: $('#users-list-route').val(),
             columns: [
                 { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-danger" id="btn_delete_user"><span class="trash_icon"></span></button></center>' },
@@ -157,14 +166,14 @@
                         url: $("#form_user_admin").data("url-delete"),
                         data: data_delete,
                         success: function (data) {
-                            if (data.error == ""){
+                            if (data.error == "") {
                                 swal.fire(
                                     'Proceso Completado',
                                     'El usuario ha sido eliminado.',
                                     'success'
                                 );
                                 $('#user_datatable').DataTable().ajax.reload();
-                            }else{
+                            } else {
                                 swal.fire(
                                     'Ocurrió un error',
                                     'La operación no pudo completarse, por favor intente de nuevo.',
@@ -202,7 +211,18 @@
         }
 
         table.MakeCellsEditable({
-            "onUpdate": myCallbackFunction
+            "onUpdate": myCallbackFunction,
+            "inputTypes": [
+                {
+                    "column": 4,
+                    "type": "list",
+                    "options": [
+                        { "value": enums.User_profile['User'], "display": enums.User_profile['User'] },
+                        { "value": enums.User_profile['Administrator'], "display": enums.User_profile['Administrator'] },
+                        { "value": enums.User_profile['Evaluator'], "display": enums.User_profile['Evaluator'] }
+                    ]
+                }
+            ]
         });
 
     });

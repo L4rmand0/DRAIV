@@ -181,8 +181,11 @@
 
         });
 
+        // $('#drive_information_datatable tbody').on('click', 'tr #Education', function () {
+        //     alert("click");
+        // })
+
         $('#drive_information_datatable tbody').on( 'click', 'tr', function () {
-            debugger
             if ( $(this).hasClass('selected') ) {
                 $(this).removeClass('selected');
             }
@@ -194,7 +197,6 @@
         // var table = $('#user_datatable').DataTable();
 
         function myCallbackFunction(updatedCell, updatedRow, oldValue) {
-            debugger
             console.log("The new value for the cell is: " + updatedCell.data());
             if (oldValue != updatedCell.data()) {
                 dataSend = updatedRow.data();
