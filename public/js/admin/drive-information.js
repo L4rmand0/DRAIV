@@ -32,7 +32,18 @@
                 });
             }
         });
-        
+
+        $.ajax({
+            type: 'GET',
+            url: $('#Company_id').data('url'),
+            data: { 'type': 'companies' },
+            success: function (data) {
+                $('#Company_id_excel').select2({
+                    data: data
+                });
+            }
+        });
+
         $.ajax({
             type: 'GET',
             url: $('#Company_id').data('url'),
@@ -159,6 +170,28 @@
                         $(".error-strong").text("");
                         $("#form_create_driver_information").modal('hide');
                         $('#drive_information_datatable').DataTable().ajax.reload();
+                    }
+                }
+            });
+        });
+        $("#form_excel_driver_info_admin").submit(function (event) {
+            event.preventDefault();
+            var datafr = new FormData($("#form_excel_driver_info_admin")[0]);
+            $.ajax({
+                type: 'POST',
+                url: $("#form_excel_driver_info_admin").data('url'),
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: datafr,
+                success: function (data) {
+                    console.log(data);
+                    if (data.response == "ok") {
+                        swal.fire(
+                            'Información Registrada!',
+                            'El archivo ha sido subido con éxito.',
+                            'success'
+                        );
                     }
                 }
             });

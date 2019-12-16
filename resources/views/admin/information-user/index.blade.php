@@ -42,8 +42,8 @@
             data-target="#form_create_driver_information" id="modal_form_drive_info">Registrar Información</button>
     </div>
     <div class="container text-center">
-        <button class="btn btn-warning" type="button" style="margin-top: 17px;" data-toggle="modal"
-            data-target="#form_import_excel" id="modal_form_drive_info">Importar Información Masiva</button>
+        <button class="btn btn-success" type="button" style="margin-top: 17px;" data-toggle="modal"
+            data-target="#form_import_excel" id="modal_form_drive_info"><span class="excel_icon"> </span>Importar Información Masiva</button>
     </div>
     @if(Session::has('message'))
     <p>{{ Session::get('message') }}</p>
@@ -239,20 +239,26 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('driver-info.import') }}" id="form_driver_info_admin" data-url="{{ route('driver-info.store') }}"
-                    data-url-delete="{{ route('driver-info.destroy') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('driver-info.import') }}" id="form_excel_driver_info_admin"
+                    data-url="{{ route('driver-info.import') }}" data-url-delete="{{ route('driver-info.destroy') }}"
+                    enctype="multipart/form-data">
                     @csrf
                     <div class="form-card">
                         <div class="form-group">
+                            <label for="exampleFormControlSelect1">¿A cuál compañía desea cargar?</label>
+                            <select class="form-control" name="Company_id" id="Company_id_excel" required>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="file_driver_info">Importar Información de Conductores</label>
-                            <input type="file" class="form-control-file" id="file_driver_info" name="file">
+                            <input type="file" class="form-control-file" id="file_driver_info" name="file" required>
                             <div class="d-flex justify-content-center" style="margin-top: 25px;">
                                 <input type="submit" value="Registrar" class="btn btn-primary">
                             </div>
                         </div>
-                        <!-- Button trigger modal -->
+                    </div>
+                    <!-- Button trigger modal -->
                 </form>
-
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>

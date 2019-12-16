@@ -216,14 +216,12 @@ class DriverInformationController extends Controller
 
     public function import(Request $request)
     {
+        $data_insert = $request->all();
+        $data_insert['id'] = auth()->id();
         $file = $request->file('file');
-        // return response()->json(['error' => 'No se pudo eliminar el usuario']);
-        $result = Excel::import(new UsersInformationImport, $file);
+        $result = Excel::import(new UsersInformationImport($data_insert), $file);
         // $result = $this->excel->import(new UsersInformationImport, 'user_information.xlsx');
-        return back()->with('message', 'Importanción de usuarios completada');
-        // $result = $this->excel->import(new UsersInformationImport, 'user_information.xls');
-        // print_r($result);
-        // die;
+        return response()->json(['response' => 'ok']);
     }
 
 }

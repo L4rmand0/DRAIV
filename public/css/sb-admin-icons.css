@@ -56,6 +56,11 @@
 .trash_icon:before {
     font-family: FontAwesome;
     content: "\f1f8"
+
+}
+.excel_icon:before {
+    font-family: FontAwesome;
+    content: "\f1c3"
 }
 
 .icons-fa{

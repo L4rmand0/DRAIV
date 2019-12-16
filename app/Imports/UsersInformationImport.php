@@ -12,6 +12,15 @@ use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
 class UsersInformationImport implements ToModel, WithStartRow
 {
+    private $id_company;
+    private $id_user;
+
+    public function __construct($variables = false) {
+        if($variables !== false){
+            $this->id_company = $variables['Company_id'];
+            $this->id_user = $variables['id'];
+        }    
+    }
     /**
      * @param array $row
      *
@@ -37,7 +46,9 @@ class UsersInformationImport implements ToModel, WithStartRow
             'phone' => $row[10],
             'Civil_state' => $row[11],
             'Db_user_id' => $row[12],
-            'Company_id' => $row[13]
+            'Company_id' => $row[13],
+            'Db_user_id' => $this->id_user,
+            'Company_id' => $this->id_company
         ]);
         // return new UserInformation([
         //     'DNI_id' => $row['DNI_id'],
