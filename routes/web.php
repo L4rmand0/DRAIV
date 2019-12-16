@@ -49,6 +49,7 @@ Route::prefix('admin')->group(function () {
     Route::get('driver-info-list', 'admin\DriverInformationController@driveInformationList')->name('driver-info-list'); 
     Route::post('driver-info/store','admin\DriverInformationController@store')->name('driver-info.store');
     Route::post('driver-info/destroy','admin\DriverInformationController@destroy')->name('driver-info.destroy');
+    Route::post('driver-info/import','admin\DriverInformationController@import')->name('driver-info.import');
     Route::get('company-search-list', 'admin\CompanyController@getCompanies')->name('company-search-list'); 
     Route::get('company-select-list', 'admin\CompanyController@getCompaniestoSelect2')->name('company-select-list'); 
     Route::get('driver-info/admin1-select-lists', 'admin\Admin1Controller@getAdmin1toSelect2')->name('admin1-select-lists'); 

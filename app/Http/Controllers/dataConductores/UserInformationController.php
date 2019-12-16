@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\dataConductores;
 
-use App\Http\Controllers\Controller;
 use App\UserInformation;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Imports\UsersInformationImport;
 use Illuminate\Support\Facades\Validator;
+
 
 class UserInformationController extends Controller
 {
-
     /**
      * Create a new controller instance.
      *
@@ -141,4 +142,5 @@ class UserInformationController extends Controller
 
         return response()->json(['success' => 'validación correcta']);
     }
+
 }

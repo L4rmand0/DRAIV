@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class UserInformation extends Model
 {
     protected $table = 'User_information'; 
+
+    protected $guarded = [];
     
     public $timestamps = false;
     

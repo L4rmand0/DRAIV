@@ -2,24 +2,38 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
+
+// use Excel;
+use DB;
 use App\UserInformation;
 use Illuminate\Http\Request;
+// use Maatwebsite\Excel\Excel;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\UsersInformationImport;
 use Illuminate\Support\Facades\Validator;
-use DB;
+use App\Http\Controllers\dataConductores\UserInformationController;
 
 class DriverInformationController extends Controller
 {
+
+    private $excel;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    // public function __construct()
-    // {
-    //     $this->middleware('guest');
-    // }
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        // $this->excel = $excel;
+        // $this->middleware('guest');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -57,8 +71,8 @@ class DriverInformationController extends Controller
                 'First_name' => 'required|max:255',
                 'F_last_name' => 'required|max:255',
                 'S_last_name' => 'required|max:255',
-                'E_mail_address' => ['required','max:255','unique:User_information'],
-                'DNI_id' => ['required','max:255','unique:User_information'],
+                'E_mail_address' => ['required', 'max:255', 'unique:User_information'],
+                'DNI_id' => ['required', 'max:255', 'unique:User_information'],
                 'Gender' => 'required|max:255',
                 'Education' => 'required|max:255',
                 'Country_born' => 'required|max:255',
@@ -160,7 +174,7 @@ class DriverInformationController extends Controller
         $data_delete = $request->all();
         $delete = UserInformation::where('DNI_id', $data_delete['DNI_id'])->update(['Operation' => 'D']);
         if ($delete) {
-            return response()->json(['response' => 'Usuario eliminado','error'=>'']);
+            return response()->json(['response' => 'Usuario eliminado', 'error' => '']);
         } else {
             return response()->json(['error' => 'No se pudo eliminar el usuario']);
         }
@@ -175,7 +189,7 @@ class DriverInformationController extends Controller
             ->join('admin2', 'admin2.adm2_id', '=', 'User_information.Department')
             ->join('admin3', 'admin3.adm3_id', '=', 'User_information.City_born')
             ->where('User_information.Company_id', '=', $company_id)
-            ->where('User_information.Operation', '!=','D')
+            ->where('User_information.Operation', '!=', 'D')
             ->select(DB::raw('User_information.DNI_id,
             User_information.First_name,
             User_information.Second_name,
@@ -196,32 +210,20 @@ class DriverInformationController extends Controller
             User_information.Company_id,
             users.name as user,
             company.Name_company as company'))->get();
-            $drive_information = $this->addDeleteButtonDatatable($drive_information);
+        $drive_information = $this->addDeleteButtonDatatable($drive_information);
         return datatables()->of($drive_information)->make(true);
     }
 
-    //     SELECT 
-    // User_information.DNI_id,
-    // User_information.First_name,
-    // User_information.Second_name,
-    // User_information.F_last_name,
-    // User_information.S_last_name,
-    // User_information.Gender,
-    // User_information.Education,
-    // User_information.E_mail_address,
-    // User_information.address,
-    // User_information.Country_born,
-    // User_information.City_born,
-    // User_information.City_Residence_place,
-    // User_information.Department,
-    // User_information.phone,
-    // User_information.Civil_state,
-    // User_information.Score,
-    // users.name AS user, 
-    // company.Name_company AS company
-    // FROM sam.users
-    // INNER JOIN sam.User_information ON User_information.Db_user_id = users.id
-    // INNER JOIN sam.company ON company.Company_id = User_information.Company_id
-    // WHERE User_information.DNI_id = 1069731531;
+    public function import(Request $request)
+    {
+        $file = $request->file('file');
+        // return response()->json(['error' => 'No se pudo eliminar el usuario']);
+        $result = Excel::import(new UsersInformationImport, $file);
+        // $result = $this->excel->import(new UsersInformationImport, 'user_information.xlsx');
+        return back()->with('message', 'Importanción de usuarios completada');
+        // $result = $this->excel->import(new UsersInformationImport, 'user_information.xls');
+        // print_r($result);
+        // die;
+    }
 
 }

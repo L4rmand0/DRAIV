@@ -41,6 +41,13 @@
         <button class="btn btn-dark" type="button" style="margin-top: 17px;" data-toggle="modal"
             data-target="#form_create_driver_information" id="modal_form_drive_info">Registrar Información</button>
     </div>
+    <div class="container text-center">
+        <button class="btn btn-warning" type="button" style="margin-top: 17px;" data-toggle="modal"
+            data-target="#form_import_excel" id="modal_form_drive_info">Importar Información Masiva</button>
+    </div>
+    @if(Session::has('message'))
+    <p>{{ Session::get('message') }}</p>
+    @endif
 </div>
 
 <div class="modal fade" id="form_create_driver_information" tabindex="-1" role="dialog"
@@ -189,15 +196,6 @@
                                 </select>
                                 <small class="text-danger small_forms" id="small_civil_state"></small>
                             </div>
-                            {{-- <div class="col-md-6 form_select_conductores">
-                                <label for="Country_born">País de Nacimiento:</label><br>
-                                <select name="userInformation[Country_born]" class="form-control form-dataconductores"
-                                    id="Country_born" data-url="{{ route('admin1-select-lists') }}" style="width: 100%"
-                            required>
-
-                            </select>
-                            <small class="text-danger small_forms" id="small_civil_state"></small>
-                        </div> --}}
                         </div>
                         <div class="row" style="margin-top: 18px;">
 
@@ -211,42 +209,56 @@
                                 <small class="text-danger small_forms" id="small_civil_state"></small>
                             </div>
                         </div>
-                        {{-- <div class="card border-secondary">
-                            <h5 class="card-header">Buscar Compañías</h5>
-                            <div class="card-body">
-                                {{-- <input type="text" name="search_name_company" class="form-control"
-                                    id="search_name_company" placeholder="Nombre de la Compañía" style="margin-top: 10px"> --}}
-                        {{-- <input type="text" name="search_nit" class="form-control" id="search_nit"
-                                    placeholder="Nit" style="margin-top: 10px"> 
-                                <button type="button" class="btn btn-primary" style="margin-top: 10px"
-                                    id="btn_search_company"
-                                    data-url="{{ route('company-search-list') }}">Buscar</button>
-                        <table id="search_company_datatable" class="table table-bordered table-hover nowrap"
-                            style="width:100%; margin-top: 10px">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Nit</th>
-                                    <th>Nombre</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-            </div> --}}
 
-            <input type="hidden" name="userInformation[Db_user_id]" id="Db_user_id" value="{{auth()->id()}}">
-            <div class="d-flex justify-content-center" style="margin-top: 25px;">
-                <input type="submit" value="Registrar" class="btn btn-primary">
+                        <input type="hidden" name="userInformation[Db_user_id]" id="Db_user_id"
+                            value="{{auth()->id()}}">
+                        <div class="d-flex justify-content-center" style="margin-top: 25px;">
+                            <input type="submit" value="Registrar" class="btn btn-primary">
+                        </div>
+                    </div>
+                    <!-- Button trigger modal -->
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
-        <!-- Button trigger modal -->
-        </form>
+    </div>
+</div>
 
+
+<div class="modal fade" id="form_import_excel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Registrar Información de Conductor</h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ route('driver-info.import') }}" id="form_driver_info_admin" data-url="{{ route('driver-info.store') }}"
+                    data-url-delete="{{ route('driver-info.destroy') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-card">
+                        <div class="form-group">
+                            <label for="file_driver_info">Importar Información de Conductores</label>
+                            <input type="file" class="form-control-file" id="file_driver_info" name="file">
+                            <div class="d-flex justify-content-center" style="margin-top: 25px;">
+                                <input type="submit" value="Registrar" class="btn btn-primary">
+                            </div>
+                        </div>
+                        <!-- Button trigger modal -->
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
     </div>
-    <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-    </div>
-</div>
-</div>
 </div>
 <!-- /.container-fluid -->
 <script src="{{ asset('js/admin/drive-information.js') }}" defer></script>
