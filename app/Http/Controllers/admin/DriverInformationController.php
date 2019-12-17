@@ -220,7 +220,6 @@ class DriverInformationController extends Controller
         $data_insert['id'] = auth()->id();
         $file = $request->file('file');
         $result = Excel::import(new UsersInformationImport($data_insert), $file);
-        // $result = $this->excel->import(new UsersInformationImport, 'user_information.xlsx');
         return response()->json(['response' => 'ok']);
     }
 

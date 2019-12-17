@@ -2,38 +2,33 @@
 @section('content')
 <!-- Begin Page Content -->
 <div class="container">
-    <input type="hidden" name="driver-info-list-route" value="{{ route ('driver-info-list') }}"
-        id="driver-info-list-route">
     <input type="hidden" name="update-driver-info-route" value="{{ route ('driver-info.update') }}"
         id="update-driver-info-route">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Información de Conductores</h1>
     </div>
-    <table id="drive_information_datatable" class="table table-bordered table-hover nowrap" style="width:100%">
+    <table id="vehicle_datatable" class="table table-bordered table-hover nowrap" style="width:100%" data-url-list="{{ route ('vehicle-list') }}" data-url-delete="{{ route ('vehicle-admin.destroy') }}">
         <thead class="thead-dark">
             <tr>
                 <th></th>
-                <th>Cédula</th>
-                <th>Primer Nombre</th>
-                <th>Segundo Nombre</th>
-                <th>Primer Apellido</th>
-                <th>Segundo Apellido</th>
-                <th>Género</th>
-                <th>Educación</th>
-                <th>Email</th>
-                <th>Dirección</th>
-                <th>País</th>
-                <th>Ciudad</th>
-                <th>Ciudad Res</th>
-                <th>Departamento</th>
-                <th>Teléfono</th>
-                <th>Estado Civil</th>
-                <th>Puntaje</th>
-                <th>Db_user_id</th>
-                <th>Company_id</th>
-                <th>Registro User</th>
-                <th>Compañía</th>
+                <th>Placa</th>
+                <th>Tipo</th>
+                <th>Propietario</th>
+                <th>Tipo de Taxi</th>
+                <th>Número de Conductores</th>
+                <th>Fecha de Vencimiento Soat</th>
+                <th>Capacidad</th>
+                <th>Servicio</th>
+                <th>Cilindraje</th>
+                <th>Clase v</th>
+                <th>modelo</th>
+                <th>Línea</th>
+                <th>Marca</th>
+                <th>Color</th>
+                <th>Fecha de Tecnomecánica</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
             </tr>
         </thead>
     </table>
@@ -47,7 +42,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="form_create_driver_information" tabindex="-1" role="dialog"
+{{-- <div class="modal fade" id="form_create_driver_information" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -261,8 +256,8 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <!-- /.container-fluid -->
-<script src="{{ asset('js/admin/drive-information.js') }}" defer></script>
+<script src="{{ asset('js/admin/vehicle.js') }}" defer></script>
 @endsection
 <!-- End of Main Content -->

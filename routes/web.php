@@ -52,6 +52,12 @@ Route::prefix('admin')->group(function () {
     Route::post('driver-info/import','admin\DriverInformationController@import')->name('driver-info.import');
     Route::get('company-search-list', 'admin\CompanyController@getCompanies')->name('company-search-list'); 
     Route::get('company-select-list', 'admin\CompanyController@getCompaniestoSelect2')->name('company-select-list'); 
+    Route::get('driving_licence', 'admin\DrivingLicenceController@index')->name('admin.driving_licence');
+    Route::get('driving-licence-list', 'admin\DrivingLicenceController@drivingLicenceList')->name('driving-licence-list'); 
+    Route::post('driving_licence/destroy','admin\DrivingLicenceController@destroy')->name('driving_licence.destroy');
+    Route::get('vehicle', 'admin\vehicleController@index')->name('admin.vehicle');
+    Route::get('vehicle-list', 'admin\vehicleController@vehicleList')->name('vehicle-list'); 
+    Route::post('vehicle/destroy','admin\vehicleController@destroy')->name('vehicle-admin.destroy');
     Route::get('driver-info/admin1-select-lists', 'admin\Admin1Controller@getAdmin1toSelect2')->name('admin1-select-lists'); 
     Route::get('driver-info/admin2-select-lists', 'admin\Admin2Controller@getAdmin2toSelect2')->name('admin2-select-lists'); 
     Route::get('driver-info/admin3-select-lists', 'admin\Admin3Controller@getAdmin3toSelect2')->name('admin3-select-lists'); 

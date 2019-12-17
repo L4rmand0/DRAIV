@@ -111,7 +111,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    <a class="nav-link collapsed" href="{{ route('admin.driving_licence') }}" 
                         aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="drivers_info_icon icons-fa"></i>
                         <span>Licencia</span>
@@ -129,7 +129,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    <a class="nav-link collapsed" href="{{ route('admin.vehicle') }}"
                         aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="car_icon icons-fa"></i>
                         <span>Vehículo</span>
