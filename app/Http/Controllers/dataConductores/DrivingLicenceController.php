@@ -99,14 +99,13 @@ class DrivingLicenceController extends Controller
             'Expi_date' => 'required|max:255'
         ];
 
-        $cont = 1;
         $messages = [
-            'Licence_num.required' => $cont++." El campo número de licencia no puede ser vacío",
-            'Country_expedition.required' => $cont++." Se debe elegir un país de expedición",
-            'Category.required' => $cont++." Se debe elegir una categoría",
-            'State.required' => $cont++." Se debe elegir un estado",
-            'Expedition_day.required' => $cont++." Se debe elegir una fecha de expedición",
-            'Expi_date.required' => $cont++." Se debe elegir una fecha de vencimiento",
+            'Licence_num.required' => " El campo número de licencia no puede ser vacío",
+            'Country_expedition.required' => "Se debe elegir un país de expedición",
+            'Category.required' => "Se debe elegir una categoría",
+            'State.required' => "Se debe elegir un estado",
+            'Expedition_day.required' => "Se debe elegir una fecha de expedición",
+            'Expi_date.required' => "Se debe elegir una fecha de vencimiento",
         ];
 
         $validator = Validator::make($data_input, $rules, $messages);

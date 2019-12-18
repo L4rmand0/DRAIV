@@ -6,6 +6,7 @@ use App\DrivingLicence;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class DrivingLicenceController extends Controller
@@ -38,7 +39,45 @@ class DrivingLicenceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data_input = $request->get('drivingLicence');
+        // print_r($data_input);
+        // die;
+
+        $validator = Validator::make(
+            $data_input,
+            [
+                'Licence_num' => 'required|max:255',
+                'Country_expedition' => 'required|max:255',
+                'Category' => 'required|max:255',
+                'State' => 'required|max:255',
+                'Expedition_day' => 'required|max:255',
+                'Expi_date' => 'required|max:255',
+                'User_information_DNI_id' => ['required','max:255','unique:Driving_licence']
+            ],
+            [
+                'User_information_DNI_id.unique' => "Este conductor ya tiene una licencia."
+            ]
+        );
+        $errors = $validator->errors()->getMessages();
+        if (!empty($errors)) {
+            return response()->json(['errors' => $errors]);
+        } else {
+            $driving_licence = DrivingLicence::create([
+                'User_information_DNI_id' => $data_input['User_information_DNI_id'],
+                'Licence_num' => $data_input['Licence_num'],
+                'Country_expedition' =>  $data_input['Country_expedition'],
+                'Category' => $data_input['Category'],
+                'State' => $data_input['State'],
+                'Expedition_day' => $data_input['Expedition_day'],
+                'Expi_date' => $data_input['Expi_date']
+            ]);
+            if ($driving_licence->Licence_num > 0) {
+                return response()->json([
+                    'success' => 'Información registrada.',
+                    'errors' => $errors
+                ]);
+            }
+        }
     }
 
     /**
@@ -100,7 +139,7 @@ class DrivingLicenceController extends Controller
             ->where('User_information.Company_id', '=', $company_id)
             ->where('Driving_licence.Operation', '!=', 'D')
             ->select(DB::raw(
-               'Driving_licence.Licence_id,
+                'Driving_licence.Licence_id,
                 Driving_licence.Licence_num,
                 Driving_licence.Country_expedition,
                 Driving_licence.Category,

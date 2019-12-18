@@ -214,6 +214,47 @@ class DriverInformationController extends Controller
         return datatables()->of($drive_information)->make(true);
     }
 
+    public function getDriveInformationtoSelect2(Request $request)
+    {
+        $company_id = Auth::user()->Company_id;
+        $admin2 = DB::table('User_information')
+            ->select(
+                'User_information.DNI_id'
+            )->where('User_information.Company_id', '=', $company_id)
+            ->get()->toArray();
+        return response()->json($this->createSelect2($admin2));
+    }
+
+    public function createSelect2($query_data)
+    {
+        $data[0]['id']="";
+        $data[0]['text']="Seleccionar";
+        foreach ($query_data as $key => $value) {
+            $data[$key+1]['id'] = $value->DNI_id;
+            $data[$key+1]['text'] = $value->DNI_id;
+        }
+        return $data;
+    }
+
+    public function getNameDriver(Request $request){
+        $company_id = Auth::user()->Company_id;
+        $dni_id = $request->all()['user_info_id'];
+        $name_driver = DB::table('User_information')
+        ->select(
+            'User_information.DNI_id',
+            'User_information.First_name',
+            'User_information.Second_name',
+            'User_information.F_last_name',
+            'User_information.S_last_name'
+        )->where('User_information.DNI_id', '=', $dni_id)
+        ->where('User_information.Company_id', '=', $company_id)
+        ->get()->toArray();
+        foreach ($name_driver as $value) {
+            $name_id = $value->First_name." ".$value->Second_name." ".$value->F_last_name." ".$value->S_last_name;
+        }
+        return response()->json(['name' => $name_id]);
+    }
+
     public function import(Request $request)
     {
         $data_insert = $request->all();

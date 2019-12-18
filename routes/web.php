@@ -50,11 +50,14 @@ Route::prefix('admin')->group(function () {
     Route::post('driver-info/store','admin\DriverInformationController@store')->name('driver-info.store');
     Route::post('driver-info/destroy','admin\DriverInformationController@destroy')->name('driver-info.destroy');
     Route::post('driver-info/import','admin\DriverInformationController@import')->name('driver-info.import');
+    Route::get('driver-info/drivers-select-lists', 'admin\DriverInformationController@getDriveInformationtoSelect2')->name('drivers-select-lists'); 
+    Route::get('driver-info/name-driver', 'admin\DriverInformationController@getNameDriver')->name('drivers-get-name'); 
     Route::get('company-search-list', 'admin\CompanyController@getCompanies')->name('company-search-list'); 
     Route::get('company-select-list', 'admin\CompanyController@getCompaniestoSelect2')->name('company-select-list'); 
     Route::get('driving_licence', 'admin\DrivingLicenceController@index')->name('admin.driving_licence');
     Route::get('driving-licence-list', 'admin\DrivingLicenceController@drivingLicenceList')->name('driving-licence-list'); 
     Route::post('driving_licence/destroy','admin\DrivingLicenceController@destroy')->name('driving_licence.destroy');
+    Route::post('driving_licence/store','admin\DrivingLicenceController@store')->name('driving_licence.store');
     Route::get('vehicle', 'admin\vehicleController@index')->name('admin.vehicle');
     Route::get('vehicle-list', 'admin\vehicleController@vehicleList')->name('vehicle-list'); 
     Route::post('vehicle/destroy','admin\vehicleController@destroy')->name('vehicle-admin.destroy');

@@ -49,14 +49,13 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="" id="form_driver_info_admin" data-url="{{ route('driver-info.store') }}"
-                    data-url-delete="{{ route('driver-info.destroy') }}">
+                <form method="POST" action="" id="form_driving_licence_admin" data-url="{{ route('driving_licence.store') }}">
                     @csrf
                     <div class="form-card">
                         <div class="row mt-1">
                             <div class="col-md-6">
                                 <input type="text" name="drivingLicence[Licence_num]"
-                                    class="form-control form-dataconductores" placeholder="Número de licencia" />
+                                    class="form-control form-dataconductores" placeholder="Número de licencia" required/>
                                 <small class="text-danger small_forms" id="small_licence_num"></small>
                             </div>
                         </div>
@@ -64,7 +63,7 @@
                             <div class="col-md-6 form_select_conductores">
                                 <label for="Country_expedition">País</label>
                                 <select name="drivingLicence[Country_expedition]" class="form-control"
-                                    id="Country_expedition">
+                                    id="Country_expedition" style="width: 100%; height: 100%;" required>
                                     <option value="">Seleccionar</option>
                                     <option value="Colombia">Colombia</option>
                                     <option value="Venezuela">Venezuela</option>
@@ -78,7 +77,7 @@
                             </div>
                             <div class="col-md-6 form_select_conductores">
                                 <label for="Category">Categoría</label>
-                                <select name="drivingLicence[Category]" class="form-control" id="Category">
+                                <select name="drivingLicence[Category]" class="form-control" id="Category" style="width: 100%; height: 100%;" required>
                                     <option value="">Seleccionar</option>
                                     <option value="A1">A1</option>
                                     <option value="A2">A2</option>
@@ -95,7 +94,7 @@
                         <div class="row mt-2">
                             <div class="col-md-6 form_select_conductores">
                                 <label for="State">Estado</label>
-                                <select name="drivingLicence[State]" class="form-control" id="State">
+                                <select name="drivingLicence[State]" class="form-control" id="State" style="width: 100%; height: 100%;" required>
                                     <option value="">Seleccionar</option>
                                     <option value="Vigente">Vigente</option>
                                     <option value="Vencida">Vencida</option>
@@ -105,24 +104,26 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="State">Conductor</label>
-                                <select name="drivingLicence[User_information_DNI_id]" class="form-control" id="User_information_DNI_id">
+                                <select name="drivingLicence[User_information_DNI_id]" class="form-control" id="User_information_DNI_id" style="width: 100%; height: 100%;" data-url="{{ route('drivers-select-lists') }}" data-url-name="{{ route('drivers-get-name') }}" required>
                                 </select>
+                                <label class="text-info font-weight-bold" id="name_driver" style="margin-top: 12px;"></label>
+                                <span class="error_admin input_user_admin" role="alert" id="User_information_DNI_id-error">
+                                    <strong id="User_information_DNI_id-error-strong" class="error-strong"> </strong>
+                                </span>
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-6 form_select_conductores">
                                 <label for="Expedition_day">Fecha de expedición*</label>
-                                <input type="text" name="drivingLicence[Expedition_day]" id="Expedition_day" />
+                                <input type="text" class="form-control" name="drivingLicence[Expedition_day]" id="Expedition_day" readonly required/>
                                 <small class="text-danger small_forms" id="small_expidition_day"></small>
                             </div>
                             <div class="col-6 form_select_conductores">
                                 <label for="">Fecha de vencimiento*</label>
-                                <input type="text" name="drivingLicence[Expi_date]" id="Expi_date" />
+                                <input type="text" class="form-control" name="drivingLicence[Expi_date]" id="Expi_date" readonly required/>
                                 <small class="text-danger small_forms" id="small_expi_date"></small>
                             </div>
                         </div>
-                        <input type="hidden" name="userInformation[Db_user_id]" id="Db_user_id"
-                            value="{{auth()->id()}}">
                         <div class="d-flex justify-content-center" style="margin-top: 25px;">
                             <input type="submit" value="Registrar" class="btn btn-primary">
                         </div>
@@ -150,8 +151,7 @@
             </div>
             <div class="modal-body">
                 <form method="POST" action="{{ route('driver-info.import') }}" id="form_excel_driver_info_admin"
-                    data-url="{{ route('driver-info.import') }}" data-url-delete="{{ route('driver-info.destroy') }}"
-                    enctype="multipart/form-data">
+                    data-url="{{ route('driver-info.import') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="form-card">
                         <div class="form-group">

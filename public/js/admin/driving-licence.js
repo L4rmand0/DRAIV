@@ -22,49 +22,42 @@
         //     }
         // });
 
+        //Datepickers del formulario de licencia
         $("#Expi_date").datepicker({ dateFormat: 'yy-mm-dd' });
+
         $("#Expedition_day").datepicker({ dateFormat: 'yy-mm-dd' });
+
+        // Selects del formulario de registro de licencias
+        $("#Category").select2();
+        $("#Country_expedition").select2();
+        $("#State").select2();
 
         $.ajax({
             type: 'GET',
-            url: $('#Department').data('url'),
+            url: $('#User_information_DNI_id').data('url'),
             data: { 'type': 'select_admin2' },
             success: function (data) {
-                $('#Department').select2({
+                $('#User_information_DNI_id').select2({
                     data: data
                 });
             }
         });
 
-        // $('#Company_id').select2({
-        //     ajax: {
-        //         url: $('#Company_id').data('url'),
-        //         dataType: 'json'
-        //     }
-        // });
+        $('#User_information_DNI_id').on('change', function () {
+            let user_info_id = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: $('#User_information_DNI_id').data('url-name'),
+                data: { 'type': 'select_admin2', 'user_info_id': user_info_id },
+                success: function (data) {
+                    $("#name_driver").text(data.name);
+                }
+            });
+        })
 
-        // $('#City_born').select2({
-        //     ajax: {
-        //         url: $('#City_born').data('url'),
-        //         dataType: 'json'
-        //     }
-        // });
-
-
-        // $('#Company_id').select2({
-        //     ajax: {
-        //         url: $('#Company_id').data('url'),
-        //         dataType: 'json'
-        //     }
-        // });
 
         $("#btn_search_company").on("click", function () {
             $(this).hide();
-            // let company = $("#search_name_company").val();
-            // let nit_company = $("#search_nit").val();
-            // data_send = { 'company': company, 'nit_company': nit_company }
-
-            // DELETE
             table_search = $("#search_company_datatable").DataTable({
                 processing: true,
                 serverSide: true,
@@ -75,12 +68,6 @@
                     { data: 'company', name: 'company' },
                 ],
                 language: language_dt,
-                // columnDefs: [{
-                //     targets: '_all',
-                //     createdCell: function (td, cellData, rowData, row, col) {
-                //         $(td).attr("id", fields[col])
-                //     }
-                // }]
             });
 
 
@@ -90,21 +77,6 @@
                 $("#Company_id").val(data['nit']);
             });
 
-
-
-            // $('#button').click( function () {
-            //     table.row('.selected').remove().draw( false );
-            // } );
-
-            // $.ajax({
-            //     type: 'POST',
-            //     url: $(this).data('url'),
-            //     data: data_send,
-            //     success: function (data) {
-            //         console.log(data);
-
-            //     }
-            // });
         });
 
 
@@ -114,35 +86,44 @@
             $("#btn_search_company").show();
         });
 
-        $("#form_driver_info_admin").submit(function (event) {
+        $("#form_driving_licence_admin").submit(function (event) {
             event.preventDefault();
             let data_form = $(this).serialize();
-            $.ajax({
-                type: 'POST',
-                url: $("#form_driver_info_admin").data('url'),
-                data: data_form,
-                success: function (data) {
-                    console.log(data);
-                    if (Object.keys(data.errors).length > 0) {
-                        let arr_errores = data.errors;
-                        console.log(arr_errores);
-                        $.each(arr_errores, function (index, value) {
-                            let selector = "#" + index + "-error";
-                            let selector_strong = "#" + index + "-error-strong";
-                            $(selector).show();
-                            $(selector_strong).text(value[0]);
-                            // $(selector).show();
-                            // $(selector).text(value);
-                            // error_founds = error_founds + 1;
-                        });
-                    } else {
-                        $(".form-dataconductores").val("");
-                        $(".error-strong").text("");
-                        $("#form_create_driver_information").modal('hide');
-                        $('#drive_information_datatable').DataTable().ajax.reload();
+            let fecha_vencimiento = $("#Expi_date").datepicker('getDate');
+            let fecha_expedicion = $("#Expedition_day").datepicker('getDate');
+            debugger
+            if (fecha_expedicion > fecha_vencimiento) {
+                swal.fire(
+                    'Fechas Incorrectas!',
+                    'La fecha de expedición no puede ser mayor a la fecha de vencimiento.',
+                    'warning'
+                );
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    url: $("#form_driving_licence_admin").data('url'),
+                    data: data_form,
+                    success: function (data) {
+                        console.log(data);
+
+                        if (Object.keys(data.errors).length > 0) {
+                            let arr_errores = data.errors;
+                            console.log(arr_errores);
+                            $.each(arr_errores, function (index, value) {
+                                let selector = "#" + index + "-error";
+                                let selector_strong = "#" + index + "-error-strong";
+                                $(selector).show();
+                                $(selector_strong).text(value[0]);
+                            });
+                        } else {
+                            $(".form-dataconductores").val("");
+                            $(".error-strong").text("");
+                            $("#form_create_driving_licence").modal('hide');
+                            $('#driving_licence_datatable').DataTable().ajax.reload();
+                        }
                     }
-                }
-            });
+                });
+            }
         });
         $("#form_excel_driver_info_admin").submit(function (event) {
             event.preventDefault();

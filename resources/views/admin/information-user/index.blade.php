@@ -179,7 +179,6 @@
                                 <select name="userInformation[Company_id]" class="form-control form-dataconductores"
                                     id="Company_id" data-url="{{ route('company-select-list') }}" style="width: 100%"
                                     required>
-
                                 </select>
                                 <small class="text-danger small_forms" id="small_civil_state"></small>
                             </div>
