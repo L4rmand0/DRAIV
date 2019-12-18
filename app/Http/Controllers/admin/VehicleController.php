@@ -44,18 +44,21 @@ class VehicleController extends Controller
         $validator = Validator::make(
             $data_input,
             [
-                'Plate_id' => 'required|max:255',
+                'Plate_id' => ['required','max:255','unique:Vehicle'],
                 'Type_V' => 'required|max:255',
                 'Owner_V' => 'required|max:255',
                 'Soat_expi_date' => 'required|max:255',
-                'Capacity' => 'required|max:255'
+                'Capacity' => 'required|max:255',
+                'User_information_DNI_id' => ['required','max:255','unique:Vehicle']
             ],
             [
                 'Plate_id.required' => "La placa no puede ser vacía",
                 'Type_V.required' => "Se debe elegir el tipo de vehiculo",
                 'Owner_V.required' => "Se debe elegir una opción",
                 'Soat_expi_date.required' => "Se debe seleccionar una fecha",
-                'Capacity.required' => "Se debe seleccionar la capacidad"
+                'Capacity.required' => "Se debe seleccionar la capacidad",
+                'User_information_DNI_id.unique' => "Este conductor ya tiene un vehículo.",
+                'Plate_id.unique' => "Esta placa ya está registrada."
             ]
         );
         $errors = $validator->errors()->getMessages();

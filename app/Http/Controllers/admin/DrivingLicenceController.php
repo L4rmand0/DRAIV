@@ -111,7 +111,7 @@ class DrivingLicenceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $now = date("Y-m-d H:i:s");
     }
 
     /**
