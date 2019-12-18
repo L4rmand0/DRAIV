@@ -103,7 +103,7 @@
                                 <small class="text-danger small_forms" id="small_state"></small>
                             </div>
                             <div class="col-md-6">
-                                <label for="State">Conductor</label>
+                                <label for="State">C.C Conductor</label>
                                 <select name="drivingLicence[User_information_DNI_id]" class="form-control" id="User_information_DNI_id" style="width: 100%; height: 100%;" data-url="{{ route('drivers-select-lists') }}" data-url-name="{{ route('drivers-get-name') }}" required>
                                 </select>
                                 <label class="text-info font-weight-bold" id="name_driver" style="margin-top: 12px;"></label>

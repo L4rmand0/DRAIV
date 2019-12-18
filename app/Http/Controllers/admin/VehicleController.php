@@ -5,6 +5,7 @@ use DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Vehicle;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class VehicleController extends Controller
@@ -37,7 +38,55 @@ class VehicleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data_input = $request->get('vehicle');
+        // print_r($data_input);
+        // die;
+        $validator = Validator::make(
+            $data_input,
+            [
+                'Plate_id' => 'required|max:255',
+                'Type_V' => 'required|max:255',
+                'Owner_V' => 'required|max:255',
+                'Soat_expi_date' => 'required|max:255',
+                'Capacity' => 'required|max:255'
+            ],
+            [
+                'Plate_id.required' => "La placa no puede ser vacía",
+                'Type_V.required' => "Se debe elegir el tipo de vehiculo",
+                'Owner_V.required' => "Se debe elegir una opción",
+                'Soat_expi_date.required' => "Se debe seleccionar una fecha",
+                'Capacity.required' => "Se debe seleccionar la capacidad"
+            ]
+        );
+        $errors = $validator->errors()->getMessages();
+        if (!empty($errors)) {
+            return response()->json(['errors' => $errors]);
+        } else {
+            $vehicle = Vehicle::create([
+                'User_information_DNI_id' => $data_input['User_information_DNI_id'],
+                'Plate_id' => $data_input['Plate_id'],
+                'Type_V' =>  $data_input['Type_V'],
+                'Owner_V' =>  $data_input['Owner_V'] != "" ? $data_input['Owner_V'] : 0 ,
+                'Taxi_type' => $data_input['Taxi_type'] != "" ? $data_input['Taxi_type'] : "NA",
+                'taxi_Number_of_drivers' => $data_input['taxi_Number_of_drivers'] != "" ? $data_input['taxi_Number_of_drivers'] : 1,
+                'Soat_expi_date' => $data_input['Soat_expi_date'],
+                'Capacity' => $data_input['Capacity'],
+                'Service' => $data_input['Service'] != "" ? $data_input['Service'] :"Otros",
+                'Cylindrical_cc' => $data_input['Cylindrical_cc'] != "" ? $data_input['Cylindrical_cc'] :1,
+                'V_class' => $data_input['V_class'] != "" ? $data_input['V_class'] : "",
+                'Model' => $data_input['Model'] != "" ? $data_input['Model'] : "",
+                'Line' => $data_input['Line'] != "" ? $data_input['Line'] : "",
+                'Brand' => $data_input['Brand'] != "" ? $data_input['Brand'] : "",
+                'Color' => $data_input['Color'] != "" ? $data_input['Color'] : "",
+                'technomechanical_date' => $data_input['technomechanical_date'] != "" ? $data_input['technomechanical_date'] : "0000-00-00",
+            ]);
+            if ($vehicle->Plate_id > 0) {
+                return response()->json([
+                    'success' => 'Información registrada.',
+                    'errors' => $errors
+                ]);
+            }
+        }
     }
 
     /**

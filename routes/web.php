@@ -60,6 +60,7 @@ Route::prefix('admin')->group(function () {
     Route::post('driving_licence/store','admin\DrivingLicenceController@store')->name('driving_licence.store');
     Route::get('vehicle', 'admin\vehicleController@index')->name('admin.vehicle');
     Route::get('vehicle-list', 'admin\vehicleController@vehicleList')->name('vehicle-list'); 
+    Route::post('vehicle/store','admin\vehicleController@store')->name('admin.vehicle.store');
     Route::post('vehicle/destroy','admin\vehicleController@destroy')->name('vehicle-admin.destroy');
     Route::get('driver-info/admin1-select-lists', 'admin\Admin1Controller@getAdmin1toSelect2')->name('admin1-select-lists'); 
     Route::get('driver-info/admin2-select-lists', 'admin\Admin2Controller@getAdmin2toSelect2')->name('admin2-select-lists'); 

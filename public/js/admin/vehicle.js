@@ -11,6 +11,32 @@
     $(function () {
         var table_search;
 
+        //Selects de vehículos
+        $("#Type_V").select2();
+        $("#Owner_V").select2();
+        $("#Taxi_type").select2();
+        $("#taxi_Number_of_drivers").select2();
+        $("#Capacity").select2();
+        $("#Service").select2();
+
+
+
+        //Datepickers del formulario de vehículos
+        $("#Soat_expi_date").datepicker({ dateFormat: 'yy-mm-dd' });
+        $("#technomechanical_date").datepicker({ dateFormat: 'yy-mm-dd' });
+
+
+        $.ajax({
+            type: 'GET',
+            url: $('#User_information_DNI_id').data('url'),
+            data: { 'type': 'select_admin2' },
+            success: function (data) {
+                $('#User_information_DNI_id').select2({
+                    data: data
+                });
+            }
+        });
+
         // $.ajax({
         //     type: 'GET',
         //     url: $('#Country_born').data('url'),
@@ -22,49 +48,6 @@
         //     }
         // });
 
-        $.ajax({
-            type: 'GET',
-            url: $('#Department').data('url'),
-            data: { 'type': 'select_admin2' },
-            success: function (data) {
-                $('#Department').select2({
-                    data: data
-                });
-            }
-        });
-
-        $.ajax({
-            type: 'GET',
-            url: $('#Company_id').data('url'),
-            data: { 'type': 'companies' },
-            success: function (data) {
-                $('#Company_id_excel').select2({
-                    data: data
-                });
-            }
-        });
-
-        $.ajax({
-            type: 'GET',
-            url: $('#Company_id').data('url'),
-            data: { 'type': 'companies' },
-            success: function (data) {
-                $('#Company_id').select2({
-                    data: data
-                });
-            }
-        });
-
-        $.ajax({
-            type: 'GET',
-            url: $('#City_born').data('url'),
-            data: { 'type': 'admin3' },
-            success: function (data) {
-                $('#City_born').select2({
-                    data: data
-                });
-            }
-        });
 
         // $('#Company_id').select2({
         //     ajax: {
@@ -144,12 +127,12 @@
             $("#btn_search_company").show();
         });
 
-        $("#form_driver_info_admin").submit(function (event) {
+        $("#form_vehicle_admin").submit(function (event) {
             event.preventDefault();
             let data_form = $(this).serialize();
             $.ajax({
                 type: 'POST',
-                url: $("#form_driver_info_admin").data('url'),
+                url: $("#form_vehicle_admin").data('url'),
                 data: data_form,
                 success: function (data) {
                     console.log(data);
@@ -168,8 +151,8 @@
                     } else {
                         $(".form-dataconductores").val("");
                         $(".error-strong").text("");
-                        $("#form_create_driver_information").modal('hide');
-                        $('#drive_information_datatable').DataTable().ajax.reload();
+                        $("#form_create_vehicle").modal('hide');
+                        $('#vehicle_datatable').DataTable().ajax.reload();
                     }
                 }
             });
