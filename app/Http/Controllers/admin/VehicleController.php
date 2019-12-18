@@ -121,9 +121,18 @@ class VehicleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $now = date("Y-m-d H:i:s");
+        $data_updated = $request->all();
+        $field = $data_updated['fieldch'];
+        $value = $data_updated['valuech'];
+        $response = Vehicle::where('Plate_id', $data_updated['Plate_id'])->update([$field => $value, 'Operation' => 'U', 'Date_operation' => $now]);
+        if ($response) {
+            return response()->json(['response' => 'Información actualizada']);
+        } else {
+            return response()->json(['error' => 'No se pudo actualizar la información']);
+        }
     }
 
     /**

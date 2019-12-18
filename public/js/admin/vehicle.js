@@ -182,32 +182,31 @@
 
         var fields = [
             'delete_row',
-            'DNI_id',
+            'Plate_id',
+            'Type_V',
+            'Owner_V',
+            'Taxi_type',
+            'taxi_Number_of_drivers',
+            'Soat_expi_date',
+            'Capacity',
+            'Service',
+            'Cylindrical_cc',
+            'V_class',
+            'Model',
+            'Line',
+            'Brand',
+            'Color',
+            'technomechanical_date',
             'First_name',
-            'Second_name',
-            'F_last_name',
-            'S_last_name',
-            'Gender',
-            'Education',
-            'E_mail_address',
-            'address',
-            'Country_born',
-            'City_born',
-            'City_Residence_place',
-            'Department',
-            'phone',
-            'Civil_state',
-            'Score',
-            'Db_user_id',
-            'Company_id'
+            'S_last_name'
         ];
 
         var enums = {
-            'Education': {
-                'Primaria': 'Primaria', 'Secundaria': 'Secundaria', 'Pregrado': 'Pregrado', 'Postgrado': 'Postgrado', 'Sin informacion': 'Sin informacion'
+            'Service': {
+                'Particular': 'Particular', 'Transporte_mercancia': 'Transporte_mercancia', 'Transporte_publico': 'Transporte_publico', 'Otros': 'Otros'
             },
-            'Civil_state': {
-                'Soltero': 'Soltero', 'Casado': 'Casado', 'Separado': 'Separado', 'Divorciado': 'Divorciado', 'Viudo': 'Viudo', 'Union libre': 'Union libre', 'Sin información': 'Sin información'
+            'Taxi_type': {
+                'Taxi amarillo': 'Taxi amarillo', 'Taxi blanco': 'Taxi blanco', 'NA': 'NA'
             }
         }
 
@@ -309,7 +308,7 @@
                 dataSend.fieldch = updatedCell.nodes()[0].id;
                 $.ajax({
                     type: 'POST',
-                    url: $("#update-driver-info-route").val(),
+                    url: $("#update-vehicle-route").val(),
                     data: dataSend,
                     success: function (data) {
                         if (Object.keys(data.response).length === 0)
@@ -326,34 +325,29 @@
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            // columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 17, 18],
-            // "inputTypes": [
-            //     {
-            //         "column": 7,
-            //         "type": "list",
-            //         "options": [
-            //             { "value": enums.Education['Primaria'], "display": enums.Education['Primaria'] },
-            //             { "value": enums.Education['Secundaria'], "display": enums.Education['Secundaria'] },
-            //             { "value": enums.Education['Pregrado'], "display": enums.Education['Pregrado'] },
-            //             { "value": enums.Education['Postgrado'], "display": enums.Education['Postgrado'] },
-            //             { "value": enums.Education['Sin información'], "display": enums.Education['Sin información'] },
-            //         ]
-            //     },
-            //     {
-            //         "column": 15,
-            //         "type": "list",
-            //         "options": [
-            //             { "value": enums.Civil_state['Soltero'], "display": enums.Civil_state['Soltero'] },
-            //             { "value": enums.Civil_state['Casado'], "display": enums.Civil_state['Casado'] },
-            //             { "value": enums.Civil_state['Separado'], "display": enums.Civil_state['Separado'] },
-            //             { "value": enums.Civil_state['Divorciado'], "display": enums.Civil_state['Divorciado'] },
-            //             { "value": enums.Civil_state['Viudo'], "display": enums.Civil_state['Viudo'] },
-            //             { "value": enums.Civil_state['Union libre'], "display": enums.Civil_state['Union libre'] },
-            //             { "value": enums.Civil_state['Sin información'], "display": enums.Civil_state['Sin información'] },
-            //         ]
-            //     }
+            columns: [2,3,4,5,6,7,8,9,10,11,12,13,14,15],
+            "inputTypes": [
+                {
+                    "column": 8,
+                    "type": "list",
+                    "options": [
+                        { "value": enums.Service['Particular'], "display": enums.Service['Particular'] },
+                        { "value": enums.Service['Transporte_mercancia'], "display": enums.Service['Transporte_mercancia'] },
+                        { "value": enums.Service['Transporte_publico'], "display": enums.Service['Transporte_publico'] },
+                        { "value": enums.Service['Otros'], "display": enums.Service['Otros'] }
+                    ]
+                },
+                {
+                    "column": 4,
+                    "type": "list",
+                    "options": [
+                        { "value": enums.Taxi_type['Taxi amarillo'], "display": enums.Taxi_type['Taxi amarillo'] },
+                        { "value": enums.Taxi_type['Taxi blanco'], "display": enums.Taxi_type['Taxi blanco'] },
+                        { "value": enums.Taxi_type['NA'], "display": enums.Taxi_type['NA'] }
+                    ]
+                }
 
-            // ]
+             ]
         });
 
         // $('#user_datatable').on('click', 'tbody td', function () {

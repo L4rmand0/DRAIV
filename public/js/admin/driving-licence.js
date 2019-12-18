@@ -150,24 +150,16 @@
 
         var fields = [
             'delete_row',
-            'DNI_id',
+            'Licence_id',
+            'Licence_num',
+            'User_information_DNI_id',
             'First_name',
-            'Second_name',
             'F_last_name',
-            'S_last_name',
-            'Gender',
-            'Education',
-            'E_mail_address',
-            'address',
-            'Country_born',
-            'City_born',
-            'City_Residence_place',
-            'Department',
-            'phone',
-            'Civil_state',
-            'Score',
-            'Db_user_id',
-            'Company_id'
+            'Country_expedition',
+            'Category',
+            'State',
+            'Expedition_day',
+            'Expi_date'
         ];
 
         var enums = {
@@ -270,7 +262,7 @@
                 dataSend.fieldch = updatedCell.nodes()[0].id;
                 $.ajax({
                     type: 'POST',
-                    url: $("#update-driver-info-route").val(),
+                    url: $("#update-driving-licence-route").val(),
                     data: dataSend,
                     success: function (data) {
                         if (Object.keys(data.response).length === 0)

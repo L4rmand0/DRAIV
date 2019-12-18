@@ -40,9 +40,6 @@ class DrivingLicenceController extends Controller
     public function store(Request $request)
     {
         $data_input = $request->get('drivingLicence');
-        // print_r($data_input);
-        // die;
-
         $validator = Validator::make(
             $data_input,
             [
@@ -99,7 +96,7 @@ class DrivingLicenceController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -109,9 +106,18 @@ class DrivingLicenceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         $now = date("Y-m-d H:i:s");
+        $data_updated = $request->all();
+        $field = $data_updated['fieldch'];
+        $value = $data_updated['valuech'];
+        $response = DrivingLicence::where('Licence_id', $data_updated['Licence_id'])->update([$field => $value, 'Operation' => 'U', 'Date_operation' => $now]);
+        if ($response) {
+            return response()->json(['response' => 'Información actualizada']);
+        } else {
+            return response()->json(['error' => 'No se pudo actualizar la información']);
+        }
     }
 
     /**

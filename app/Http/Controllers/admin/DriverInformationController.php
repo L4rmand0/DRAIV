@@ -150,12 +150,11 @@ class DriverInformationController extends Controller
      */
     public function update(Request $request)
     {
+        $now = date("Y-m-d H:i:s");
         $data_updated = $request->all();
-        // print_r($data_updated);
-        // die;
         $field = $data_updated['fieldch'];
         $value = $data_updated['valuech'];
-        $response = UserInformation::where('DNI_id', $data_updated['DNI_id'])->update([$field => $value]);
+        $response = UserInformation::where('DNI_id', $data_updated['DNI_id'])->update([$field => $value, 'Operation' => 'U', 'Date_operation' => $now]);
         if ($response) {
             return response()->json(['response' => 'Información actualizada']);
         } else {
@@ -227,30 +226,31 @@ class DriverInformationController extends Controller
 
     public function createSelect2($query_data)
     {
-        $data[0]['id']="";
-        $data[0]['text']="Seleccionar";
+        $data[0]['id'] = "";
+        $data[0]['text'] = "Seleccionar";
         foreach ($query_data as $key => $value) {
-            $data[$key+1]['id'] = $value->DNI_id;
-            $data[$key+1]['text'] = $value->DNI_id;
+            $data[$key + 1]['id'] = $value->DNI_id;
+            $data[$key + 1]['text'] = $value->DNI_id;
         }
         return $data;
     }
 
-    public function getNameDriver(Request $request){
+    public function getNameDriver(Request $request)
+    {
         $company_id = Auth::user()->Company_id;
         $dni_id = $request->all()['user_info_id'];
         $name_driver = DB::table('User_information')
-        ->select(
-            'User_information.DNI_id',
-            'User_information.First_name',
-            'User_information.Second_name',
-            'User_information.F_last_name',
-            'User_information.S_last_name'
-        )->where('User_information.DNI_id', '=', $dni_id)
-        ->where('User_information.Company_id', '=', $company_id)
-        ->get()->toArray();
+            ->select(
+                'User_information.DNI_id',
+                'User_information.First_name',
+                'User_information.Second_name',
+                'User_information.F_last_name',
+                'User_information.S_last_name'
+            )->where('User_information.DNI_id', '=', $dni_id)
+            ->where('User_information.Company_id', '=', $company_id)
+            ->get()->toArray();
         foreach ($name_driver as $value) {
-            $name_id = $value->First_name." ".$value->Second_name." ".$value->F_last_name." ".$value->S_last_name;
+            $name_id = $value->First_name . " " . $value->Second_name . " " . $value->F_last_name . " " . $value->S_last_name;
         }
         return response()->json(['name' => $name_id]);
     }
@@ -263,5 +263,4 @@ class DriverInformationController extends Controller
         $result = Excel::import(new UsersInformationImport($data_insert), $file);
         return response()->json(['response' => 'ok']);
     }
-
 }
