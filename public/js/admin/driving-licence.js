@@ -27,6 +27,16 @@
 
         $("#Expedition_day_form").datepicker({ dateFormat: 'yy-mm-dd' });
 
+        $.ajax({
+            type: 'GET',
+            url: $('#company-select-list-route').val(),
+            data: { 'type': 'companies' },
+            success: function (data) {
+                $('#Company_id_excel').select2({
+                    data: data
+                });
+            }
+        });
         // Selects del formulario de registro de licencias
         $("#Category").select2();
         $("#Country_expedition").select2();
@@ -125,12 +135,12 @@
                 });
             }
         });
-        $("#form_excel_driver_info_admin").submit(function (event) {
+        $("#form_excel_driving_licence_admin").submit(function (event) {
             event.preventDefault();
-            var datafr = new FormData($("#form_excel_driver_info_admin")[0]);
+            var datafr = new FormData($("#form_excel_driving_licence_admin")[0]);
             $.ajax({
                 type: 'POST',
-                url: $("#form_excel_driver_info_admin").data('url'),
+                url: $("#form_excel_driving_licence_admin").data('url'),
                 cache: false,
                 contentType: false,
                 processData: false,

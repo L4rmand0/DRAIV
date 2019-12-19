@@ -6,6 +6,8 @@ use App\DrivingLicence;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Imports\DrivingLicenceImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
@@ -145,7 +147,7 @@ class DrivingLicenceController extends Controller
             ->where('User_information.Company_id', '=', $company_id)
             ->where('Driving_licence.Operation', '!=', 'D')
             ->select(DB::raw(
-                'Driving_licence.Licence_id,
+               'Driving_licence.Licence_id,
                 Driving_licence.Licence_num,
                 Driving_licence.Country_expedition,
                 Driving_licence.Category,
@@ -158,6 +160,15 @@ class DrivingLicenceController extends Controller
             ))->get();
         $driving_licence = $this->addDeleteButtonDatatable($driving_licence);
         return datatables()->of($driving_licence)->make(true);
+    }
+
+    public function import(Request $request)
+    {
+        $data_insert = $request->all();
+        $data_insert['id'] = auth()->id();
+        $file = $request->file('file');
+        $result = Excel::import(new DrivingLicenceImport(), $file);
+        return response()->json(['response' => 'ok']);
     }
 
     //     SELECT 

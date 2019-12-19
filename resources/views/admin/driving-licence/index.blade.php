@@ -4,6 +4,8 @@
 <div class="container">
     <input type="hidden" name="update-driving-licence-route" value="{{ route ('driving_licence.update') }}"
         id="update-driving-licence-route">
+    <input type="hidden" name="company-select-list-route" value="{{ route('company-select-list') }}"
+        id="company-select-list-route">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Licencia de Conducir</h1>
@@ -150,8 +152,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('driver-info.import') }}" id="form_excel_driver_info_admin"
-                    data-url="{{ route('driver-info.import') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('driver-info.import') }}" id="form_excel_driving_licence_admin"
+                    data-url="{{ route('driving_licence.import') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="form-card">
                         <div class="form-group">
