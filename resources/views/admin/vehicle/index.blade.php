@@ -4,6 +4,8 @@
 <div class="container">
     <input type="hidden" name="update-vehicle-route" value="{{ route ('admin.vehicle.update') }}"
         id="update-vehicle-route">
+    <input type="hidden" name="company-select-list-route" value="{{ route('company-select-list') }}"
+        id="company-select-list-route">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Información de Vehículos</h1>
@@ -55,23 +57,30 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="" id="form_vehicle_admin" data-url="{{ route('admin.vehicle.store') }}" data-url-delete="{{ route('driver-info.destroy') }}">
+                <form method="POST" action="" id="form_vehicle_admin" data-url="{{ route('admin.vehicle.store') }}"
+                    data-url-delete="{{ route('driver-info.destroy') }}">
                     @csrf
                     <div class="form-card">
                         <div class="row mt-1">
                             <div class="col-md-6">
                                 <label for=""></label>
-                                <input class="form-control" type="text" name="vehicle[Plate_id]" placeholder="Placa" id="Plate_id_form" />
+                                <input class="form-control" type="text" name="vehicle[Plate_id]" placeholder="Placa"
+                                    id="Plate_id_form" />
                                 <span class="error_admin input_user_admin" role="alert" id="Plate_id-error">
                                     <strong id="Plate_id-error-strong" class="error-strong"> </strong>
                                 </span>
                             </div>
                             <div class="col-md-6">
                                 <label for="State">C.C Conductor</label>
-                                <select name="vehicle[User_information_DNI_id]" class="form-control" id="User_information_DNI_id" style="width: 100%; height: 100%;" data-url="{{ route('drivers-select-lists') }}" data-url-name="{{ route('drivers-get-name') }}" required>
+                                <select name="vehicle[User_information_DNI_id]" class="form-control"
+                                    id="User_information_DNI_id" style="width: 100%; height: 100%;"
+                                    data-url="{{ route('drivers-select-lists') }}"
+                                    data-url-name="{{ route('drivers-get-name') }}" required>
                                 </select>
-                                <label class="text-info font-weight-bold" id="name_driver" style="margin-top: 12px;"></label>
-                                <span class="error_admin input_user_admin" role="alert" id="User_information_DNI_id-error">
+                                <label class="text-info font-weight-bold" id="name_driver"
+                                    style="margin-top: 12px;"></label>
+                                <span class="error_admin input_user_admin" role="alert"
+                                    id="User_information_DNI_id-error">
                                     <strong id="User_information_DNI_id-error-strong" class="error-strong"> </strong>
                                 </span>
                             </div>
@@ -212,45 +221,45 @@
         </div>
     </div>
 </div>
-{{-- 
+
 <div class="modal fade" id="form_import_excel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel">Registrar Información de Conductor</h4>
+                <h4 class="modal-title" id="exampleModalLabel">Registor Masivo de Vehículos</h4>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('driver-info.import') }}" id="form_excel_driver_info_admin"
-data-url="{{ route('driver-info.import') }}" data-url-delete="{{ route('driver-info.destroy') }}"
-enctype="multipart/form-data">
-@csrf
-<div class="form-card">
-    <div class="form-group">
-        <label for="exampleFormControlSelect1">¿A cuál compañía desea cargar?</label>
-        <select class="form-control" name="Company_id" id="Company_id_excel" required>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="file_driver_info">Importar Información de Conductores</label>
-        <input type="file" class="form-control-file" id="file_driver_info" name="file" required>
-        <div class="d-flex justify-content-center" style="margin-top: 25px;">
-            <input type="submit" value="Registrar" class="btn btn-primary">
+                <form method="POST" action="{{ route('admin.vehicle.import') }}" id="form_excel_vehicle_admin"
+                    data-url="{{ route('admin.vehicle.import') }}" data-url-delete="{{ route('driver-info.destroy') }}"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-card">
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">¿A cuál compañía desea cargar?</label>
+                            <select class="form-control" name="Company_id" id="Company_id_excel" required>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="file_driver_info">Importar Información de Vehículos</label>
+                            <input type="file" class="form-control-file" id="file_driver_info" name="file" required>
+                            <div class="d-flex justify-content-center" style="margin-top: 25px;">
+                                <input type="submit" value="Registrar" class="btn btn-primary">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Button trigger modal -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+            </div>
         </div>
     </div>
 </div>
-<!-- Button trigger modal -->
-</form>
-</div>
-<div class="modal-footer">
-    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-</div>
-</div>
-</div>
-</div> --}}
 <!-- /.container-fluid -->
 <script src="{{ asset('js/admin/vehicle.js') }}" defer></script>
 @endsection

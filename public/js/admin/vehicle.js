@@ -37,39 +37,16 @@
             }
         });
 
-        // $.ajax({
-        //     type: 'GET',
-        //     url: $('#Country_born').data('url'),
-        //     data: { 'type': 'select_admin1' },
-        //     success: function (data) {
-        //         $('#Country_born').select2({
-        //             data: data
-        //         });
-        //     }
-        // });
-
-
-        // $('#Company_id').select2({
-        //     ajax: {
-        //         url: $('#Company_id').data('url'),
-        //         dataType: 'json'
-        //     }
-        // });
-
-        // $('#City_born').select2({
-        //     ajax: {
-        //         url: $('#City_born').data('url'),
-        //         dataType: 'json'
-        //     }
-        // });
-
-
-        // $('#Company_id').select2({
-        //     ajax: {
-        //         url: $('#Company_id').data('url'),
-        //         dataType: 'json'
-        //     }
-        // });
+        $.ajax({
+            type: 'GET',
+            url: $('#company-select-list-route').val(),
+            data: { 'type': 'companies' },
+            success: function (data) {
+                $('#Company_id_excel').select2({
+                    data: data
+                });
+            }
+        });
 
         $("#btn_search_company").on("click", function () {
             $(this).hide();
@@ -172,12 +149,12 @@
                 }
             });
         });
-        $("#form_excel_driver_info_admin").submit(function (event) {
+        $("#form_excel_vehicle_admin").submit(function (event) {
             event.preventDefault();
-            var datafr = new FormData($("#form_excel_driver_info_admin")[0]);
+            var datafr = new FormData($("#form_excel_vehicle_admin")[0]);
             $.ajax({
                 type: 'POST',
-                url: $("#form_excel_driver_info_admin").data('url'),
+                url: $("#form_excel_vehicle_admin").data('url'),
                 cache: false,
                 contentType: false,
                 processData: false,
