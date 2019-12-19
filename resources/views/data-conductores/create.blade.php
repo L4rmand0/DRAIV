@@ -264,7 +264,7 @@
                                     <div class="row row_form_input_vehicle">
                                         <div class="col-md-8">
                                             <label for="Soat_expi_date">Fecha de vencimiento de soat*</label>
-                                            <input type="date" name="vehicle[Soat_expi_date]" id="Soat_expi_date" />
+                                            <input type="date" name="vehicle[Soat_expi_date]" id="user_Soat_expi_date" />
                                             <small class="text-danger small_forms" id="small_soat_expi_date"></small>
                                         </div>
                                     </div>

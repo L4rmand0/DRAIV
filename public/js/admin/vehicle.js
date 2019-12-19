@@ -22,8 +22,8 @@
 
 
         //Datepickers del formulario de vehículos
-        $("#Soat_expi_date").datepicker({ dateFormat: 'yy-mm-dd' });
-        $("#technomechanical_date").datepicker({ dateFormat: 'yy-mm-dd' });
+        $("#Soat_expi_date_form").datepicker({ dateFormat: 'yy-mm-dd' });
+        $("#technomechanical_date_form").datepicker({ dateFormat: 'yy-mm-dd' });
 
 
         $.ajax({

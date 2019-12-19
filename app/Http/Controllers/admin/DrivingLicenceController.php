@@ -68,7 +68,7 @@ class DrivingLicenceController extends Controller
                 'Expedition_day' => $data_input['Expedition_day'],
                 'Expi_date' => $data_input['Expi_date']
             ]);
-            if ($driving_licence->Licence_num > 0) {
+            if ($driving_licence->Licence_num != "") {
                 return response()->json([
                     'success' => 'Información registrada.',
                     'errors' => $errors

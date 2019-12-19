@@ -123,15 +123,15 @@
                         </div>
                         <div class="row row_form_input_vehicle mt-2">
                             <div class="col-md-6">
-                                <label for="Soat_expi_date">Fecha de vencimiento de soat*</label>
+                                <label for="Soat_expi_date_form">Fecha de vencimiento de soat*</label>
                                 <input type="date" class="form-control" name="vehicle[Soat_expi_date]"
-                                    id="Soat_expi_date" readonly />
+                                    id="Soat_expi_date_form" readonly />
                                 <small class="text-danger small_forms" id="small_soat_expi_date"></small>
                             </div>
                             <div class="col-md-6">
-                                <label for="technomechanical_date">Fecha de Tecnomecánica</label>
+                                <label for="technomechanical_date_form">Fecha de Tecnomecánica</label>
                                 <input type="date" class="form-control" name="vehicle[technomechanical_date]"
-                                    id="technomechanical_date" readonly />
+                                    id="technomechanical_date_form" readonly />
                                 <small class="text-danger small_forms" id="small_capacity"></small>
                             </div>
                         </div>

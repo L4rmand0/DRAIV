@@ -114,13 +114,13 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col-6 form_select_conductores">
-                                <label for="Expedition_day">Fecha de expedición*</label>
-                                <input type="text" class="form-control" name="drivingLicence[Expedition_day]" id="Expedition_day" readonly required/>
+                                <label for="Expedition_day_form">Fecha de expedición*</label>
+                                <input type="text" class="form-control" name="drivingLicence[Expedition_day]" id="Expedition_day_form" readonly required/>
                                 <small class="text-danger small_forms" id="small_expidition_day"></small>
                             </div>
                             <div class="col-6 form_select_conductores">
-                                <label for="">Fecha de vencimiento*</label>
-                                <input type="text" class="form-control" name="drivingLicence[Expi_date]" id="Expi_date" readonly required/>
+                                <label for="Expi_date_form">Fecha de vencimiento*</label>
+                                <input type="text" class="form-control" name="drivingLicence[Expi_date]" id="Expi_date_form" readonly required/>
                                 <small class="text-danger small_forms" id="small_expi_date"></small>
                             </div>
                         </div>

@@ -23,9 +23,9 @@
         // });
 
         //Datepickers del formulario de licencia
-        $("#Expi_date").datepicker({ dateFormat: 'yy-mm-dd' });
+        $("#Expi_date_form").datepicker({ dateFormat: 'yy-mm-dd' });
 
-        $("#Expedition_day").datepicker({ dateFormat: 'yy-mm-dd' });
+        $("#Expedition_day_form").datepicker({ dateFormat: 'yy-mm-dd' });
 
         // Selects del formulario de registro de licencias
         $("#Category").select2();
@@ -53,6 +53,7 @@
                     $("#name_driver").text(data.name);
                 }
             });
+            $(".error-strong").text("");
         })
 
 
@@ -89,10 +90,9 @@
         $("#form_driving_licence_admin").submit(function (event) {
             event.preventDefault();
             let data_form = $(this).serialize();
-            let fecha_vencimiento = $("#Expi_date").datepicker('getDate');
-            let fecha_expedicion = $("#Expedition_day").datepicker('getDate');
-            debugger
-            if (fecha_expedicion > fecha_vencimiento) {
+            let fecha_vencimiento = $("#Expi_date_form").datepicker('getDate');
+            let fecha_expedicion = $("#Expedition_day_form").datepicker('getDate');
+            if (fecha_expedicion >= fecha_vencimiento) {
                 swal.fire(
                     'Fechas Incorrectas!',
                     'La fecha de expedición no puede ser mayor a la fecha de vencimiento.',
