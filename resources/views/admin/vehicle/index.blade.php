@@ -61,7 +61,7 @@
                         <div class="row mt-1">
                             <div class="col-md-6">
                                 <label for=""></label>
-                                <input class="form-control" type="text" name="vehicle[Plate_id]" placeholder="Placa" />
+                                <input class="form-control" type="text" name="vehicle[Plate_id]" placeholder="Placa" id="Plate_id_form" />
                                 <span class="error_admin input_user_admin" role="alert" id="Plate_id-error">
                                     <strong id="Plate_id-error-strong" class="error-strong"> </strong>
                                 </span>

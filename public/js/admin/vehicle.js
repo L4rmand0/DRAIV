@@ -121,7 +121,22 @@
         });
 
 
+        $("#Plate_id_form").on('change', function(){
+            $(".error-strong").text("");
+        });
 
+        $('#User_information_DNI_id').on('change', function () {
+            let user_info_id = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: $('#User_information_DNI_id').data('url-name'),
+                data: { 'type': 'select_admin2', 'user_info_id': user_info_id },
+                success: function (data) {
+                    $("#name_driver").text(data.name);
+                }
+            });
+            $(".error-strong").text("");
+        })
 
         $("#modal_form_drive_info").on("click", function () {
             $("#btn_search_company").show();

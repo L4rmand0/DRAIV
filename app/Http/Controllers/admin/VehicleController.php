@@ -83,7 +83,7 @@ class VehicleController extends Controller
                 'Color' => $data_input['Color'] != "" ? $data_input['Color'] : "",
                 'technomechanical_date' => $data_input['technomechanical_date'] != "" ? $data_input['technomechanical_date'] : "0000-00-00",
             ]);
-            if ($vehicle->Plate_id > 0) {
+            if ($vehicle->Plate_id != "") {
                 return response()->json([
                     'success' => 'Información registrada.',
                     'errors' => $errors
