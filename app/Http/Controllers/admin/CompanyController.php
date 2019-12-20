@@ -89,10 +89,10 @@ class CompanyController extends Controller
         $nit = $request['nit_company'];
 
         $companies = DB::table('company')
-            ->where('company.Company_id', 'like', '%' . $nit . '%')
+            ->where('company.company_id', 'like', '%' . $nit . '%')
             ->select(
-                'company.Company_id AS nit',
-                'company.Name_company AS company'
+                'company.company_id AS nit',
+                'company.name_company AS company'
             )
             ->get();
         // $queries = DB::getQueryLog();
@@ -103,8 +103,8 @@ class CompanyController extends Controller
     {
         $companies = DB::table('company')
             ->select(
-                'company.Company_id AS nit',
-                'company.Name_company AS company'
+                'company.company_id AS nit',
+                'company.name_company AS company'
             )
             ->get()->toArray();
         return response()->json($this->createSelect2($companies));

@@ -4,8 +4,9 @@ namespace App\Http\Controllers\admin;
 
 
 // use Excel;
+
+use App\DriverInformation;
 use DB;
-use App\UserInformation;
 use Illuminate\Http\Request;
 // use Maatwebsite\Excel\Excel;
 use App\Http\Controllers\Controller;
@@ -62,29 +63,29 @@ class DriverInformationController extends Controller
      */
     public function store(Request $request)
     {
-        $data_input = $request->all()['userInformation'];
+        $data_input = $request->all()['driverInformation'];
         // print_r($data_input);
         // die;
         $validator = Validator::make(
             $data_input,
             [
-                'First_name' => 'required|max:255',
-                'F_last_name' => 'required|max:255',
-                'S_last_name' => 'required|max:255',
-                'E_mail_address' => ['required', 'max:255', 'unique:User_information'],
-                'DNI_id' => ['required', 'max:255', 'unique:User_information'],
-                'Gender' => 'required|max:255',
-                'Education' => 'required|max:255',
-                'Country_born' => 'required|max:255',
-                'City_born' => 'required|max:255',
-                'Department' => 'required|max:255',
-                'Civil_state' => 'required|max:255',
+                'first_name' => 'required|max:255',
+                'f_last_name' => 'required|max:255',
+                's_last_name' => 'required|max:255',
+                'e_mail_address' => ['required', 'max:255', 'unique:driver_information'],
+                'dni_id' => ['required', 'max:255', 'unique:driver_information'],
+                'gender' => 'required|max:255',
+                'education' => 'required|max:255',
+                'country_born' => 'required|max:255',
+                'city_born' => 'required|max:255',
+                'department' => 'required|max:255',
+                'civil_state' => 'required|max:255',
                 'address' => 'required|max:255',
                 'phone' => 'required|max:255'
             ],
             [
-                'DNI_id.unique' => "Esta cédula ya está en uso.",
-                'E_mail_address.unique' => "Este email ya está en uso."
+                'dni_id.unique' => "Esta cédula ya está en uso.",
+                'e_mail_address.unique' => "Este email ya está en uso."
             ]
         );
 
@@ -92,25 +93,25 @@ class DriverInformationController extends Controller
         if (!empty($errors)) {
             return response()->json(['errors' => $errors]);
         } else {
-            $user_information = UserInformation::create([
-                'DNI_id' => $data_input['DNI_id'],
-                'First_name' => $data_input['First_name'],
-                'Second_name' =>  $data_input['Second_name'] != "" ? $data_input['Second_name'] : "",
-                'F_last_name' => $data_input['F_last_name'],
-                'S_last_name' => $data_input['S_last_name'],
-                'E_mail_address' => $data_input['E_mail_address'],
-                'Gender' => $data_input['Gender'],
-                'Education' => $data_input['Education'],
-                'Country_born' => $data_input['Country_born'],
-                'City_born' => $data_input['City_born'],
-                'Department' => $data_input['Department'],
-                'Civil_state' => $data_input['Civil_state'],
+            $user_information = DriverInformation::create([
+                'dni_id' => $data_input['dni_id'],
+                'first_name' => $data_input['first_name'],
+                'second_name' =>  $data_input['second_name'] != "" ? $data_input['second_name'] : "",
+                'f_last_name' => $data_input['f_last_name'],
+                's_last_name' => $data_input['s_last_name'],
+                'e_mail_address' => $data_input['e_mail_address'],
+                'gender' => $data_input['gender'],
+                'education' => $data_input['education'],
+                'country_born' => $data_input['country_born'],
+                'city_born' => $data_input['city_born'],
+                'department' => $data_input['department'],
+                'civil_state' => $data_input['civil_state'],
                 'address' => $data_input['address'],
                 'phone' => $data_input['phone'],
-                'Db_user_id' => $data_input['Db_user_id'],
-                'Company_id' => $data_input['Company_id']
+                'db_user_id' => $data_input['db_user_id'],
+                'company_id' => $data_input['company_id']
             ]);
-            if ($user_information->DNI_id > 0) {
+            if ($user_information->dni_id > 0) {
                 return response()->json([
                     'success' => 'Información registrada.',
                     'errors' => $errors
@@ -154,7 +155,7 @@ class DriverInformationController extends Controller
         $data_updated = $request->all();
         $field = $data_updated['fieldch'];
         $value = $data_updated['valuech'];
-        $response = UserInformation::where('DNI_id', $data_updated['DNI_id'])->update([$field => $value, 'Operation' => 'U', 'Date_operation' => $now]);
+        $response = DriverInformation::where('dni_id', $data_updated['dni_id'])->update([$field => $value, 'operation' => 'U', 'date_operation' => $now]);
         if ($response) {
             return response()->json(['response' => 'Información actualizada']);
         } else {
@@ -171,7 +172,7 @@ class DriverInformationController extends Controller
     public function destroy(Request $request)
     {
         $data_delete = $request->all();
-        $delete = UserInformation::where('DNI_id', $data_delete['DNI_id'])->update(['Operation' => 'D']);
+        $delete = DriverInformation::where('dni_id', $data_delete['dni_id'])->update(['operation' => 'D']);
         if ($delete) {
             return response()->json(['response' => 'Usuario eliminado', 'error' => '']);
         } else {
@@ -181,32 +182,33 @@ class DriverInformationController extends Controller
 
     public function driveInformationList()
     {
-        $company_id = Auth::user()->Company_id;
-        $drive_information = DB::table('User_information')
-            ->join('users', 'User_information.Db_user_id', '=', 'users.id')
-            ->join('company', 'company.Company_id', '=', 'User_information.Company_id')
-            ->join('admin2', 'admin2.adm2_id', '=', 'User_information.Department')
-            ->join('admin3', 'admin3.adm3_id', '=', 'User_information.City_born')
-            ->where('User_information.Company_id', '=', $company_id)
-            ->where('User_information.Operation', '!=', 'D')
-            ->select(DB::raw('User_information.DNI_id,
-            User_information.First_name,
-            User_information.Second_name,
-            User_information.F_last_name,
-            User_information.S_last_name,
-            IF(User_information.Gender=1,"Masculino","Femenino") as Gender,
-            User_information.Education,
-            User_information.E_mail_address,
-            User_information.address,
-            User_information.Country_born,
-            admin3.name AS City_born,
-            User_information.City_Residence_place,
-            admin2.name AS Department,
-            User_information.phone,
-            User_information.Civil_state,
-            User_information.Score,
-            User_information.Db_user_id,
-            User_information.Company_id,
+        $company_id = Auth::user()->company_id;
+        $drive_information = DB::table('driver_information')
+            ->join('users', 'driver_information.Db_user_id', '=', 'users.id')
+            ->join('company', 'company.Company_id', '=', 'driver_information.company_id')
+            ->join('admin2', 'admin2.adm2_id', '=', 'driver_information.department')
+            ->join('admin3', 'admin3.adm3_id', '=', 'driver_information.city_born')
+            ->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.operation', '!=', 'D')
+            ->select(DB::raw(
+           'driver_information.dni_id,
+            driver_information.first_name,
+            driver_information.second_name,
+            driver_information.f_last_name,
+            driver_information.s_last_name,
+            IF(driver_information.gender=1,"Masculino","Femenino") as gender,
+            driver_information.education,
+            driver_information.e_mail_address,
+            driver_information.address,
+            driver_information.country_born,
+            admin3.name AS city_born,
+            driver_information.city_residence_place,
+            admin2.name AS department,
+            driver_information.phone,
+            driver_information.civil_state,
+            driver_information.score,
+            driver_information.db_user_id,
+            driver_information.company_id,
             users.name as user,
             company.Name_company as company'))->get();
         $drive_information = $this->addDeleteButtonDatatable($drive_information);
@@ -215,11 +217,11 @@ class DriverInformationController extends Controller
 
     public function getDriveInformationtoSelect2(Request $request)
     {
-        $company_id = Auth::user()->Company_id;
-        $admin2 = DB::table('User_information')
+        $company_id = Auth::user()->company_id;
+        $admin2 = DB::table('driver_information')
             ->select(
-                'User_information.DNI_id'
-            )->where('User_information.Company_id', '=', $company_id)
+                'driver_information.dni_id'
+            )->where('driver_information.company_id', '=', $company_id)
             ->get()->toArray();
         return response()->json($this->createSelect2($admin2));
     }
@@ -229,28 +231,28 @@ class DriverInformationController extends Controller
         $data[0]['id'] = "";
         $data[0]['text'] = "Seleccionar";
         foreach ($query_data as $key => $value) {
-            $data[$key + 1]['id'] = $value->DNI_id;
-            $data[$key + 1]['text'] = $value->DNI_id;
+            $data[$key + 1]['id'] = $value->dni_id;
+            $data[$key + 1]['text'] = $value->dni_id;
         }
         return $data;
     }
 
     public function getNameDriver(Request $request)
     {
-        $company_id = Auth::user()->Company_id;
+        $company_id = Auth::user()->company_id;
         $dni_id = $request->all()['user_info_id'];
-        $name_driver = DB::table('User_information')
+        $name_driver = DB::table('driver_information')
             ->select(
-                'User_information.DNI_id',
-                'User_information.First_name',
-                'User_information.Second_name',
-                'User_information.F_last_name',
-                'User_information.S_last_name'
-            )->where('User_information.DNI_id', '=', $dni_id)
-            ->where('User_information.Company_id', '=', $company_id)
+                'driver_information.dni_id',
+                'driver_information.first_name',
+                'driver_information.second_name',
+                'driver_information.f_last_name',
+                'driver_information.s_last_name'
+            )->where('driver_information.dni_id', '=', $dni_id)
+            ->where('driver_information.company_id', '=', $company_id)
             ->get()->toArray();
         foreach ($name_driver as $value) {
-            $name_id = $value->First_name . " " . $value->Second_name . " " . $value->F_last_name . " " . $value->S_last_name;
+            $name_id = $value->first_name . " " . $value->second_name . " " . $value->f_last_name . " " . $value->s_last_name;
         }
         return response()->json(['name' => $name_id]);
     }

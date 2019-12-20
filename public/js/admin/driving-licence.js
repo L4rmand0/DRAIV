@@ -23,41 +23,41 @@
         // });
 
         //Datepickers del formulario de licencia
-        $("#Expi_date_form").datepicker({ dateFormat: 'yy-mm-dd' });
+        $("#expi_date_form").datepicker({ dateFormat: 'yy-mm-dd' });
 
-        $("#Expedition_day_form").datepicker({ dateFormat: 'yy-mm-dd' });
+        $("#expedition_day_form").datepicker({ dateFormat: 'yy-mm-dd' });
 
         $.ajax({
             type: 'GET',
             url: $('#company-select-list-route').val(),
             data: { 'type': 'companies' },
             success: function (data) {
-                $('#Company_id_excel').select2({
+                $('#company_id_excel').select2({
                     data: data
                 });
             }
         });
         // Selects del formulario de registro de licencias
-        $("#Category").select2();
-        $("#Country_expedition").select2();
-        $("#State").select2();
+        $("#category").select2();
+        $("#country_expedition").select2();
+        $("#state").select2();
 
         $.ajax({
             type: 'GET',
-            url: $('#User_information_DNI_id').data('url'),
+            url: $('#driver_information_dni_id').data('url'),
             data: { 'type': 'select_admin2' },
             success: function (data) {
-                $('#User_information_DNI_id').select2({
+                $('#driver_information_dni_id').select2({
                     data: data
                 });
             }
         });
 
-        $('#User_information_DNI_id').on('change', function () {
+        $('#driver_information_dni_id').on('change', function () {
             let user_info_id = $(this).val();
             $.ajax({
                 type: 'GET',
-                url: $('#User_information_DNI_id').data('url-name'),
+                url: $('#driver_information_dni_id').data('url-name'),
                 data: { 'type': 'select_admin2', 'user_info_id': user_info_id },
                 success: function (data) {
                     $("#name_driver").text(data.name);
@@ -85,7 +85,7 @@
             // DELETE
             $('#search_company_datatable tbody').on('click', 'tr', function () {
                 var data = table_search.row(this).data();
-                $("#Company_id").val(data['nit']);
+                $("#company_id").val(data['nit']);
             });
 
         });
@@ -100,8 +100,8 @@
         $("#form_driving_licence_admin").submit(function (event) {
             event.preventDefault();
             let data_form = $(this).serialize();
-            let fecha_vencimiento = $("#Expi_date_form").datepicker('getDate');
-            let fecha_expedicion = $("#Expedition_day_form").datepicker('getDate');
+            let fecha_vencimiento = $("#expi_date_form").datepicker('getDate');
+            let fecha_expedicion = $("#expedition_day_form").datepicker('getDate');
             if (fecha_expedicion >= fecha_vencimiento) {
                 swal.fire(
                     'Fechas Incorrectas!',
@@ -160,16 +160,16 @@
 
         var fields = [
             'delete_row',
-            'Licence_id',
-            'Licence_num',
-            'User_information_DNI_id',
-            'First_name',
-            'F_last_name',
-            'Country_expedition',
-            'Category',
-            'State',
-            'Expedition_day',
-            'Expi_date'
+            'licence_id',
+            'licence_num',
+            'user_information_DNI_id',
+            'first_name',
+            'f_last_name',
+            'country_expedition',
+            'category',
+            'state',
+            'expedition_day',
+            'expi_date'
         ];
 
         var enums = {
@@ -189,16 +189,16 @@
             ajax: $('#driving_licence_datatable').data('url-list'),
             columns: [
                 { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-danger" id="btn_delete_driving_licence"><span class="trash_icon"></span></button></center>' },
-                { data: 'Licence_id', name: 'Licence_id', "visible": false },
-                { data: 'Licence_num', name: 'Licence_num' },
-                { data: 'User_information_DNI_id', name: 'User_information_DNI_id', "visible": false },
-                { data: 'First_name', name: 'First_name' },
-                { data: 'F_last_name', name: 'F_last_name' },
-                { data: 'Country_expedition', name: 'Country_expedition' },
-                { data: 'Category', name: 'Category' },
-                { data: 'State', name: 'State' },
-                { data: 'Expedition_day', name: 'Expedition_day' },
-                { data: 'Expi_date', name: 'Expi_date' },
+                { data: 'licence_id', name: 'licence_id', "visible": false },
+                { data: 'licence_num', name: 'licence_num' },
+                { data: 'driver_information_dni_id', name: 'driver_information_dni_id', "visible": false },
+                { data: 'first_name', name: 'first_name' },
+                { data: 'f_last_name', name: 'f_last_name' },
+                { data: 'country_expedition', name: 'country_expedition' },
+                { data: 'category', name: 'category' },
+                { data: 'state', name: 'state' },
+                { data: 'expedition_day', name: 'expedition_day' },
+                { data: 'expi_date', name: 'expi_date' },
             ],
             language: language_dt,
 

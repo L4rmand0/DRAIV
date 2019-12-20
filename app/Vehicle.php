@@ -6,26 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class Vehicle extends Model
 {
-    protected $table = 'Vehicle'; 
+    protected $table = 'vehicle'; 
     
     public $timestamps = false;
     
     protected $fillable = [
-        'User_information_DNI_id',
-        'Plate_id', 
-        'Type_V', 
-        'Owner_V', 
-        'Taxi_type',
+        'driver_information_dni_id',
+        'plate_id', 
+        'type_v', 
+        'owner_v', 
+        'taxi_type',
         'taxi_Number_of_drivers',
-        'Soat_expi_date',
-        'Capacity',
-        'Service',
-        'Cylindrical_cc',
-        'V_class',
-        'Model',
-        'Line',
-        'Brand',
-        'Color',
+        'soat_expi_date',
+        'capacity',
+        'service',
+        'cylindrical_cc',
+        'v_class',
+        'model',
+        'line',
+        'brand',
+        'color',
         'technomechanical_date'
     ];
 }

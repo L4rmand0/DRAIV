@@ -24,10 +24,10 @@
 
         $.ajax({
             type: 'GET',
-            url: $('#Department').data('url'),
+            url: $('#department').data('url'),
             data: { 'type': 'select_admin2' },
             success: function (data) {
-                $('#Department').select2({
+                $('#department').select2({
                     data: data
                 });
             }
@@ -35,10 +35,10 @@
 
         $.ajax({
             type: 'GET',
-            url: $('#Company_id').data('url'),
+            url: $('#company_id').data('url'),
             data: { 'type': 'companies' },
             success: function (data) {
-                $('#Company_id_excel').select2({
+                $('#company_id_excel').select2({
                     data: data
                 });
             }
@@ -46,10 +46,10 @@
 
         $.ajax({
             type: 'GET',
-            url: $('#Company_id').data('url'),
+            url: $('#company_id').data('url'),
             data: { 'type': 'companies' },
             success: function (data) {
-                $('#Company_id').select2({
+                $('#company_id').select2({
                     data: data
                 });
             }
@@ -57,10 +57,10 @@
 
         $.ajax({
             type: 'GET',
-            url: $('#City_born').data('url'),
+            url: $('#city_born').data('url'),
             data: { 'type': 'admin3' },
             success: function (data) {
-                $('#City_born').select2({
+                $('#city_born').select2({
                     data: data
                 });
             }
@@ -236,24 +236,24 @@
             ajax: $('#driver-info-list-route').val(),
             columns: [
                 { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-danger" id="btn_delete_drive_info"><span class="trash_icon"></span></button></center>' },
-                { data: 'DNI_id', name: 'DNI_id' },
-                { data: 'First_name', name: 'First_name' },
-                { data: 'Second_name', name: 'Second_name' },
-                { data: 'F_last_name', name: 'F_last_name' },
-                { data: 'S_last_name', name: 'S_last_name' },
-                { data: 'Gender', name: 'Gender' },
-                { data: 'Education', name: 'Education' },
-                { data: 'E_mail_address', name: 'E_mail_address' },
+                { data: 'dni_id', name: 'dni_id' },
+                { data: 'first_name', name: 'first_name' },
+                { data: 'second_name', name: 'second_name' },
+                { data: 'f_last_name', name: 'f_last_name' },
+                { data: 's_last_name', name: 's_last_name' },
+                { data: 'gender', name: 'gender' },
+                { data: 'education', name: 'education' },
+                { data: 'e_mail_address', name: 'e_mail_address' },
                 { data: 'address', name: 'address' },
-                { data: 'Country_born', name: 'Country_born' },
-                { data: 'City_born', name: 'City_born' },
-                { data: 'City_Residence_place', name: 'City_Residence_place' },
-                { data: 'Department', name: 'Department' },
+                { data: 'country_born', name: 'country_born' },
+                { data: 'city_born', name: 'city_born' },
+                { data: 'city_residence_place', name: 'city_residence_place' },
+                { data: 'department', name: 'department' },
                 { data: 'phone', name: 'phone' },
-                { data: 'Civil_state', name: 'Civil_state' },
-                { data: 'Score', name: 'Score' },
-                { data: 'Db_user_id', name: 'Db_user_id', "visible": false },
-                { data: 'Company_id', name: 'Company_id', "visible": false },
+                { data: 'civil_state', name: 'civil_state' },
+                { data: 'score', name: 'score' },
+                { data: 'db_user_id', name: 'db_user_id', "visible": false },
+                { data: 'company_id', name: 'company_id', "visible": false },
                 { data: 'user', name: 'user' },
                 { data: 'company', name: 'company' },
             ],

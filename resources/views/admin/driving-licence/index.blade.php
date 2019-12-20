@@ -17,7 +17,7 @@
                 <th></th>
                 <th>Licence_id</th>
                 <th>Número de Licencia</th>
-                <th>User_information_DNI_id</th>
+                <th>driver_information_dni_id</th>
                 <th>Nombre</th>
                 <th>Apellido</th>
                 <th>País de Expedición</th>
@@ -56,16 +56,15 @@
                     <div class="form-card">
                         <div class="row mt-1">
                             <div class="col-md-6">
-                                <input type="text" name="drivingLicence[Licence_num]"
+                                <input type="text" name="drivingLicence[licence_num]"
                                     class="form-control form-dataconductores" placeholder="Número de licencia" required/>
-                                <small class="text-danger small_forms" id="small_licence_num"></small>
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-6 form_select_conductores">
-                                <label for="Country_expedition">País</label>
-                                <select name="drivingLicence[Country_expedition]" class="form-control"
-                                    id="Country_expedition" style="width: 100%; height: 100%;" required>
+                                <label for="country_expedition">País</label>
+                                <select name="drivingLicence[country_expedition]" class="form-control"
+                                    id="country_expedition" style="width: 100%; height: 100%;" required>
                                     <option value="">Seleccionar</option>
                                     <option value="Colombia">Colombia</option>
                                     <option value="Venezuela">Venezuela</option>
@@ -75,11 +74,10 @@
                                     <option value="Bolivia">Bolivia</option>
                                     <option value="Otro">Otro</option>
                                 </select>
-                                <small class="text-danger small_forms" id="small_country_expedition"></small>
                             </div>
                             <div class="col-md-6 form_select_conductores">
-                                <label for="Category">Categoría</label>
-                                <select name="drivingLicence[Category]" class="form-control" id="Category" style="width: 100%; height: 100%;" required>
+                                <label for="category">Categoría</label>
+                                <select name="drivingLicence[category]" class="form-control" id="category" style="width: 100%; height: 100%;" required>
                                     <option value="">Seleccionar</option>
                                     <option value="A1">A1</option>
                                     <option value="A2">A2</option>
@@ -90,40 +88,36 @@
                                     <option value="C2">C3</option>
                                     <option value="Otro">Otro</option>
                                 </select>
-                                <small class="text-danger small_forms" id="small_category"></small>
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-6 form_select_conductores">
-                                <label for="State">Estado</label>
-                                <select name="drivingLicence[State]" class="form-control" id="State" style="width: 100%; height: 100%;" required>
+                                <label for="state">Estado</label>
+                                <select name="drivingLicence[state]" class="form-control" id="state" style="width: 100%; height: 100%;" required>
                                     <option value="">Seleccionar</option>
                                     <option value="Vigente">Vigente</option>
                                     <option value="Vencida">Vencida</option>
                                     <option value="Suspendida">Suspendida</option>
                                 </select>
-                                <small class="text-danger small_forms" id="small_state"></small>
                             </div>
                             <div class="col-md-6">
-                                <label for="State">C.C Conductor</label>
-                                <select name="drivingLicence[User_information_DNI_id]" class="form-control" id="User_information_DNI_id" style="width: 100%; height: 100%;" data-url="{{ route('drivers-select-lists') }}" data-url-name="{{ route('drivers-get-name') }}" required>
+                                <label for="driver_information_dni_id">C.C Conductor</label>
+                                <select name="drivingLicence[driver_information_dni_id]" class="form-control" id="driver_information_dni_id" style="width: 100%; height: 100%;" data-url="{{ route('drivers-select-lists') }}" data-url-name="{{ route('drivers-get-name') }}" required>
                                 </select>
                                 <label class="text-info font-weight-bold" id="name_driver" style="margin-top: 12px;"></label>
-                                <span class="error_admin input_user_admin" role="alert" id="User_information_DNI_id-error">
-                                    <strong id="User_information_DNI_id-error-strong" class="error-strong"> </strong>
+                                <span class="error_admin input_user_admin" role="alert" id="driver_information_dni_id-error">
+                                    <strong id="driver_information_dni_id-error-strong" class="error-strong"> </strong>
                                 </span>
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-6 form_select_conductores">
                                 <label for="Expedition_day_form">Fecha de expedición*</label>
-                                <input type="text" class="form-control" name="drivingLicence[Expedition_day]" id="Expedition_day_form" readonly required/>
-                                <small class="text-danger small_forms" id="small_expidition_day"></small>
+                                <input type="text" class="form-control" name="drivingLicence[expedition_day]" id="expedition_day_form" readonly required/>
                             </div>
                             <div class="col-6 form_select_conductores">
-                                <label for="Expi_date_form">Fecha de vencimiento*</label>
-                                <input type="text" class="form-control" name="drivingLicence[Expi_date]" id="Expi_date_form" readonly required/>
-                                <small class="text-danger small_forms" id="small_expi_date"></small>
+                                <label for="expi_date_form">Fecha de vencimiento*</label>
+                                <input type="text" class="form-control" name="drivingLicence[expi_date]" id="expi_date_form" readonly required/>
                             </div>
                         </div>
                         <div class="d-flex justify-content-center" style="margin-top: 25px;">
@@ -158,7 +152,7 @@
                     <div class="form-card">
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">¿A cuál compañía desea cargar?</label>
-                            <select class="form-control" name="Company_id" id="Company_id_excel" required>
+                            <select class="form-control" name="company_id" id="company_id_excel" required>
                             </select>
                         </div>
                         <div class="form-group">

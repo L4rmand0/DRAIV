@@ -14,8 +14,8 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
-        $profile = auth()->user()->User_profile;
-        if($profile == "Administrator"){
+        $profile = auth()->user()->user_profile;
+        if($profile == "administrator"){
             return view('admin.dashboard');
         }else{
             return view('prohibited');

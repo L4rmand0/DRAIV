@@ -45,16 +45,16 @@ class DrivingLicenceController extends Controller
         $validator = Validator::make(
             $data_input,
             [
-                'Licence_num' => 'required|max:255',
-                'Country_expedition' => 'required|max:255',
-                'Category' => 'required|max:255',
-                'State' => 'required|max:255',
-                'Expedition_day' => 'required|max:255',
-                'Expi_date' => 'required|max:255',
-                'User_information_DNI_id' => ['required','max:255','unique:Driving_licence']
+                'licence_num' => 'required|max:255',
+                'country_expedition' => 'required|max:255',
+                'category' => 'required|max:255',
+                'state' => 'required|max:255',
+                'expedition_day' => 'required|max:255',
+                'expi_date' => 'required|max:255',
+                'driver_information_dni_id' => ['required','max:255','unique:driving_licence']
             ],
             [
-                'User_information_DNI_id.unique' => "Este conductor ya tiene una licencia."
+                'driver_information_dni_id.unique' => "Este conductor ya tiene una licencia."
             ]
         );
         $errors = $validator->errors()->getMessages();
@@ -62,15 +62,15 @@ class DrivingLicenceController extends Controller
             return response()->json(['errors' => $errors]);
         } else {
             $driving_licence = DrivingLicence::create([
-                'User_information_DNI_id' => $data_input['User_information_DNI_id'],
-                'Licence_num' => $data_input['Licence_num'],
-                'Country_expedition' =>  $data_input['Country_expedition'],
-                'Category' => $data_input['Category'],
-                'State' => $data_input['State'],
-                'Expedition_day' => $data_input['Expedition_day'],
-                'Expi_date' => $data_input['Expi_date']
+                'driver_information_dni_id' => $data_input['driver_information_dni_id'],
+                'licence_num' => $data_input['licence_num'],
+                'country_expedition' =>  $data_input['country_expedition'],
+                'category' => $data_input['category'],
+                'state' => $data_input['state'],
+                'expedition_day' => $data_input['expedition_day'],
+                'expi_date' => $data_input['expi_date']
             ]);
-            if ($driving_licence->Licence_num != "") {
+            if ($driving_licence->licence_num != "") {
                 return response()->json([
                     'success' => 'Información registrada.',
                     'errors' => $errors
@@ -114,7 +114,7 @@ class DrivingLicenceController extends Controller
         $data_updated = $request->all();
         $field = $data_updated['fieldch'];
         $value = $data_updated['valuech'];
-        $response = DrivingLicence::where('Licence_id', $data_updated['Licence_id'])->update([$field => $value, 'Operation' => 'U', 'Date_operation' => $now]);
+        $response = DrivingLicence::where('licence_id', $data_updated['licence_id'])->update([$field => $value, 'operation' => 'U', 'date_operation' => $now]);
         if ($response) {
             return response()->json(['response' => 'Información actualizada']);
         } else {
@@ -131,7 +131,7 @@ class DrivingLicenceController extends Controller
     public function destroy(Request $request)
     {
         $data_delete = $request->all();
-        $delete = DrivingLicence::where('Licence_id', $data_delete['Licence_id'])->update(['Operation' => 'D']);
+        $delete = DrivingLicence::where('licence_id', $data_delete['licence_id'])->update(['operation' => 'D']);
         if ($delete) {
             return response()->json(['response' => 'Usuario eliminado', 'error' => '']);
         } else {
@@ -141,22 +141,22 @@ class DrivingLicenceController extends Controller
 
     public function drivingLicenceList()
     {
-        $company_id = Auth::user()->Company_id;
-        $driving_licence = DB::table('Driving_licence')
-            ->join('User_information', 'User_information.DNI_id', '=', 'Driving_licence.User_information_DNI_id')
-            ->where('User_information.Company_id', '=', $company_id)
-            ->where('Driving_licence.Operation', '!=', 'D')
+        $company_id = Auth::user()->company_id;
+        $driving_licence = DB::table('driving_licence')
+            ->join('driver_information', 'driver_information.dni_id', '=', 'driving_licence.driver_information_dni_id')
+            ->where('driver_information.company_id', '=', $company_id)
+            ->where('driving_licence.operation', '!=', 'D')
             ->select(DB::raw(
-               'Driving_licence.Licence_id,
-                Driving_licence.Licence_num,
-                Driving_licence.Country_expedition,
-                Driving_licence.Category,
-                Driving_licence.State,
-                Driving_licence.Expedition_day,
-                Driving_licence.Expi_date,
-                Driving_licence.User_information_DNI_id,
-                User_information.First_name,
-                User_information.F_last_name'
+               'driving_licence.licence_id,
+                driving_licence.licence_num,
+                driving_licence.country_expedition,
+                driving_licence.category,
+                driving_licence.state,
+                driving_licence.expedition_day,
+                driving_licence.expi_date,
+                driving_licence.driver_information_dni_id,
+                driver_information.first_name,
+                driver_information.f_last_name'
             ))->get();
         $driving_licence = $this->addDeleteButtonDatatable($driving_licence);
         return datatables()->of($driving_licence)->make(true);

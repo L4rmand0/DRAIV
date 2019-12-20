@@ -6,17 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class DrivingLicence extends Model
 {
-    protected $table = 'Driving_licence'; 
+    protected $table = 'driving_licence'; 
     
     public $timestamps = false;
     
     protected $fillable = [
-        'User_information_DNI_id', 
-        'Licence_num', 
-        'Country_expedition', 
-        'Category', 
-        'State',
-        'Expedition_day',
-        'Expi_date'
+        'driver_information_dni_id', 
+        'licence_num', 
+        'country_expedition', 
+        'category', 
+        'state',
+        'expedition_day',
+        'expi_date'
     ];
 }
