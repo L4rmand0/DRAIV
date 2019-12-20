@@ -1,4 +1,5 @@
 
+
 create  table if not exists company(
 company_id bigint(12) unsigned not null,
 primary key(company_id),
@@ -206,7 +207,7 @@ unique key vehicle_evaluation_id (vehicle_evaluation_id),
 #row_id bigint unsigned auto_increment not null, 
 #unique key row_id (row_id),
 date_evaluation date not null, #crear UN trIgger para meter eÑ Valor por defaUt  
-primary key(date_evaluation,id),
+primary key(date_evaluation,user_vehicle_id),
 evaluator_name varchar(25),
 v_class_value int(5) unsigned, #check (v_class_value<=5),
 soat_value int(5) unsigned, #check (soat_value<=5),
@@ -224,10 +225,9 @@ date_operation timestamp Not null default current_timestamp on Update current_ti
 operation enum("A","U","D") default "A" not null,
 version double default 1 not null,	
 constraint chk_Values check (v_class_value<=5 aNd soat_value<=5 aNd brand_value<=5 aNd technomechanical_value<=5 aNd model_value<=5 aNd line_value<=5 aNd cylindrical_value<=5),
-
- user_vehicle_id bigint unsigned Not null ,#creacion fk (pk_tablaorigen)
+user_vehicle_id bigint unsigned Not null ,#creacion fk (pk_tablaorigen)
 constraint fkvehicle_evaluation_user_vehicle #fktabla destino_tabla origen
-foreign key( user_vehicle_id)#pk_tabla origen
+foreign key(user_vehicle_id)#pk_tabla origen
 references user_vehicle(id)#tablaorigen(pk)
 on update cascade
 )engine=INNODB, auto_increment=1;
@@ -240,7 +240,7 @@ create table if Not exists safely_car_field(
 safely_car_Id  bigint unsigned auto_increment not null, #cedula
 #row_id bigint unsigned auto_increment not null,
 unique key safely_car_Id (safely_car_Id),
-primary key(date_evaluation,id),
+primary key(date_evaluation,user_vehicle_id),
 #cedula bigint not null,
 date_evaluation date not null,
 brake_verification int(5) unsigned,
@@ -275,7 +275,7 @@ m_t_id bigint unsigned auto_increment not null,
 unique m_t_id (m_t_id),
 date_evaluation date not null,
 #cedula bigint not null,
-primary key(date_evaluation,id),
+primary key(date_evaluation,user_vehicle_id),
 breake_type int unsigned,
 assistence_breake int unsigned,
 automatic_lights int unsigned,
@@ -297,7 +297,7 @@ on update cascade
 create table if Not exists motorcycle_mechanical_conditions( # cambio
 evaluation_Id bigint unsigned auto_increment not null, #cedula
 unique key evaluation_Id (evaluation_Id),
-primary key(date_evaluation,id),
+primary key(date_evaluation,user_vehicle_id),
 #row_id bigint unsigned auto_increment not null,
 #unique key row_id (row_id),
 #cedula bigint not null,
@@ -333,7 +333,7 @@ on update cascade
 create table if Not exists epp(
 epp_id bigint unsigned not null auto_increment, #revisar
 unique key epp_id (epp_id),
-primary key(date_evaluation,id),
+primary key(date_evaluation,user_vehicle_id),
 #row_id bigint auto_increment not null,
 #unique key row_id (row_id),
 #cedula bigint not null,
@@ -370,7 +370,7 @@ on update cascade
 create table if Not exists skill_m_t_m(
 reg_id bigint unsigned not null auto_increment, #revisar
 unique key reg_id (reg_id),
-primary key(date_evaluation,id),
+primary key(date_evaluation,user_vehicle_id),
 #cedula bigint not null,
 date_evaluation date not null,
 #row_id bigint auto_increment not null,
@@ -399,7 +399,7 @@ on update cascade
 create table if Not exists skill_m_t_c(
 reg_id_c bigint unsigned not null auto_increment, #unsigned mejora el rendimiento al quitar negativos
 unique key reg_id_c (reg_id_c),
-primary key(date_evaluation,id),
+primary key(date_evaluation,user_vehicle_id),
 #row_id bigint auto_increment not null,
 #unique key row_id (row_id),
 #cedula bigint not null,
@@ -432,7 +432,7 @@ drive_beh_id bigint unsigned auto_increment not null,
 unique key drive_beh_id (drive_beh_id),
 #cedula bigint not null,
 date_evaluation date not null,
-primary key(date_evaluation,id),
+primary key(date_evaluation,user_vehicle_id),
 #row_id bigint auto_increment not null,
 #unique key row_id (row_id),
 stop_distance int unsigned,
@@ -520,7 +520,7 @@ references admin_country(admin_id)#tablaorigen(pk)
 create table if Not exists doc_verification(
 doc_id bigint unsigned auto_increment not null,
 #cedula bigint not null,
-primary key(start_date, doc_id),
+primary key(doc_id),
 valid_licence enum("Y","N"),
 category enum ("A1","A2","B1","B2","B3","C1", "C2" ,"C3","Otro" ) not null,
 soat_available enum("Y","N"),
@@ -545,9 +545,10 @@ start_date datetime not null default current_timestamp,
 date_operation timestamp Not null default current_timestamp on Update current_timestamp,
 operation enum("A","U","D") default "A" not null,
 version double default 1 not null,
- user_vehicle_id bigint unsigned Not null unique,#creacion fk (pk_tablaorigen)
+ 
+ user_vehicle_id bigint unsigned Not null,#creacion fk (pk_tablaorigen)
 constraint fkdoc_verification_user_vehicle #fktabla destino_tabla origen
-foreign key( user_vehicle_id)#pk_tabla origen
+foreign key(user_vehicle_id)#pk_tabla origen
 references user_vehicle(id)#tablaorigen(pk)
 on update cascade
 )engine=INNODB;
@@ -555,7 +556,7 @@ on update cascade
 create table if Not exists theorical_test(
 test_id bigint unsigned auto_increment not null,
 unique key drive_beh_id (test_id),
-primary key(date_evaluation,id),
+primary key(date_evaluation,user_vehicle_id),
 #cedula bigint not null,
 theoretical_test int unsigned,
 date_evaluation date not null,
@@ -570,3 +571,44 @@ foreign key( user_vehicle_id)#pk_tabla origen
 references user_vehicle(id)#tablaorigen(pk)
 On update cascade
 )engine=INNODB;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
