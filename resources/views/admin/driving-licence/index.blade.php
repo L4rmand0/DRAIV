@@ -66,27 +66,18 @@
                                 <select name="drivingLicence[country_expedition]" class="form-control"
                                     id="country_expedition" style="width: 100%; height: 100%;" required>
                                     <option value="">Seleccionar</option>
-                                    <option value="Colombia">Colombia</option>
-                                    <option value="Venezuela">Venezuela</option>
-                                    <option value="Argentina">Argentina</option>
-                                    <option value="Brasil">Brasil</option>
-                                    <option value="Ecuador">Ecuador</option>
-                                    <option value="Bolivia">Bolivia</option>
-                                    <option value="Otro">Otro</option>
+                                    @foreach ($list_country_expedition as $country_expedition_item)
+                                        <option value="{{ $country_expedition_item }}">{{ $country_expedition_item }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-6 form_select_conductores">
                                 <label for="category">Categoría</label>
                                 <select name="drivingLicence[category]" class="form-control" id="category" style="width: 100%; height: 100%;" required>
                                     <option value="">Seleccionar</option>
-                                    <option value="A1">A1</option>
-                                    <option value="A2">A2</option>
-                                    <option value="B1">B1</option>
-                                    <option value="B2">B2</option>
-                                    <option value="C1">C1</option>
-                                    <option value="C2">C2</option>
-                                    <option value="C2">C3</option>
-                                    <option value="Otro">Otro</option>
+                                    @foreach ($list_category as $category_item)
+                                        <option value="{{ $category_item }}">{{ $category_item }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -95,9 +86,9 @@
                                 <label for="state">Estado</label>
                                 <select name="drivingLicence[state]" class="form-control" id="state" style="width: 100%; height: 100%;" required>
                                     <option value="">Seleccionar</option>
-                                    <option value="Vigente">Vigente</option>
-                                    <option value="Vencida">Vencida</option>
-                                    <option value="Suspendida">Suspendida</option>
+                                    @foreach ($list_state as $state_item)
+                                        <option value="{{ $state_item }}">{{ $state_item }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -174,5 +165,13 @@
 </div>
 <!-- /.container-fluid -->
 <script src="{{ asset('js/admin/driving-licence.js') }}" defer></script>
+<script>
+    var enum_category = @json($enum_category);
+    var enum_country_expedition = @json($enum_country_expedition);
+    var enum_state = @json($enum_state);
+    var list_country_expedition = @json($list_country_expedition);
+    var list_category = @json($list_category);
+    var list_state = @json($list_state);
+</script>
 @endsection
 <!-- End of Main Content -->

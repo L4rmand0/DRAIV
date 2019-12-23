@@ -9,6 +9,31 @@
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
     $(function () {
+
+        $(document).click(function(event) { 
+            $target = $(event.target);
+            if(!$target.closest('#vehicle_datatable tr #taxi_type').length && 
+            $('#vehicle_datatable tr #taxi_type select').is(":visible")) {
+                let element = $('#vehicle_datatable tr #taxi_type select');
+                let val_item = element.val();
+                element.parent().html(val_item)
+            }
+            if(!$target.closest('#vehicle_datatable tr #type_v').length && 
+            $('#vehicle_datatable tr #type_v select').is(":visible")) {
+                let element = $('#vehicle_datatable tr #type_v select');
+                let val_item = element.val();
+                element.parent().html(val_item)
+            }
+            if(!$target.closest('#vehicle_datatable tr #service').length && 
+            $('#vehicle_datatable tr #service select').is(":visible")) {
+                let element = $('#vehicle_datatable tr #service select');
+                let val_item = element.val();
+                element.parent().html(val_item)
+            }
+            
+            
+        });
+
         var table_search;
 
         //Selects de vehículos
@@ -280,29 +305,25 @@
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            columns: [2,3,4,5],
-            // "inputTypes": [
-            //     {
-            //         "column": 3,
-            //         "type": "list",
-            //         "options": [
-            //             { "value": enums.Service['Particular'], "display": enums.Service['Particular'] },
-            //             { "value": enums.Service['Transporte_mercancia'], "display": enums.Service['Transporte_mercancia'] },
-            //             { "value": enums.Service['Transporte_publico'], "display": enums.Service['Transporte_publico'] },
-            //             { "value": enums.Service['Otros'], "display": enums.Service['Otros'] }
-            //         ]
-            //     },
-            //     {
-            //         "column": 4,
-            //         "type": "list",
-            //         "options": [
-            //             { "value": enums.Taxi_type['Taxi amarillo'], "display": enums.Taxi_type['Taxi amarillo'] },
-            //             { "value": enums.Taxi_type['Taxi blanco'], "display": enums.Taxi_type['Taxi blanco'] },
-            //             { "value": enums.Taxi_type['NA'], "display": enums.Taxi_type['NA'] }
-            //         ]
-            //     }
+            columns: [2,3,4,5,6,7,8,9,10,11,12,13,14,15],
+            "inputTypes": [
+                {
+                    "column": 2,
+                    "type": "list",
+                    "options": enum_type_v
+                },
+                {
+                    "column": 4,
+                    "type": "list",
+                    "options": enum_taxi_type
+                },
+                {
+                    "column": 8,
+                    "type": "list",
+                    "options": enum_service
+                }
 
-            //  ]
+             ]
         });
     });
 

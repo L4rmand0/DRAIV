@@ -20,7 +20,21 @@ class DrivingLicenceController extends Controller
      */
     public function index()
     {
-        return view('admin.driving-licence.index');
+        $enum_category = $this->generateOptionsEnumDt(DrivingLicence::enum_category);
+        $list_category = DrivingLicence::enum_category;
+        $enum_country_expedition = $this->generateOptionsEnumDt(DrivingLicence::enum_country_expedition);
+        $list_country_expedition = DrivingLicence::enum_country_expedition;
+        $enum_state = $this->generateOptionsEnumDt(DrivingLicence::enum_state);
+        $list_state = DrivingLicence::enum_state;
+        return view('admin.driving-licence.index',
+        [
+            'enum_category' => $enum_category,
+            'enum_country_expedition' => $enum_country_expedition,
+            'enum_state' => $enum_state,
+            'list_country_expedition' => $list_country_expedition,
+            'list_category' => $list_category,
+            'list_state' => $list_state
+        ]);
     }
 
     /**
@@ -54,10 +68,33 @@ class DrivingLicenceController extends Controller
                 'driver_information_dni_id' => ['required','max:255','unique:driving_licence']
             ],
             [
-                'driver_information_dni_id.unique' => "Este conductor ya tiene una licencia."
+                'driver_information_dni_id.unique' => "Este conductor ya tiene una licencia en uso."
             ]
         );
         $errors = $validator->errors()->getMessages();
+        // print_r($errors);
+        // die;
+        foreach ($errors as $key => $value) {
+            if(strpos($value[0],"uso")!== FALSE){
+                $now = date("Y-m-d H:i:s");
+                $response = DrivingLicence::where($key, $data_input[$key])->update([
+                    'driver_information_dni_id' => $data_input['driver_information_dni_id'],
+                    'licence_num' => $data_input['licence_num'],
+                    'country_expedition' =>  $data_input['country_expedition'],
+                    'category' => $data_input['category'],
+                    'state' => $data_input['state'],
+                    'expedition_day' => $data_input['expedition_day'],
+                    'expi_date' => $data_input['expi_date'],
+                    'operation' => 'U', 
+                    'date_operation' => $now
+                ]);
+                if ($response) {
+                    return response()->json(['response' => 'Información actualizada','errors'=>[]]);
+                } else {
+                    return response()->json(['errors' => ['response'=>'No se pudo actualizar la información']]);
+                }
+            }
+        }
         if (!empty($errors)) {
             return response()->json(['errors' => $errors]);
         } else {

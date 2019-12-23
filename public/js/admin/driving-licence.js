@@ -9,8 +9,31 @@
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
     $(function () {
+        
+        $(document).click(function(event) { 
+            $target = $(event.target);
+            if(!$target.closest('#driving_licence_datatable tr #country_expedition').length && 
+            $('#driving_licence_datatable tr #country_expedition select').is(":visible")) {
+                let element = $('#driving_licence_datatable tr #country_expedition select');
+                let val_item = element.val();
+                element.parent().html(val_item)
+            }
+            if(!$target.closest('#driving_licence_datatable tr #category').length && 
+            $('#driving_licence_datatable tr #category select').is(":visible")) {
+                let element = $('#driving_licence_datatable tr #category select');
+                let val_item = element.val();
+                element.parent().html(val_item)
+            }
+            if(!$target.closest('#driving_licence_datatable tr #state').length && 
+            $('#driving_licence_datatable tr #state select').is(":visible")) {
+                let element = $('#driving_licence_datatable tr #state select');
+                let val_item = element.val();
+                element.parent().html(val_item)
+            }
+            
+        });
+        
         var table_search;
-
         // $.ajax({
         //     type: 'GET',
         //     url: $('#Country_born').data('url'),
@@ -290,33 +313,24 @@
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
             columns: [2, 6, 7, 8, 9, 10],
-            // "inputTypes": [
-            //     {
-            //         "column": 7,
-            //         "type": "list",
-            //         "options": [
-            //             { "value": enums.Education['Primaria'], "display": enums.Education['Primaria'] },
-            //             { "value": enums.Education['Secundaria'], "display": enums.Education['Secundaria'] },
-            //             { "value": enums.Education['Pregrado'], "display": enums.Education['Pregrado'] },
-            //             { "value": enums.Education['Postgrado'], "display": enums.Education['Postgrado'] },
-            //             { "value": enums.Education['Sin información'], "display": enums.Education['Sin información'] },
-            //         ]
-            //     },
-            //     {
-            //         "column": 15,
-            //         "type": "list",
-            //         "options": [
-            //             { "value": enums.Civil_state['Soltero'], "display": enums.Civil_state['Soltero'] },
-            //             { "value": enums.Civil_state['Casado'], "display": enums.Civil_state['Casado'] },
-            //             { "value": enums.Civil_state['Separado'], "display": enums.Civil_state['Separado'] },
-            //             { "value": enums.Civil_state['Divorciado'], "display": enums.Civil_state['Divorciado'] },
-            //             { "value": enums.Civil_state['Viudo'], "display": enums.Civil_state['Viudo'] },
-            //             { "value": enums.Civil_state['Union libre'], "display": enums.Civil_state['Union libre'] },
-            //             { "value": enums.Civil_state['Sin información'], "display": enums.Civil_state['Sin información'] },
-            //         ]
-            //     }
+            "inputTypes": [
+                {
+                    "column": 6,
+                    "type": "list",
+                    "options": enum_country_expedition
+                },
+                {
+                    "column": 7,
+                    "type": "list",
+                    "options": enum_category
+                },
+                {
+                    "column": 8,
+                    "type": "list",
+                    "options": enum_state
+                }
 
-            // ]
+            ]
         });
 
         // $('#user_datatable').on('click', 'tbody td', function () {

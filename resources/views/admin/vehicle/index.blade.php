@@ -77,8 +77,8 @@
                                 <label for="type_v">Tipo</label>
                                 <select name="vehicle[type_v]" class="form-control" id="type_v" style="width: 100%">
                                     <option value="">Seleccionar...</option>
-                                    @foreach ($enum_type_v as $enum_t_v)
-                                        <option value="{{$enum_t_v}}"> {{$enum_t_v}} </option>
+                                    @foreach ($list_type_v as $item_type_v)
+                                        <option value="{{$item_type_v}}"> {{$item_type_v}} </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -97,8 +97,8 @@
                                 <select name="vehicle[taxi_type]" class="form-control" id="taxi_type"
                                     style="width: 100%">
                                     <option value="">Seleccionar...</option>
-                                    @foreach ($enum_taxi_type as $enum_t_t)
-                                        <option value="{{$enum_t_t}}"> {{$enum_t_t}} </option>
+                                    @foreach ($list_taxi_type as $item_taxi_type)
+                                        <option value="{{$item_taxi_type}}"> {{$item_taxi_type}} </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -146,8 +146,8 @@
                                 <label for="service">Servicio</label>
                                 <select name="vehicle[service]" class="form-control" id="service" style="width: 100%">
                                     <option value="">Seleccionar...</option>
-                                    @foreach ($enum_service as $enum_s)
-                                        <option value="{{$enum_s}}"> {{$enum_s}} </option>
+                                    @foreach ($list_service as $item_service)
+                                        <option value="{{$item_service}}"> {{$item_service}} </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -234,9 +234,12 @@
 <!-- /.container-fluid -->
 <script src="{{ asset('js/admin/vehicle.js') }}" defer></script>
 <script>
-    var enum_service = <?php echo json_encode($enum_type_v); ?>;
-    var enum_taxi_type = <?php echo json_encode($enum_taxi_type); ?>;
-    var enum_service = <?php echo json_encode($enum_service); ?>;
+    var enum_type_v = @json($enum_type_v);
+    var enum_service = @json($enum_service);
+    var enum_taxi_type = @json($enum_taxi_type); 
+    var list_type_v = @json($list_type_v); 
+    var list_service = @json($list_service); 
+    var list_taxi_type = @json($list_taxi_type); 
 </script>
 @endsection
 <!-- End of Main Content -->

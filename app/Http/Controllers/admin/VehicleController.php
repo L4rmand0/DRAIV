@@ -19,16 +19,22 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        $enum_type_v = Vehicle::enum_type_v;
-        $enum_service = Vehicle::enum_service;
-        $enum_taxi_type = Vehicle::enum_taxi_type;
+        $enum_type_v = $this->generateOptionsEnumDt(Vehicle::enum_type_v);
+        $list_type_v = Vehicle::enum_type_v;
+        $enum_service = $this->generateOptionsEnumDt(Vehicle::enum_service);
+        $list_service = Vehicle::enum_service;
+        $enum_taxi_type = $this->generateOptionsEnumDt(Vehicle::enum_taxi_type);
+        $list_taxi_type = Vehicle::enum_taxi_type;
         // print_r($enum_type_v);
         // die;
         return view('admin.vehicle.index',[
             'enum_type_v'=>$enum_type_v,
             'enum_service'=>$enum_service,
-            'enum_taxi_type'=>$enum_taxi_type
-            ]);
+            'enum_taxi_type'=>$enum_taxi_type,
+            'list_type_v'=>$list_type_v,
+            'list_service'=>$list_service,
+            'list_taxi_type'=>$list_taxi_type
+        ]);
     }
 
     /**
@@ -67,10 +73,41 @@ class VehicleController extends Controller
                 'owner_v.required' => "Se debe elegir una opción",
                 'soat_expi_date.required' => "Se debe seleccionar una fecha",
                 'capacity.required' => "Se debe seleccionar la capacidad",
-                'plate_id.unique' => "Esta placa ya está registrada."
+                'plate_id.unique' => "Esta placa ya está en uso."
             ]
         );
         $errors = $validator->errors()->getMessages();
+        // print_r($errors);
+        // die;
+        foreach ($errors as $key => $value) {
+            if(strpos($value[0],"uso")!== FALSE){
+                $now = date("Y-m-d H:i:s");
+                $response = Vehicle::where($key, $data_input[$key])->update([
+                    'plate_id' => $data_input['plate_id'],
+                    'type_v' =>  $data_input['type_v'],
+                    'owner_v' =>  $data_input['owner_v'] != "" ? $data_input['owner_v'] : 0 ,
+                    'taxi_type' => $data_input['taxi_type'] != "" ? $data_input['taxi_type'] : "NA",
+                    'taxi_number_of_drivers' => $data_input['taxi_number_of_drivers'] != "" ? $data_input['taxi_number_of_drivers'] : 1,
+                    'soat_expi_date' => $data_input['soat_expi_date'],
+                    'capacity' => $data_input['capacity'],
+                    'service' => $data_input['service'] != "" ? $data_input['service'] :"Otros",
+                    'cylindrical_cc' => $data_input['cylindrical_cc'] != "" ? $data_input['cylindrical_cc'] :1,
+                    'v_class' => $data_input['v_class'] != "" ? $data_input['v_class'] : "",
+                    'model' => $data_input['model'] != "" ? $data_input['model'] : "",
+                    'line' => $data_input['line'] != "" ? $data_input['line'] : "",
+                    'brand' => $data_input['brand'] != "" ? $data_input['brand'] : "",
+                    'color' => $data_input['color'] != "" ? $data_input['color'] : "",
+                    'technomechanical_date' => $data_input['technomechanical_date'] != "" ? $data_input['technomechanical_date'] : "0000-00-00",
+                    'operation' => 'U', 
+                    'date_operation' => $now
+                ]);
+                if ($response) {
+                    return response()->json(['response' => 'Información actualizada','errors'=>[]]);
+                } else {
+                    return response()->json(['errors' => ['response'=>'No se pudo actualizar la información']]);
+                }
+            }
+        }
         if (!empty($errors)) {
             return response()->json(['errors' => $errors]);
         } else {
