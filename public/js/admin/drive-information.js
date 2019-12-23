@@ -192,7 +192,6 @@
         $("#form_driver_info_admin").submit(function (event) {
             event.preventDefault();
             let score_val = parseFloat($("#score_form").val());
-            debugger
             if(score_val > 5 || score_val < 0){
                 swal.fire(
                     'Error de formato',
@@ -398,7 +397,7 @@
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 17, 18],
+            columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 17],
             "inputTypes": [
                 {
                     "column": 6,

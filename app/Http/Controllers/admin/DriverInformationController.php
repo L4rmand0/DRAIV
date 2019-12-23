@@ -112,6 +112,38 @@ class DriverInformationController extends Controller
         );
 
         $errors = $validator->errors()->getMessages();
+        // print_r($errors);
+        // die;
+        foreach ($errors as $key => $value) {
+            if(strpos($value[0],"uso")!== FALSE){
+                $now = date("Y-m-d H:i:s");
+                $response = DriverInformation::where($key, $data_input[$key])->update([
+                    'first_name' => $data_input['first_name'],
+                    'second_name' =>  $data_input['second_name'] != "" ? $data_input['second_name'] : "NA",
+                    'f_last_name' => $data_input['f_last_name'],
+                    's_last_name' => $data_input['s_last_name'] != "" ? $data_input['s_last_name']: "NA",
+                    'gender' => $data_input['gender'] == "Masculino",
+                    'education' => $data_input['education'],
+                    'country_born' => $data_input['country_born'],
+                    'city_born' => $data_input['city_born'],
+                    'city_residence_place' => $data_input['city_residence_place'],
+                    'department' => $data_input['department'],
+                    'civil_state' => $data_input['civil_state'],
+                    'score' => $data_input['score']!=""?number_format($data_input['score'],2):null,
+                    'address' => $data_input['address'],
+                    'phone' => $data_input['phone'],
+                    'db_user_id' => $data_input['db_user_id'],
+                    'company_id' => $data_input['company_id'],
+                    'operation' => 'U', 
+                    'date_operation' => $now
+                ]);
+                if ($response) {
+                    return response()->json(['response' => 'Información actualizada','errors'=>[]]);
+                } else {
+                    return response()->json(['errors' => ['response'=>'No se pudo actualizar la información']]);
+                }
+            }
+        }
         if (!empty($errors)) {
             return response()->json(['errors' => $errors]);
         } else {
