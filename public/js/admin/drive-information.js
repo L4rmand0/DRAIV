@@ -9,7 +9,6 @@
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
     $(function () {
-
         $("#department").on('change', function(){
             let data_admin2 = $(this).val();
             let data_cities = new Array();
@@ -20,32 +19,10 @@
                     data_cities.push(admin3_item)
                 }
             });
-            $("#city_born").attr('disabled', false);
+            $("#city_born_form").attr('disabled', false);
 
-            var datax = [
-                {
-                    id: 0,
-                    text: 'enhancement'
-                },
-                {
-                    id: 1,
-                    text: 'bug'
-                },
-                {
-                    id: 2,
-                    text: 'duplicate'
-                },
-                {
-                    id: 3,
-                    text: 'invalid'
-                },
-                {
-                    id: 4,
-                    text: 'wontfix'
-                }
-            ];
-            $('#city_born').html("");
-            $("#city_born").select2({
+            $('#city_born_form').html("");
+            $("#city_born_form").select2({
                 data:data_cities
             });
         });
@@ -55,7 +32,7 @@
         $('#education').select2();
         $('#country_born').select2();
         $('#civil_state').select2();
-        $('#city_born').select2();
+        $('#city_born_form').select2();
         
         $.ajax({
             type: 'GET',
@@ -365,6 +342,8 @@
                             )
                     }
                 });
+            }else{
+                $('#drive_information_datatable').DataTable().ajax.reload();
             }
             console.log("The values for each cell in that row are: " + updatedRow.data());
         }

@@ -171,9 +171,9 @@
                         </div>
                         <div class="row" style="margin-top: 18px;">
                             <div class="col-md-6 form_select_conductores">
-                                <label for="city_born">Ciudad de Nacimiento:</label><br>
+                                <label for="city_born_form">Ciudad de Nacimiento:</label><br>
                                 <select name="driverInformation[city_born]" class="form-control form-dataconductores"
-                                    id="city_born" data-url="{{ route('admin3-select-lists') }}" style="width: 100%"
+                                    id="city_born_form" data-url="{{ route('admin3-select-lists') }}" style="width: 100%"
                                      required disabled>
                                 </select>
                             </div>

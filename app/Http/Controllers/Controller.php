@@ -19,6 +19,7 @@ class Controller extends BaseController
     }
 
     public function generateOptionsEnumDt($data){
+        $options[]=['value'=>"",'display'=>"Seleccionar"];
         foreach ($data as $key => $value) {
             $options[]=['value'=>$value,'display'=>$value];
         }
