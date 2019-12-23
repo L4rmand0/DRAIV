@@ -391,6 +391,11 @@
                     "column": 15,
                     "type": "list",
                     "options": enum_civil_state
+                },
+                {
+                    "column": 10,
+                    "type": "list",
+                    "options": enum_country_born
                 }
             ]
         });
