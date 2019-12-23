@@ -174,14 +174,14 @@
                                 <label for="city_born_form">Ciudad de Nacimiento:</label><br>
                                 <select name="driverInformation[city_born]" class="form-control form-dataconductores"
                                     id="city_born_form" data-url="{{ route('admin3-select-lists') }}" style="width: 100%"
-                                     required disabled>
+                                     required>
                                 </select>
                             </div>
                             <div class="col-md-6 form_select_conductores">
-                                <label for="city_residence_place">Ciudad de Residencia:</label><br>
+                                <label for="city_residence_place_form">Ciudad de Residencia:</label><br>
                                 <select name="driverInformation[city_residence_place]" class="form-control form-dataconductores"
-                                    id="city_residence_place" data-url="{{ route('admin3-select-lists') }}" style="width: 100%"
-                                    required>
+                                    id="city_residence_place_form" data-url="{{ route('admin3-select-lists') }}" style="width: 100%"
+                                    required disabled>
                                 </select>
                             </div>
                         </div>

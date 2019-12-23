@@ -12,6 +12,8 @@
         $("#department").on('change', function(){
             let data_admin2 = $(this).val();
             let data_cities = new Array();
+            let item = {"id":"","text":"Seleccionar"};
+            data_cities.push(item)
             $.each(list_admin3, function( index, value ) {
                 let admin2_item = value.adm2_id;
                 if(data_admin2==admin2_item){
@@ -19,10 +21,10 @@
                     data_cities.push(admin3_item)
                 }
             });
-            $("#city_born_form").attr('disabled', false);
+            $("#city_residence_place_form").attr('disabled', false);
 
-            $('#city_born_form').html("");
-            $("#city_born_form").select2({
+            $('#city_residence_place_form').html("");
+            $("#city_residence_place_form").select2({
                 data:data_cities
             });
         });
@@ -32,7 +34,7 @@
         $('#education').select2();
         $('#country_born').select2();
         $('#civil_state').select2();
-        $('#city_born_form').select2();
+        $('#city_residence_place_form').select2();
         
         $.ajax({
             type: 'GET',
@@ -69,10 +71,10 @@
 
         $.ajax({
             type: 'GET',
-            url: $('#city_residence_place').data('url'),
+            url: $('#city_born_form').data('url'),
             data: { 'type': 'admin3' },
             success: function (data) {
-                $('#city_residence_place').select2({
+                $('#city_born_form').select2({
                     data: data
                 });
             }

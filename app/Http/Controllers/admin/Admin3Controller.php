@@ -97,9 +97,11 @@ class Admin3Controller extends Controller
 
     public function createSelect2($query_data)
     {
+        $data[0]['id'] = "";
+        $data[0]['text'] = "Seleccionar";
         foreach ($query_data as $key => $value) {
-            $data[$key]['id'] = $value->adm3_id;
-            $data[$key]['text'] = $value->name;
+            $data[$key+1]['id'] = $value->adm3_id;
+            $data[$key+1]['text'] = $value->name;
         }
         return $data;
     }

@@ -149,7 +149,7 @@
         }
         switch (inputType) {
             case "list":
-                input.html = startWrapperHtml + "<select class='" + inputCss + "' onchange='$(this).updateEditableCell(this);'>";
+                input.html = startWrapperHtml + "<select class='" + inputCss + "' onchange='$(this).updateEditableCell(this);' onclick='chechValuesList()'>";
                 $.each(inputSetting.options, function (index, option) {
                     if (oldValue == option.value) {
                         input.html = input.html + "<option value='" + option.value + "' >" + option.display + "</option>"
