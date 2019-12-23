@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\UserInformation;
+use App\DriverInformation;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -17,7 +17,7 @@ class UsersInformationImport implements ToModel, WithStartRow
 
     public function __construct($variables = false) {
         if($variables !== false){
-            $this->id_company = $variables['Company_id'];
+            $this->id_company = $variables['company_id'];
             $this->id_user = $variables['id'];
         }    
     }
@@ -32,23 +32,23 @@ class UsersInformationImport implements ToModel, WithStartRow
             return null;
         }
 
-        return new UserInformation([
-            'DNI_id' => $row[0],
-            'First_name' => $row[1],
-            'Second_name' => $row[2],
-            'F_last_name' => $row[3],
-            'S_last_name' => $row[4],
-            'Gender' => $row[5],
-            'Education' => $row[6],
-            'E_mail_address' => $row[7],
+        return new DriverInformation([
+            'dni_id' => $row[0],
+            'first_name' => $row[1],
+            'second_name' => $row[2],
+            'f_last_name' => $row[3],
+            's_last_name' => $row[4],
+            'gender' => $row[5],
+            'education' => $row[6],
+            'e_mail_address' => $row[7],
             'address' => $row[8],
-            'Country_born' => $row[9],
+            'country_born' => $row[9],
             'phone' => $row[10],
-            'Civil_state' => $row[11],
-            'Db_user_id' => $row[12],
-            'Company_id' => $row[13],
-            'Db_user_id' => $this->id_user,
-            'Company_id' => $this->id_company
+            'civil_state' => $row[11],
+            'db_user_id' => $row[12],
+            'company_id' => $row[13],
+            'db_user_id' => $this->id_user,
+            'company_id' => $this->id_company
         ]);
         // return new UserInformation([
         //     'DNI_id' => $row['DNI_id'],
