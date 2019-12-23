@@ -377,6 +377,7 @@
                     "column": 6,
                     "type": "list",
                     "options": [
+                        {"value":"","display":"Seleccionar"},
                         {"value":0,"display":"Masculino"},
                         {"value":1,"display":"Femino"}
                     ]
