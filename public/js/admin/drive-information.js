@@ -14,8 +14,30 @@
             $target = $(event.target);
             if(!$target.closest('#drive_information_datatable tr #gender').length && 
             $('#drive_information_datatable tr #gender select').is(":visible")) {
-                let val_item = $('#drive_information_datatable tr #gender select').val()
-                $("#drive_information_datatable tr #gender").html(val_item)
+                let element = $('#drive_information_datatable tr #gender select');
+                let val_item = element.val();
+                element.parent().html(val_item)
+            }
+            
+            if(!$target.closest('#drive_information_datatable tr #civil_state').length && 
+            $('#drive_information_datatable tr #civil_state select').is(":visible")) {
+                let element = $('#drive_information_datatable tr #civil_state select');
+                let val_item = element.val();
+                element.parent().html(val_item)
+            }
+
+            if(!$target.closest('#drive_information_datatable tr #education').length && 
+            $('#drive_information_datatable tr #education select').is(":visible")) {
+                let element = $('#drive_information_datatable tr #education select');
+                let val_item = element.val();
+                element.parent().html(val_item)
+            }
+                    
+            if(!$target.closest('#drive_information_datatable tr #country_born').length && 
+            $('#drive_information_datatable tr #country_born select').is(":visible")) {
+                let element = $('#drive_information_datatable tr #country_born select');
+                let val_item = element.val();
+                element.parent().html(val_item)
             }        
         });
 
