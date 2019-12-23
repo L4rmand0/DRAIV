@@ -16,7 +16,6 @@
             }
         }
 
-
         $("#form_user_admin").submit(function (event) {
             event.preventDefault();
             let data_form = $(this).serialize();
@@ -48,60 +47,18 @@
                             data.success,
                             'success'
                         )
+                        $('#user_datatable').DataTable().ajax.reload();
                     }
                 }
             });
         });
-        // const createdCell = function (cell, cellData) {
 
-        //     if (cell._DT_CellIndex.column == 1) {
-        //         $(cell).attr('id','idUser')
-        //     }
-        //     let original
-        //     cell.setAttribute('contenteditable', true)
-        //     cell.setAttribute('spellcheck', false)
-
-        //     cell.addEventListener('focus', function (e) {
-        //         original = e.target.textContent
-        //         $(this).css("background-color", "#FFFFFF"); 
-        //     })
-
-        //     cell.addEventListener('blur', function (e) {
-        //         if (original !== e.target.textContent) {
-        //             const row = table_user.row(e.target.parentElement)
-        //             // row.invalidate()
-        //             debugger
-        //             console.log('Row changed: ', row.data())
-        //             console.log('Row changed: ', row.data())
-        //             console.log('change', e.target.textContent);
-        //         }
-        //         $(this).css("background-color", "#f8f9fc"); 
-        //     })
-        // }
-
-        // var table_user = $('#user_datatable').DataTable({
-        //     processing: true,
-        //     serverSide: true,
-        //     ajax: $('#users-list-route').val(),
-        //     columns: [
-        //         { data: 'id', name: 'id', "visible": false },
-        //         { data: 'name', name: 'name' },
-        //         { data: 'email', name: 'email' }
-        //     ],
-        // columnDefs: [{
-        //     targets: '_all',
-        //     createdCell: createdCell
-        // }],
-        //     createdRow: function( row, data, dataIndex ) {
-        //         $( row ).find('td:eq(0)').attr({'data-id': data.id});
-        //     }
-        // });
         var fields = [
             'delete_row',
             'id',
             'name',
             'email',
-            'User_profile',
+            'user_profile',
         ];
         var table = $('#user_datatable').DataTable({
             processing: true,
@@ -113,7 +70,7 @@
                 { data: 'id', name: 'id', "visible": false },
                 { data: 'name', name: 'name' },
                 { data: 'email', name: 'email' },
-                { data: 'User_profile', name: 'User_profile' }
+                { data: 'user_profile', name: 'user_profile' }
             ],
             language: language_dt,
             columnDefs: [

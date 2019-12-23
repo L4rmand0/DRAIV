@@ -106,25 +106,24 @@ class UserController extends Controller
 
     public function usersList()
     {
-        $company_id = Auth::user()->Company_id;
-        $users = DB::table('users')->where('Company_id', '=', $company_id)->where('Operation', '!=','D')->get();
+        $company_id = Auth::user()->company_id;
+        $users = DB::table('users')->where('company_id', '=', $company_id)->where('operation', '!=','D')->get();
         $users = $this->addDeleteButtonDatatable($users);
         return datatables()->of($users)->make(true);
     }
 
     public function storeUserAdmin(Request $request)
     {
+        
         $data_input = $request->all();
-        // print_r($data_input);
-        // die;
         $validator = Validator::make(
             $data_input,
             [
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:5', 'confirmed'],
-                'Company_id' => ['required'],
-                'User_profile' => ['required']
+                'company_id' => ['required'],
+                'user_profile' => ['required']
             ]
         );
 
@@ -136,8 +135,8 @@ class UserController extends Controller
                 'name' => $data_input['name'],
                 'email' => $data_input['email'],
                 'password' => Hash::make($data_input['password']),
-                'Company_id' => $data_input['Company_id'],
-                'User_profile' => $data_input['User_profile']
+                'company_id' => $data_input['company_id'],
+                'user_profile' => $data_input['user_profile']
             ]);
             if ($user->id > 0) {
                 return response()->json([

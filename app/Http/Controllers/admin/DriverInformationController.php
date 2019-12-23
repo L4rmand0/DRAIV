@@ -5,8 +5,8 @@ namespace App\Http\Controllers\admin;
 
 // use Excel;
 
-use App\DriverInformation;
 use DB;
+use App\DriverInformation;
 use Illuminate\Http\Request;
 // use Maatwebsite\Excel\Excel;
 use App\Http\Controllers\Controller;
@@ -42,7 +42,28 @@ class DriverInformationController extends Controller
      */
     public function index()
     {
-        return view('admin.information-user.index');
+        $list_admin3 = Admin3Controller::listAdmin3();
+        $enum_education = $this->generateOptionsEnumDt(DriverInformation::enum_education);
+        $list_education = DriverInformation::enum_education;
+        $enum_civil_state = $this->generateOptionsEnumDt(DriverInformation::enum_civil_state);
+        $list_civil_state = DriverInformation::enum_civil_state;
+        $enum_country_born = $this->generateOptionsEnumDt(DriverInformation::enum_country_born);
+        $list_country_born = DriverInformation::enum_country_born;
+        // echo '<pre>'; 
+        // print_r($enum_education);
+        // die;
+        return view(
+            'admin.information-user.index',
+            [
+                'enum_education' => $enum_education,
+                'enum_civil_state' => $enum_civil_state,
+                'enum_country_born' => $enum_country_born,
+                'list_education' => $list_education,
+                'list_civil_state' => $list_civil_state,
+                'list_country_born' => $list_country_born,
+                'list_admin3' => $list_admin3
+            ]
+        );
     }
 
     /**
@@ -69,19 +90,20 @@ class DriverInformationController extends Controller
         $validator = Validator::make(
             $data_input,
             [
-                'first_name' => 'required|max:255',
-                'f_last_name' => 'required|max:255',
-                's_last_name' => 'required|max:255',
-                'e_mail_address' => ['required', 'max:255', 'unique:driver_information'],
-                'dni_id' => ['required', 'max:255', 'unique:driver_information'],
-                'gender' => 'required|max:255',
-                'education' => 'required|max:255',
-                'country_born' => 'required|max:255',
-                'city_born' => 'required|max:255',
-                'department' => 'required|max:255',
-                'civil_state' => 'required|max:255',
-                'address' => 'required|max:255',
-                'phone' => 'required|max:255'
+                'first_name' => 'required|max:70',
+                'f_last_name' => 'required|max:20',
+                's_last_name' => 'required|max:20',
+                'e_mail_address' => ['required', 'max:30', 'unique:driver_information'],
+                'dni_id' => ['required', 'max:10', 'unique:driver_information'],
+                'gender' => 'required',
+                'education' => 'required',
+                'country_born' => 'required',
+                'city_born' => 'required|max:20',
+                'city_residence_place' => 'required|max:20',
+                'department' => 'required|max:20',
+                'civil_state' => 'required',
+                'address' => 'required|max:50',
+                'phone' => 'required|max:30'
             ],
             [
                 'dni_id.unique' => "Esta cédula ya está en uso.",
@@ -96,7 +118,7 @@ class DriverInformationController extends Controller
             $user_information = DriverInformation::create([
                 'dni_id' => $data_input['dni_id'],
                 'first_name' => $data_input['first_name'],
-                'second_name' =>  $data_input['second_name'] != "" ? $data_input['second_name'] : "",
+                'second_name' =>  $data_input['second_name'] != "" ? $data_input['second_name'] : "NA",
                 'f_last_name' => $data_input['f_last_name'],
                 's_last_name' => $data_input['s_last_name'],
                 'e_mail_address' => $data_input['e_mail_address'],
@@ -104,6 +126,7 @@ class DriverInformationController extends Controller
                 'education' => $data_input['education'],
                 'country_born' => $data_input['country_born'],
                 'city_born' => $data_input['city_born'],
+                'city_residence_place' => $data_input['city_residence_place'],
                 'department' => $data_input['department'],
                 'civil_state' => $data_input['civil_state'],
                 'address' => $data_input['address'],
@@ -142,8 +165,16 @@ class DriverInformationController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
+    /**$.ajax({
+            type: 'GET',
+            url: $('#department').data('url'),
+            data: { 'type': 'select_admin2' },
+            success: function (data) {
+                $('#department').select2({
+                    data: data
+                });
+            }
+        });
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -191,12 +222,12 @@ class DriverInformationController extends Controller
             ->where('driver_information.company_id', '=', $company_id)
             ->where('driver_information.operation', '!=', 'D')
             ->select(DB::raw(
-           'driver_information.dni_id,
+                'driver_information.dni_id,
             driver_information.first_name,
             driver_information.second_name,
             driver_information.f_last_name,
             driver_information.s_last_name,
-            IF(driver_information.gender=1,"Masculino","Femenino") as gender,
+            IF(driver_information.gender=0,"Masculino","Femenino") as gender,
             driver_information.education,
             driver_information.e_mail_address,
             driver_information.address,
@@ -210,7 +241,8 @@ class DriverInformationController extends Controller
             driver_information.db_user_id,
             driver_information.company_id,
             users.name as user,
-            company.Name_company as company'))->get();
+            company.Name_company as company'
+            ))->get();
         $drive_information = $this->addDeleteButtonDatatable($drive_information);
         return datatables()->of($drive_information)->make(true);
     }

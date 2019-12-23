@@ -12,26 +12,26 @@
         var table_search;
 
         //Selects de vehículos
-        $("#Type_V").select2();
-        $("#Owner_V").select2();
-        $("#Taxi_type").select2();
-        $("#taxi_Number_of_drivers").select2();
-        $("#Capacity").select2();
-        $("#Service").select2();
+        $("#type_v").select2();
+        $("#owner_v").select2();
+        $("#taxi_type").select2();
+        $("#taxi_number_of_drivers").select2();
+        $("#capacity").select2();
+        $("#service").select2();
 
 
 
         //Datepickers del formulario de vehículos
-        $("#Soat_expi_date_form").datepicker({ dateFormat: 'yy-mm-dd' });
+        $("#soat_expi_date_form").datepicker({ dateFormat: 'yy-mm-dd' });
         $("#technomechanical_date_form").datepicker({ dateFormat: 'yy-mm-dd' });
 
 
         $.ajax({
             type: 'GET',
-            url: $('#User_information_DNI_id').data('url'),
+            url: $('#driver_information_dni_id').data('url'),
             data: { 'type': 'select_admin2' },
             success: function (data) {
-                $('#User_information_DNI_id').select2({
+                $('#driver_information_dni_id').select2({
                     data: data
                 });
             }
@@ -42,7 +42,7 @@
             url: $('#company-select-list-route').val(),
             data: { 'type': 'companies' },
             success: function (data) {
-                $('#Company_id_excel').select2({
+                $('#company_id_excel').select2({
                     data: data
                 });
             }
@@ -50,11 +50,6 @@
 
         $("#btn_search_company").on("click", function () {
             $(this).hide();
-            // let company = $("#search_name_company").val();
-            // let nit_company = $("#search_nit").val();
-            // data_send = { 'company': company, 'nit_company': nit_company }
-
-            // DELETE
             table_search = $("#search_company_datatable").DataTable({
                 processing: true,
                 serverSide: true,
@@ -65,48 +60,26 @@
                     { data: 'company', name: 'company' },
                 ],
                 language: language_dt,
-                // columnDefs: [{
-                //     targets: '_all',
-                //     createdCell: function (td, cellData, rowData, row, col) {
-                //         $(td).attr("id", fields[col])
-                //     }
-                // }]
             });
 
 
             // DELETE
             $('#search_company_datatable tbody').on('click', 'tr', function () {
                 var data = table_search.row(this).data();
-                $("#Company_id").val(data['nit']);
+                $("#company_id").val(data['nit']);
             });
-
-
-
-            // $('#button').click( function () {
-            //     table.row('.selected').remove().draw( false );
-            // } );
-
-            // $.ajax({
-            //     type: 'POST',
-            //     url: $(this).data('url'),
-            //     data: data_send,
-            //     success: function (data) {
-            //         console.log(data);
-
-            //     }
-            // });
         });
 
 
-        $("#Plate_id_form").on('change', function(){
+        $("#plate_id_form").on('change', function(){
             $(".error-strong").text("");
         });
 
-        $('#User_information_DNI_id').on('change', function () {
+        $('#drive_information_dni_id').on('change', function () {
             let user_info_id = $(this).val();
             $.ajax({
                 type: 'GET',
-                url: $('#User_information_DNI_id').data('url-name'),
+                url: $('#driver_information_dni_id').data('url-name'),
                 data: { 'type': 'select_admin2', 'user_info_id': user_info_id },
                 success: function (data) {
                     $("#name_driver").text(data.name);
@@ -174,31 +147,32 @@
 
         var fields = [
             'delete_row',
-            'Plate_id',
-            'Type_V',
-            'Owner_V',
-            'Taxi_type',
-            'taxi_Number_of_drivers',
-            'Soat_expi_date',
-            'Capacity',
-            'Service',
-            'Cylindrical_cc',
-            'V_class',
-            'Model',
-            'Line',
-            'Brand',
-            'Color',
+            'plate_id',
+            'type_v',
+            'owner_v',
+            'taxi_type',
+            'taxi_number_of_drivers',
+            'soat_expi_date',
+            'capacity',
+            'service',
+            'cylindrical_cc',
+            'v_class',
+            'model',
+            'line',
+            'brand',
+            'color',
             'technomechanical_date',
-            'First_name',
-            'S_last_name'
         ];
 
         var enums = {
-            'Service': {
+            'service': {
                 'Particular': 'Particular', 'Transporte_mercancia': 'Transporte_mercancia', 'Transporte_publico': 'Transporte_publico', 'Otros': 'Otros'
             },
-            'Taxi_type': {
+            'taxi_type': {
                 'Taxi amarillo': 'Taxi amarillo', 'Taxi blanco': 'Taxi blanco', 'NA': 'NA'
+            },
+            'type_v': {
+                'Motos':'Motos','Camperos':'Camperos','Camionetas':'Camionetas','Vehículos de carga o\nmixtos':'Vehículos de carga o\nmixtos','vehículos oficiales especiales y ambulancias':'vehículos oficiales especiales y ambulancias','Autos familiares':'Autos familiares','Vehículos particulares para seis (6) o más\npasajeros':'Vehículos particulares para seis (6) o más\npasajeros','Autos de negocios':'Autos de negocios','Taxis':'Taxis','Microbuses urbanos':'Microbuses urbanos','Buses\ny busetas':'Buses\ny busetas','Vehículos de servicio público intermunicipal':'Vehículos de servicio público intermunicipal'
             }
         }
 
@@ -210,23 +184,21 @@
             ajax: $('#vehicle_datatable').data('url-list'),
             columns: [
                 { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-danger" id="btn_delete_vehicle"><span class="trash_icon"></span></button></center>' },
-                { data: 'Plate_id', name: 'Plate_id' },
-                { data: 'Type_V', name: 'Type_V' },
-                { data: 'Owner_V', name: 'Owner_V' },
-                { data: 'Taxi_type', name: 'Taxi_type' },
-                { data: 'taxi_Number_of_drivers', name: 'taxi_Number_of_drivers' },
-                { data: 'Soat_expi_date', name: 'Soat_expi_date' },
-                { data: 'Capacity', name: 'Capacity' },
-                { data: 'Service', name: 'Service' },
-                { data: 'Cylindrical_cc', name: 'Cylindrical_cc' },
-                { data: 'V_class', name: 'V_class' },
-                { data: 'Model', name: 'Model' },
-                { data: 'Line', name: 'Line' },
-                { data: 'Brand', name: 'Brand' },
-                { data: 'Color', name: 'Color' },
+                { data: 'plate_id', name: 'plate_id' },
+                { data: 'type_v', name: 'type_v' },
+                { data: 'owner_v', name: 'owner_v' },
+                { data: 'taxi_type', name: 'taxi_type' },
+                { data: 'taxi_number_of_drivers', name: 'taxi_number_of_drivers' },
+                { data: 'soat_expi_date', name: 'soat_expi_date' },
+                { data: 'capacity', name: 'capacity' },
+                { data: 'service', name: 'service' },
+                { data: 'cylindrical_cc', name: 'cylindrical_cc' },
+                { data: 'v_class', name: 'v_class' },
+                { data: 'model', name: 'model' },
+                { data: 'line', name: 'line' },
+                { data: 'brand', name: 'brand' },
+                { data: 'color', name: 'color' },
                 { data: 'technomechanical_date', name: 'technomechanical_date' },
-                { data: 'First_name', name: 'First_name' },
-                { data: 'S_last_name', name: 'S_last_name' },
             ],
             language: language_dt,
 
@@ -236,15 +208,6 @@
                     $(td).attr("id", fields[col])
                 }
             }],
-            // createdRow: function( row, data, dataIndex ) {
-
-            //     if( data.hasOwnProperty("id") ) {
-            //         row.id = "row-" + data.id;
-            //     } 
-            //     debugger
-            //     $( row ).attr({'data-id': data.id, id:'idUser'});
-            // }
-
         });
 
         $('#vehicle_datatable').on('click', 'tr td #btn_delete_vehicle', function () {
@@ -317,35 +280,30 @@
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            columns: [2,3,4,5,6,7,8,9,10,11,12,13,14,15],
-            "inputTypes": [
-                {
-                    "column": 8,
-                    "type": "list",
-                    "options": [
-                        { "value": enums.Service['Particular'], "display": enums.Service['Particular'] },
-                        { "value": enums.Service['Transporte_mercancia'], "display": enums.Service['Transporte_mercancia'] },
-                        { "value": enums.Service['Transporte_publico'], "display": enums.Service['Transporte_publico'] },
-                        { "value": enums.Service['Otros'], "display": enums.Service['Otros'] }
-                    ]
-                },
-                {
-                    "column": 4,
-                    "type": "list",
-                    "options": [
-                        { "value": enums.Taxi_type['Taxi amarillo'], "display": enums.Taxi_type['Taxi amarillo'] },
-                        { "value": enums.Taxi_type['Taxi blanco'], "display": enums.Taxi_type['Taxi blanco'] },
-                        { "value": enums.Taxi_type['NA'], "display": enums.Taxi_type['NA'] }
-                    ]
-                }
+            columns: [2,3,4,5],
+            // "inputTypes": [
+            //     {
+            //         "column": 3,
+            //         "type": "list",
+            //         "options": [
+            //             { "value": enums.Service['Particular'], "display": enums.Service['Particular'] },
+            //             { "value": enums.Service['Transporte_mercancia'], "display": enums.Service['Transporte_mercancia'] },
+            //             { "value": enums.Service['Transporte_publico'], "display": enums.Service['Transporte_publico'] },
+            //             { "value": enums.Service['Otros'], "display": enums.Service['Otros'] }
+            //         ]
+            //     },
+            //     {
+            //         "column": 4,
+            //         "type": "list",
+            //         "options": [
+            //             { "value": enums.Taxi_type['Taxi amarillo'], "display": enums.Taxi_type['Taxi amarillo'] },
+            //             { "value": enums.Taxi_type['Taxi blanco'], "display": enums.Taxi_type['Taxi blanco'] },
+            //             { "value": enums.Taxi_type['NA'], "display": enums.Taxi_type['NA'] }
+            //         ]
+            //     }
 
-             ]
+            //  ]
         });
-
-        // $('#user_datatable').on('click', 'tbody td', function () {
-        //     alert('oye mi perro')
-        //     table_user.cell( this ).edit();
-        // } );
     });
 
 

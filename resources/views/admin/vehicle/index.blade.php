@@ -1,6 +1,7 @@
 @extends('layouts-admin.app')
 @section('content')
 <!-- Begin Page Content -->
+
 <div class="container">
     <input type="hidden" name="update-vehicle-route" value="{{ route ('admin.vehicle.update') }}"
         id="update-vehicle-route">
@@ -30,8 +31,6 @@
                 <th>Marca</th>
                 <th>Color</th>
                 <th>Fecha de Tecnomecánica</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
             </tr>
         </thead>
     </table>
@@ -64,90 +63,71 @@
                         <div class="row mt-1">
                             <div class="col-md-6">
                                 <label for=""></label>
-                                <input class="form-control" type="text" name="vehicle[Plate_id]" placeholder="Placa"
-                                    id="Plate_id_form" />
-                                <span class="error_admin input_user_admin" role="alert" id="Plate_id-error">
-                                    <strong id="Plate_id-error-strong" class="error-strong"> </strong>
+                                <input class="form-control" type="text" name="vehicle[plate_id]" placeholder="Placa"
+                                    id="plate_id_form" />
+                                <span class="error_admin input_user_admin" role="alert" id="plate_id-error">
+                                    <strong id="plate_id-error-strong" class="error-strong"> </strong>
                                 </span>
                             </div>
                             <div class="col-md-6">
-                                <label for="State">C.C Conductor</label>
-                                <select name="vehicle[User_information_DNI_id]" class="form-control"
-                                    id="User_information_DNI_id" style="width: 100%; height: 100%;"
-                                    data-url="{{ route('drivers-select-lists') }}"
-                                    data-url-name="{{ route('drivers-get-name') }}" required>
-                                </select>
-                                <label class="text-info font-weight-bold" id="name_driver"
-                                    style="margin-top: 12px;"></label>
-                                <span class="error_admin input_user_admin" role="alert"
-                                    id="User_information_DNI_id-error">
-                                    <strong id="User_information_DNI_id-error-strong" class="error-strong"> </strong>
-                                </span>
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-6">
-                                <label for="Type_V">Tipo</label>
-                                <select name="vehicle[Type_V]" class="form-control" id="Type_V" style="width: 100%">
+                                <label for="type_v">Tipo</label>
+                                <select name="vehicle[type_v]" class="form-control" id="type_v" style="width: 100%">
                                     <option value="">Seleccionar...</option>
-                                    <option value="Carro">Carro</option>
-                                    <option value="Moto">Moto</option>
-                                    <option value="Furgón">Furgón</option>
-                                    <option value="Otro">Otro</option>
+                                    @foreach ($enum_type_v as $enum_t_v)
+                                        <option value="{{$enum_t_v}}"> {{$enum_t_v}} </option>
+                                    @endforeach
                                 </select>
-                                <small class="text-danger small_forms" id="small_type_v"></small>
                             </div>
                             <div class="col-md-6">
-                                <label for="Owner_V">Dueño</label>
-                                <select name="vehicle[Owner_V]" class="form-control" id="Owner_V" style="width: 100%">
+                                <label for="owner_v">Dueño</label>
+                                <select name="vehicle[owner_v]" class="form-control" id="owner_v" style="width: 100%">
                                     <option value="">Seleccionar...</option>
                                     <option value="1">Si</option>
                                     <option value="0">No</option>
                                 </select>
-                                <small class="text-danger small_forms" id="small_owner_v"></small>
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-6 form_select_conductores">
-                                <label for="Taxi_type">Tipo de Taxi</label>
-                                <select name="vehicle[Taxi_type]" class="form-control" id="Taxi_type"
+                                <label for="taxi_type">Tipo de Taxi</label>
+                                <select name="vehicle[taxi_type]" class="form-control" id="taxi_type"
                                     style="width: 100%">
                                     <option value="">Seleccionar...</option>
-                                    <option value="Taxi amarillo">Taxi amarillo</option>
-                                    <option value="Taxi blanco">Taxi blanco</option>
-                                    <option value="NA">NA</option>
+                                    @foreach ($enum_taxi_type as $enum_t_t)
+                                        <option value="{{$enum_t_t}}"> {{$enum_t_t}} </option>
+                                    @endforeach
                                 </select>
-                                <small class="text-danger small_forms" id="small_taxi_type"></small>
                             </div>
                             <div class="col-md-6 form_select_conductores">
-                                <label for="taxi_Number_of_drivers">Número de conductores Taxi</label>
-                                <select name="vehicle[taxi_Number_of_drivers]" class="form-control"
-                                    id="taxi_Number_of_drivers" style="width: 100%">
+                                <label for="taxi_number_of_drivers">Número de conductores Taxi</label>
+                                <select name="vehicle[taxi_number_of_drivers]" class="form-control"
+                                    id="taxi_number_of_drivers" style="width: 100%">
                                     <option value="">Seleccionar...</option>
                                     <option value="1">Si</option>
                                     <option value="0">No</option>
                                 </select>
-                                <small class="text-danger small_forms" id="small_taxi_number"></small>
                             </div>
                         </div>
                         <div class="row row_form_input_vehicle mt-2">
                             <div class="col-md-6">
-                                <label for="Soat_expi_date_form">Fecha de vencimiento de soat*</label>
-                                <input type="date" class="form-control" name="vehicle[Soat_expi_date]"
-                                    id="Soat_expi_date_form" readonly />
-                                <small class="text-danger small_forms" id="small_soat_expi_date"></small>
+                                <label for="soat_expi_date_form">Fecha de vencimiento de soat*</label>
+                                <input type="date" class="form-control" name="vehicle[soat_expi_date]"
+                                    id="soat_expi_date_form" readonly />
                             </div>
                             <div class="col-md-6">
                                 <label for="technomechanical_date_form">Fecha de Tecnomecánica</label>
                                 <input type="date" class="form-control" name="vehicle[technomechanical_date]"
                                     id="technomechanical_date_form" readonly />
-                                <small class="text-danger small_forms" id="small_capacity"></small>
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-6 form_select_conductores">
-                                <label for="Capacity">Cantidad de pasajeros</label>
-                                <select name="vehicle[Capacity]" class="form-control" id="Capacity" style="width: 100%">
+                                <label for="capacity">Cantidad de pasajeros</label>
+                                <select name="vehicle[capacity]" class="form-control" id="capacity" style="width: 100%">
                                     <option value="">Seleccionar...</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -161,50 +141,41 @@
                                     <option value="10">10</option>
                                     <option value="Otro">Otro</option>
                                 </select>
-                                <small class="text-danger small_forms" id="small_capacity"></small>
                             </div>
                             <div class="col-md-6 form_select_conductores">
-                                <label for="Service">Servicio</label>
-                                <select name="vehicle[Service]" class="form-control" id="Service" style="width: 100%">
+                                <label for="service">Servicio</label>
+                                <select name="vehicle[service]" class="form-control" id="service" style="width: 100%">
                                     <option value="">Seleccionar...</option>
-                                    <option value="Particular">Particular</option>
-                                    <option value="Transporte_mercancia">Transporte Mercancia</option>
-                                    <option value="Transporte_publico">Transporte Público</option>
-                                    <option value="Otros">Otros</option>
-                                    <small class="text-danger small_forms" id="small_service"></small>
+                                    @foreach ($enum_service as $enum_s)
+                                        <option value="{{$enum_s}}"> {{$enum_s}} </option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="row row_form_input_conductores mt-2">
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="vehicle[Cylindrical_cc]"
+                                <input type="text" class="form-control" name="vehicle[cylindrical_cc]"
                                     placeholder="Cilindraje" />
-                                <small class="text-danger small_forms" id="Cylindrical_cc"></small>
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="vehicle[V_class]"
+                                <input type="text" class="form-control" name="vehicle[v_class]"
                                     placeholder="Clase de Vehículo" />
-                                <small class="text-danger small_forms" id="V_class"></small>
                             </div>
                         </div>
                         <div class="row row_form_input_conductores mt-2">
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="vehicle[Model]" placeholder="Modelo" />
-                                <small class="text-danger small_forms" id="Model"></small>
+                                <input type="text" class="form-control" name="vehicle[model]" placeholder="Modelo" />
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="vehicle[Line]" placeholder="Línea" />
-                                <small class="text-danger small_forms" id="Line"></small>
+                                <input type="text" class="form-control" name="vehicle[line]" placeholder="Línea" />
                             </div>
                         </div>
                         <div class="row row_form_input_conductores mt-2">
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="vehicle[Brand]" placeholder="Marca" />
-                                <small class="text-danger small_forms" id="small_capacity"></small>
+                                <input type="text" class="form-control" name="vehicle[brand]" placeholder="Marca" />
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="vehicle[Color]" placeholder="Color" />
-                                <small class="text-danger small_forms" id="small_capacity"></small>
+                                <input type="text" class="form-control" name="vehicle[color]" placeholder="Color" />
                             </div>
                         </div>
                         <div class="d-flex justify-content-center" style="margin-top: 25px;">
@@ -240,7 +211,7 @@
                     <div class="form-card">
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">¿A cuál compañía desea cargar?</label>
-                            <select class="form-control" name="Company_id" id="Company_id_excel" required>
+                            <select class="form-control" name="company_id" id="company_id_excel" required>
                             </select>
                         </div>
                         <div class="form-group">
@@ -262,5 +233,10 @@
 </div>
 <!-- /.container-fluid -->
 <script src="{{ asset('js/admin/vehicle.js') }}" defer></script>
+<script>
+    var enum_service = <?php echo json_encode($enum_type_v); ?>;
+    var enum_taxi_type = <?php echo json_encode($enum_taxi_type); ?>;
+    var enum_service = <?php echo json_encode($enum_service); ?>;
+</script>
 @endsection
 <!-- End of Main Content -->

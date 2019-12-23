@@ -79,7 +79,7 @@
                             </div>
                             <div class="col-md-6">
                                 <input type="text" name="driverInformation[s_last_name]" id="s_last_name"
-                                    class="form-control form-dataconductores" placeholder="Segundo Apellido" required>
+                                    class="form-control form-dataconductores" placeholder="Segundo Apellido">
                             </div>
                         </div>
                         <div class="row" style="margin-top: 15px;">
@@ -111,8 +111,8 @@
                         </div>
                         <div class="row" style="margin-top: 15px;">
                             <div class="col-md-6 form_select_conductores">
-                                <label for="gender">Género</label>
-                                <select name="driverInformation[gender]" class="form-control form-dataconductores"
+                                <label for="gender">Género</label><br>
+                                <select name="driverInformation[gender]" class="form-control form-dataconductores" style="width: 100%"
                                     id="gender" required>
                                     <option value="">Seleccionar</option>
                                     <option value="0">Masculino</option>
@@ -120,46 +120,35 @@
                                 </select>
                             </div>
                             <div class="col-md-6 form_select_conductores">
-                                <label for="education">Educación</label>
-                                <select name="driverInformation[education]" class="form-control form-dataconductores"
+                                <label for="education">Educación</label><br>
+                                <select name="driverInformation[education]" class="form-control form-dataconductores" style="width: 100%"
                                     id="education" required>
                                     <option value="">Seleccionar</option>
-                                    <option value="Ninguno">Ninguno</option>
-                                    <option value="Primaria">Primaria</option>
-                                    <option value="Secundaria">Secundaria</option>
-                                    <option value="Pregrado">Pregrado</option>
-                                    <option value="Postgrado">Postgrado</option>
+                                    @foreach ($list_education as $education_item)
+                                        <option value="{{ $education_item }}">{{ $education_item }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="row" style="margin-top: 15px;">
                             <div class="col-md-6 form_select_conductores">
-                                <label for="country_born">País</label>
-                                <select name="driverInformation[country_born]" class="form-control form-dataconductores"
+                                <label for="country_born">País</label><br>
+                                <select name="driverInformation[country_born]" class="form-control form-dataconductores" style="width: 100%"
                                     id="country_born" required>
                                     <option value="">Seleccionar</option>
-                                    <option value="Colombia">Colombia</option>
-                                    <option value="Venezuela">Venezuela</option>
-                                    <option value="Peru">Peru</option>
-                                    <option value="Ecuador">Ecuador</option>
-                                    <option value="Bolivia">Bolivia</option>
-                                    <option value="Argentina">Argentina</option>
-                                    <option value="Brasil">Brasil</option>
-                                    <option value="Otro">Otro</option>
+                                    @foreach ($list_country_born as $country_item)
+                                        <option value="{{ $country_item }}">{{ $country_item }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-6 form_select_conductores">
-                                <label for="civil_state">Estado Civil</label>
-                                <select name="driverInformation[civil_state]" class="form-control form-dataconductores"
+                                <label for="civil_state">Estado Civil</label><br>
+                                <select name="driverInformation[civil_state]" class="form-control form-dataconductores" style="width: 100%"
                                     id="civil_state" required>
                                     <option value="">Seleccionar</option>
-                                    <option value="Soltero">Soltero</option>
-                                    <option value="Casado">Casado</option>
-                                    <option value="Separado">Separado</option>
-                                    <option value="Divorciado">Divorciado</option>
-                                    <option value="Viudo">Viudo</option>
-                                    <option value="Union libre">Union libre</option>
-                                    <option value="Sin información">Sin información</option>
+                                    @foreach ($list_civil_state as $civil_state_item)
+                                        <option value="{{ $civil_state_item }}">{{ $civil_state_item }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -176,15 +165,22 @@
                                 <select name="driverInformation[department]" class="form-control form-dataconductores"
                                     id="department" data-url="{{ route('admin2-select-lists') }}" style="width: 100%"
                                     required>
+                                    <option value="">Seleccionar</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row" style="margin-top: 18px;">
-
                             <div class="col-md-6 form_select_conductores">
                                 <label for="city_born">Ciudad de Nacimiento:</label><br>
                                 <select name="driverInformation[city_born]" class="form-control form-dataconductores"
                                     id="city_born" data-url="{{ route('admin3-select-lists') }}" style="width: 100%"
+                                     required disabled>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form_select_conductores">
+                                <label for="city_residence_place">Ciudad de Residencia:</label><br>
+                                <select name="driverInformation[city_residence_place]" class="form-control form-dataconductores"
+                                    id="city_residence_place" data-url="{{ route('admin3-select-lists') }}" style="width: 100%"
                                     required>
                                 </select>
                             </div>
@@ -248,5 +244,12 @@
 
 <!-- /.container-fluid -->
 <script src="{{ asset('js/admin/drive-information.js') }}" defer></script>
+<script>
+    var enum_education = @json($enum_education);
+    var enum_country_born = @json($enum_country_born);
+    var enum_civil_state = @json($enum_civil_state);
+    var list_cities = @json($enum_civil_state);
+    var list_admin3 = @json($list_admin3);
+</script>
 @endsection
 <!-- End of Main Content -->

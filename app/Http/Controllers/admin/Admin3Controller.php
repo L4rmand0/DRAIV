@@ -103,4 +103,16 @@ class Admin3Controller extends Controller
         }
         return $data;
     }
+
+    public static function listAdmin3()
+    {
+        return DB::table('admin3')
+            ->select(
+                'adm3_id',
+                'name',
+                'adm2_id'
+            )->get()->toArray();
+            
+    }
+
 }

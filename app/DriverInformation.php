@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class DriverInformation extends Model
 {
+
+    const enum_education = ['Ninguno','primaria','secundaria','pregrado','postgrado','sin información'];
+    const enum_country_born = ['colombia','Venezuela','peru','ecuador','bolivia','argentina','brasil','otro'];
+    const enum_civil_state = ['soltero','casado','separado','divorciado','Viudo','Union libre','sin información'];
+
     protected $table = 'driver_information'; 
 
     protected $guarded = [];
@@ -23,6 +28,7 @@ class DriverInformation extends Model
         'e_mail_address',
         'address',
         'country_born',
+        'city_residence_place',
         'city_born',
         'department',
         'phone',

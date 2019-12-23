@@ -19,7 +19,16 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        return view('admin.vehicle.index');
+        $enum_type_v = Vehicle::enum_type_v;
+        $enum_service = Vehicle::enum_service;
+        $enum_taxi_type = Vehicle::enum_taxi_type;
+        // print_r($enum_type_v);
+        // die;
+        return view('admin.vehicle.index',[
+            'enum_type_v'=>$enum_type_v,
+            'enum_service'=>$enum_service,
+            'enum_taxi_type'=>$enum_taxi_type
+            ]);
     }
 
     /**
@@ -46,12 +55,11 @@ class VehicleController extends Controller
         $validator = Validator::make(
             $data_input,
             [
-                'plate_id' => ['required','max:255','unique:vehicle'],
+                'plate_id' => ['required','max:15','unique:vehicle'],
                 'type_v' => 'required|max:255',
                 'owner_v' => 'required|max:255',
                 'soat_expi_date' => 'required|max:255',
-                'capacity' => 'required|max:255',
-                'driver_information_dni_id' => ['required','max:255','unique:vehicle']
+                'capacity' => 'required|max:11',
             ],
             [
                 'plate_id.required' => "La placa no puede ser vacía",
@@ -59,7 +67,6 @@ class VehicleController extends Controller
                 'owner_v.required' => "Se debe elegir una opción",
                 'soat_expi_date.required' => "Se debe seleccionar una fecha",
                 'capacity.required' => "Se debe seleccionar la capacidad",
-                'wser_information_dni_id.unique' => "Este conductor ya tiene un vehículo.",
                 'plate_id.unique' => "Esta placa ya está registrada."
             ]
         );
@@ -68,12 +75,11 @@ class VehicleController extends Controller
             return response()->json(['errors' => $errors]);
         } else {
             $vehicle = Vehicle::create([
-                'driver_information_dni_id' => $data_input['driver_information_dni_id'],
                 'plate_id' => $data_input['plate_id'],
                 'type_v' =>  $data_input['type_v'],
                 'owner_v' =>  $data_input['owner_v'] != "" ? $data_input['owner_v'] : 0 ,
                 'taxi_type' => $data_input['taxi_type'] != "" ? $data_input['taxi_type'] : "NA",
-                'taxi_Number_of_drivers' => $data_input['taxi_Number_of_drivers'] != "" ? $data_input['taxi_Number_of_drivers'] : 1,
+                'taxi_number_of_drivers' => $data_input['taxi_number_of_drivers'] != "" ? $data_input['taxi_number_of_drivers'] : 1,
                 'soat_expi_date' => $data_input['soat_expi_date'],
                 'capacity' => $data_input['capacity'],
                 'service' => $data_input['service'] != "" ? $data_input['service'] :"Otros",
@@ -85,7 +91,7 @@ class VehicleController extends Controller
                 'color' => $data_input['color'] != "" ? $data_input['color'] : "",
                 'technomechanical_date' => $data_input['technomechanical_date'] != "" ? $data_input['technomechanical_date'] : "0000-00-00",
             ]);
-            if ($vehicle->Plate_id != "") {
+            if ($vehicle->plate_id != "") {
                 return response()->json([
                     'success' => 'Información registrada.',
                     'errors' => $errors
@@ -156,17 +162,14 @@ class VehicleController extends Controller
 
     public function vehicleList()
     {
-        $company_id = Auth::user()->Company_id;
         $vehicle = DB::table('vehicle')
-            ->join('driver_information', 'driver_information.DNI_id', '=', 'vehicle.User_information_dni_id')
-            ->where('driver_information.company_id', '=', $company_id)
             ->where('vehicle.operation', '!=', 'D')
             ->select(DB::raw(
                'vehicle.plate_id, 
-                vehicle.type_V, 
-                IF(vehicle.owner_V=1,"Sí","No") as owner_v, 
+                vehicle.type_v, 
+                IF(vehicle.owner_v="Y","Sí","No") as owner_v, 
                 vehicle.taxi_type, 
-                vehicle.taxi_Number_of_drivers, 
+                vehicle.taxi_number_of_drivers, 
                 vehicle.soat_expi_date, 
                 vehicle.capacity, 
                 vehicle.service,
@@ -176,11 +179,9 @@ class VehicleController extends Controller
                 vehicle.line,
                 vehicle.brand,
                 vehicle.color,
-                vehicle.technomechanical_date,
-                driver_information.first_name,
-                driver_information.s_last_name'
+                vehicle.technomechanical_date'
             ))->get();
-        $vehicle = $this->addDeleteButtonDatatable($vehicle);
+            $vehicle = $this->addDeleteButtonDatatable($vehicle);
         return datatables()->of($vehicle)->make(true);
     }
 

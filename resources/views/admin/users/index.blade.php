@@ -91,30 +91,30 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="Company_id"
+                        <label for="company_id"
                             class="col-md-4 col-form-label text-md-right">{{ __('Compañía') }}</label>
                         <div class="col-md-6">
-                            <select class="form-control" name="Company_id" id="Company_id">
+                            <select class="form-control" name="company_id" id="company_id">
                                 <option value="">Seleccionar ...</option>
                                 <option value="9013380301">DRAIV</option>
                                 <option value="9013380302">Smart</option>
                             </select>
-                            <span class="error_admin" role="alert" id="Company_id-error">
-                                <strong id="Company_id-error-strong" class="error-strong"></strong>
+                            <span class="error_admin" role="alert" id="company_id-error">
+                                <strong id="company_id-error-strong" class="error-strong"></strong>
                             </span>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="User_profile" class="col-md-4 col-form-label text-md-right">{{ __('Perfil') }}</label>
+                        <label for="user_profile" class="col-md-4 col-form-label text-md-right">{{ __('Perfil') }}</label>
                         <div class="col-md-6">
-                            <select class="form-control" name="User_profile" id="User_profile">
+                            <select class="form-control" name="user_profile" id="user_profile">
                                 <option value="">Seleccionar ...</option>
                                 <option value="Administrator">Administrator</option>
                                 <option value="Evaluator">Evaluator</option>
                                 <option value="User">User</option>
                             </select>
-                            <span class="error_admin" role="alert" id="User_profile-error">
-                                <strong id="User_profile-error-strong" class="error-strong"></strong>
+                            <span class="error_admin" role="alert" id="user_profile-error">
+                                <strong id="user_profile-error-strong" class="error-strong"></strong>
                             </span>
                         </div>
                     </div>

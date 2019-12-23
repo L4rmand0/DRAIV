@@ -9,19 +9,54 @@
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
     $(function () {
+
+        $("#department").on('change', function(){
+            let data_admin2 = $(this).val();
+            let data_cities = new Array();
+            $.each(list_admin3, function( index, value ) {
+                let admin2_item = value.adm2_id;
+                if(data_admin2==admin2_item){
+                    let admin3_item = {"id":value.adm3_id,"text":value.name};
+                    data_cities.push(admin3_item)
+                }
+            });
+            $("#city_born").attr('disabled', false);
+
+            var datax = [
+                {
+                    id: 0,
+                    text: 'enhancement'
+                },
+                {
+                    id: 1,
+                    text: 'bug'
+                },
+                {
+                    id: 2,
+                    text: 'duplicate'
+                },
+                {
+                    id: 3,
+                    text: 'invalid'
+                },
+                {
+                    id: 4,
+                    text: 'wontfix'
+                }
+            ];
+            $('#city_born').html("");
+            $("#city_born").select2({
+                data:data_cities
+            });
+        });
+
         var table_search;
-
-        // $.ajax({
-        //     type: 'GET',
-        //     url: $('#Country_born').data('url'),
-        //     data: { 'type': 'select_admin1' },
-        //     success: function (data) {
-        //         $('#Country_born').select2({
-        //             data: data
-        //         });
-        //     }
-        // });
-
+        $('#gender').select2();
+        $('#education').select2();
+        $('#country_born').select2();
+        $('#civil_state').select2();
+        $('#city_born').select2();
+        
         $.ajax({
             type: 'GET',
             url: $('#department').data('url'),
@@ -57,10 +92,10 @@
 
         $.ajax({
             type: 'GET',
-            url: $('#city_born').data('url'),
+            url: $('#city_residence_place').data('url'),
             data: { 'type': 'admin3' },
             success: function (data) {
-                $('#city_born').select2({
+                $('#city_residence_place').select2({
                     data: data
                 });
             }
@@ -219,16 +254,6 @@
             'Company_id'
         ];
 
-        var enums = {
-            'Education': {
-                'Primaria': 'Primaria', 'Secundaria': 'Secundaria', 'Pregrado': 'Pregrado', 'Postgrado': 'Postgrado', 'Sin informacion': 'Sin informacion'
-            },
-            'Civil_state': {
-                'Soltero': 'Soltero', 'Casado': 'Casado', 'Separado': 'Separado', 'Divorciado': 'Divorciado', 'Viudo': 'Viudo', 'Union libre': 'Union libre', 'Sin información': 'Sin información'
-            }
-        }
-
-
         var table = $('#drive_information_datatable').DataTable({
             processing: true,
             serverSide: true,
@@ -349,30 +374,23 @@
             columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 17, 18],
             "inputTypes": [
                 {
-                    "column": 7,
+                    "column": 6,
                     "type": "list",
                     "options": [
-                        { "value": enums.Education['Primaria'], "display": enums.Education['Primaria'] },
-                        { "value": enums.Education['Secundaria'], "display": enums.Education['Secundaria'] },
-                        { "value": enums.Education['Pregrado'], "display": enums.Education['Pregrado'] },
-                        { "value": enums.Education['Postgrado'], "display": enums.Education['Postgrado'] },
-                        { "value": enums.Education['Sin información'], "display": enums.Education['Sin información'] },
+                        {"value":0,"display":"Masculino"},
+                        {"value":1,"display":"Femino"}
                     ]
+                },
+                {
+                    "column": 7,
+                    "type": "list",
+                    "options": enum_education
                 },
                 {
                     "column": 15,
                     "type": "list",
-                    "options": [
-                        { "value": enums.Civil_state['Soltero'], "display": enums.Civil_state['Soltero'] },
-                        { "value": enums.Civil_state['Casado'], "display": enums.Civil_state['Casado'] },
-                        { "value": enums.Civil_state['Separado'], "display": enums.Civil_state['Separado'] },
-                        { "value": enums.Civil_state['Divorciado'], "display": enums.Civil_state['Divorciado'] },
-                        { "value": enums.Civil_state['Viudo'], "display": enums.Civil_state['Viudo'] },
-                        { "value": enums.Civil_state['Union libre'], "display": enums.Civil_state['Union libre'] },
-                        { "value": enums.Civil_state['Sin información'], "display": enums.Civil_state['Sin información'] },
-                    ]
+                    "options": enum_civil_state
                 }
-
             ]
         });
 

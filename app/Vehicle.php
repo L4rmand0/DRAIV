@@ -6,12 +6,37 @@ use Illuminate\Database\Eloquent\Model;
 
 class Vehicle extends Model
 {
+    const enum_type_v = [
+        'Motos',
+        'Camperos',
+        'Camionetas',
+        'Vehículos de carga o\nmixtos',
+        'vehículos oficiales especiales y ambulancias','Autos familiares',
+        'Vehículos particulares para seis (6) o más\npasajeros',
+        'Autos de negocios','Taxis',
+        'Microbuses urbanos',
+        'Buses\ny busetas',
+        'Vehículos de servicio público intermunicipal'
+    ];
+
+    const enum_service = [
+        'Particular',
+        'Publico',
+        'Transporte_mercancia',
+        'Otros'
+    ];
+
+    const enum_taxi_type = [
+        'Taxi amarillo',
+        'Taxi blanco',
+        'Na'
+    ];
+
     protected $table = 'vehicle'; 
     
     public $timestamps = false;
     
     protected $fillable = [
-        'driver_information_dni_id',
         'plate_id', 
         'type_v', 
         'owner_v', 
@@ -28,4 +53,6 @@ class Vehicle extends Model
         'color',
         'technomechanical_date'
     ];
+
+    
 }
