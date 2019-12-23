@@ -9,7 +9,17 @@
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
     $(function () {
-        $("#department").on('change', function(){
+
+        $(document).click(function(event) { 
+            $target = $(event.target);
+            if(!$target.closest('#drive_information_datatable tr #gender').length && 
+            $('#drive_information_datatable tr #gender select').is(":visible")) {
+                let val_item = $('#drive_information_datatable tr #gender select').val()
+                $("#drive_information_datatable tr #gender").html(val_item)
+            }        
+        });
+
+        $("#department_form").on('change', function(){
             let data_admin2 = $(this).val();
             let data_cities = new Array();
             let item = {"id":"","text":"Seleccionar"};
@@ -38,10 +48,10 @@
         
         $.ajax({
             type: 'GET',
-            url: $('#department').data('url'),
+            url: $('#department_form').data('url'),
             data: { 'type': 'select_admin2' },
             success: function (data) {
-                $('#department').select2({
+                $('#department_form').select2({
                     data: data
                 });
             }
@@ -79,6 +89,8 @@
                 });
             }
         });
+
+        
 
         // $('#Company_id').select2({
         //     ajax: {
@@ -151,42 +163,49 @@
             // });
         });
 
-
-
-
         $("#modal_form_drive_info").on("click", function () {
             $("#btn_search_company").show();
         });
 
         $("#form_driver_info_admin").submit(function (event) {
             event.preventDefault();
-            let data_form = $(this).serialize();
-            $.ajax({
-                type: 'POST',
-                url: $("#form_driver_info_admin").data('url'),
-                data: data_form,
-                success: function (data) {
-                    console.log(data);
-                    if (Object.keys(data.errors).length > 0) {
-                        let arr_errores = data.errors;
-                        console.log(arr_errores);
-                        $.each(arr_errores, function (index, value) {
-                            let selector = "#" + index + "-error";
-                            let selector_strong = "#" + index + "-error-strong";
-                            $(selector).show();
-                            $(selector_strong).text(value[0]);
-                            // $(selector).show();
-                            // $(selector).text(value);
-                            // error_founds = error_founds + 1;
-                        });
-                    } else {
-                        $(".form-dataconductores").val("");
-                        $(".error-strong").text("");
-                        $("#form_create_driver_information").modal('hide');
-                        $('#drive_information_datatable').DataTable().ajax.reload();
+            let score_val = parseFloat($("#score_form").val());
+            debugger
+            if(score_val > 5 || score_val < 0){
+                swal.fire(
+                    'Error de formato',
+                    'El puntaje deber ser un decimal entre 0 y 5. Ejemplo: 5.00',
+                    'error'
+                );
+            }else{
+                let data_form = $(this).serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: $("#form_driver_info_admin").data('url'),
+                    data: data_form,
+                    success: function (data) {
+                        console.log(data);
+                        if (Object.keys(data.errors).length > 0) {
+                            let arr_errores = data.errors;
+                            console.log(arr_errores);
+                            $.each(arr_errores, function (index, value) {
+                                let selector = "#" + index + "-error";
+                                let selector_strong = "#" + index + "-error-strong";
+                                $(selector).show();
+                                $(selector_strong).text(value[0]);
+                                // $(selector).show();
+                                // $(selector).text(value);
+                                // error_founds = error_founds + 1;
+                            });
+                        } else {
+                            $(".form-dataconductores").val("");
+                            $(".error-strong").text("");
+                            $("#form_create_driver_information").modal('hide');
+                            $('#drive_information_datatable').DataTable().ajax.reload();
+                        }
                     }
-                }
-            });
+                });
+            }
         });
         $("#form_excel_driver_info_admin").submit(function (event) {
             event.preventDefault();
@@ -223,7 +242,6 @@
             'e_mail_address',
             'address',
             'country_born',
-            'city_born',
             'city_Residence_place',
             'department',
             'phone',
@@ -250,9 +268,8 @@
                 { data: 'e_mail_address', name: 'e_mail_address' },
                 { data: 'address', name: 'address' },
                 { data: 'country_born', name: 'country_born' },
-                { data: 'city_born', name: 'city_born' },
-                { data: 'city_residence_place', name: 'city_residence_place' },
                 { data: 'department', name: 'department' },
+                { data: 'city_residence_place', name: 'city_residence_place' },
                 { data: 'phone', name: 'phone' },
                 { data: 'civil_state', name: 'civil_state' },
                 { data: 'score', name: 'score' },
@@ -279,6 +296,13 @@
             // }
 
         });
+        
+        // $("#drive_information_datatable").on("click",'tr #gender', function(){
+        //     alert("entra")
+        //     $("#drive_information_datatable").on("click",'tr #gender select', function(){
+        //         // alert("sale")
+        //     });
+        // });
 
         $('#drive_information_datatable').on('click', 'tr td #btn_delete_drive_info', function () {
             let row = $(this).parents('tr')
@@ -336,10 +360,10 @@
                     url: $("#update-driver-info-route").val(),
                     data: dataSend,
                     success: function (data) {
-                        if (Object.keys(data.response).length === 0)
-                            swal(
+                        if (Object.keys(data.error).length > 0)
+                            swal.fire(
                                 'Error!',
-                                data.response,
+                                 data.error.response,
                                 'error'
                             )
                     }
@@ -358,7 +382,6 @@
                     "column": 6,
                     "type": "list",
                     "options": [
-                        {"value":"","display":"Seleccionar"},
                         {"value":"Masculino","display":"Masculino"},
                         {"value":"Femenino","display":"Femenino"}
                     ]
@@ -369,7 +392,7 @@
                     "options": enum_education
                 },
                 {
-                    "column": 15,
+                    "column": 14,
                     "type": "list",
                     "options": enum_civil_state
                 },
@@ -381,12 +404,16 @@
             ]
         });
 
-        // $('#user_datatable').on('click', 'tbody td', function () {
-        //     alert('oye mi perro')
-        //     table_user.cell( this ).edit();
-        // } );
     });
-
+    
+    function validateDecimal(valor) {
+        var RE = /^\d*(\.\d{1})?\d{0,1}$/;
+        if (RE.test(valor)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     // The rest of the code goes here!
 }));

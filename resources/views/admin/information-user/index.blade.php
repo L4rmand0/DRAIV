@@ -24,9 +24,8 @@
                 <th>Email</th>
                 <th>Dirección</th>
                 <th>País</th>
-                <th>Ciudad</th>
-                <th>Ciudad Res</th>
                 <th>Departamento</th>
+                <th>Ciudad Residencia</th>
                 <th>Teléfono</th>
                 <th>Estado Civil</th>
                 <th>Puntaje</th>
@@ -69,7 +68,7 @@
                             </div>
                             <div class="col-md-6">
                                 <input type="text" name="driverInformation[second_name]" id="second_name"
-                                    class="form-control form-dataconductores" placeholder="Segundo Nombre" required>
+                                    class="form-control form-dataconductores" placeholder="Segundo Nombre">
                             </div>
                         </div>
                         <div class="row" style="margin-top: 15px;">
@@ -161,9 +160,9 @@
                                 </select>
                             </div>
                             <div class="col-md-6 form_select_conductores">
-                                <label for="department">Departamento:</label><br>
+                                <label for="department_form">Departamento:</label><br>
                                 <select name="driverInformation[department]" class="form-control form-dataconductores"
-                                    id="department" data-url="{{ route('admin2-select-lists') }}" style="width: 100%"
+                                    id="department_form" data-url="{{ route('admin2-select-lists') }}" style="width: 100%"
                                     required>
                                     <option value="">Seleccionar</option>
                                 </select>
@@ -183,6 +182,15 @@
                                     id="city_residence_place_form" data-url="{{ route('admin3-select-lists') }}" style="width: 100%"
                                     required disabled>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 18px;">
+                            <div class="col-md-6 form_select_conductores">
+                                <input type="text" name="driverInformation[score]" id="score_form"
+                                    class="form-control form-dataconductores" placeholder="Puntaje" required>
+                                <span class="error_admin input_user_admin" role="alert" id="score-error">
+                                    <strong id="score-error-strong" class="error-strong"> </strong>
+                                </span>
                             </div>
                         </div>
 

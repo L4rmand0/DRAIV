@@ -92,8 +92,8 @@ class DriverInformationController extends Controller
             [
                 'first_name' => 'required|max:70',
                 'f_last_name' => 'required|max:20',
-                's_last_name' => 'required|max:20',
-                'e_mail_address' => ['required', 'max:30', 'unique:driver_information'],
+                's_last_name' => 'max:20',
+                'e_mail_address' => ['required', 'max:35', 'unique:driver_information'],
                 'dni_id' => ['required', 'max:10', 'unique:driver_information'],
                 'gender' => 'required',
                 'education' => 'required',
@@ -120,7 +120,7 @@ class DriverInformationController extends Controller
                 'first_name' => $data_input['first_name'],
                 'second_name' =>  $data_input['second_name'] != "" ? $data_input['second_name'] : "NA",
                 'f_last_name' => $data_input['f_last_name'],
-                's_last_name' => $data_input['s_last_name'],
+                's_last_name' => $data_input['s_last_name'] != "" ? $data_input['s_last_name']: "NA",
                 'e_mail_address' => $data_input['e_mail_address'],
                 'gender' => $data_input['gender'] == "Masculino",
                 'education' => $data_input['education'],
@@ -129,6 +129,7 @@ class DriverInformationController extends Controller
                 'city_residence_place' => $data_input['city_residence_place'],
                 'department' => $data_input['department'],
                 'civil_state' => $data_input['civil_state'],
+                'score' => $data_input['score']!=""?number_format($data_input['score'],2):null,
                 'address' => $data_input['address'],
                 'phone' => $data_input['phone'],
                 'db_user_id' => $data_input['db_user_id'],
@@ -189,11 +190,14 @@ class DriverInformationController extends Controller
         if($field=="gender"){
             $value = $value == "Masculino" ? 0 : 1;
         }
+        if($field == "score" && ($value > 5 || $value < 0 )){
+            return response()->json(['error' => ['response'=>'El score no puede mayor a 5 ni menor a 0. Ejemplo: 5.00']]);
+        }
         $response = DriverInformation::where('dni_id', $data_updated['dni_id'])->update([$field => $value, 'operation' => 'U', 'date_operation' => $now]);
         if ($response) {
-            return response()->json(['response' => 'Información actualizada']);
+            return response()->json(['response' => 'Información actualizada','error'=>[]]);
         } else {
-            return response()->json(['error' => 'No se pudo actualizar la información']);
+            return response()->json(['error' => ['response'=>'No se pudo actualizar la información']]);
         }
     }
 
@@ -235,8 +239,7 @@ class DriverInformationController extends Controller
             driver_information.e_mail_address,
             driver_information.address,
             driver_information.country_born,
-            admin3.name AS city_born,
-            driver_information.city_residence_place,
+            admin3.name AS city_residence_place,
             admin2.name AS department,
             driver_information.phone,
             driver_information.civil_state,
