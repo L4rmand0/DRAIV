@@ -234,24 +234,24 @@
 
         var fields = [
             'delete_row',
-            'DNI_id',
-            'First_name',
-            'Second_name',
-            'F_last_name',
-            'S_last_name',
-            'Gender',
-            'Education',
-            'E_mail_address',
+            'dni_id',
+            'first_name',
+            'second_name',
+            'f_last_name',
+            's_last_name',
+            'gender',
+            'education',
+            'e_mail_address',
             'address',
-            'Country_born',
-            'City_born',
-            'City_Residence_place',
-            'Department',
+            'country_born',
+            'city_born',
+            'city_Residence_place',
+            'department',
             'phone',
-            'Civil_state',
-            'Score',
-            'Db_user_id',
-            'Company_id'
+            'civil_state',
+            'score',
+            'db_user_id',
+            'company_id'
         ];
 
         var table = $('#drive_information_datatable').DataTable({
@@ -378,8 +378,8 @@
                     "type": "list",
                     "options": [
                         {"value":"","display":"Seleccionar"},
-                        {"value":0,"display":"Masculino"},
-                        {"value":1,"display":"Femino"}
+                        {"value":"Masculino","display":"Masculino"},
+                        {"value":"Femenino","display":"Femenino"}
                     ]
                 },
                 {

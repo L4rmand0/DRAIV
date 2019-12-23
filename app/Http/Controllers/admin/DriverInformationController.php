@@ -122,7 +122,7 @@ class DriverInformationController extends Controller
                 'f_last_name' => $data_input['f_last_name'],
                 's_last_name' => $data_input['s_last_name'],
                 'e_mail_address' => $data_input['e_mail_address'],
-                'gender' => $data_input['gender'],
+                'gender' => $data_input['gender'] == "Masculino",
                 'education' => $data_input['education'],
                 'country_born' => $data_input['country_born'],
                 'city_born' => $data_input['city_born'],
@@ -186,6 +186,9 @@ class DriverInformationController extends Controller
         $data_updated = $request->all();
         $field = $data_updated['fieldch'];
         $value = $data_updated['valuech'];
+        if($field=="gender"){
+            $value = $value == "Masculino" ? 0 : 1;
+        }
         $response = DriverInformation::where('dni_id', $data_updated['dni_id'])->update([$field => $value, 'operation' => 'U', 'date_operation' => $now]);
         if ($response) {
             return response()->json(['response' => 'Información actualizada']);
