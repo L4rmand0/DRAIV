@@ -317,10 +317,7 @@
                 {
                     "column": 6,
                     "type": "list",
-                    "options": [
-                        {"value":"Sí","display":"Sí"},
-                        {"value":"No","display":"No"}
-                    ]
+                    "options": enum_country_expedition
                 },
                 {
                     "column": 7,
