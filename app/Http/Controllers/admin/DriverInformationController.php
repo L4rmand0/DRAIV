@@ -280,7 +280,7 @@ class DriverInformationController extends Controller
             driver_information.company_id,
             users.name as user,
             company.Name_company as company'
-            ))->get();
+            ))->orderBy('driver_information.start_date', 'desc')->get();
         $drive_information = $this->addDeleteButtonDatatable($drive_information);
         return datatables()->of($drive_information)->make(true);
     }

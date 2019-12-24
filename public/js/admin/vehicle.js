@@ -10,39 +10,45 @@
     // Listen for the jQuery ready event on the document
     $(function () {
 
-        $(document).click(function(event) { 
+        $(document).click(function (event) {
             $target = $(event.target);
-            if(!$target.closest('#vehicle_datatable tr #taxi_type').length && 
-            $('#vehicle_datatable tr #taxi_type select').is(":visible")) {
+            if (!$target.closest('#vehicle_datatable tr #taxi_type').length &&
+                $('#vehicle_datatable tr #taxi_type select').is(":visible")) {
                 let element = $('#vehicle_datatable tr #taxi_type select');
                 let val_item = element.val();
                 element.parent().html(val_item)
             }
-            if(!$target.closest('#vehicle_datatable tr #type_v').length && 
-            $('#vehicle_datatable tr #type_v select').is(":visible")) {
+            if (!$target.closest('#vehicle_datatable tr #type_v').length &&
+                $('#vehicle_datatable tr #type_v select').is(":visible")) {
                 let element = $('#vehicle_datatable tr #type_v select');
                 let val_item = element.val();
                 element.parent().html(val_item)
             }
-            if(!$target.closest('#vehicle_datatable tr #service').length && 
-            $('#vehicle_datatable tr #service select').is(":visible")) {
+            if (!$target.closest('#vehicle_datatable tr #service').length &&
+                $('#vehicle_datatable tr #service select').is(":visible")) {
                 let element = $('#vehicle_datatable tr #service select');
                 let val_item = element.val();
                 element.parent().html(val_item)
             }
-            
-            
+            if (!$target.closest('#vehicle_datatable tr #owner_v').length &&
+                $('#vehicle_datatable tr #owner_v select').is(":visible")) {
+                let element = $('#vehicle_datatable tr #owner_v select');
+                let val_item = element.val();
+                element.parent().html(val_item)
+            }
+
+
         });
 
         var table_search;
 
         //Selects de vehículos
-        $("#type_v").select2();
-        $("#owner_v").select2();
-        $("#taxi_type").select2();
+        // $("#type_v").select2();
+        // $("#owner_v").select2();
+        // $("#taxi_type").select2();
         $("#taxi_number_of_drivers").select2();
-        $("#capacity").select2();
-        $("#service").select2();
+        // $("#capacity").select2();
+        // $("#service").select2();
 
 
 
@@ -86,8 +92,6 @@
                 ],
                 language: language_dt,
             });
-
-
             // DELETE
             $('#search_company_datatable tbody').on('click', 'tr', function () {
                 var data = table_search.row(this).data();
@@ -96,7 +100,7 @@
         });
 
 
-        $("#plate_id_form").on('change', function(){
+        $("#plate_id_form").on('change', function () {
             $(".error-strong").text("");
         });
 
@@ -125,7 +129,6 @@
                 url: $("#form_vehicle_admin").data('url'),
                 data: data_form,
                 success: function (data) {
-                    console.log(data);
                     if (Object.keys(data.errors).length > 0) {
                         let arr_errores = data.errors;
                         console.log(arr_errores);
@@ -197,7 +200,7 @@
                 'Taxi amarillo': 'Taxi amarillo', 'Taxi blanco': 'Taxi blanco', 'NA': 'NA'
             },
             'type_v': {
-                'Motos':'Motos','Camperos':'Camperos','Camionetas':'Camionetas','Vehículos de carga o\nmixtos':'Vehículos de carga o\nmixtos','vehículos oficiales especiales y ambulancias':'vehículos oficiales especiales y ambulancias','Autos familiares':'Autos familiares','Vehículos particulares para seis (6) o más\npasajeros':'Vehículos particulares para seis (6) o más\npasajeros','Autos de negocios':'Autos de negocios','Taxis':'Taxis','Microbuses urbanos':'Microbuses urbanos','Buses\ny busetas':'Buses\ny busetas','Vehículos de servicio público intermunicipal':'Vehículos de servicio público intermunicipal'
+                'Motos': 'Motos', 'Camperos': 'Camperos', 'Camionetas': 'Camionetas', 'Vehículos de carga o\nmixtos': 'Vehículos de carga o\nmixtos', 'vehículos oficiales especiales y ambulancias': 'vehículos oficiales especiales y ambulancias', 'Autos familiares': 'Autos familiares', 'Vehículos particulares para seis (6) o más\npasajeros': 'Vehículos particulares para seis (6) o más\npasajeros', 'Autos de negocios': 'Autos de negocios', 'Taxis': 'Taxis', 'Microbuses urbanos': 'Microbuses urbanos', 'Buses\ny busetas': 'Buses\ny busetas', 'Vehículos de servicio público intermunicipal': 'Vehículos de servicio público intermunicipal'
             }
         }
 
@@ -282,35 +285,54 @@
 
         function myCallbackFunction(updatedCell, updatedRow, oldValue) {
             console.log("The new value for the cell is: " + updatedCell.data());
+            confirmUpdate = false;
             if (oldValue != updatedCell.data()) {
+                console.log("datax new " + updatedCell.data());
+                console.log("datax old " + oldValue);
+
                 dataSend = updatedRow.data();
                 dataSend.valuech = updatedCell.data();
                 dataSend.fieldch = updatedCell.nodes()[0].id;
+                element_node = updatedCell.nodes()[0];
                 $.ajax({
                     type: 'POST',
                     url: $("#update-vehicle-route").val(),
                     data: dataSend,
+                    async: false,
                     success: function (data) {
-                        if (Object.keys(data.response).length === 0)
-                            swal(
+                        if (Object.keys(data.error).length > 0) {
+
+                            swal.fire(
                                 'Error!',
-                                data.response,
+                                data.error.response,
                                 'error'
                             )
+                        } else {
+                            confirmUpdate = true;
+                        }
                     }
                 });
             }
-            console.log("The values for each cell in that row are: " + updatedRow.data());
+            return confirmUpdate;
+            // console.log("The values for each cell in that row are: " + updatedRow.data());
         }
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            columns: [2,3,4,5,6,7,8,9,10,11,12,13,14,15],
+            columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
             "inputTypes": [
                 {
                     "column": 2,
                     "type": "list",
                     "options": enum_type_v
+                },
+                {
+                    "column": 3,
+                    "type": "list",
+                    "options": [
+                        { 'value': "Sí", "display": "Sí" },
+                        { 'value': "No", "display": "No" }
+                    ]
                 },
                 {
                     "column": 4,
@@ -323,7 +345,7 @@
                     "options": enum_service
                 }
 
-             ]
+            ]
         });
     });
 

@@ -26,7 +26,7 @@
                 <th>País</th>
                 <th>Departamento</th>
                 <th>Ciudad Residencia</th>
-                <th>Teléfono</th>
+                <th>Número Celular</th>
                 <th>Estado Civil</th>
                 <th>Puntaje</th>
                 <th>Db_user_id</th>
@@ -104,7 +104,7 @@
                             </div>
                             <div class="col-md-6">
                                 <input type="tel" name="driverInformation[phone]"
-                                    class="form-control form-dataconductores" id="phone" placeholder="Teléfono"
+                                    class="form-control form-dataconductores" id="phone" placeholder="Número Celular"
                                     required />
                             </div>
                         </div>
@@ -131,13 +131,10 @@
                         </div>
                         <div class="row" style="margin-top: 15px;">
                             <div class="col-md-6 form_select_conductores">
-                                <label for="country_born">País</label><br>
-                                <select name="driverInformation[country_born]" class="form-control form-dataconductores" style="width: 100%"
-                                    id="country_born" required>
-                                    <option value="">Seleccionar</option>
-                                    @foreach ($list_country_born as $country_item)
-                                        <option value="{{ $country_item }}">{{ $country_item }}</option>
-                                    @endforeach
+                                <label for="company_id">Compañía:</label><br>
+                                <select name="driverInformation[company_id]" class="form-control form-dataconductores"
+                                    id="company_id" data-url="{{ route('company-select-list') }}" style="width: 100%"
+                                    required>
                                 </select>
                             </div>
                             <div class="col-md-6 form_select_conductores">
@@ -153,10 +150,13 @@
                         </div>
                         <div class="row" style="margin-top: 18px;">
                             <div class="col-md-6 form_select_conductores">
-                                <label for="company_id">Compañía:</label><br>
-                                <select name="driverInformation[company_id]" class="form-control form-dataconductores"
-                                    id="company_id" data-url="{{ route('company-select-list') }}" style="width: 100%"
-                                    required>
+                                <label for="country_born">País</label><br>
+                                <select name="driverInformation[country_born]" class="form-control form-dataconductores" style="width: 100%"
+                                    id="country_born" required>
+                                    <option value="">Seleccionar</option>
+                                    @foreach ($list_country_born as $country_item)
+                                        <option value="{{ $country_item }}">{{ $country_item }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-6 form_select_conductores">

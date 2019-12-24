@@ -151,11 +151,18 @@ class DrivingLicenceController extends Controller
         $data_updated = $request->all();
         $field = $data_updated['fieldch'];
         $value = $data_updated['valuech'];
+        if($field == "expi_date"){
+            $day_expedition = strtotime($data_updated['expedition_day']);
+            $day_expiration = strtotime($value);
+            if($day_expiration <= $day_expedition){
+                return response()->json(['error' =>['response'=>'Las fecha de vencimiento no puede ser mayor a la fecha de expedición.']]);
+            }
+        }
         $response = DrivingLicence::where('licence_id', $data_updated['licence_id'])->update([$field => $value, 'operation' => 'U', 'date_operation' => $now]);
         if ($response) {
-            return response()->json(['response' => 'Información actualizada']);
+            return response()->json(['response' => 'Información actualizada','error'=>[]]);
         } else {
-            return response()->json(['error' => 'No se pudo actualizar la información']);
+            return response()->json(['error' => ['response'=>'No se pudo actualizar la información']]);
         }
     }
 

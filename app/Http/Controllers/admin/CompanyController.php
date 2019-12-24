@@ -121,4 +121,13 @@ class CompanyController extends Controller
         }
         return $data;
     }
+
+    public static function getListCompanies(){
+        return DB::table('company')
+            ->select(
+                'company.company_id AS nit',
+                'company.name_company AS company'
+            )
+            ->get()->toArray();
+    }
 }

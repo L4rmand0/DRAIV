@@ -17,7 +17,7 @@
                 <th></th>
                 <th>Licence_id</th>
                 <th>Número de Licencia</th>
-                <th>driver_information_dni_id</th>
+                <th>Cédula</th>
                 <th>Nombre</th>
                 <th>Apellido</th>
                 <th>País de Expedición</th>

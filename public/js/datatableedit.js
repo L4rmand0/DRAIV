@@ -17,6 +17,7 @@
             // UPDATE
             updateEditableCell: function (callingElement) {
                 // Need to redeclare table here for situations where we have more than one datatable on the page. See issue6 on github
+                var confirmUpdate;
                 var table = $(callingElement).closest("table").DataTable().table();
                 var row = table.row($(callingElement).parents('tr'));
                 var cell = table.cell($(callingElement).parents('td, th'));
@@ -47,7 +48,7 @@
                     }
                 }
                 else {
-                    _update(newValue);
+                    confirmUpdate = _update(newValue);
                 }
                 function _addValidationCss() {
                     // Show validation error
@@ -61,7 +62,7 @@
                     var oldValue = cell.data();
                     cell.data(newValue);
                     //Return cell & row.
-                    settings.onUpdate(cell, row, oldValue);
+                    return settings.onUpdate(cell, row, oldValue);
                 }
                 // Get current page
                 var currentPageIndex = table.page.info().page;

@@ -20,13 +20,13 @@ class DrivingLicenceImport implements ToModel, WithStartRow
         }
 
         return new DrivingLicence([
-            'Licence_num' => $row[0],
-            'Country_expedition' => $row[1],
-            'Category' => $row[2],
-            'State' => $row[3],
-            'Expedition_day' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[4]),
-            'Expi_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[5]),
-            'User_information_DNI_id' => $row[6],
+            'licence_num' => $row[0],
+            'country_expedition' => $row[1],
+            'category' => $row[2],
+            'state' => $row[3],
+            'expedition_day' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[4]),
+            'expi_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[5]),
+            'driver_information_dni_id' => $row[6],
         ]);
     }
 

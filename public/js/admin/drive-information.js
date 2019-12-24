@@ -397,7 +397,7 @@
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 17],
+            columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 16, 17],
             "inputTypes": [
                 {
                     "column": 6,

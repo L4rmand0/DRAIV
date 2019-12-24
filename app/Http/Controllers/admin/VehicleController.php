@@ -172,11 +172,20 @@ class VehicleController extends Controller
         $data_updated = $request->all();
         $field = $data_updated['fieldch'];
         $value = $data_updated['valuech'];
+        // print_r($request->all());
+        if($field == "owner_v"){
+            $value = $value == "Sí"?'Y':'N';
+        }
+        // echo $field;
+        // echo $value;
+        // die;
         $response = Vehicle::where('plate_id', $data_updated['plate_id'])->update([$field => $value, 'operation' => 'U', 'date_operation' => $now]);
-        if ($response) {
-            return response()->json(['response' => 'Información actualizada']);
+        // var_dump($response);
+        // die;
+        if ($response > 0) {
+            return response()->json(['response' => 'Información actualizada', 'error'=>[]]);
         } else {
-            return response()->json(['error' => 'No se pudo actualizar la información']);
+            return response()->json(['error' => ['response'=>'No se pudo actualizar la información']]);
         }
     }
 

@@ -185,7 +185,7 @@
             'delete_row',
             'licence_id',
             'licence_num',
-            'user_information_DNI_id',
+            'driver_information_dni_id',
             'first_name',
             'f_last_name',
             'country_expedition',
@@ -214,7 +214,7 @@
                 { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-danger" id="btn_delete_driving_licence"><span class="trash_icon"></span></button></center>' },
                 { data: 'licence_id', name: 'licence_id', "visible": false },
                 { data: 'licence_num', name: 'licence_num' },
-                { data: 'driver_information_dni_id', name: 'driver_information_dni_id', "visible": false },
+                { data: 'driver_information_dni_id', name: 'driver_information_dni_id' },
                 { data: 'first_name', name: 'first_name' },
                 { data: 'f_last_name', name: 'f_last_name' },
                 { data: 'country_expedition', name: 'country_expedition' },
@@ -298,10 +298,10 @@
                     url: $("#update-driving-licence-route").val(),
                     data: dataSend,
                     success: function (data) {
-                        if (Object.keys(data.response).length === 0)
-                            swal(
+                        if (Object.keys(data.error).length > 0)
+                            swal.fire(
                                 'Error!',
-                                data.response,
+                                data.error.response,
                                 'error'
                             )
                     }
@@ -317,7 +317,10 @@
                 {
                     "column": 6,
                     "type": "list",
-                    "options": enum_country_expedition
+                    "options": [
+                        {"value":"Sí","display":"Sí"},
+                        {"value":"No","display":"No"}
+                    ]
                 },
                 {
                     "column": 7,
