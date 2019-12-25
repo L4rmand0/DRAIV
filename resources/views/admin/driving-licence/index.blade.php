@@ -93,7 +93,8 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="driver_information_dni_id">C.C Conductor</label>
-                                <select name="drivingLicence[driver_information_dni_id]" class="form-control" id="driver_information_dni_id" style="width: 100%; height: 100%;" data-url="{{ route('drivers-select-lists') }}" data-url-name="{{ route('drivers-get-name') }}" required>
+                                <select name="drivingLicence[driver_information_dni_id]" class="form-control" id="driver_information_dni_id" style="width: 100%; height: 100%;" data-url="{{ route('drivers-select-lists')}}" data-url-name="{{ route('drivers-get-name') }}" required>
+                                </select> data-url-name="{{ route('drivers-get-name') }}" required>
                                 </select>
                                 <label class="text-info font-weight-bold" id="name_driver" style="margin-top: 12px;"></label>
                                 <span class="error_admin input_user_admin" role="alert" id="driver_information_dni_id-error">

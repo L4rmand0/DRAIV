@@ -43,30 +43,67 @@
         var table_search;
 
         //Selects de vehículos
-        // $("#type_v").select2();
-        // $("#owner_v").select2();
-        // $("#taxi_type").select2();
-        $("#taxi_number_of_drivers").select2();
-        // $("#capacity").select2();
-        // $("#service").select2();
+        var $type_v_select2 = $("#type_v_form").select2();
+        var $owner_v_select2 = $("#owner_v_form").select2();
+        var $taxi_type_select2 = $("#taxi_type_form").select2();
+        var $taxi_number_of_drivers_select2 = $("#taxi_number_of_drivers_form").select2();
+        var $capacity_select2 =  $("#capacity_form").select2();
+        var $service_select2 = $("#service_form").select2();
 
+        $("#taxi_number_of_drivers_form").on('change', function () {
+            $("#vehicle_drivers_relation").attr('hidden',true);
+            let number_of_drivers = parseInt($(this).val());
+            let rest = parseInt($(this).val());
+            let number_rows = Math.round(parseInt($(this).val()) / 2);
+            cadena = "<hr class='sidebar-divider divider-form-vehicle' style='margin-bottom: 21px;'>";
+            for (let index = 0; index < number_rows; index++) {
+                cadena +="<div class='row row_form_input_vehicle mt-2'>";
+                if (number_of_drivers > 0 && number_of_drivers > 1) {
+                    cadena +="" +
+                        "<div class='col-md-6 col-select-drivers'>" +
+                        "   <label for='driver_vehicle_form"+number_of_drivers+"' id='driver_vehicle_form"+number_of_drivers+"_label'>C.C Conductor</label><br>" +
+                        "   <select class='form-control driver_vehicle_form' name='driver_vehicle[]' id='driver_vehicle_form"+number_of_drivers+"' style='width: 100%' required>"+
+                        "   </select>"+
+                        "</div>";
+                    number_of_drivers = number_of_drivers - 1;
+                    cadena +=""+
+                        "<div class='col-md-6 col-select-drivers'>" +
+                        "   <label for='driver_vehicle_form"+number_of_drivers+"' id='driver_vehicle_form"+number_of_drivers+"_label'>C.C Conductor</label><br>" +
+                        "   <select class='form-control driver_vehicle_form' name='driver_vehicle[]' id='driver_vehicle_form"+number_of_drivers+"' style='width: 100%' required>"+
+                        "   </select>"+
+                        "</div>";
+                    number_of_drivers = number_of_drivers - 1;
+                } else if (number_of_drivers > 0) {
+                    cadena = cadena + "" +
+                        "<div class='col-md-6 col-select-drivers'>" +
+                        "   <label for='driver_vehicle_form"+number_of_drivers+"' id='driver_vehicle_form"+number_of_drivers+"_label'  >C.C Conductor</label><br>" +
+                        "   <select class='form-control driver_vehicle_form' name='driver_vehicle[]' id='driver_vehicle_form"+number_of_drivers+"' style='width: 100%' required>"+
+                        "   </select>"+
+                        "</div>";
+                    number_of_drivers = number_of_drivers - 1;
+                }
+                cadena +="</div>";
+            }
+            cadena+= "<hr class='sidebar-divider divider-form-vehicle' style='margin-top: 31px;'>";
+            $("#vehicle_drivers_relation").html(cadena);
+            $.ajax({
+                type: 'GET',
+                url: $('#drivers-select-list-route').val(),
+                data: { 'type': 'select_admin2' },
+                success: function (data) {
+                    $('.driver_vehicle_form').select2({
+                        data: data
+                    });
+                    $("#vehicle_drivers_relation").attr('hidden',false);
+                }
+            });
+        });
 
 
         //Datepickers del formulario de vehículos
         $("#soat_expi_date_form").datepicker({ dateFormat: 'yy-mm-dd' });
         $("#technomechanical_date_form").datepicker({ dateFormat: 'yy-mm-dd' });
 
-
-        $.ajax({
-            type: 'GET',
-            url: $('#driver_information_dni_id').data('url'),
-            data: { 'type': 'select_admin2' },
-            success: function (data) {
-                $('#driver_information_dni_id').select2({
-                    data: data
-                });
-            }
-        });
 
         $.ajax({
             type: 'GET',
@@ -124,32 +161,82 @@
         $("#form_vehicle_admin").submit(function (event) {
             event.preventDefault();
             let data_form = $(this).serialize();
-            $.ajax({
-                type: 'POST',
-                url: $("#form_vehicle_admin").data('url'),
-                data: data_form,
-                success: function (data) {
-                    if (Object.keys(data.errors).length > 0) {
-                        let arr_errores = data.errors;
-                        console.log(arr_errores);
-                        $.each(arr_errores, function (index, value) {
-                            let selector = "#" + index + "-error";
-                            let selector_strong = "#" + index + "-error-strong";
-                            $(selector).show();
-                            $(selector_strong).text(value[0]);
-                            // $(selector).show();
-                            // $(selector).text(value);
-                            // error_founds = error_founds + 1;
-                        });
-                    } else {
-                        $(".form-dataconductores").val("");
-                        $(".error-strong").text("");
-                        $("#form_create_vehicle").modal('hide');
-                        $('#vehicle_datatable').DataTable().ajax.reload();
+            let arr_values = new Array();
+            let repetidos = 0;
+
+            //Limpia los colores de erros en los select de los conductores
+            $(".divider-form-vehicle").css({
+                "background":""
+            });
+            let columns = $(".col-select-drivers")
+            $.each(columns, function( index, value ) {
+                $($(value).find("span")[2]).css("border","")
+                $(value).find("label").css({"color":"", "font-weight":""}) 
+            });
+            // valida los valores de los selects de los conductores
+            $.each($(".driver_vehicle_form"), function( index_select, values_select ) {
+                valor_select = $(values_select).val();
+                valor_select_label = "#"+$(values_select).attr('id')+"_label";
+                let coincidencias = 0;
+                $.each(arr_values, function( index_arr, value_arr ) {
+                    if(valor_select == value_arr){
+                        coincidencias++;
                     }
+                });    
+                if(coincidencias == 0){
+                    arr_values.push(valor_select);
+                }else{
+                    $(valor_select_label).css({"color":"#DF2D2D","font-weight":"600"});
+                    $($(valor_select_label).parent().find("span")[2]).css({"border":"#DF2D2D 1px solid"});
+                    repetidos++;
                 }
             });
+            if(repetidos>0){
+                swal.fire(
+                    'Información Duplicada!',
+                    'Los conductores asociados al vehículo deben tener cédulas diferentes.',
+                    'error'
+                );
+                $(".divider-form-vehicle").css({
+                    "background":"#DF2D2D",
+                    "height":"1px"
+                });
+            }else{
+                
+               
+
+                $.ajax({
+                    type: 'POST',
+                    url: $("#form_vehicle_admin").data('url'),
+                    data: data_form,
+                    success: function (data) {
+                        if (Object.keys(data.errors).length > 0) {
+                            let arr_errores = data.errors;
+                            console.log(arr_errores);
+                            $.each(arr_errores, function (index, value) {
+                                let selector = "#" + index + "-error";
+                                let selector_strong = "#" + index + "-error-strong";
+                                $(selector).show();
+                                $(selector_strong).text(value[0]);
+                            });
+                        } else {
+                            $(".form-vehicles").val("");
+                            $(".error-strong").text("");
+                            $("#form_create_vehicle").modal('hide');
+                            $('#vehicle_datatable').DataTable().ajax.reload();
+                            $type_v_select2.val([""]).trigger("change");
+                            $owner_v_select2.val([""]).trigger("change");
+                            $taxi_number_of_drivers_select2.val([""]).trigger("change");
+                            $taxi_type_select2.val([""]).trigger("change");
+                            $capacity_select2.val([""]).trigger("change");
+                            $service_select2.val([""]).trigger("change");
+                            $("#vehicle_drivers_relation").attr('hidden',true);
+                        }
+                    }
+                });
+            }
         });
+
         $("#form_excel_vehicle_admin").submit(function (event) {
             event.preventDefault();
             var datafr = new FormData($("#form_excel_vehicle_admin")[0]);
@@ -192,19 +279,6 @@
             'technomechanical_date',
         ];
 
-        var enums = {
-            'service': {
-                'Particular': 'Particular', 'Transporte_mercancia': 'Transporte_mercancia', 'Transporte_publico': 'Transporte_publico', 'Otros': 'Otros'
-            },
-            'taxi_type': {
-                'Taxi amarillo': 'Taxi amarillo', 'Taxi blanco': 'Taxi blanco', 'NA': 'NA'
-            },
-            'type_v': {
-                'Motos': 'Motos', 'Camperos': 'Camperos', 'Camionetas': 'Camionetas', 'Vehículos de carga o\nmixtos': 'Vehículos de carga o\nmixtos', 'vehículos oficiales especiales y ambulancias': 'vehículos oficiales especiales y ambulancias', 'Autos familiares': 'Autos familiares', 'Vehículos particulares para seis (6) o más\npasajeros': 'Vehículos particulares para seis (6) o más\npasajeros', 'Autos de negocios': 'Autos de negocios', 'Taxis': 'Taxis', 'Microbuses urbanos': 'Microbuses urbanos', 'Buses\ny busetas': 'Buses\ny busetas', 'Vehículos de servicio público intermunicipal': 'Vehículos de servicio público intermunicipal'
-            }
-        }
-
-
         var table = $('#vehicle_datatable').DataTable({
             processing: true,
             serverSide: true,
@@ -234,6 +308,9 @@
                 targets: '_all',
                 createdCell: function (td, cellData, rowData, row, col) {
                     $(td).attr("id", fields[col])
+                    if(fields[col]=="plate_id"){
+                        $(td).html("<a href='#' id='plate_id_link' style='text-decoration: underline;'>"+rowData[fields[col]]+"</a>")
+                    }
                 }
             }],
         });

@@ -7,6 +7,8 @@
         id="update-vehicle-route">
     <input type="hidden" name="company-select-list-route" value="{{ route('company-select-list') }}"
         id="company-select-list-route">
+    <input type="hidden" name="drivers-select-list-route" value="{{ route('drivers-select-lists') }}"
+        id="drivers-select-list-route">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Información de Vehículos</h1>
@@ -60,10 +62,10 @@
                     data-url-delete="{{ route('driver-info.destroy') }}">
                     @csrf
                     <div class="form-card">
-                        <div class="row mt-1">
+                        <div class="row">
                             <div class="col-md-6">
                                 <label for=""></label>
-                                <input class="form-control" type="text" name="vehicle[plate_id]" placeholder="Placa"
+                                <input class="form-control form-vehicles" type="text" name="vehicle[plate_id]" placeholder="Placa"
                                     id="plate_id_form" />
                                 <span class="error_admin input_user_admin" role="alert" id="plate_id-error">
                                     <strong id="plate_id-error-strong" class="error-strong"> </strong>
@@ -75,7 +77,7 @@
                         <div class="row mt-2">
                             <div class="col-md-6">
                                 <label for="type_v">Tipo</label>
-                                <select name="vehicle[type_v]" class="form-control" id="type_v" style="width: 100%">
+                                <select name="vehicle[type_v]" class="form-control form-vehicles" id="type_v_form" style="width: 100%">
                                     <option value="">Seleccionar...</option>
                                     @foreach ($list_type_v as $item_type_v)
                                         <option value="{{$item_type_v}}"> {{$item_type_v}} </option>
@@ -84,7 +86,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="owner_v">Dueño</label>
-                                <select name="vehicle[owner_v]" class="form-control" id="owner_v" style="width: 100%">
+                                <select name="vehicle[owner_v]" class="form-control form-vehicles" id="owner_v_form" style="width: 100%">
                                     <option value="">Seleccionar...</option>
                                     <option value="1">Si</option>
                                     <option value="0">No</option>
@@ -94,7 +96,7 @@
                         <div class="row mt-2">
                             <div class="col-md-6 form_select_conductores">
                                 <label for="taxi_type">Tipo de Taxi</label>
-                                <select name="vehicle[taxi_type]" class="form-control" id="taxi_type"
+                                <select name="vehicle[taxi_type]" class="form-control form-vehicles" id="taxi_type_form"
                                     style="width: 100%">
                                     <option value="">Seleccionar...</option>
                                     @foreach ($list_taxi_type as $item_taxi_type)
@@ -104,30 +106,41 @@
                             </div>
                             <div class="col-md-6 form_select_conductores">
                                 <label for="taxi_number_of_drivers">Número de conductores Taxi</label>
-                                <select name="vehicle[taxi_number_of_drivers]" class="form-control"
-                                    id="taxi_number_of_drivers" style="width: 100%">
+                                <select name="vehicle[taxi_number_of_drivers]" class="form-control form-vehicles"
+                                    id="taxi_number_of_drivers_form" style="width: 100%">
                                     <option value="">Seleccionar...</option>
-                                    <option value="1">Si</option>
-                                    <option value="0">No</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
                                 </select>
                             </div>
                         </div>
+                        <div id="vehicle_drivers_relation" hidden>
+                        
+                        </div>
                         <div class="row row_form_input_vehicle mt-2">
                             <div class="col-md-6">
-                                <label for="soat_expi_date_form">Fecha de vencimiento de soat*</label>
-                                <input type="date" class="form-control" name="vehicle[soat_expi_date]"
+                                <label for="soat_expi_date_form">Fecha de vencimiento de soat</label>
+                                <input type="date" class="form-control form-vehicles" name="vehicle[soat_expi_date]"
                                     id="soat_expi_date_form" readonly />
                             </div>
                             <div class="col-md-6">
                                 <label for="technomechanical_date_form">Fecha de Tecnomecánica</label>
-                                <input type="date" class="form-control" name="vehicle[technomechanical_date]"
+                                <input type="date" class="form-control form-vehicles" name="vehicle[technomechanical_date]"
                                     id="technomechanical_date_form" readonly />
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-6 form_select_conductores">
                                 <label for="capacity">Cantidad de pasajeros</label>
-                                <select name="vehicle[capacity]" class="form-control" id="capacity" style="width: 100%">
+                                <select name="vehicle[capacity]" class="form-control form-vehicles" id="capacity_form" style="width: 100%">
                                     <option value="">Seleccionar...</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -144,7 +157,7 @@
                             </div>
                             <div class="col-md-6 form_select_conductores">
                                 <label for="service">Servicio</label>
-                                <select name="vehicle[service]" class="form-control" id="service" style="width: 100%">
+                                <select name="vehicle[service]" class="form-control form-vehicles" id="service_form" style="width: 100%">
                                     <option value="">Seleccionar...</option>
                                     @foreach ($list_service as $item_service)
                                         <option value="{{$item_service}}"> {{$item_service}} </option>
@@ -154,28 +167,28 @@
                         </div>
                         <div class="row row_form_input_conductores mt-2">
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="vehicle[cylindrical_cc]"
+                                <input type="text" class="form-control form-vehicles" name="vehicle[cylindrical_cc]" id=cylindrical_cc_form""
                                     placeholder="Cilindraje" />
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="vehicle[v_class]"
+                                <input type="text" class="form-control form-vehicles" name="vehicle[v_class]" id="v_class_form"
                                     placeholder="Clase de Vehículo" />
                             </div>
                         </div>
                         <div class="row row_form_input_conductores mt-2">
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="vehicle[model]" placeholder="Modelo" />
+                                <input type="text" class="form-control form-vehicles" name="vehicle[model]" placeholder="Modelo" id="model_form"/>
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="vehicle[line]" placeholder="Línea" />
+                                <input type="text" class="form-control form-vehicles" name="vehicle[line]" placeholder="Línea" id="line_form"/>
                             </div>
                         </div>
                         <div class="row row_form_input_conductores mt-2">
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="vehicle[brand]" placeholder="Marca" />
+                                <input type="text" class="form-control form-vehicles" name="vehicle[brand]" placeholder="Marca" id="brand_form" />
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="vehicle[color]" placeholder="Color" />
+                                <input type="text" class="form-control form-vehicles" name="vehicle[color]" placeholder="Color" id="color_form" />
                             </div>
                         </div>
                         <div class="d-flex justify-content-center" style="margin-top: 25px;">
