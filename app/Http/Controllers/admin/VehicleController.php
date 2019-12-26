@@ -62,7 +62,7 @@ class VehicleController extends Controller
         // print_r($data_input_drivers);
         // print_r($data_input);
         // die;
-        if(!$data_input_drivers['type_v']=="Taxis"){
+        if(!$data_input['type_v']=="Taxis"){
             unset($data_input_drivers);
             unset($data_input['taxi_type']);
             unset($data_input['taxi_number_of_drivers']);
