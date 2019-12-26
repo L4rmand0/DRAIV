@@ -328,31 +328,30 @@
         });
         
         $('#vehicle_datatable').on('click', 'tr td #plate_id_link', function () {
+            $("#div-table-relation-vehicle-driver").attr("hidden", false);
             let plate_id = $(this).text();
-            var table_relation = $('#relation_driver_vehicle_datatable').DataTable({
-                processing: true,
-                serverSide: true,
-                scrollX: true,
+            $.ajax({
+                type: 'POST',
+                url: $('#relation_driver_vehicle_datatable').data('url-list'),
                 data: {"plate_id":plate_id},
-                ajax: $('#relation_driver_vehicle_datatable').data('url-list'),
-                columns: [
-                    { data: 'vehicle_plate_id', name: 'vehicle_plate_id' },
-                    { data: 'driver_information_dni_id', name: 'driver_information_dni_id' },
-                    { data: 'first_name', name: 'first_name' },
-                    { data: 'f_last_name', name: 'f_last_name' }
-                ],
-                language: language_dt,
-    
-                columnDefs: [{
-                    targets: '_all',
-                    createdCell: function (td, cellData, rowData, row, col) {
-                        $(td).attr("id", fields[col])
-                        if(fields[col]=="plate_id"){
-                            $(td).html("<a href='#' id='plate_id_link' style='text-decoration: underline;'>"+rowData[fields[col]]+"</a>")
-                        }
-                    }
-                }],
+                success: function (dataset) {
+                    console.log(dataset);
+                    debugger
+                    var table_relation = $('#relation_driver_vehicle_datatable').DataTable({
+                        scrollX: true,
+                        destroy: true,
+                        data: dataset.data,
+                        columns: [
+                            { data: 'vehicle_plate_id', name: 'vehicle_plate_id' },
+                            { data: 'driver_information_dni_id', name: 'driver_information_dni_id' },
+                            { data: 'first_name', name: 'first_name' },
+                            { data: 'f_last_name', name: 'f_last_name' }
+                        ],
+                        language: language_dt,
+                    });
+                }
             });
+           
         });
         $('#vehicle_datatable').on('click', 'tr td #btn_delete_vehicle', function () {
             let row = $(this).parents('tr')

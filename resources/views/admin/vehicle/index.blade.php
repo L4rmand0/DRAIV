@@ -45,27 +45,17 @@
             data-target="#form_import_excel" id="modal_form_drive_info"><span class="excel_icon"> </span>Importar
             Información Masiva</button>
     </div>
-    <div id="div-table-relation-vehicle-driver">
+    <div id="div-table-relation-vehicle-driver" class="mt-4" hidden>
+        <hr class='sidebar-divider divider-form-vehicle' style='margin-top: 41px;'>
+        <h4 class="text-primary d-flex justify-content-center">Conductores del Vehículo</h4>
         <table id="relation_driver_vehicle_datatable" class="table table-striped table-bordered table-hover nowrap"
             style="width:100%" data-url-list="{{ route ('driver-vehicle-list') }}">
             <thead class="thead-dark">
                 <tr>
-                    <th></th>
                     <th>Placa</th>
-                    <th>Tipo</th>
-                    <th>Propietario</th>
-                    <th>Tipo de Taxi</th>
-                    <th>Número de Conductores</th>
-                    <th>Fecha de Vencimiento Soat</th>
-                    <th>Capacidad</th>
-                    <th>Servicio</th>
-                    <th>Cilindraje</th>
-                    <th>Clase v</th>
-                    <th>modelo</th>
-                    <th>Línea</th>
-                    <th>Marca</th>
-                    <th>Color</th>
-                    <th>Fecha de Tecnomecánica</th>
+                    <th>Cédula</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
                 </tr>
             </thead>
         </table>

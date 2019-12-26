@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use DB;
 
 class DriverVehicleController extends Controller
 {
@@ -84,8 +85,12 @@ class DriverVehicleController extends Controller
     }
 
     public function listDriverVehicle(Request $request){
+        $plate_id = $request->get('plate_id');
+        // print_r($request->all());
+        // die;
         $driver_vehicle = DB::table('user_vehicle')
-            ->where('vehicle.operation', '!=', 'D')
+            ->where('user_vehicle.operation', '!=', 'D')
+            ->where('user_vehicle.vehicle_plate_id', '=', $plate_id)
             ->join('driver_information', 'driver_information.dni_id', '=', 'user_vehicle.driver_information_dni_id')
             ->select(DB::raw(
                'user_vehicle.vehicle_plate_id, 
@@ -93,6 +98,8 @@ class DriverVehicleController extends Controller
                driver_information.first_name, 
                driver_information.f_last_name'
             ))->get();
+            // print_r($driver_vehicle);
+            // die;
             // $driver_vehicle = $this->addDeleteButtonDatatable($driver_vehicle);
         return datatables()->of($driver_vehicle)->make(true);
     }
