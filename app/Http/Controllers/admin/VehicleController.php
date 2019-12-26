@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\admin;
+
+use App\DriverVehicle;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -55,9 +57,16 @@ class VehicleController extends Controller
      */
     public function store(Request $request)
     {
+        $data_input_drivers = $request->get('driver_vehicle');
         $data_input = $request->get('vehicle');
+        // print_r($data_input_drivers);
         // print_r($data_input);
         // die;
+        if(!$data_input_drivers['type_v']=="Taxis"){
+            unset($data_input_drivers);
+            unset($data_input['taxi_type']);
+            unset($data_input['taxi_number_of_drivers']);
+        }
         $validator = Validator::make(
             $data_input,
             [
@@ -86,8 +95,8 @@ class VehicleController extends Controller
                     'plate_id' => $data_input['plate_id'],
                     'type_v' =>  $data_input['type_v'],
                     'owner_v' =>  $data_input['owner_v'] != "" ? $data_input['owner_v'] : 0 ,
-                    'taxi_type' => $data_input['taxi_type'] != "" ? $data_input['taxi_type'] : "NA",
-                    'taxi_number_of_drivers' => $data_input['taxi_number_of_drivers'] != "" ? $data_input['taxi_number_of_drivers'] : 1,
+                    'taxi_type' => !empty($data_input['taxi_type']) ? $data_input['taxi_type'] : "NA",
+                    'taxi_number_of_drivers' => !empty($data_input['taxi_number_of_drivers']) ? $data_input['taxi_number_of_drivers'] : 1,
                     'soat_expi_date' => $data_input['soat_expi_date'],
                     'capacity' => $data_input['capacity'],
                     'service' => $data_input['service'] != "" ? $data_input['service'] :"Otros",
@@ -128,7 +137,19 @@ class VehicleController extends Controller
                 'color' => $data_input['color'] != "" ? $data_input['color'] : "",
                 'technomechanical_date' => $data_input['technomechanical_date'] != "" ? $data_input['technomechanical_date'] : "0000-00-00",
             ]);
-            if ($vehicle->plate_id != "") {
+            if ($vehicle->plate_id != "" && !empty($data_input_drivers)) {
+                foreach ($data_input_drivers  as $key => $value) {
+                    $drive_vehicle = DriverVehicle::create([
+                        'vehicle_plate_id'=> $vehicle->plate_id,
+                        'driver_information_dni_id'=> $value,
+                        'user_id'=> auth()->id()
+                    ]);
+                }
+                return response()->json([
+                    'success' => 'Información registrada.',
+                    'errors' => $errors
+                ]);
+            }else if($vehicle->plate_id != ""){
                 return response()->json([
                     'success' => 'Información registrada.',
                     'errors' => $errors

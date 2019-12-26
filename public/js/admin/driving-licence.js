@@ -67,10 +67,10 @@
 
         $.ajax({
             type: 'GET',
-            url: $('#driver_information_dni_id').data('url'),
+            url: $('#driver_information_dni_id_form').data('url'),
             data: { 'type': 'select_admin2' },
             success: function (data) {
-                $('#driver_information_dni_id').select2({
+                $('#driver_information_dni_id_form').select2({
                     data: data
                 });
             }

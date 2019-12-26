@@ -10,7 +10,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Licencia de Conducir</h1>
     </div>
-    <table id="driving_licence_datatable" class="table table-bordered table-hover nowrap" style="width:100%"
+    <table id="driving_licence_datatable" class="table table-striped table-bordered table-hover nowrap" style="width:100%"
         data-url-list="{{ route ('driving-licence-list') }}" data-url-delete="{{ route ('driving_licence.destroy') }}">
         <thead class="thead-dark">
             <tr>
@@ -93,8 +93,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="driver_information_dni_id">C.C Conductor</label>
-                                <select name="drivingLicence[driver_information_dni_id]" class="form-control" id="driver_information_dni_id" style="width: 100%; height: 100%;" data-url="{{ route('drivers-select-lists')}}" data-url-name="{{ route('drivers-get-name') }}" required>
-                                </select> data-url-name="{{ route('drivers-get-name') }}" required>
+                                <select name="drivingLicence[driver_information_dni_id]" class="form-control" id="driver_information_dni_id_form" style="width: 100%; height: 100%;" data-url="{{ route('drivers-select-lists')}}" data-url-name="{{ route('drivers-get-name') }}" required>
                                 </select>
                                 <label class="text-info font-weight-bold" id="name_driver" style="margin-top: 12px;"></label>
                                 <span class="error_admin input_user_admin" role="alert" id="driver_information_dni_id-error">
@@ -104,12 +103,12 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col-6 form_select_conductores">
-                                <label for="Expedition_day_form">Fecha de expedición*</label>
-                                <input type="text" class="form-control" name="drivingLicence[expedition_day]" id="expedition_day_form" readonly required/>
+                                <label for="Expedition_day_form">Fecha de expedición</label>
+                                <input type="date" class="form-control" name="drivingLicence[expedition_day]" id="expedition_day_form" readonly required/>
                             </div>
                             <div class="col-6 form_select_conductores">
-                                <label for="expi_date_form">Fecha de vencimiento*</label>
-                                <input type="text" class="form-control" name="drivingLicence[expi_date]" id="expi_date_form" readonly required/>
+                                <label for="expi_date_form">Fecha de vencimiento</label>
+                                <input type="date" class="form-control" name="drivingLicence[expi_date]" id="expi_date_form" readonly required/>
                             </div>
                         </div>
                         <div class="d-flex justify-content-center" style="margin-top: 25px;">

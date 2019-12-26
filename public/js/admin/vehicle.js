@@ -55,7 +55,10 @@
             let number_of_drivers = parseInt($(this).val());
             let rest = parseInt($(this).val());
             let number_rows = Math.round(parseInt($(this).val()) / 2);
-            cadena = "<hr class='sidebar-divider divider-form-vehicle' style='margin-bottom: 21px;'>";
+            if(!isNaN(number_of_drivers)){
+                cadena = "<hr class='sidebar-divider divider-form-vehicle' style='margin-bottom: 21px;'>";
+                cadena += "<h5 class='text-primary d-flex justify-content-center' style='font-weight:600;margin-bottom:10px'>Registrar Conductores al Vehículo</h5>";
+            }
             for (let index = 0; index < number_rows; index++) {
                 cadena +="<div class='row row_form_input_vehicle mt-2'>";
                 if (number_of_drivers > 0 && number_of_drivers > 1) {
@@ -139,6 +142,15 @@
 
         $("#plate_id_form").on('change', function () {
             $(".error-strong").text("");
+        });
+
+        $("#type_v_form").on('change', function () {
+            if($(this).val()== "Taxis"){
+                $("#row-taxi-inputs").attr("hidden", false);
+            }else{
+                $("#row-taxi-inputs").attr("hidden", true);
+                $("#vehicle_drivers_relation").attr("hidden", true);
+            }
         });
 
         $('#drive_information_dni_id').on('change', function () {
@@ -285,7 +297,7 @@
             scrollX: true,
             ajax: $('#vehicle_datatable').data('url-list'),
             columns: [
-                { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-danger" id="btn_delete_vehicle"><span class="trash_icon"></span></button></center>' },
+                { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_vehicle"><span class="trash_icon"></span></button></center>' },
                 { data: 'plate_id', name: 'plate_id' },
                 { data: 'type_v', name: 'type_v' },
                 { data: 'owner_v', name: 'owner_v' },
@@ -314,7 +326,34 @@
                 }
             }],
         });
-
+        
+        $('#vehicle_datatable').on('click', 'tr td #plate_id_link', function () {
+            let plate_id = $(this).text();
+            var table_relation = $('#relation_driver_vehicle_datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                scrollX: true,
+                data: {"plate_id":plate_id},
+                ajax: $('#relation_driver_vehicle_datatable').data('url-list'),
+                columns: [
+                    { data: 'vehicle_plate_id', name: 'vehicle_plate_id' },
+                    { data: 'driver_information_dni_id', name: 'driver_information_dni_id' },
+                    { data: 'first_name', name: 'first_name' },
+                    { data: 'f_last_name', name: 'f_last_name' }
+                ],
+                language: language_dt,
+    
+                columnDefs: [{
+                    targets: '_all',
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).attr("id", fields[col])
+                        if(fields[col]=="plate_id"){
+                            $(td).html("<a href='#' id='plate_id_link' style='text-decoration: underline;'>"+rowData[fields[col]]+"</a>")
+                        }
+                    }
+                }],
+            });
+        });
         $('#vehicle_datatable').on('click', 'tr td #btn_delete_vehicle', function () {
             let row = $(this).parents('tr')
             let data_delete = table.row(row).data();

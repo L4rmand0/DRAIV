@@ -10,7 +10,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Información de Conductores</h1>
     </div>
-    <table id="drive_information_datatable" class="table table-bordered table-hover nowrap" style="width:100%">
+    <table id="drive_information_datatable" class="table table-striped table-bordered table-hover nowrap" style="width:100%">
         <thead class="thead-dark">
             <tr>
                 <th></th>
