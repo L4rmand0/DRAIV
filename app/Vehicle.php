@@ -10,12 +10,14 @@ class Vehicle extends Model
         'Motos',
         'Camperos',
         'Camionetas',
-        'Vehículos de carga o\nmixtos',
-        'vehículos oficiales especiales y ambulancias','Autos familiares',
-        'Vehículos particulares para seis (6) o más\npasajeros',
-        'Autos de negocios','Taxis',
+        'Vehículos de carga o mixtos',
+        'vehículos oficiales especiales y ambulancias',
+        'Autos familiares',
+        'Vehículos particulares para seis (6) o más pasajeros',
+        'Autos de negocios',
+        'Taxis',
         'Microbuses urbanos',
-        'Buses\ny busetas',
+        'Buses y busetas',
         'Vehículos de servicio público intermunicipal'
     ];
 
@@ -41,7 +43,7 @@ class Vehicle extends Model
         'type_v', 
         'owner_v', 
         'taxi_type',
-        'taxi_Number_of_drivers',
+        'number_of_drivers',
         'soat_expi_date',
         'capacity',
         'service',

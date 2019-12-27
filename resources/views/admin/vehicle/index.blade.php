@@ -45,17 +45,19 @@
             data-target="#form_import_excel" id="modal_form_drive_info"><span class="excel_icon"> </span>Importar
             Información Masiva</button>
     </div>
-    <div id="div-table-relation-vehicle-driver" class="mt-4" hidden>
+    <div id="div-table-relation-vehicle-driver" class="mt-4 mb-5" hidden>
         <hr class='sidebar-divider divider-form-vehicle' style='margin-top: 41px;'>
         <h4 class="text-primary d-flex justify-content-center">Conductores del Vehículo</h4>
         <table id="relation_driver_vehicle_datatable" class="table table-striped table-bordered table-hover nowrap"
             style="width:100%" data-url-list="{{ route ('driver-vehicle-list') }}">
             <thead class="thead-dark">
                 <tr>
-                    <th>Placa</th>
+                    <th></th>
                     <th>Cédula</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
+                    <th>Placa</th>
+                    <th>Tipo Vehículo</th>
                 </tr>
             </thead>
         </table>
@@ -104,13 +106,13 @@
                                 <select name="vehicle[owner_v]" class="form-control form-vehicles" id="owner_v_form"
                                     style="width: 100%">
                                     <option value="">Seleccionar...</option>
-                                    <option value="1">Si</option>
-                                    <option value="0">No</option>
+                                    <option value="Y">Si</option>
+                                    <option value="N">No</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="row mt-2" id="row-taxi-inputs" hidden>
-                            <div class="col-md-6 form_select_conductores">
+                        <div class="row mt-2">
+                            <div class="col-md-6 form_select_conductores" id="row-taxi-inputs" hidden>
                                 <label for="taxi_type">Tipo de Taxi</label>
                                 <select name="vehicle[taxi_type]" class="form-control form-vehicles" id="taxi_type_form"
                                     style="width: 100%">
@@ -121,9 +123,9 @@
                                 </select>
                             </div>
                             <div class="col-md-6 form_select_conductores">
-                                <label for="taxi_number_of_drivers">Número de conductores Taxi</label>
-                                <select name="vehicle[taxi_number_of_drivers]" class="form-control form-vehicles"
-                                    id="taxi_number_of_drivers_form" style="width: 100%">
+                                <label for="number_of_drivers_form">Número de conductores</label>
+                                <select name="vehicle[number_of_drivers]" class="form-control form-vehicles"
+                                    id="number_of_drivers_form" style="width: 100%">
                                     <option value="">Seleccionar...</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -144,7 +146,7 @@
                             <div class="col-md-6">
                                 <label for="soat_expi_date_form">Fecha de vencimiento de soat</label>
                                 <input type="date" class="form-control form-vehicles" name="vehicle[soat_expi_date]"
-                                    id="soat_expi_date_form" readonly />
+                                    id="soat_expi_date_form" readonly required/>
                             </div>
                             <div class="col-md-6">
                                 <label for="technomechanical_date_form">Fecha de Tecnomecánica</label>
@@ -194,8 +196,8 @@
                         </div>
                         <div class="row row_form_input_conductores mt-2">
                             <div class="col-md-6">
-                                <input type="text" class="form-control form-vehicles" name="vehicle[model]"
-                                    placeholder="Modelo" id="model_form" />
+                                <input type="number" class="form-control form-vehicles" name="vehicle[model]"
+                                    min="1950" max="2030" placeholder="Modelo (año)" id="model_form" />
                             </div>
                             <div class="col-md-6">
                                 <input type="text" class="form-control form-vehicles" name="vehicle[line]"

@@ -46,12 +46,13 @@
         var $type_v_select2 = $("#type_v_form").select2();
         var $owner_v_select2 = $("#owner_v_form").select2();
         var $taxi_type_select2 = $("#taxi_type_form").select2();
-        var $taxi_number_of_drivers_select2 = $("#taxi_number_of_drivers_form").select2();
+        var $number_of_drivers_select2 = $("#number_of_drivers_form").select2();
         var $capacity_select2 =  $("#capacity_form").select2();
         var $service_select2 = $("#service_form").select2();
 
-        $("#taxi_number_of_drivers_form").on('change', function () {
+        $("#number_of_drivers_form").on('change', function () {
             $("#vehicle_drivers_relation").attr('hidden',true);
+            $("#vehicle_drivers_relation").show();
             let number_of_drivers = parseInt($(this).val());
             let rest = parseInt($(this).val());
             let number_rows = Math.round(parseInt($(this).val()) / 2);
@@ -176,7 +177,7 @@
             let arr_values = new Array();
             let repetidos = 0;
 
-            //Limpia los colores de erros en los select de los conductores
+            //Limpia los colores de errores en los select de los conductores
             $(".divider-form-vehicle").css({
                 "background":""
             });
@@ -203,6 +204,7 @@
                     repetidos++;
                 }
             });
+            //revisa si hay conductores repetidos en los selects
             if(repetidos>0){
                 swal.fire(
                     'Información Duplicada!',
@@ -214,9 +216,6 @@
                     "height":"1px"
                 });
             }else{
-                
-               
-
                 $.ajax({
                     type: 'POST',
                     url: $("#form_vehicle_admin").data('url'),
@@ -238,11 +237,11 @@
                             $('#vehicle_datatable').DataTable().ajax.reload();
                             $type_v_select2.val([""]).trigger("change");
                             $owner_v_select2.val([""]).trigger("change");
-                            $taxi_number_of_drivers_select2.val([""]).trigger("change");
+                            $number_of_drivers_select2.val([""]).trigger("change");
                             $taxi_type_select2.val([""]).trigger("change");
                             $capacity_select2.val([""]).trigger("change");
                             $service_select2.val([""]).trigger("change");
-                            $("#vehicle_drivers_relation").attr('hidden',true);
+                            $("#vehicle_drivers_relation").hide();
                         }
                     }
                 });
@@ -278,7 +277,7 @@
             'type_v',
             'owner_v',
             'taxi_type',
-            'taxi_number_of_drivers',
+            'number_of_drivers',
             'soat_expi_date',
             'capacity',
             'service',
@@ -295,6 +294,7 @@
             processing: true,
             serverSide: true,
             scrollX: true,
+            pageLength: 7,
             ajax: $('#vehicle_datatable').data('url-list'),
             columns: [
                 { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_vehicle"><span class="trash_icon"></span></button></center>' },
@@ -302,7 +302,7 @@
                 { data: 'type_v', name: 'type_v' },
                 { data: 'owner_v', name: 'owner_v' },
                 { data: 'taxi_type', name: 'taxi_type' },
-                { data: 'taxi_number_of_drivers', name: 'taxi_number_of_drivers' },
+                { data: 'number_of_drivers', name: 'number_of_drivers' },
                 { data: 'soat_expi_date', name: 'soat_expi_date' },
                 { data: 'capacity', name: 'capacity' },
                 { data: 'service', name: 'service' },
@@ -336,16 +336,17 @@
                 data: {"plate_id":plate_id},
                 success: function (dataset) {
                     console.log(dataset);
-                    debugger
                     var table_relation = $('#relation_driver_vehicle_datatable').DataTable({
                         scrollX: true,
                         destroy: true,
                         data: dataset.data,
                         columns: [
-                            { data: 'vehicle_plate_id', name: 'vehicle_plate_id' },
+                            { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_vehicle"><span class="trash_icon"></span></button></center>' },
                             { data: 'driver_information_dni_id', name: 'driver_information_dni_id' },
                             { data: 'first_name', name: 'first_name' },
-                            { data: 'f_last_name', name: 'f_last_name' }
+                            { data: 'f_last_name', name: 'f_last_name' },
+                            { data: 'vehicle_plate_id', name: 'vehicle_plate_id' },
+                            { data: 'type_v', name: 'type_v' }
                         ],
                         language: language_dt,
                     });
