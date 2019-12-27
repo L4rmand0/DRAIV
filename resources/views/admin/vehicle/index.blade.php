@@ -104,11 +104,14 @@
                             <div class="col-md-6">
                                 <label for="owner_v">Dueño</label>
                                 <select name="vehicle[owner_v]" class="form-control form-vehicles" id="owner_v_form"
-                                    style="width: 100%">
+                                    style="width: 100%" required>
                                     <option value="">Seleccionar...</option>
                                     <option value="Y">Si</option>
                                     <option value="N">No</option>
                                 </select>
+                                <span class="error_admin input_user_admin" role="alert" id="owner_v-error">
+                                    <strong id="owner_v-error-strong" class="error-strong"> </strong>
+                                </span>
                             </div>
                         </div>
                         <div class="row mt-2">
