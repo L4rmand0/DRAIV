@@ -1,22 +1,28 @@
-SELECT 
-Vehicle.Plate_id, 
-Vehicle.Type_V, 
-Vehicle.Owner_V, 
-Vehicle.Taxi_type, 
-Vehicle.taxi_Number_of_drivers, 
-Vehicle.Soat_expi_date, 
-Vehicle.Capacity, 
-Vehicle.Service,
-Vehicle.Cylindrical_cc,
-Vehicle.V_class,
-Vehicle.Model,
-Vehicle.Line,
-Vehicle.Brand,
-Vehicle.Color,
-Vehicle.technomechanical_date,
-User_information.First_name,
-User_information.S_last_name 
-FROM sam.Vehicle
-INNER JOIN User_information ON User_information.DNI_id = Vehicle.User_information_DNI_id;
+-- TRUNCATE TABLE user_vehicle;
+-- DELETE from user_vehicle;
+-- DELETE FROM vehicle;
 
-SELECT * FROM sam.Vehicle;
+SELECT
+vehicle.plate_id, 
+vehicle.type_v, 
+vehicle.owner_v, 
+vehicle.taxi_type, 
+vehicle.number_of_drivers, 
+vehicle.soat_expi_date, 
+vehicle.capacity, 
+vehicle.service,
+vehicle.cylindrical_cc,
+vehicle.v_class,
+vehicle.model,
+vehicle.line,
+vehicle.brand,
+vehicle.color,
+vehicle.technomechanical_date,
+driver_information.First_name,
+driver_information.s_last_name 
+FROM sam.vehicle
+INNER JOIN user_vehicle ON user_vehicle.vehicle_plate_id = vehicle.plate_id
+INNER JOIN driver_information ON driver_information.dni_id = user_vehicle.driver_information_dni_id
+GROUP BY vehicle.plate_id;
+
+SELECT * FROM sam.vehicle;

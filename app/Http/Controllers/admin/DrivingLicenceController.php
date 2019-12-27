@@ -26,15 +26,17 @@ class DrivingLicenceController extends Controller
         $list_country_expedition = DrivingLicence::enum_country_expedition;
         $enum_state = $this->generateOptionsEnumDt(DrivingLicence::enum_state);
         $list_state = DrivingLicence::enum_state;
-        return view('admin.driving-licence.index',
-        [
-            'enum_category' => $enum_category,
-            'enum_country_expedition' => $enum_country_expedition,
-            'enum_state' => $enum_state,
-            'list_country_expedition' => $list_country_expedition,
-            'list_category' => $list_category,
-            'list_state' => $list_state
-        ]);
+        return view(
+            'admin.driving-licence.index',
+            [
+                'enum_category' => $enum_category,
+                'enum_country_expedition' => $enum_country_expedition,
+                'enum_state' => $enum_state,
+                'list_country_expedition' => $list_country_expedition,
+                'list_category' => $list_category,
+                'list_state' => $list_state
+            ]
+        );
     }
 
     /**
@@ -65,7 +67,7 @@ class DrivingLicenceController extends Controller
                 'state' => 'required|max:255',
                 'expedition_day' => 'required|max:255',
                 'expi_date' => 'required|max:255',
-                'driver_information_dni_id' => ['required','max:255','unique:driving_licence']
+                'driver_information_dni_id' => ['required', 'max:255', 'unique:driving_licence']
             ],
             [
                 'driver_information_dni_id.unique' => "Este conductor ya tiene una licencia en uso."
@@ -75,7 +77,7 @@ class DrivingLicenceController extends Controller
         // print_r($errors);
         // die;
         foreach ($errors as $key => $value) {
-            if(strpos($value[0],"uso")!== FALSE){
+            if (strpos($value[0], "uso") !== FALSE) {
                 $now = date("Y-m-d H:i:s");
                 $response = DrivingLicence::where($key, $data_input[$key])->update([
                     'driver_information_dni_id' => $data_input['driver_information_dni_id'],
@@ -85,13 +87,14 @@ class DrivingLicenceController extends Controller
                     'state' => $data_input['state'],
                     'expedition_day' => $data_input['expedition_day'],
                     'expi_date' => $data_input['expi_date'],
-                    'operation' => 'U', 
-                    'date_operation' => $now
+                    'operation' => 'U',
+                    'date_operation' => $now,
+                    'user_id' => auth()->id()
                 ]);
                 if ($response) {
-                    return response()->json(['response' => 'Información actualizada','errors'=>[]]);
+                    return response()->json(['response' => 'Información actualizada', 'errors' => []]);
                 } else {
-                    return response()->json(['errors' => ['response'=>'No se pudo actualizar la información']]);
+                    return response()->json(['errors' => ['response' => 'No se pudo actualizar la información']]);
                 }
             }
         }
@@ -105,7 +108,8 @@ class DrivingLicenceController extends Controller
                 'category' => $data_input['category'],
                 'state' => $data_input['state'],
                 'expedition_day' => $data_input['expedition_day'],
-                'expi_date' => $data_input['expi_date']
+                'expi_date' => $data_input['expi_date'],
+                'user_id' => auth()->id()
             ]);
             if ($driving_licence->licence_num != "") {
                 return response()->json([
@@ -135,7 +139,6 @@ class DrivingLicenceController extends Controller
      */
     public function edit($id)
     {
-        
     }
 
     /**
@@ -151,18 +154,23 @@ class DrivingLicenceController extends Controller
         $data_updated = $request->all();
         $field = $data_updated['fieldch'];
         $value = $data_updated['valuech'];
-        if($field == "expi_date"){
+        if ($field == "expi_date") {
             $day_expedition = strtotime($data_updated['expedition_day']);
             $day_expiration = strtotime($value);
-            if($day_expiration <= $day_expedition){
-                return response()->json(['error' =>['response'=>'Las fecha de vencimiento no puede ser mayor a la fecha de expedición.']]);
+            if ($day_expiration <= $day_expedition) {
+                return response()->json(['error' => ['response' => 'Las fecha de vencimiento no puede ser mayor a la fecha de expedición.']]);
             }
         }
-        $response = DrivingLicence::where('licence_id', $data_updated['licence_id'])->update([$field => $value, 'operation' => 'U', 'date_operation' => $now]);
+        $response = DrivingLicence::where('licence_id', $data_updated['licence_id'])->update([
+            $field => $value,
+            'operation' => 'U',
+            'date_operation' => $now,
+            'user_id' => auth()->id()
+        ]);
         if ($response) {
-            return response()->json(['response' => 'Información actualizada','error'=>[]]);
+            return response()->json(['response' => 'Información actualizada', 'error' => []]);
         } else {
-            return response()->json(['error' => ['response'=>'No se pudo actualizar la información']]);
+            return response()->json(['error' => ['response' => 'No se pudo actualizar la información']]);
         }
     }
 
@@ -187,11 +195,12 @@ class DrivingLicenceController extends Controller
     {
         $company_id = Auth::user()->company_id;
         $driving_licence = DB::table('driving_licence')
+            ->orderBy('driving_licence.date_operation', 'desc')
             ->join('driver_information', 'driver_information.dni_id', '=', 'driving_licence.driver_information_dni_id')
             ->where('driver_information.company_id', '=', $company_id)
             ->where('driving_licence.operation', '!=', 'D')
             ->select(DB::raw(
-               'driving_licence.licence_id,
+                'driving_licence.licence_id,
                 driving_licence.licence_num,
                 driving_licence.country_expedition,
                 driving_licence.category,
@@ -214,5 +223,4 @@ class DrivingLicenceController extends Controller
         $result = Excel::import(new DrivingLicenceImport(), $file);
         return response()->json(['response' => 'ok']);
     }
-
 }

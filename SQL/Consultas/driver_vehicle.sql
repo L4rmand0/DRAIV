@@ -15,4 +15,4 @@ inner join `driver_information` on `driver_information`.`dni_id` = `user_vehicle
 where `user_vehicle`.`operation` != 'D' and `user_vehicle`.`vehicle_plate_id` = 9999999;
 
 
-UPDATE sam.user_vehicle SET user_vehicle.operation = 'D' WHERE id=2
+UPDATE sam.user_vehicle SET user_vehicle.operation = 'D' WHERE user_vehicle.vehicle_plate_id = 1111;

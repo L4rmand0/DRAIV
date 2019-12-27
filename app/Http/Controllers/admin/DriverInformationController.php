@@ -225,7 +225,12 @@ class DriverInformationController extends Controller
         if($field == "score" && ($value > 5 || $value < 0 )){
             return response()->json(['error' => ['response'=>'El score no puede mayor a 5 ni menor a 0. Ejemplo: 5.00']]);
         }
-        $response = DriverInformation::where('dni_id', $data_updated['dni_id'])->update([$field => $value, 'operation' => 'U', 'date_operation' => $now]);
+        $response = DriverInformation::where('dni_id', $data_updated['dni_id'])->update([
+            $field => $value, 
+            'operation' => 'U', 
+            'date_operation' => $now,
+            'user_id' => auth()->id()
+            ]);
         if ($response) {
             return response()->json(['response' => 'Información actualizada','error'=>[]]);
         } else {
@@ -242,7 +247,7 @@ class DriverInformationController extends Controller
     public function destroy(Request $request)
     {
         $data_delete = $request->all();
-        $delete = DriverInformation::where('dni_id', $data_delete['dni_id'])->update(['operation' => 'D']);
+        $delete = DriverInformation::where('dni_id', $data_delete['dni_id'])->update(['operation' => 'D', 'user_id' => auth()->id()]);
         if ($delete) {
             return response()->json(['response' => 'Usuario eliminado', 'error' => '']);
         } else {
@@ -254,6 +259,7 @@ class DriverInformationController extends Controller
     {
         $company_id = Auth::user()->company_id;
         $drive_information = DB::table('driver_information')
+            ->orderBy('driver_information.date_operation', 'desc')
             ->join('users', 'driver_information.Db_user_id', '=', 'users.id')
             ->join('company', 'company.Company_id', '=', 'driver_information.company_id')
             ->join('admin2', 'admin2.adm2_id', '=', 'driver_information.department')
@@ -280,7 +286,7 @@ class DriverInformationController extends Controller
             driver_information.company_id,
             users.name as user,
             company.Name_company as company'
-            ))->orderBy('driver_information.start_date', 'desc')->get();
+            ))->get();
         $drive_information = $this->addDeleteButtonDatatable($drive_information);
         return datatables()->of($drive_information)->make(true);
     }

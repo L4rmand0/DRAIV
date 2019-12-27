@@ -144,9 +144,12 @@
                         </div>
                         <div class="row row_form_input_vehicle mt-2">
                             <div class="col-md-6">
-                                <label for="soat_expi_date_form">Fecha de vencimiento de soat</label>
+                                <label for="soat_expi_date_form">Fecha de vencimiento de soat <span style="color:red">*</span></label>
                                 <input type="date" class="form-control form-vehicles" name="vehicle[soat_expi_date]"
                                     id="soat_expi_date_form" readonly required/>
+                                <span class="error_admin input_user_admin" role="alert" id="soat_expi_date-error">
+                                    <strong id="soat_expi_date-error-strong" class="error-strong"> </strong>
+                                </span>
                             </div>
                             <div class="col-md-6">
                                 <label for="technomechanical_date_form">Fecha de Tecnomecánica</label>

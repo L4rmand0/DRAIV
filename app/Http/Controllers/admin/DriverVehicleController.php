@@ -103,6 +103,7 @@ class DriverVehicleController extends Controller
         // print_r($request->all());
         // die;
         $driver_vehicle = DB::table('user_vehicle')
+            ->orderBy('user_vehicle.date_operation', 'desc')
             ->where('user_vehicle.operation', '!=', 'D')
             ->where('user_vehicle.vehicle_plate_id', '=', $plate_id)
             ->join('driver_information', 'driver_information.dni_id', '=', 'user_vehicle.driver_information_dni_id')
@@ -158,18 +159,16 @@ class DriverVehicleController extends Controller
         }
     }
 
-    public static function checkDuplicateDriversPlateId($list_drivers)
+    public static function checkDuplicateDriversPlateId($list_drivers, $plate_id)
     {
-        foreach ($list_drivers as $key => $value) {
+        foreach ($list_drivers as $value) {
             $driver_vehicle = DB::table('user_vehicle')
                 ->where('user_vehicle.driver_information_dni_id', '=', $value)
+                ->where('user_vehicle.vehicle_plate_id', '!=', $plate_id)
                 ->select(DB::raw(
                     'user_vehicle.vehicle_plate_id, 
-                   user_vehicle.driver_information_dni_id, 
-                   driver_information.first_name, 
-                   driver_information.f_last_name,
-                   vehicle.type_v'
-                ))->get();
+                     user_vehicle.driver_information_dni_id' 
+                ))->first();
             if (!empty($driver_vehicle)) {
                 $drivers[]=$driver_vehicle;
             }

@@ -211,7 +211,7 @@
             scrollX: true,
             ajax: $('#driving_licence_datatable').data('url-list'),
             columns: [
-                { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-danger" id="btn_delete_driving_licence"><span class="trash_icon"></span></button></center>' },
+                { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_driving_licence"><span class="trash_icon"></span></button></center>' },
                 { data: 'licence_id', name: 'licence_id', "visible": false },
                 { data: 'licence_num', name: 'licence_num' },
                 { data: 'driver_information_dni_id', name: 'driver_information_dni_id' },

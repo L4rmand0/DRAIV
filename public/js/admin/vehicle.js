@@ -68,6 +68,9 @@
                         "   <label for='driver_vehicle_form"+number_of_drivers+"' id='driver_vehicle_form"+number_of_drivers+"_label'>C.C Conductor</label><br>" +
                         "   <select class='form-control driver_vehicle_form' name='driver_vehicle[]' id='driver_vehicle_form"+number_of_drivers+"' style='width: 100%' required>"+
                         "   </select>"+
+                        "   <span class='error_admin input_user_admin' role='alert' id=''>"+
+                        "       <strong class='error-strong'> </strong>"+
+                        "   </span>"+
                         "</div>";
                     number_of_drivers = number_of_drivers - 1;
                     cadena +=""+
@@ -75,6 +78,9 @@
                         "   <label for='driver_vehicle_form"+number_of_drivers+"' id='driver_vehicle_form"+number_of_drivers+"_label'>C.C Conductor</label><br>" +
                         "   <select class='form-control driver_vehicle_form' name='driver_vehicle[]' id='driver_vehicle_form"+number_of_drivers+"' style='width: 100%' required>"+
                         "   </select>"+
+                        "   <span class='error_admin input_user_admin' role='alert' id=''>"+
+                        "       <strong class='error-strong'> </strong>"+
+                        "   </span>"+
                         "</div>";
                     number_of_drivers = number_of_drivers - 1;
                 } else if (number_of_drivers > 0) {
@@ -83,6 +89,9 @@
                         "   <label for='driver_vehicle_form"+number_of_drivers+"' id='driver_vehicle_form"+number_of_drivers+"_label'  >C.C Conductor</label><br>" +
                         "   <select class='form-control driver_vehicle_form' name='driver_vehicle[]' id='driver_vehicle_form"+number_of_drivers+"' style='width: 100%' required>"+
                         "   </select>"+
+                        "   <span class='error_admin input_user_admin' role='alert' id=''>"+
+                        "       <strong class='error-strong'> </strong>"+
+                        "   </span>"+
                         "</div>";
                     number_of_drivers = number_of_drivers - 1;
                 }
@@ -221,15 +230,32 @@
                     url: $("#form_vehicle_admin").data('url'),
                     data: data_form,
                     success: function (data) {
+                        $(".error-strong").text("");
                         if (Object.keys(data.errors).length > 0) {
-                            let arr_errores = data.errors;
-                            console.log(arr_errores);
-                            $.each(arr_errores, function (index, value) {
-                                let selector = "#" + index + "-error";
-                                let selector_strong = "#" + index + "-error-strong";
-                                $(selector).show();
-                                $(selector_strong).text(value[0]);
-                            });
+                            if(data.errors.response == "Conductores Duplicados"){
+                                let duplicates = data.duplicates;
+                                let selects = $(".driver_vehicle_form ");
+                                console.log(duplicates);
+                                $.each(selects, function( index_selects, value_selects ) {
+                                    $.each(duplicates, function( index_duplicates, value_duplicates ) {
+                                        let valor_select = $(value_selects).val();
+                                        let valor_duplicate = value_duplicates.driver_information_dni_id;
+                                        if(valor_select == valor_duplicate){
+                                            $(value_selects).parent().find('strong').text("Este conductor ya tiene otro vehículo")
+                                        }
+                                    });
+                                });
+                            }else{
+                                let arr_errores = data.errors;
+                                console.log(arr_errores);
+                                $.each(arr_errores, function (index, value) {
+                                    let selector = "#" + index + "-error";
+                                    let selector_strong = "#" + index + "-error-strong";
+                                    $(selector).show();
+                                    $(selector_strong).text(value[0]);
+                                });
+                            }
+
                         } else {
                             $(".form-vehicles").val("");
                             $(".error-strong").text("");
@@ -242,6 +268,7 @@
                             $capacity_select2.val([""]).trigger("change");
                             $service_select2.val([""]).trigger("change");
                             $("#vehicle_drivers_relation").hide();
+                            $("#div-table-relation-vehicle-driver").hide();
                         }
                     }
                 });
@@ -329,6 +356,7 @@
         
         $('#vehicle_datatable').on('click', 'tr td #plate_id_link', function () {
             $("#div-table-relation-vehicle-driver").attr("hidden", false);
+            $("#div-table-relation-vehicle-driver").show();
             let plate_id = $(this).text();
             $.ajax({
                 type: 'POST',

@@ -67,6 +67,13 @@ class VehicleController extends Controller
             unset($data_input['taxi_type']);
             unset($data_input['number_of_drivers']);
         }
+        $duplicate_drivers = DriverVehicleController::checkDuplicateDriversPlateId($data_input_drivers, $data_input['plate_id']);
+        // echo '<pre>';
+        // print_r($duplicate_drivers);
+        // die;
+        if (!empty($duplicate_drivers)) {
+            return response()->json(['errors' => ['response' => 'Conductores Duplicados'], 'duplicates' => $duplicate_drivers]);
+        }
         $validator = Validator::make(
             $data_input,
             [
@@ -85,9 +92,9 @@ class VehicleController extends Controller
                 'plate_id.unique' => "Esta placa ya está en uso."
             ]
         );
+
         $errors = $validator->errors()->getMessages();
-        // print_r($errors);
-        // die;
+        
         //Revisa que ya se haya insertado un vehículo con esa placa y lo actualiza
         foreach ($errors as $key => $value) {
             if (strpos($value[0], "uso") !== FALSE) {
@@ -110,11 +117,11 @@ class VehicleController extends Controller
                     'color' => $data_input['color'] != "" ? $data_input['color'] : "",
                     'technomechanical_date' => $data_input['technomechanical_date'] != "" ? $data_input['technomechanical_date'] : null,
                     'operation' => 'U',
-                    'date_operation' => $now
+                    'date_operation' => $now,
+                    'user_id' => auth()->id()
                 ]);
                 if ($response) {
                     $list_drivers = DriverVehicleController::listDriverByPlateId($plate_id);
-                    
                     if (empty($list_drivers)) {
                         $insert_response = DriverVehicleController::insertDrivers($data_input_drivers, $plate_id);
                     } else {
@@ -147,6 +154,7 @@ class VehicleController extends Controller
                 'brand' => $data_input['brand'] != "" ? $data_input['brand'] : "",
                 'color' => $data_input['color'] != "" ? $data_input['color'] : "",
                 'technomechanical_date' => $data_input['technomechanical_date'] != "" ? $data_input['technomechanical_date'] : null,
+                'user_id' => auth()->id()
             ]);
             //Inserta todos los conductores elegidos y con la placa enviada en la tabla user_vehicle
             if ($vehicle->plate_id != "" && !empty($data_input_drivers)) {
@@ -204,12 +212,12 @@ class VehicleController extends Controller
         if ($field == "owner_v") {
             $value = $value == "Sí" ? 'Y' : 'N';
         }
-        // echo $field;
-        // echo $value;
-        // die;
-        $response = Vehicle::where('plate_id', $data_updated['plate_id'])->update([$field => $value, 'operation' => 'U', 'date_operation' => $now]);
-        // var_dump($response);
-        // die;
+        $response = Vehicle::where('plate_id', $data_updated['plate_id'])->update([
+            $field => $value,
+            'operation' => 'U',
+            'date_operation' => $now,
+            'user_id' => auth()->id()
+        ]);
         if ($response > 0) {
             return response()->json(['response' => 'Información actualizada', 'error' => []]);
         } else {
@@ -226,7 +234,7 @@ class VehicleController extends Controller
     public function destroy(Request $request)
     {
         $data_delete = $request->all();
-        $delete = Vehicle::where('plate_id', $data_delete['plate_id'])->update(['operation' => 'D']);
+        $delete = Vehicle::where('plate_id', $data_delete['plate_id'])->update(['operation' => 'D', 'user_id' => auth()->id()]);
         if ($delete) {
             return response()->json(['response' => 'Usuario eliminado', 'error' => '']);
         } else {
@@ -237,7 +245,7 @@ class VehicleController extends Controller
     public function vehicleList()
     {
         $vehicle = DB::table('vehicle')
-            ->orderBy('date_operation', 'desc')
+            ->orderBy('vehicle.date_operation', 'desc')
             ->where('vehicle.operation', '!=', 'D')
             ->select(DB::raw(
                 'vehicle.plate_id, 
@@ -268,5 +276,4 @@ class VehicleController extends Controller
         $result = Excel::import(new VehiclesImport(), $file);
         return response()->json(['response' => 'ok']);
     }
-
 }

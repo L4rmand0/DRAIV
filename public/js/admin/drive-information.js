@@ -278,7 +278,7 @@
             scrollX: true,
             ajax: $('#driver-info-list-route').val(),
             columns: [
-                { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-danger" id="btn_delete_drive_info"><span class="trash_icon"></span></button></center>' },
+                { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_drive_info"><span class="trash_icon"></span></button></center>' },
                 { data: 'dni_id', name: 'dni_id' },
                 { data: 'first_name', name: 'first_name' },
                 { data: 'second_name', name: 'second_name' },
