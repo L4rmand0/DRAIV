@@ -147,7 +147,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                <a class="nav-link collapsed" href="{{route('images.index')}}"
                         aria-expanded="true" aria-controls="collapseUtilities">
                         <i class="img_icon icons-fa"></i>
                         <span>Imágenes</span>

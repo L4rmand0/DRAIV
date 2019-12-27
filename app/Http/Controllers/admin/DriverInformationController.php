@@ -291,6 +291,15 @@ class DriverInformationController extends Controller
         return datatables()->of($drive_information)->make(true);
     }
 
+    public static function getListDrivers(){
+        $company_id = Auth::user()->company_id;
+        return DB::table('driver_information')
+            ->select(
+                'driver_information.dni_id'
+            )->where('driver_information.company_id', '=', $company_id)
+            ->get()->toArray();
+    } 
+
     public function getDriveInformationtoSelect2(Request $request)
     {
         $company_id = Auth::user()->company_id;
