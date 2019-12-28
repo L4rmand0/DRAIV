@@ -247,8 +247,24 @@ class VehicleController extends Controller
     public function destroy(Request $request)
     {
         $data_delete = $request->all();
-        $delete = Vehicle::where('plate_id', $data_delete['plate_id'])->update(['operation' => 'D', 'user_id' => auth()->id()]);
+        $now = date("Y-m-d H:i:s");
+        $plate_id = $data_delete['plate_id'];
+        // echo '<pre>';
+        // print_r($plate_id);
+        // die;
+        
+        $delete = Vehicle::where('plate_id', $plate_id)->update([
+            'operation' => 'D', 
+            'user_id' => auth()->id(),
+            'number_of_drivers' => 0
+            ]);
         if ($delete) {
+            $response = DriverVehicle::where('vehicle_plate_id', $plate_id)->update([
+                'operation' => 'D',
+                'date_operation' => $now,
+
+                'user_id' => auth()->id()
+            ]);
             return response()->json(['response' => 'Usuario eliminado', 'error' => '']);
         } else {
             return response()->json(['error' => 'No se pudo eliminar el usuario']);

@@ -38,8 +38,14 @@
                         <li class="nav-item" id="products">
                             <a class="nav-link" href="{{ route('about') }}">Productos</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="services.html">Soluciones</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownSolutions" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                Soluciones
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownSolutions">
+                                <a class="dropdown-item" href="{{ route('admin') }}">Driver Análisis</a>
+                            </div>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="contact.html">Partner</a>

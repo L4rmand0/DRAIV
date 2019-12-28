@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
 use App\Imagenes;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\HttpCache\Store;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpKernel\HttpCache\Store;
 
 class ImageController extends Controller
 {
@@ -44,10 +44,20 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
-        echo '<pre>';
-        print_r($request->all());
-        $file = request()->file('file')[request()->get('key')];
-        $size = $file->getSize();
+        // echo '<pre>';
+        // print_r($request->all());
+        $file = $request->file('file')[request()->get('key')];
+        // print_r($file);
+        // $path = Storage::putFileAs(
+        //     'avatars', $file, $request->user()->id, 's3'
+        // );
+        $path = $file->storeAs(
+            'avatars/'.$request->user()->id.'RX', 'local'
+        );
+        var_dump($path);
+        die;
+        // $file = request()->file('file')[request()->get('key')];
+        // $size = $file->getSize();
         // if($size > 4000){
         //     return response()->json(['errors' => ['response' => 'El archivo debe pesar 4mb máximo.']]);
         // }

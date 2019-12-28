@@ -144,8 +144,6 @@
                                 </select>
                             </div>
                         </div>
-                        <div id="vehicle_drivers_relation" hidden>
-                        </div>
                         <div class="row row_form_input_vehicle mt-2">
                             <div class="col-md-6">
                                 <label for="soat_expi_date_form">Fecha de vencimiento de soat</label>
@@ -220,6 +218,8 @@
                                 <input type="text" class="form-control form-vehicles" name="vehicle[color]"
                                     placeholder="Color" id="color_form" />
                             </div>
+                        </div>
+                        <div id="vehicle_drivers_relation" hidden>
                         </div>
                         <div class="d-flex justify-content-center" style="margin-top: 25px;">
                             <input type="submit" value="Registrar" class="btn btn-primary">
