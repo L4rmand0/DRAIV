@@ -49,10 +49,11 @@
         <hr class='sidebar-divider divider-form-vehicle' style='margin-top: 41px;'>
         <h4 class="text-primary d-flex justify-content-center">Conductores del Vehículo</h4>
         <table id="relation_driver_vehicle_datatable" class="table table-striped table-bordered table-hover nowrap"
-            style="width:100%" data-url-list="{{ route ('driver-vehicle-list') }}">
+            style="width:100%" data-url-list="{{ route ('driver-vehicle-list') }}" data-url-delete="{{ route ('admin.driver-vehicle.destroy') }}">
             <thead class="thead-dark">
                 <tr>
                     <th></th>
+                    <th>id</th>
                     <th>Cédula</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
@@ -82,7 +83,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <input class="form-control form-vehicles" type="text" name="vehicle[plate_id]"
-                                    placeholder="Placa" id="plate_id_form" />
+                            placeholder="Placa" id="plate_id_form" data-check="{{ route('admin.vehicle.checkvehiclebyid') }}" />
                                 <span class="error_admin input_user_admin" role="alert" id="plate_id-error">
                                     <strong id="plate_id-error-strong" class="error-strong"> </strong>
                                 </span>
@@ -147,7 +148,7 @@
                         </div>
                         <div class="row row_form_input_vehicle mt-2">
                             <div class="col-md-6">
-                                <label for="soat_expi_date_form">Fecha de vencimiento de soat <span style="color:red">*</span></label>
+                                <label for="soat_expi_date_form">Fecha de vencimiento de soat</label>
                                 <input type="date" class="form-control form-vehicles" name="vehicle[soat_expi_date]"
                                     id="soat_expi_date_form" readonly required/>
                                 <span class="error_admin input_user_admin" role="alert" id="soat_expi_date-error">

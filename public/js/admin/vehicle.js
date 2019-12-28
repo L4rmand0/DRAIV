@@ -1,4 +1,6 @@
 // IIFE - Immediately Invoked Function Expression
+var table_relation;
+
 (function (runcode) {
 
     // The global jQuery object is passed as a parameter
@@ -42,62 +44,64 @@
 
         var table_search;
 
+
+
         //Selects de vehículos
         var $type_v_select2 = $("#type_v_form").select2();
         var $owner_v_select2 = $("#owner_v_form").select2();
         var $taxi_type_select2 = $("#taxi_type_form").select2();
         var $number_of_drivers_select2 = $("#number_of_drivers_form").select2();
-        var $capacity_select2 =  $("#capacity_form").select2();
+        var $capacity_select2 = $("#capacity_form").select2();
         var $service_select2 = $("#service_form").select2();
 
         $("#number_of_drivers_form").on('change', function () {
-            $("#vehicle_drivers_relation").attr('hidden',true);
+            $("#vehicle_drivers_relation").attr('hidden', true);
             $("#vehicle_drivers_relation").show();
             let number_of_drivers = parseInt($(this).val());
             let rest = parseInt($(this).val());
             let number_rows = Math.round(parseInt($(this).val()) / 2);
-            if(!isNaN(number_of_drivers)){
+            if (!isNaN(number_of_drivers)) {
                 cadena = "<hr class='sidebar-divider divider-form-vehicle' style='margin-bottom: 21px;'>";
                 cadena += "<h5 class='text-primary d-flex justify-content-center' style='font-weight:600;margin-bottom:10px'>Registrar Conductores al Vehículo</h5>";
             }
             for (let index = 0; index < number_rows; index++) {
-                cadena +="<div class='row row_form_input_vehicle mt-2'>";
+                cadena += "<div class='row row_form_input_vehicle mt-2'>";
                 if (number_of_drivers > 0 && number_of_drivers > 1) {
-                    cadena +="" +
+                    cadena += "" +
                         "<div class='col-md-6 col-select-drivers'>" +
-                        "   <label for='driver_vehicle_form"+number_of_drivers+"' id='driver_vehicle_form"+number_of_drivers+"_label'>C.C Conductor</label><br>" +
-                        "   <select class='form-control driver_vehicle_form' name='driver_vehicle[]' id='driver_vehicle_form"+number_of_drivers+"' style='width: 100%' required>"+
-                        "   </select>"+
-                        "   <span class='error_admin input_user_admin' role='alert' id=''>"+
-                        "       <strong class='error-strong'> </strong>"+
-                        "   </span>"+
+                        "   <label for='driver_vehicle_form" + number_of_drivers + "' id='driver_vehicle_form" + number_of_drivers + "_label'>C.C Conductor</label><br>" +
+                        "   <select class='form-control driver_vehicle_form' name='driver_vehicle[]' id='driver_vehicle_form" + number_of_drivers + "' style='width: 100%' required>" +
+                        "   </select>" +
+                        "   <span class='error_admin input_user_admin' role='alert' id=''>" +
+                        "       <strong class='error-strong'> </strong>" +
+                        "   </span>" +
                         "</div>";
                     number_of_drivers = number_of_drivers - 1;
-                    cadena +=""+
+                    cadena += "" +
                         "<div class='col-md-6 col-select-drivers'>" +
-                        "   <label for='driver_vehicle_form"+number_of_drivers+"' id='driver_vehicle_form"+number_of_drivers+"_label'>C.C Conductor</label><br>" +
-                        "   <select class='form-control driver_vehicle_form' name='driver_vehicle[]' id='driver_vehicle_form"+number_of_drivers+"' style='width: 100%' required>"+
-                        "   </select>"+
-                        "   <span class='error_admin input_user_admin' role='alert' id=''>"+
-                        "       <strong class='error-strong'> </strong>"+
-                        "   </span>"+
+                        "   <label for='driver_vehicle_form" + number_of_drivers + "' id='driver_vehicle_form" + number_of_drivers + "_label'>C.C Conductor</label><br>" +
+                        "   <select class='form-control driver_vehicle_form' name='driver_vehicle[]' id='driver_vehicle_form" + number_of_drivers + "' style='width: 100%' required>" +
+                        "   </select>" +
+                        "   <span class='error_admin input_user_admin' role='alert' id=''>" +
+                        "       <strong class='error-strong'> </strong>" +
+                        "   </span>" +
                         "</div>";
                     number_of_drivers = number_of_drivers - 1;
                 } else if (number_of_drivers > 0) {
                     cadena = cadena + "" +
                         "<div class='col-md-6 col-select-drivers'>" +
-                        "   <label for='driver_vehicle_form"+number_of_drivers+"' id='driver_vehicle_form"+number_of_drivers+"_label'  >C.C Conductor</label><br>" +
-                        "   <select class='form-control driver_vehicle_form' name='driver_vehicle[]' id='driver_vehicle_form"+number_of_drivers+"' style='width: 100%' required>"+
-                        "   </select>"+
-                        "   <span class='error_admin input_user_admin' role='alert' id=''>"+
-                        "       <strong class='error-strong'> </strong>"+
-                        "   </span>"+
+                        "   <label for='driver_vehicle_form" + number_of_drivers + "' id='driver_vehicle_form" + number_of_drivers + "_label'  >C.C Conductor</label><br>" +
+                        "   <select class='form-control driver_vehicle_form' name='driver_vehicle[]' id='driver_vehicle_form" + number_of_drivers + "' style='width: 100%' required>" +
+                        "   </select>" +
+                        "   <span class='error_admin input_user_admin' role='alert' id=''>" +
+                        "       <strong class='error-strong'> </strong>" +
+                        "   </span>" +
                         "</div>";
                     number_of_drivers = number_of_drivers - 1;
                 }
-                cadena +="</div>";
+                cadena += "</div>";
             }
-            cadena+= "<hr class='sidebar-divider divider-form-vehicle' style='margin-top: 31px;'>";
+            cadena += "<hr class='sidebar-divider divider-form-vehicle' style='margin-top: 31px;'>";
             $("#vehicle_drivers_relation").html(cadena);
             $.ajax({
                 type: 'GET',
@@ -107,7 +111,7 @@
                     $('.driver_vehicle_form').select2({
                         data: data
                     });
-                    $("#vehicle_drivers_relation").attr('hidden',false);
+                    $("#vehicle_drivers_relation").attr('hidden', false);
                 }
             });
         });
@@ -151,13 +155,30 @@
 
 
         $("#plate_id_form").on('change', function () {
+            let element = $(this);
             $(".error-strong").text("");
+            $.ajax({
+                type: 'GET',
+                url: element.data('check'),
+                data: { 'plate_id': element.val() },
+                success: function (data) {
+                    if (Object.keys(data.errors).length > 0) {
+                        // swal.fire(
+                        //     'Información Errónea',
+                        //     data.errors.response,
+                        //     'warning'
+                        // );
+                        displayErrorsSpan(data.errors);
+                        element.focus();
+                    }
+                }
+            });
         });
 
         $("#type_v_form").on('change', function () {
-            if($(this).val()== "Taxis"){
+            if ($(this).val() == "Taxis") {
                 $("#row-taxi-inputs").attr("hidden", false);
-            }else{
+            } else {
                 $("#row-taxi-inputs").attr("hidden", true);
                 $("#vehicle_drivers_relation").attr("hidden", true);
             }
@@ -188,43 +209,49 @@
 
             //Limpia los colores de errores en los select de los conductores
             $(".divider-form-vehicle").css({
-                "background":""
+                "background": ""
             });
             let columns = $(".col-select-drivers")
-            $.each(columns, function( index, value ) {
-                $($(value).find("span")[2]).css("border","")
-                $(value).find("label").css({"color":"", "font-weight":""}) 
+            $.each(columns, function (index, value) {
+                $($(value).find("span")[2]).css("border", "")
+                $(value).find("label").css({ "color": "", "font-weight": "" })
             });
             // valida los valores de los selects de los conductores
-            $.each($(".driver_vehicle_form"), function( index_select, values_select ) {
+            $.each($(".driver_vehicle_form"), function (index_select, values_select) {
                 valor_select = $(values_select).val();
-                valor_select_label = "#"+$(values_select).attr('id')+"_label";
+                valor_select_label = "#" + $(values_select).attr('id') + "_label";
                 let coincidencias = 0;
-                $.each(arr_values, function( index_arr, value_arr ) {
-                    if(valor_select == value_arr){
+                $.each(arr_values, function (index_arr, value_arr) {
+                    if (valor_select == value_arr) {
                         coincidencias++;
                     }
-                });    
-                if(coincidencias == 0){
+                });
+                if (coincidencias == 0) {
                     arr_values.push(valor_select);
-                }else{
-                    $(valor_select_label).css({"color":"#DF2D2D","font-weight":"600"});
-                    $($(valor_select_label).parent().find("span")[2]).css({"border":"#DF2D2D 1px solid"});
+                } else {
+                    $(valor_select_label).css({ "color": "#DF2D2D", "font-weight": "600" });
+                    $($(valor_select_label).parent().find("span")[2]).css({ "border": "#DF2D2D 1px solid" });
                     repetidos++;
                 }
             });
             //revisa si hay conductores repetidos en los selects
-            if(repetidos>0){
+            if ($("#soat_expi_date_form").val() == "") {
+                swal.fire(
+                    'Información Incompleta!',
+                    'Se debe seleccionar una fecha de vencimiento de soat',
+                    'error'
+                );
+            } else if (repetidos > 0) {
                 swal.fire(
                     'Información Duplicada!',
                     'Los conductores asociados al vehículo deben tener cédulas diferentes.',
                     'error'
                 );
                 $(".divider-form-vehicle").css({
-                    "background":"#DF2D2D",
-                    "height":"1px"
+                    "background": "#DF2D2D",
+                    "height": "1px"
                 });
-            }else{
+            } else {
                 $.ajax({
                     type: 'POST',
                     url: $("#form_vehicle_admin").data('url'),
@@ -232,20 +259,25 @@
                     success: function (data) {
                         $(".error-strong").text("");
                         if (Object.keys(data.errors).length > 0) {
-                            if(data.errors.response == "Conductores Duplicados"){
+                            if (data.errors.response == "vehicle exists") {
+                                let arr_errores = data.errors;
+                                console.log(arr_errores);
+                                $("#plate_id_form").focus();
+                                displayErrorsSpan(arr_errores);
+                            } else if (data.errors.response == "Conductores Duplicados") {
                                 let duplicates = data.duplicates;
                                 let selects = $(".driver_vehicle_form ");
                                 console.log(duplicates);
-                                $.each(selects, function( index_selects, value_selects ) {
-                                    $.each(duplicates, function( index_duplicates, value_duplicates ) {
+                                $.each(selects, function (index_selects, value_selects) {
+                                    $.each(duplicates, function (index_duplicates, value_duplicates) {
                                         let valor_select = $(value_selects).val();
                                         let valor_duplicate = value_duplicates.driver_information_dni_id;
-                                        if(valor_select == valor_duplicate){
+                                        if (valor_select == valor_duplicate) {
                                             $(value_selects).parent().find('strong').text("Este conductor ya tiene otro vehículo")
                                         }
                                     });
                                 });
-                            }else{
+                            } else {
                                 let arr_errores = data.errors;
                                 console.log(arr_errores);
                                 $.each(arr_errores, function (index, value) {
@@ -347,29 +379,30 @@
                 targets: '_all',
                 createdCell: function (td, cellData, rowData, row, col) {
                     $(td).attr("id", fields[col])
-                    if(fields[col]=="plate_id"){
-                        $(td).html("<a href='#' id='plate_id_link' style='text-decoration: underline;'>"+rowData[fields[col]]+"</a>")
+                    if (fields[col] == "plate_id") {
+                        $(td).html("<a href='#' id='plate_id_link' style='text-decoration: underline;'>" + rowData[fields[col]] + "</a>")
                     }
                 }
             }],
         });
-        
+
         $('#vehicle_datatable').on('click', 'tr td #plate_id_link', function () {
-            $("#div-table-relation-vehicle-driver").attr("hidden", false);
-            $("#div-table-relation-vehicle-driver").show();
             let plate_id = $(this).text();
             $.ajax({
                 type: 'POST',
                 url: $('#relation_driver_vehicle_datatable').data('url-list'),
-                data: {"plate_id":plate_id},
+                data: { "plate_id": plate_id },
                 success: function (dataset) {
                     console.log(dataset);
-                    var table_relation = $('#relation_driver_vehicle_datatable').DataTable({
+                    $("#div-table-relation-vehicle-driver").attr("hidden", false);
+                    $("#div-table-relation-vehicle-driver").show();
+                    table_relation = $('#relation_driver_vehicle_datatable').DataTable({
                         scrollX: true,
                         destroy: true,
                         data: dataset.data,
                         columns: [
-                            { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_vehicle"><span class="trash_icon"></span></button></center>' },
+                            { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_driver_vehicle"><span class="trash_icon"></span></button></center>' },
+                            { data: 'id', name: 'id', "visible": false },
                             { data: 'driver_information_dni_id', name: 'driver_information_dni_id' },
                             { data: 'first_name', name: 'first_name' },
                             { data: 'f_last_name', name: 'f_last_name' },
@@ -378,9 +411,10 @@
                         ],
                         language: language_dt,
                     });
+                    
                 }
             });
-           
+
         });
         $('#vehicle_datatable').on('click', 'tr td #btn_delete_vehicle', function () {
             let row = $(this).parents('tr')
@@ -412,6 +446,52 @@
                                     'El usuario ha sido eliminado.',
                                     'success'
                                 );
+                                $('#vehicle_datatable').DataTable().ajax.reload();
+                                $("#div-table-relation-vehicle-driver").hide();
+                            } else {
+                                swal.fire(
+                                    'Ocurrió un error',
+                                    'La operación no pudo completarse, por favor intente de nuevo.',
+                                    'error'
+                                );
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        $('#relation_driver_vehicle_datatable').on('click', 'tr td #btn_delete_driver_vehicle', function () {
+            let row = $(this).parents('tr')
+            let data_delete = table_relation.row(row).data();
+            swal.fire({
+                title: '<strong>Eliminar Información</strong>',
+                icon: 'warning',
+                html:
+                    '¿Está seguro que desea eliminar este registro? ',
+                showCloseButton: true,
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText:
+                    'Confirmar',
+                confirmButtonAriaLabel: 'Thumbs up, great!',
+                cancelButtonText:
+                    'Cancelar',
+                cancelButtonAriaLabel: 'Thumbs down'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: 'POST',
+                        url: $("#relation_driver_vehicle_datatable").data("url-delete"),
+                        data: data_delete,
+                        success: function (data) {
+                            if (data.error == "") {
+                                swal.fire(
+                                    'Proceso Completado',
+                                    'El usuario ha sido eliminado.',
+                                    'success'
+                                );
+                                $("#div-table-relation-vehicle-driver").hide();
                                 $('#vehicle_datatable').DataTable().ajax.reload();
                             } else {
                                 swal.fire(
@@ -463,7 +543,7 @@
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+            columns: [2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
             "inputTypes": [
                 {
                     "column": 2,
@@ -493,6 +573,13 @@
         });
     });
 
-
+    function displayErrorsSpan(arr_errores) {
+        $.each(arr_errores, function (index, value) {
+            let selector = "#" + index + "-error";
+            let selector_strong = "#" + index + "-error-strong";
+            $(selector).show();
+            $(selector_strong).text(value[0]);
+        });
+    }
     // The rest of the code goes here!
 }));

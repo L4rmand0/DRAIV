@@ -66,10 +66,12 @@ Route::prefix('admin')->group(function () {
     Route::post('vehicle/update', 'admin\vehicleController@update')->name('admin.vehicle.update'); 
     Route::post('vehicle/destroy','admin\vehicleController@destroy')->name('vehicle-admin.destroy');
     Route::post('vehicle/import','admin\vehicleController@import')->name('admin.vehicle.import');
+    Route::get('vehicle/checkvehiclebyid','admin\vehicleController@checkVehicleByPlateId')->name('admin.vehicle.checkvehiclebyid');
     Route::get('driver-info/admin1-select-lists', 'admin\Admin1Controller@getAdmin1toSelect2')->name('admin1-select-lists'); 
     Route::get('driver-info/admin2-select-lists', 'admin\Admin2Controller@getAdmin2toSelect2')->name('admin2-select-lists'); 
     Route::get('driver-info/admin3-select-lists', 'admin\Admin3Controller@getAdmin3toSelect2')->name('admin3-select-lists'); 
-    Route::post('driver-vehicle-list', 'admin\DriverVehicleController@listDriverVehicle')->name('driver-vehicle-list'); 
+    Route::post('driver-vehicle-list', 'admin\DriverVehicleController@listDriverVehicle')->name('driver-vehicle-list');
+    Route::post('driver-vehicle/destroy','admin\DriverVehicleController@destroy')->name('admin.driver-vehicle.destroy'); 
     Route::resource('images', 'admin\ImageController');
 });
 

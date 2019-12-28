@@ -59,6 +59,7 @@ class VehicleController extends Controller
     {
         $data_input_drivers = $request->get('driver_vehicle');
         $data_input = $request->get('vehicle');
+        $plate_id = $data_input['plate_id'];
         // print_r($data_input_drivers);
         // print_r($data_input);
         // die;
@@ -67,7 +68,7 @@ class VehicleController extends Controller
             unset($data_input['taxi_type']);
             unset($data_input['number_of_drivers']);
         }
-        $duplicate_drivers = DriverVehicleController::checkDuplicateDriversPlateId($data_input_drivers, $data_input['plate_id']);
+        $duplicate_drivers = DriverVehicleController::checkDuplicateDriversPlateId($data_input_drivers, $plate_id);
         // echo '<pre>';
         // print_r($duplicate_drivers);
         // die;
@@ -89,16 +90,29 @@ class VehicleController extends Controller
                 'owner_v.required' => "Se debe elegir una opción",
                 'soat_expi_date.required' => "Se debe seleccionar una fecha",
                 'capacity.required' => "Se debe seleccionar la capacidad",
-                'plate_id.unique' => "Esta placa ya está en uso."
+                'plate_id.unique' => "Esta placa ya está en uso. Para actualizarla hágalo en la tabla."
             ]
         );
 
         $errors = $validator->errors()->getMessages();
-        
+
         //Revisa que ya se haya insertado un vehículo con esa placa y lo actualiza
         foreach ($errors as $key => $value) {
             if (strpos($value[0], "uso") !== FALSE) {
                 $plate_id = $data_input[$key];
+
+                $check_vehicle = DB::table('vehicle')
+                    ->orderBy('vehicle.date_operation', 'desc')
+                    ->where('vehicle.operation', '=', 'D')
+                    ->where('vehicle.plate_id', '=', $plate_id)
+                    ->select(DB::raw(
+                        'vehicle.plate_id, 
+                     vehicle.operation,
+                     vehicle.technomechanical_date'
+                    ))->first();
+                if (empty($check_vehicle)) {
+                    return response()->json(['response' => 'vehicle exists', 'errors' => $errors]);
+                }
                 $now = date("Y-m-d H:i:s");
                 $response = Vehicle::where($key, $plate_id)->update([
                     'plate_id' => $data_input['plate_id'],
@@ -122,9 +136,9 @@ class VehicleController extends Controller
                 ]);
                 if ($response) {
                     $list_drivers = DriverVehicleController::listDriverByPlateId($plate_id);
-                    if (empty($list_drivers)) {
-                        $insert_response = DriverVehicleController::insertDrivers($data_input_drivers, $plate_id);
-                    } else {
+                    if(empty($list_drivers)){
+                        $response_transaction = DriverVehicleController::insertOrUpdateDriverNoList($data_input_drivers, $plate_id);
+                    }else{
                         $response_transaction = DriverVehicleController::insertOrUpdateDrivers($data_input_drivers, $list_drivers, $plate_id);
                     }
                     return response()->json(['response' => 'Información actualizada', 'errors' => []]);
@@ -158,12 +172,11 @@ class VehicleController extends Controller
             ]);
             //Inserta todos los conductores elegidos y con la placa enviada en la tabla user_vehicle
             if ($vehicle->plate_id != "" && !empty($data_input_drivers)) {
-                foreach ($data_input_drivers  as $key => $value) {
-                    $drive_vehicle = DriverVehicle::create([
-                        'vehicle_plate_id' => $vehicle->plate_id,
-                        'driver_information_dni_id' => $value,
-                        'user_id' => auth()->id()
-                    ]);
+                $list_drivers = DriverVehicleController::listDriverByPlateId($plate_id);
+                if(empty($list_drivers)){
+                    $response_transaction = DriverVehicleController::insertOrUpdateDriverNoList($data_input_drivers, $plate_id);
+                }else{
+                    $response_transaction = DriverVehicleController::insertOrUpdateDrivers($data_input_drivers, $list_drivers, $plate_id);
                 }
                 return response()->json([
                     'success' => 'Información registrada.',
@@ -275,5 +288,27 @@ class VehicleController extends Controller
         $file = $request->file('file');
         $result = Excel::import(new VehiclesImport(), $file);
         return response()->json(['response' => 'ok']);
+    }
+
+    public function checkVehicleByPlateId(Request $request)
+    {
+        $plate_id = $request->get('plate_id');
+        $check_vehicle = DB::table('vehicle')
+            ->orderBy('vehicle.date_operation', 'desc')
+            ->where('vehicle.plate_id', '=', $plate_id)
+            ->select(DB::raw(
+                'vehicle.plate_id, 
+                 vehicle.operation,
+                 vehicle.technomechanical_date'
+            ))->first();
+            // print_r($check_vehicle);
+            // die;
+        if (empty($check_vehicle)) {
+            return response()->json(['response' => 'ok', 'errors' => []]);
+        }else if($check_vehicle->operation == "U" || $check_vehicle->operation == "A"){
+            return response()->json(['response' => 'error', 'errors' => ['plate_id'=>['Esta placa ya tiene un vehículo. Para actualizarla debe hacerlo en la tabla.']]]);
+        }else{
+            return response()->json(['response' => 'ok', 'errors' => []]);
+        }
     }
 }
