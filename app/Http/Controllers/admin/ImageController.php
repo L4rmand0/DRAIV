@@ -84,7 +84,7 @@ class ImageController extends Controller
         // print_r($check_document);
         // die;
         if (!empty($check_document)) {
-            return response()->json(['response' => 'file exists', 'errors' => ['message' => 'El conductor ya ha subido este archivo.']]);
+            return response()->json(['response' => 'file exists', 'errors' => ['message' => 'Este archivo del conductor ya ha sido subido.']]);
         }
         $filename = $file_type . '_' . $cedula . '_' . $date . '.jpg';
         $path = $cedula . '/' . $filename;
@@ -108,14 +108,8 @@ class ImageController extends Controller
 
     public function downloadFile($path)
     {
-        // Produce: <body text='black'>
         $clean_path = str_replace(" ", "/", $path);
         return Storage::disk('s3')->download($clean_path);
-        // $filename = 'temp-image.png';
-        // $tempImage = tempnam(sys_get_temp_dir(), $filename);
-        // copy('https://demodraiv.s3.amazonaws.com/avatars/imagen12345.png', $tempImage);
-
-        // return response()->download($tempImage, $filename);
     }
 
     /**

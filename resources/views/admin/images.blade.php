@@ -47,7 +47,6 @@
                 <div class="card-body" id="card_body_list_documents">
                 </div>
             </div>
-            <a href="{{ route('images.downloadfiles3','') }}" id="download-file-s3">Descargar Imagen</a>
         </div>
         <div class="col-md-6 mb-4">
 
