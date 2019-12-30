@@ -50,8 +50,8 @@ class ImageController extends Controller
     {
         $date = date("Y-m-d");
         $now = date("Y-m-d H-i-s");
-        $now_new = str_replace(" ","-",$now);
-        $now_new = str_replace("-","",$now_new);
+        $now_new = str_replace(" ", "-", $now);
+        $now_new = str_replace("-", "", $now_new);
 
         $file_type = request()->get('key');
         $cedula = request()->get('driver_information_dni_id');
@@ -81,34 +81,55 @@ class ImageController extends Controller
             ->select(DB::raw(
                 'imagenes.image_id, 
                  imagenes.tipo_doc,
-                 imagenes.url'
+                 imagenes.url,
+                 imagenes.operation'
             ))->first();
         // echo '<pre>';
         // print_r($check_document);
         // die;
-        if (!empty($check_document)) {
-            return response()->json(['response' => 'file exists', 'errors' => [
-                'message' => 'Este archivo ya fue cargado ¿Desea reemplazarlo?',
-                'id' => $check_document->image_id,
-                'path' => $check_document->url
-            ]]);
-        }
+
         $filename = $file_type . '_' . $cedula . '_' . $now_new . '.jpg';
         $path = $cedula . '/' . $filename;
 
-        $upload = Storage::disk('s3')->put($path, file_get_contents($file));
-        if ($upload) {
-            Imagenes::create([
-                'tipo_doc' => $file_type,
-                'url' => $path,
-                'size_image' => $size,
-                'type_image' => $file_type,
-                'user_id' => auth()->id(),
-                'driver_information_dni_id' => $cedula
-            ]);
-            return response()->json(['response' => 'ok', 'errors' => []]);
+        if (!empty($check_document)) {
+            if ($check_document->operation == 'D') {
+                $image_id = $check_document->image_id;
+                $path_old = $check_document->url;
+                $upload = Storage::disk('s3')->put($path, file_get_contents($file));
+                if ($upload) {
+                    $delete_file = Storage::disk('s3')->delete($path_old);
+                    $response = Imagenes::where('image_id', $image_id)->update([
+                        'url' => $path,
+                        'operation' => 'U',
+                        'date_operation' => $now,
+                        'user_id' => auth()->id()
+                    ]);
+                    return response()->json(['response' => 'ok', 'errors' => []]);
+                } else {
+                    return response()->json(['response' => 'Carga fallida', 'errors' => ['response' => 'Carga fallida', 'message' => 'El archivo no se pudo cargar']]);
+                }
+            } else {
+                return response()->json(['response' => 'file exists', 'errors' => [
+                    'message' => 'Este archivo ya fue cargado ¿Desea reemplazarlo?',
+                    'id' => $check_document->image_id,
+                    'path' => $check_document->url
+                ]]);
+            }
         } else {
-            return response()->json(['response' => 'Carga fallida', 'errors' => ['response' => 'Carga fallida', 'message' => 'El archivo no se pudo cargar']]);
+            $upload = Storage::disk('s3')->put($path, file_get_contents($file));
+            if ($upload) {
+                Imagenes::create([
+                    'tipo_doc' => $file_type,
+                    'url' => $path,
+                    'size_image' => $size,
+                    'type_image' => $file_type,
+                    'user_id' => auth()->id(),
+                    'driver_information_dni_id' => $cedula
+                ]);
+                return response()->json(['response' => 'ok', 'errors' => []]);
+            } else {
+                return response()->json(['response' => 'Carga fallida', 'errors' => ['response' => 'Carga fallida', 'message' => 'El archivo no se pudo cargar']]);
+            }
         }
     }
 
@@ -151,8 +172,8 @@ class ImageController extends Controller
     public function update(Request $request)
     {
         $now = date("Y-m-d H-i-s");
-        $now_new = str_replace(" ","-",$now);
-        $now_new = str_replace("-","",$now_new);
+        $now_new = str_replace(" ", "-", $now);
+        $now_new = str_replace("-", "", $now_new);
         $date = date("Y-m-d");
         // echo '<pre>';
         // print_r($request->all());
@@ -179,7 +200,7 @@ class ImageController extends Controller
                 'user_id' => auth()->id()
             ]);
         }
-        
+
         if ($response > 0) {
             return response()->json(['errors' => '', 'response' => 'ok', 'messagge' => 'Archivo Actualizado correctamente.']);
         } else {
@@ -207,6 +228,7 @@ class ImageController extends Controller
         $checked_documents = [];
         $documents = DB::table('imagenes')
             ->where('imagenes.driver_information_dni_id', '=', $driver_information_dni_id)
+            ->where('imagenes.operation', '!=', 'D')
             ->select(DB::raw(
                 'imagenes.image_id, 
                  imagenes.tipo_doc,

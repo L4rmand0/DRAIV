@@ -68,7 +68,7 @@
                                 @csrf
                                 <label for="customFile" class="text-secondaty ml-2"> {{ $type_images_key }} </label>
                                 <div class="row">
-                                    <div class="col-md-9">
+                                    <div class="col-md-9" style="margin-top: 4px;">
                                         <div class="custom-file overflow-hidden rounded-pill mb-1">
                                             <input id="file{{$item_type_images}}" class="input_files_drivers"
                                                 type="file" name="file" class="custom-file-input rounded-pill">

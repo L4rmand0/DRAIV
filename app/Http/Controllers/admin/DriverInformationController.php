@@ -17,6 +17,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\UsersInformationImport;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\dataConductores\UserInformationController;
+use App\Imagenes;
 use App\Vehicle;
 
 class DriverInformationController extends Controller
@@ -269,18 +270,26 @@ class DriverInformationController extends Controller
             'user_id' => auth()->id(),
             'date_operation' => $now
         ]);
-        $delete = DriverVehicle::where('driver_information_dni_id', $dni_id)->update([
+
+        $delete = Imagenes::where('driver_information_dni_id', $dni_id)->update([
             'operation' => 'D',
             'user_id' => auth()->id(),
             'date_operation' => $now
         ]);
+        
         $check_vehicle_driver = DB::table('user_vehicle')
             ->where('user_vehicle.driver_information_dni_id', '=', $dni_id)
+            ->where('user_vehicle.operation', '!=', 'D')
             ->select(DB::raw(
                 'user_vehicle.driver_information_dni_id, 
                 user_vehicle.vehicle_plate_id'
             ))->first();
         if (!empty($check_vehicle_driver)) {
+            $delete = DriverVehicle::where('driver_information_dni_id', $dni_id)->update([
+                'operation' => 'D',
+                'user_id' => auth()->id(),
+                'date_operation' => $now
+            ]);
             $plate_id_driver = $check_vehicle_driver->vehicle_plate_id;
             $vehicle = DB::table('vehicle')
                 ->where('vehicle.plate_id', '=', $plate_id_driver)
