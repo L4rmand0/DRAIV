@@ -26,7 +26,7 @@
                             <div class="row mt-2">
                                 <div class="col-md-12 form_select_conductores" id="row-taxi-inputs">
                                     <label for="driver_information_dni_id_images" style="width: 100%">C.C Conductor</label>
-                                    <select name="drivers_image" class="form-control form-vehicles" id="driver_information_dni_id_images" data-url="{{ route('images.get-documents-driver')}}" style="width: 80%">
+                                    <select name="drivers_image" class="form-control form-vehicles" id="driver_information_dni_id_images" data-url="{{ route('images.get-documents-driver')}}" data-url-update="{{ route('images.update')}}" style="width: 80%">
                                         <option value="">Seleccionar</option>
                                         @foreach ($list_drivers as $list_drivers_item)
                                         <option value="{{ $list_drivers_item->dni_id }}">
@@ -72,7 +72,7 @@
                                 <span class="error_file ml-2" role="alert" id="file-error" style="color:#B62A2A;">
                                     
                                 </span>
-                                <div class="d-flex justify-content-center mt-2">
+                                <div class="d-flex justify-content-center mt-1">
                                     <input type="submit" value="Subir" class="btn btn-primary">
                                 </div>
                             </form>

@@ -49,8 +49,10 @@ class ImageController extends Controller
     public function store(Request $request)
     {
         $date = date("Y-m-d");
-        // echo '<pre>';
-        // print_r($request->all());
+        $now = date("Y-m-d H-i-s");
+        $now_new = str_replace(" ","-",$now);
+        $now_new = str_replace("-","",$now_new);
+
         $file_type = request()->get('key');
         $cedula = request()->get('driver_information_dni_id');
         $file = $request->file('file');
@@ -80,13 +82,18 @@ class ImageController extends Controller
                 'imagenes.image_id, 
                  imagenes.tipo_doc,
                  imagenes.url'
-            ))->get()->toArray();
+            ))->first();
+        // echo '<pre>';
         // print_r($check_document);
         // die;
         if (!empty($check_document)) {
-            return response()->json(['response' => 'file exists', 'errors' => ['message' => 'Este archivo del conductor ya ha sido subido.']]);
+            return response()->json(['response' => 'file exists', 'errors' => [
+                'message' => 'Este archivo ya fue cargado ¿Desea reemplazarlo?',
+                'id' => $check_document->image_id,
+                'path' => $check_document->url
+            ]]);
         }
-        $filename = $file_type . '_' . $cedula . '_' . $date . '.jpg';
+        $filename = $file_type . '_' . $cedula . '_' . $now_new . '.jpg';
         $path = $cedula . '/' . $filename;
 
         $upload = Storage::disk('s3')->put($path, file_get_contents($file));
@@ -141,9 +148,43 @@ class ImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $now = date("Y-m-d H-i-s");
+        $now_new = str_replace(" ","-",$now);
+        $now_new = str_replace("-","",$now_new);
+        $date = date("Y-m-d");
+        // echo '<pre>';
+        // print_r($request->all());
+        // die;
+        $file_type = request()->get('key');
+        $image_id = request()->get('id');
+        $cedula = request()->get('driver_information_dni_id');
+        $path_old = request()->get('url');
+        $file = $request->file('file');
+        $filename = $file_type . '_' . $cedula . '_' . $now_new . '.jpg';
+        $path = $cedula . '/' . $filename;
+        // var_dump($file);
+        // die;
+
+        $response = 0;
+
+        $upload = Storage::disk('s3')->put($path, file_get_contents($file));
+        if ($upload) {
+            $delete_file = Storage::disk('s3')->delete($path_old);
+            $response = Imagenes::where('image_id', $image_id)->update([
+                'url' => $path,
+                'operation' => 'U',
+                'date_operation' => $now,
+                'user_id' => auth()->id()
+            ]);
+        }
+        
+        if ($response > 0) {
+            return response()->json(['errors' => '', 'response' => 'ok', 'messagge' => 'Archivo Actualizado correctamente.']);
+        } else {
+            return response()->json(['errors' => ['response' => 'el archivo no se puedo actualizar.'], 'response' => 'error update']);
+        }
     }
 
     /**

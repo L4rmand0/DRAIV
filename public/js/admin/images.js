@@ -36,9 +36,9 @@
                             table += "  <td>" + index + "</td>"
                             if (value.check == "Y") {
                                 let str = value.url;
-                                let newurl = str.replace("/"," ");
+                                let newurl = str.replace("/", " ");
                                 table += "<td><center><span class='check_icon' aria-hidden='true' style='color:green;'></span></center></td>"
-                                table += '<td><center><a href="downloads3/'+newurl+'" style="cursor:pointer;" class="a_file_image" class="download-file-s3"><span class="file_image_icon" style="color:#B62A2A;"></span></a></center></td>';
+                                table += '<td><center><a href="downloads3/' + newurl + '" style="cursor:pointer;" class="a_file_image" class="download-file-s3"><span class="file_image_icon" style="color:#B62A2A;"></span></a></center></td>';
                                 // table += '<td><center><a href="downloads3/'+value.url+'" class="download-file-s3"><span class="file_image_icon" style="color:#B62A2A;"></span></a></center></td>';
                             } else {
                                 table += "<td><center><span class='x_icon' aria-hidden='true' style='color:red;'></span></center></td>"
@@ -64,7 +64,7 @@
             });
         });
 
-        
+
 
         $(".form_upload_image").submit(function (event) {
             event.preventDefault();
@@ -104,11 +104,59 @@
                                 });
                                 element.find(".error_file").html(cadena);
                             } else if (data.response == "file exists") {
-                                swal.fire(
-                                    'Archivo Duplicado',
-                                    data.errors.message,
-                                    'error'
-                                );
+                                // swal.fire(
+                                //     'Archivo Duplicado',
+                                //     data.errors.message,
+                                //     'error'
+                                // );
+                                let id_image = data.errors.id;
+                                let url = data.errors.path;
+                                datafr.append('id', id_image);
+                                datafr.append('url', url);
+                                swal.fire({
+                                    title: '<strong>Archivo Encontrado</strong>',
+                                    icon: 'warning',
+                                    html: data.errors.message,
+                                    showCloseButton: true,
+                                    showCancelButton: true,
+                                    focusConfirm: false,
+                                    confirmButtonText:
+                                        'Confirmar',
+                                    confirmButtonAriaLabel: 'Sí, reemplazarlo!',
+                                    cancelButtonText:
+                                        'Cancelar',
+                                    cancelButtonAriaLabel: 'Thumbs down'
+                                }).then((result) => {
+                                    if (result.value) {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: $("#driver_information_dni_id_images").data("url-update"),
+                                            cache: false,
+                                            contentType: false,
+                                            processData: false,
+                                            data: datafr,
+                                            success: function (data) {
+                                                if (Object.keys(data.errors).length > 0) {
+                                                    swal.fire(
+                                                        'Error en el proceso',
+                                                        data.errors.response,
+                                                        'error'
+                                                    );
+                                                } else {
+                                                    swal.fire(
+                                                        'Proceso Completado',
+                                                        data.messagge,
+                                                        'success'
+                                                    );
+                                                    let dni_id_val = $('#driver_information_dni_id_images').val()
+                                                    $dni_drivers_selects2.val([""]).trigger("change");
+                                                    $dni_drivers_selects2.val([dni_id_val]).trigger("change");
+                                                    element.find(".name_file").text("Seleccionar ...");
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
                             }
                         } else {
                             swal.fire(
@@ -116,7 +164,6 @@
                                 'Archivo subido correctamente.',
                                 'success'
                             );
-                            debugger
                             let dni_id_val = $('#driver_information_dni_id_images').val()
                             $dni_drivers_selects2.val([""]).trigger("change");
                             $dni_drivers_selects2.val([dni_id_val]).trigger("change");
