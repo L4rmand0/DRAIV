@@ -361,6 +361,8 @@ class DriverInformationController extends Controller
             ->select(
                 'driver_information.dni_id'
             )->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.operation', '!=', 'D')
+            ->orderBy('driver_information.date_operation', 'desc')
             ->get()->toArray();
     }
 
@@ -368,6 +370,7 @@ class DriverInformationController extends Controller
     {
         $company_id = Auth::user()->company_id;
         $admin2 = DB::table('driver_information')
+            ->orderBy('driver_information.date_operation', 'desc')
             ->select(
                 'driver_information.dni_id'
             )->where('driver_information.company_id', '=', $company_id)
