@@ -256,13 +256,13 @@ class VehicleController extends Controller
         $delete = Vehicle::where('plate_id', $plate_id)->update([
             'operation' => 'D', 
             'user_id' => auth()->id(),
-            'number_of_drivers' => 0
+            'number_of_drivers' => 0,
+            'date_operation' => $now
             ]);
         if ($delete) {
             $response = DriverVehicle::where('vehicle_plate_id', $plate_id)->update([
                 'operation' => 'D',
                 'date_operation' => $now,
-
                 'user_id' => auth()->id()
             ]);
             return response()->json(['response' => 'Usuario eliminado', 'error' => '']);

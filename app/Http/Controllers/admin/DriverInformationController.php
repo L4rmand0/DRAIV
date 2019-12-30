@@ -7,6 +7,8 @@ namespace App\Http\Controllers\admin;
 
 use DB;
 use App\DriverInformation;
+use App\DriverVehicle;
+use App\DrivingLicence;
 use Illuminate\Http\Request;
 // use Maatwebsite\Excel\Excel;
 use App\Http\Controllers\Controller;
@@ -15,6 +17,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\UsersInformationImport;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\dataConductores\UserInformationController;
+use App\Vehicle;
 
 class DriverInformationController extends Controller
 {
@@ -115,13 +118,13 @@ class DriverInformationController extends Controller
         // print_r($errors);
         // die;
         foreach ($errors as $key => $value) {
-            if(strpos($value[0],"uso")!== FALSE){
+            if (strpos($value[0], "uso") !== FALSE) {
                 $now = date("Y-m-d H:i:s");
                 $response = DriverInformation::where($key, $data_input[$key])->update([
                     'first_name' => $data_input['first_name'],
                     'second_name' =>  $data_input['second_name'] != "" ? $data_input['second_name'] : "NA",
                     'f_last_name' => $data_input['f_last_name'],
-                    's_last_name' => $data_input['s_last_name'] != "" ? $data_input['s_last_name']: "NA",
+                    's_last_name' => $data_input['s_last_name'] != "" ? $data_input['s_last_name'] : "NA",
                     'gender' => $data_input['gender'] == "Masculino",
                     'education' => $data_input['education'],
                     'country_born' => $data_input['country_born'],
@@ -129,18 +132,18 @@ class DriverInformationController extends Controller
                     'city_residence_place' => $data_input['city_residence_place'],
                     'department' => $data_input['department'],
                     'civil_state' => $data_input['civil_state'],
-                    'score' => $data_input['score']!=""?number_format($data_input['score'],2):null,
+                    'score' => $data_input['score'] != "" ? number_format($data_input['score'], 2) : null,
                     'address' => $data_input['address'],
                     'phone' => $data_input['phone'],
                     'db_user_id' => $data_input['db_user_id'],
                     'company_id' => $data_input['company_id'],
-                    'operation' => 'U', 
+                    'operation' => 'U',
                     'date_operation' => $now
                 ]);
                 if ($response) {
-                    return response()->json(['response' => 'Información actualizada','errors'=>[]]);
+                    return response()->json(['response' => 'Información actualizada', 'errors' => []]);
                 } else {
-                    return response()->json(['errors' => ['response'=>'No se pudo actualizar la información']]);
+                    return response()->json(['errors' => ['response' => 'No se pudo actualizar la información']]);
                 }
             }
         }
@@ -152,7 +155,7 @@ class DriverInformationController extends Controller
                 'first_name' => $data_input['first_name'],
                 'second_name' =>  $data_input['second_name'] != "" ? $data_input['second_name'] : "NA",
                 'f_last_name' => $data_input['f_last_name'],
-                's_last_name' => $data_input['s_last_name'] != "" ? $data_input['s_last_name']: "NA",
+                's_last_name' => $data_input['s_last_name'] != "" ? $data_input['s_last_name'] : "NA",
                 'e_mail_address' => $data_input['e_mail_address'],
                 'gender' => $data_input['gender'] == "Masculino",
                 'education' => $data_input['education'],
@@ -161,7 +164,7 @@ class DriverInformationController extends Controller
                 'city_residence_place' => $data_input['city_residence_place'],
                 'department' => $data_input['department'],
                 'civil_state' => $data_input['civil_state'],
-                'score' => $data_input['score']!=""?number_format($data_input['score'],2):null,
+                'score' => $data_input['score'] != "" ? number_format($data_input['score'], 2) : null,
                 'address' => $data_input['address'],
                 'phone' => $data_input['phone'],
                 'db_user_id' => $data_input['db_user_id'],
@@ -219,22 +222,22 @@ class DriverInformationController extends Controller
         $data_updated = $request->all();
         $field = $data_updated['fieldch'];
         $value = $data_updated['valuech'];
-        if($field=="gender"){
+        if ($field == "gender") {
             $value = $value == "Masculino" ? 0 : 1;
         }
-        if($field == "score" && ($value > 5 || $value < 0 )){
-            return response()->json(['error' => ['response'=>'El score no puede mayor a 5 ni menor a 0. Ejemplo: 5.00']]);
+        if ($field == "score" && ($value > 5 || $value < 0)) {
+            return response()->json(['error' => ['response' => 'El score no puede mayor a 5 ni menor a 0. Ejemplo: 5.00']]);
         }
         $response = DriverInformation::where('dni_id', $data_updated['dni_id'])->update([
-            $field => $value, 
-            'operation' => 'U', 
+            $field => $value,
+            'operation' => 'U',
             'date_operation' => $now,
             'user_id' => auth()->id()
-            ]);
+        ]);
         if ($response) {
-            return response()->json(['response' => 'Información actualizada','error'=>[]]);
+            return response()->json(['response' => 'Información actualizada', 'error' => []]);
         } else {
-            return response()->json(['error' => ['response'=>'No se pudo actualizar la información']]);
+            return response()->json(['error' => ['response' => 'No se pudo actualizar la información']]);
         }
     }
 
@@ -246,9 +249,60 @@ class DriverInformationController extends Controller
      */
     public function destroy(Request $request)
     {
+        $now = date("Y-m-d H:i:s");
         $data_delete = $request->all();
-        $delete = DriverInformation::where('dni_id', $data_delete['dni_id'])->update(['operation' => 'D', 'user_id' => auth()->id()]);
-        if ($delete) {
+        $delete = 0;
+        $errors = 0;
+        $dni_id = $data_delete['dni_id'];
+        // echo '<pre>';
+        // print_r($check_vehicle_driver);
+        $delete = DriverInformation::where('dni_id', $dni_id)->update([
+            'operation' => 'D',
+            'user_id' => auth()->id(),
+            'date_operation' => $now
+        ]);
+        if ($delete <= 0) {
+            $errors++;
+        }
+        $delete = DrivingLicence::where('driver_information_dni_id', $dni_id)->update([
+            'operation' => 'D',
+            'user_id' => auth()->id(),
+            'date_operation' => $now
+        ]);
+        $delete = DriverVehicle::where('driver_information_dni_id', $dni_id)->update([
+            'operation' => 'D',
+            'user_id' => auth()->id(),
+            'date_operation' => $now
+        ]);
+        $check_vehicle_driver = DB::table('user_vehicle')
+            ->where('user_vehicle.driver_information_dni_id', '=', $dni_id)
+            ->select(DB::raw(
+                'user_vehicle.driver_information_dni_id, 
+                user_vehicle.vehicle_plate_id'
+            ))->first();
+        if (!empty($check_vehicle_driver)) {
+            $plate_id_driver = $check_vehicle_driver->vehicle_plate_id;
+            $vehicle = DB::table('vehicle')
+                ->where('vehicle.plate_id', '=', $plate_id_driver)
+                ->select(DB::raw(
+                    'vehicle.plate_id, 
+                    vehicle.number_of_drivers'
+                ))->first();
+            $number_of_drivers = $vehicle->number_of_drivers - 1;
+            // print_r($number_of_drivers);
+            // die;
+            $delete = Vehicle::where('plate_id', $plate_id_driver)->update([
+                'operation' => 'U',
+                'number_of_drivers' => $number_of_drivers,
+                'user_id' => auth()->id(),
+                'date_operation' => $now
+            ]);
+            if ($delete <= 0) {
+                $errors++;
+            }
+        }
+
+        if ($errors == 0) {
             return response()->json(['response' => 'Usuario eliminado', 'error' => '']);
         } else {
             return response()->json(['error' => 'No se pudo eliminar el usuario']);
@@ -291,14 +345,15 @@ class DriverInformationController extends Controller
         return datatables()->of($drive_information)->make(true);
     }
 
-    public static function getListDrivers(){
+    public static function getListDrivers()
+    {
         $company_id = Auth::user()->company_id;
         return DB::table('driver_information')
             ->select(
                 'driver_information.dni_id'
             )->where('driver_information.company_id', '=', $company_id)
             ->get()->toArray();
-    } 
+    }
 
     public function getDriveInformationtoSelect2(Request $request)
     {
@@ -307,6 +362,7 @@ class DriverInformationController extends Controller
             ->select(
                 'driver_information.dni_id'
             )->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.operation', '!=', 'D')
             ->get()->toArray();
         return response()->json($this->createSelect2($admin2));
     }

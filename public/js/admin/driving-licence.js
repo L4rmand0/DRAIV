@@ -269,7 +269,7 @@
                             if (data.error == "") {
                                 swal.fire(
                                     'Proceso Completado',
-                                    'El usuario ha sido eliminado.',
+                                    'La licencia ha sido eliminado.',
                                     'success'
                                 );
                                 $('#driving_licence_datatable').DataTable().ajax.reload();

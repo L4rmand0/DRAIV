@@ -25,8 +25,12 @@
                         <div class="form-card">
                             <div class="row mt-2">
                                 <div class="col-md-12 form_select_conductores" id="row-taxi-inputs">
-                                    <label for="driver_information_dni_id_images" style="width: 100%">C.C Conductor</label>
-                                    <select name="drivers_image" class="form-control form-vehicles" id="driver_information_dni_id_images" data-url="{{ route('images.get-documents-driver')}}" data-url-update="{{ route('images.update')}}" style="width: 80%">
+                                    <label for="driver_information_dni_id_images" style="width: 100%">C.C
+                                        Conductor</label>
+                                    <select name="drivers_image" class="form-control form-vehicles"
+                                        id="driver_information_dni_id_images"
+                                        data-url="{{ route('images.get-documents-driver')}}"
+                                        data-url-update="{{ route('images.update')}}" style="width: 80%">
                                         <option value="">Seleccionar</option>
                                         @foreach ($list_drivers as $list_drivers_item)
                                         <option value="{{ $list_drivers_item->dni_id }}">
@@ -63,18 +67,25 @@
                                 accept-charset="UTF-8" enctype="multipart/form-data" data-key="{{ $item_type_images }}">
                                 @csrf
                                 <label for="customFile" class="text-secondaty ml-2"> {{ $type_images_key }} </label>
-                                <div class="custom-file overflow-hidden rounded-pill mb-1">
-                                    <input id="file{{$item_type_images}}" class="input_files_drivers" type="file"
-                                        name="file" class="custom-file-input rounded-pill">
-                                    <label for="file{{$item_type_images}}"
-                                        class="custom-file-label rounded-pill name_file">Seleccionar ...</label>
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="custom-file overflow-hidden rounded-pill mb-1">
+                                            <input id="file{{$item_type_images}}" class="input_files_drivers"
+                                                type="file" name="file" class="custom-file-input rounded-pill">
+                                            <label for="file{{$item_type_images}}"
+                                                class="custom-file-label rounded-pill name_file">Seleccionar ...</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="d-flex justify-content-center mt-1">
+                                            <input type="submit" value="Subir" class="btn btn-primary">
+                                        </div>
+                                    </div>
                                 </div>
                                 <span class="error_file ml-2" role="alert" id="file-error" style="color:#B62A2A;">
-                                    
+
                                 </span>
-                                <div class="d-flex justify-content-center mt-1">
-                                    <input type="submit" value="Subir" class="btn btn-primary">
-                                </div>
+
                             </form>
                         </div>
                     </div>

@@ -454,7 +454,7 @@ var table_relation;
                             if (data.error == "") {
                                 swal.fire(
                                     'Proceso Completado',
-                                    'El usuario ha sido eliminado.',
+                                    'El vehículo ha sido eliminado.',
                                     'success'
                                 );
                                 $('#vehicle_datatable').DataTable().ajax.reload();
