@@ -58,9 +58,25 @@
     content: "\f1f8"
 
 }
+
 .excel_icon:before {
     font-family: FontAwesome;
     content: "\f1c3"
+}
+
+.check_icon:before {
+    font-family: FontAwesome;
+    content: "\f14a"
+}
+
+.file_image_icon:before {
+    font-family: FontAwesome;
+    content: "\f1c5"
+}
+
+.x_icon:before {
+    font-family: FontAwesome;
+    content: "\f057"
 }
 
 .icons-fa{

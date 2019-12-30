@@ -10,11 +10,61 @@
     // Listen for the jQuery ready event on the document
     $(function () {
 
-        $('#driver_information_dni_id_images').select2();
+        var $dni_drivers_selects2 = $('#driver_information_dni_id_images').select2();
 
         $('#driver_information_dni_id_images').on('change', function () {
-
+            let element = $(this);
+            let driver_information_dni_id = element.val();
+            $.ajax({
+                type: 'POST',
+                url: element.data('url'),
+                data: { 'driver_information_dni_id': driver_information_dni_id },
+                success: function (data) {
+                    console.log(data);
+                    if (Object.keys(data.errors).length > 0) {
+                        console.log(errors);
+                    } else {
+                        let table = "<table class='table'>"
+                        table += "<thead>"
+                        table += "  <th><center>Documento</center></th>"
+                        table += "  <th><center>Verificación</center></th>"
+                        table += "  <th><center>Archivo</center></th>"
+                        table += "</thead>"
+                        table += "<tbody>"
+                        $.each(data.documents, function (index, value) {
+                            table += "<tr>"
+                            table += "  <td>" + index + "</td>"
+                            if (value.check == "Y") {
+                                let str = value.url;
+                                let newurl = str.replace("/"," ");
+                                table += "<td><center><span class='check_icon' aria-hidden='true' style='color:green;'></span></center></td>"
+                                table += '<td><center><a href="downloads3/'+newurl+'" style="cursor:pointer;" class="a_file_image" class="download-file-s3"><span class="file_image_icon" style="color:#B62A2A;"></span></a></center></td>';
+                                // table += '<td><center><a href="downloads3/'+value.url+'" class="download-file-s3"><span class="file_image_icon" style="color:#B62A2A;"></span></a></center></td>';
+                            } else {
+                                table += "<td><center><span class='x_icon' aria-hidden='true' style='color:red;'></span></center></td>"
+                                table += "<td></td>"
+                            }
+                            table += "</tr>"
+                        });
+                        table += "</tbody>"
+                        table += "</table>"
+                        // table += '<script>'+
+                        // '          $(".a_file_image").on("click", function(){'+
+                        //          '  window.location.href = $(this).data("url");'+
+                        //          ' })'+
+                        //         '</script>';
+                        $("#card_body_list_documents").html(table)
+                        // swal.fire(
+                        //     'Proceso Completado',
+                        //     'Archivo subido correctamente.',
+                        //     'success'
+                        // );
+                    }
+                }
+            });
         });
+
+        
 
         $(".form_upload_image").submit(function (event) {
             event.preventDefault();
@@ -66,6 +116,11 @@
                                 'Archivo subido correctamente.',
                                 'success'
                             );
+                            debugger
+                            let dni_id_val = $('#driver_information_dni_id_images').val()
+                            $dni_drivers_selects2.val([""]).trigger("change");
+                            $dni_drivers_selects2.val([dni_id_val]).trigger("change");
+                            element.find(".name_file").text("Seleccionar ...");
                         }
                     }
                 });

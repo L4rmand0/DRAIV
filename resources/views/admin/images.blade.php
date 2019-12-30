@@ -26,9 +26,7 @@
                             <div class="row mt-2">
                                 <div class="col-md-12 form_select_conductores" id="row-taxi-inputs">
                                     <label for="driver_information_dni_id_images" style="width: 100%">C.C Conductor</label>
-                                    <select name="drivers_image" class="form-control form-vehicles"
-                                        id="driver_information_dni_id_images"
-                                        data-url="{{ route('drivers-select-lists')}}" style="width: 80%">
+                                    <select name="drivers_image" class="form-control form-vehicles" id="driver_information_dni_id_images" data-url="{{ route('images.get-documents-driver')}}" style="width: 80%">
                                         <option value="">Seleccionar</option>
                                         @foreach ($list_drivers as $list_drivers_item)
                                         <option value="{{ $list_drivers_item->dni_id }}">
@@ -46,14 +44,10 @@
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-secondary">Lista de Archivos</h6>
                 </div>
-                <div class="card-body">
-                    @foreach ($list_drivers as $list_drivers_item)
-                    <option value="{{ $list_drivers_item->dni_id }}">
-                        {{ $list_drivers_item->dni_id }}</option>
-                    @endforeach
+                <div class="card-body" id="card_body_list_documents">
                 </div>
             </div>
-            <a href="{{ route('images.downloadfiles3','my-file/imagen12345.png') }}" id="download-file-s3">Descargar Imagen</a>
+            <a href="{{ route('images.downloadfiles3','') }}" id="download-file-s3">Descargar Imagen</a>
         </div>
         <div class="col-md-6 mb-4">
 

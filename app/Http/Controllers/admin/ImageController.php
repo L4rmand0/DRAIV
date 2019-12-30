@@ -86,7 +86,7 @@ class ImageController extends Controller
         if (!empty($check_document)) {
             return response()->json(['response' => 'file exists', 'errors' => ['message' => 'El conductor ya ha subido este archivo.']]);
         }
-        $filename = $file_type . '_' . $cedula . '_' . $date;
+        $filename = $file_type . '_' . $cedula . '_' . $date . '.jpg';
         $path = $cedula . '/' . $filename;
 
         $upload = Storage::disk('s3')->put($path, file_get_contents($file));
@@ -108,10 +108,9 @@ class ImageController extends Controller
 
     public function downloadFile($path)
     {
-        // $get_ticket = 'avatars/imagen12345.png';
-
-        // return Storage::disk('s3')->download('my-file/imagen12345.png');
-        return Storage::disk('s3')->download($path);
+        // Produce: <body text='black'>
+        $clean_path = str_replace(" ", "/", $path);
+        return Storage::disk('s3')->download($clean_path);
         // $filename = 'temp-image.png';
         // $tempImage = tempnam(sys_get_temp_dir(), $filename);
         // copy('https://demodraiv.s3.amazonaws.com/avatars/imagen12345.png', $tempImage);
@@ -166,8 +165,37 @@ class ImageController extends Controller
 
     public function getDocumentsDriver(Request $request)
     {
-        echo '<pre>';
+        $driver_information_dni_id = $request->get('driver_information_dni_id');
+        if (empty($driver_information_dni_id)) {
+            return response()->json(['errors' => ['response' => 'vacío']]);
+        }
+        $checked_documents = [];
+        $documents = DB::table('imagenes')
+            ->where('imagenes.driver_information_dni_id', '=', $driver_information_dni_id)
+            ->select(DB::raw(
+                'imagenes.image_id, 
+                 imagenes.tipo_doc,
+                 imagenes.url'
+            ))->get()->toArray();
         $list_documents = Imagenes::enum_assoc_tipo_doc;
-        print_r($list_documents);
+        foreach ($documents as $key => $value) {
+            $arr_documents[] = $value->tipo_doc;
+            $arr_url_documents[$value->tipo_doc] = $value->url;
+        }
+        if (!empty($documents)) {
+            foreach ($list_documents as $key_l => $value_l) {
+                if (in_array($list_documents[$key_l], $arr_documents)) {
+                    $checked_documents[$key_l]['check'] = 'Y';
+                    $checked_documents[$key_l]['url'] = $arr_url_documents[$value_l];
+                } else {
+                    $checked_documents[$key_l]['check'] = 'N';
+                }
+            }
+        } else {
+            foreach ($list_documents as $key_l => $value_l) {
+                $checked_documents[$key_l]['check'] = 'N';
+            }
+        }
+        return response()->json(['errors' => '', 'documents' => $checked_documents]);
     }
 }

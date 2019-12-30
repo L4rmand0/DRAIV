@@ -75,7 +75,7 @@ Route::prefix('admin')->group(function () {
     Route::get('images/', 'admin\ImageController@index')->name('images.index');
     Route::post('images/store', 'admin\ImageController@store')->name('images.store');
     Route::get('downloads3/{path}', 'admin\ImageController@downloadFile')->name('images.downloadfiles3');
-    Route::get('images/get-documents-driver', 'admin\ImageController@getDocumentsDriver')->name('images.get-documents-driver');
+    Route::post('images/get-documents-driver', 'admin\ImageController@getDocumentsDriver')->name('images.get-documents-driver');
 });
 
 Route::post('/saveimg', 'ImageController@saveImgS3')->name('saveimg');
