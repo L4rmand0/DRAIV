@@ -45,6 +45,12 @@ var table_relation;
         var table_search;
 
 
+        // $('.driver_vehicle_form').on('change', function (e) {
+        //     // Do something
+        //     alert("okay")
+        // });
+
+        
 
         //Selects de vehículos
         var $type_v_select2 = $("#type_v_form").select2();
@@ -112,6 +118,10 @@ var table_relation;
                         data: data
                     });
                     $("#vehicle_drivers_relation").attr('hidden', false);
+
+                    $('.driver_vehicle_form').on('change', function () {
+                        $(this).parent().find('strong').text("")
+                    })
                 }
             });
         });
@@ -152,6 +162,7 @@ var table_relation;
                 $("#company_id").val(data['nit']);
             });
         });
+
 
 
         $("#plate_id_form").on('change', function () {
@@ -411,7 +422,7 @@ var table_relation;
                         ],
                         language: language_dt,
                     });
-                    
+
                 }
             });
 

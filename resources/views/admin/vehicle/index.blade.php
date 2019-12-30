@@ -259,8 +259,9 @@
                         </div>
                         <div class="form-group">
                             <label for="file_driver_info">Importar Información de Vehículos</label>
-                            <input type="file" class="form-control-file" id="file_driver_info" name="file" required>
-                            <div class="d-flex justify-content-center" style="margin-top: 25px;">
+                            <input type="file" class="form-control-file" id="file_driver_info" name="file" style="margin-bottom: 7px;" required>
+                            <a  href="{{ asset('formats/formato_vehiculo.xlsx') }}" target="_blank" style="color:green;"> <span class="excel_icon"></span>  Descargar Formato</a>
+                            <div class="d-flex justify-content-center" style="margin-top: 22px;">
                                 <input type="submit" value="Registrar" class="btn btn-primary">
                             </div>
                         </div>

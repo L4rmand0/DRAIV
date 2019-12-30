@@ -1,4 +1,4 @@
--- TRUNCATE TABLE user_vehicle;
+-- TRUNCATE TABLE user_vehicle; 
 -- DELETE from user_vehicle;
 -- DELETE FROM vehicle;
 

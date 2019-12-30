@@ -5,35 +5,94 @@
     runcode(window.jQuery, window, document);
 
 }(function ($, window, document) {
-    
+
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
     $(function () {
 
         $('#driver_information_dni_id_images').select2();
 
-        $('#driver_information_dni_id_images').on('change', function(){
+        $('#driver_information_dni_id_images').on('change', function () {
 
         });
 
         $(".form_upload_image").submit(function (event) {
             event.preventDefault();
-            let element = $(this);
+            let driver_information_dni_id = $("#driver_information_dni_id_images").val();
+            var element = $(this);
             var datafr = new FormData(element[0]);
-            datafr.append('key',element.data('key'));
-            $.ajax({
-                type: 'POST',
-                url: element.attr('action'),
-                cache: false,
-                contentType: false,
-                processData: false,
-                data: datafr,
-                success: function (data) {
-                    console.log(data);
-                }
-            });
+            element.find(".error_file").html("");
+            if (driver_information_dni_id == "") {
+                swal.fire(
+                    'Información Incompleta!',
+                    'Se debe elegir un conductor.',
+                    'error'
+                );
+            } else {
+                datafr.append('key', element.data('key'));
+                datafr.append('driver_information_dni_id', driver_information_dni_id);
+                $.ajax({
+                    type: 'POST',
+                    url: element.attr('action'),
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: datafr,
+                    success: function (data) {
+                        console.log(data);
+                        if (Object.keys(data.errors).length > 0) {
+                            if (data.response == "Carga fallida") {
+                                swal.fire(
+                                    'Proceso Incompleto',
+                                    data.errors.message,
+                                    'error'
+                                );
+                            } else if (data.response == "validator errors") {
+                                let cadena = "";
+                                $.each(data.errors, function (index, value) {
+                                    cadena = cadena + "<strong id='file-error-strong' class='error-strong'>" + value[0] + "</strong>";
+                                });
+                                element.find(".error_file").html(cadena);
+                            } else if (data.response == "file exists") {
+                                swal.fire(
+                                    'Archivo Duplicado',
+                                    data.errors.message,
+                                    'error'
+                                );
+                            }
+                        } else {
+                            swal.fire(
+                                'Proceso Completado',
+                                'Archivo subido correctamente.',
+                                'success'
+                            );
+                        }
+                    }
+                });
+            }
+
         });
 
+        // $("#download-file-s3").on('click', function () {
+        //     let element = $(this);
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: element.data('url'),
+        //         // cache: false,
+        //         // contentType: false,
+        //         // processData: false,
+        //         data: { 'img_id': '12345' },
+        //         success: function (data) {
+        //             console.log(data);
+        //         }
+        //     });
+        // });
+
+        $(".input_files_drivers").on('change', function () {
+            let element = $(this);
+            let name = element[0].files[0].name;
+            $(this).parent().find("label").text(name)
+        });
 
         // function myCallbackFunction(updatedCell, updatedRow, oldValue) {
         //     console.log("The new value for the cell is: " + updatedCell.data());

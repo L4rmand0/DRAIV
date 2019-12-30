@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\admin;
 
 use App\Imagenes;
+use DB;
+use League\Flysystem\File;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpCache\Store;
+use Illuminate\Support\Facades\Validator;
 
 class ImageController extends Controller
 {
@@ -44,29 +48,75 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
+        $date = date("Y-m-d");
         // echo '<pre>';
         // print_r($request->all());
-        $file = $request->file('file')[request()->get('key')];
-        // print_r($file);
-        // $path = Storage::putFileAs(
-        //     'avatars', $file, $request->user()->id, 's3'
-        // );
-        $path = $file->storeAs(
-            'avatars/'.$request->user()->id.'RX', 'local'
+        $file_type = request()->get('key');
+        $cedula = request()->get('driver_information_dni_id');
+        $file = $request->file('file');
+        $size = $file->getSize();
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'file' => ['required', 'max:1000', 'mimes:jpeg']
+            ],
+            [
+                'file.required' => "Se debe seleccionar un archivo.",
+                'file.max' => "El archivo supera el máximo peso permitido (2MB).",
+                'file.mimes' => "Los formatos permitidos son: jpg.",
+            ]
         );
-        var_dump($path);
-        die;
-        // $file = request()->file('file')[request()->get('key')];
-        // $size = $file->getSize();
-        // if($size > 4000){
-        //     return response()->json(['errors' => ['response' => 'El archivo debe pesar 4mb máximo.']]);
-        // }
-        // print_r($file->getSize());
+
+        $errors = $validator->errors()->getMessages();
+        if (!empty($errors)) {
+            return response()->json(['response' => 'validator errors', 'errors' => $errors]);
+        }
+
+        $check_document = DB::table('imagenes')
+            ->where('imagenes.type_image', '=', $file_type)
+            ->where('imagenes.driver_information_dni_id', '=', $cedula)
+            ->select(DB::raw(
+                'imagenes.image_id, 
+                 imagenes.tipo_doc,
+                 imagenes.url'
+            ))->get()->toArray();
+        // print_r($check_document);
         // die;
-        // Storage::disk('s3')->put('','');
-        // request()->file('file')->store(
-        //     'my-file','s3'
-        // );
+        if (!empty($check_document)) {
+            return response()->json(['response' => 'file exists', 'errors' => ['message' => 'El conductor ya ha subido este archivo.']]);
+        }
+        $filename = $file_type . '_' . $cedula . '_' . $date;
+        $path = $cedula . '/' . $filename;
+
+        $upload = Storage::disk('s3')->put($path, file_get_contents($file));
+        if ($upload) {
+            Imagenes::create([
+                'tipo_doc' => $file_type,
+                'url' => $path,
+                'size_image' => $size,
+                'type_image' => $file_type,
+                'user_id' => auth()->id(),
+                'driver_information_dni_id' => $cedula
+            ]);
+            return response()->json(['response' => 'ok', 'errors' => []]);
+        } else {
+            return response()->json(['response' => 'Carga fallida', 'errors' => ['response' => 'Carga fallida', 'message' => 'El archivo no se pudo cargar']]);
+        }
+    }
+
+
+    public function downloadFile($path)
+    {
+        // $get_ticket = 'avatars/imagen12345.png';
+
+        // return Storage::disk('s3')->download('my-file/imagen12345.png');
+        return Storage::disk('s3')->download($path);
+        // $filename = 'temp-image.png';
+        // $tempImage = tempnam(sys_get_temp_dir(), $filename);
+        // copy('https://demodraiv.s3.amazonaws.com/avatars/imagen12345.png', $tempImage);
+
+        // return response()->download($tempImage, $filename);
     }
 
     /**
@@ -112,5 +162,12 @@ class ImageController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getDocumentsDriver(Request $request)
+    {
+        echo '<pre>';
+        $list_documents = Imagenes::enum_assoc_tipo_doc;
+        print_r($list_documents);
     }
 }

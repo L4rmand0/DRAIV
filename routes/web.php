@@ -72,7 +72,10 @@ Route::prefix('admin')->group(function () {
     Route::get('driver-info/admin3-select-lists', 'admin\Admin3Controller@getAdmin3toSelect2')->name('admin3-select-lists'); 
     Route::post('driver-vehicle-list', 'admin\DriverVehicleController@listDriverVehicle')->name('driver-vehicle-list');
     Route::post('driver-vehicle/destroy','admin\DriverVehicleController@destroy')->name('admin.driver-vehicle.destroy'); 
-    Route::resource('images', 'admin\ImageController');
+    Route::get('images/', 'admin\ImageController@index')->name('images.index');
+    Route::post('images/store', 'admin\ImageController@store')->name('images.store');
+    Route::get('downloads3/{path}', 'admin\ImageController@downloadFile')->name('images.downloadfiles3');
+    Route::get('images/get-documents-driver', 'admin\ImageController@getDocumentsDriver')->name('images.get-documents-driver');
 });
 
 Route::post('/saveimg', 'ImageController@saveImgS3')->name('saveimg');

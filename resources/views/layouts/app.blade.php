@@ -35,17 +35,17 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item" id="products">
-                            <a class="nav-link" href="{{ route('about') }}">Productos</a>
-                        </li>
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown" id="products">
                             <a class="nav-link dropdown-toggle" id="navbarDropdownSolutions" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
-                                Soluciones
+                                Productos
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownSolutions">
-                                <a class="dropdown-item" href="{{ route('admin') }}">Driver Análisis</a>
+                                <a class="dropdown-item" href="{{ route('admin') }}">Dashboard Enterprise</a>
                             </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Soluciones</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="contact.html">Partner</a>
