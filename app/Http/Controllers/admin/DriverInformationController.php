@@ -53,6 +53,8 @@ class DriverInformationController extends Controller
         $list_civil_state = DriverInformation::enum_civil_state;
         $enum_country_born = $this->generateOptionsEnumDt(DriverInformation::enum_country_born);
         $list_country_born = DriverInformation::enum_country_born;
+        $company_id = auth()->user()->company_id;
+        $company = CompanyController::getCompanyByid($company_id);
         // echo '<pre>'; 
         // print_r($enum_education);
         // die;
@@ -65,7 +67,8 @@ class DriverInformationController extends Controller
                 'list_education' => $list_education,
                 'list_civil_state' => $list_civil_state,
                 'list_country_born' => $list_country_born,
-                'list_admin3' => $list_admin3
+                'list_admin3' => $list_admin3,
+                'company_name' => ucwords(strtolower($company->company))
             ]
         );
     }

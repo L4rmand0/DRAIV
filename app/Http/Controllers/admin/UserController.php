@@ -20,7 +20,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('admin.users.index');
+        $company_id = auth()->user()->company_id;
+        $company = CompanyController::getCompanyByid($company_id);
+        return view('admin.users.index',[
+            'company_name' => ucwords(strtolower($company->company))
+        ]);
     }
 
     /**

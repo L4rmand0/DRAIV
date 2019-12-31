@@ -27,6 +27,8 @@ class VehicleController extends Controller
         $list_service = Vehicle::enum_service;
         $enum_taxi_type = $this->generateOptionsEnumDt(Vehicle::enum_taxi_type);
         $list_taxi_type = Vehicle::enum_taxi_type;
+        $company_id = auth()->user()->company_id;
+        $company = CompanyController::getCompanyByid($company_id);
         // print_r($enum_type_v);
         // die;
         return view('admin.vehicle.index', [
@@ -35,7 +37,8 @@ class VehicleController extends Controller
             'enum_taxi_type' => $enum_taxi_type,
             'list_type_v' => $list_type_v,
             'list_service' => $list_service,
-            'list_taxi_type' => $list_taxi_type
+            'list_taxi_type' => $list_taxi_type,
+            'company_name' => ucwords(strtolower($company->company))
         ]);
     }
 

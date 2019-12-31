@@ -26,6 +26,8 @@ class DrivingLicenceController extends Controller
         $list_country_expedition = DrivingLicence::enum_country_expedition;
         $enum_state = $this->generateOptionsEnumDt(DrivingLicence::enum_state);
         $list_state = DrivingLicence::enum_state;
+        $company_id = auth()->user()->company_id;
+        $company = CompanyController::getCompanyByid($company_id);
         return view(
             'admin.driving-licence.index',
             [
@@ -34,7 +36,8 @@ class DrivingLicenceController extends Controller
                 'enum_state' => $enum_state,
                 'list_country_expedition' => $list_country_expedition,
                 'list_category' => $list_category,
-                'list_state' => $list_state
+                'list_state' => $list_state,
+                'company_name' => ucwords(strtolower($company->company))
             ]
         );
     }
