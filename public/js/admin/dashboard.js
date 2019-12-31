@@ -10,6 +10,8 @@
     // Listen for the jQuery ready event on the document
     $(function () {
         var ele_chart_education = $("#education_chart");
+        var ele_chart_civil_state = $("#civil_state_chart");
+        var ele_chart_category = $("#category_chart");
 
         $.ajax({
             type: 'POST',
@@ -18,53 +20,115 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function (data) {
-                if (data.error == "") {
+            success: function (datac) {
+                console.log(datac);
+                
+                if (Object.keys(datac.errors).length > 0) {
+
                 } else {
-
-                       
-                }
-            }
-        });
-
-        var chart_education = new Chart(ele_chart_education, {
-            type: 'horizontalBar',
-            data:
-            {
-                labels: ['Ninguno', 'primaria', 'secundaria', 'pregrado', 'postgrado', 'Sin información'],
-                datasets: [{
-                    label: 'Frecuencia',
-                    data: [12, 19, 3, 5, 3, 3],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
+                    var chart_education = new Chart(ele_chart_education, {
+                        type: 'horizontalBar',
+                        data: 
+                        datac.data,
+                        options: {
+                            display:true,
+                            scaleStartValue: 0,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        min: 0,
+                                        max:datac.max
+                                    }
+                                }]
+                            }
                         }
-                    }]
+                    });
                 }
             }
         });
-        
+
+        $.ajax({
+            type: 'POST',
+            url: $("#function_barchart_civil_state").val(),
+            data: {
+                'company_id': $("#dashboard_company_id").val(),
+                "_token": $('#token').val()
+            },
+            success: function (datac) {
+                console.log(datac);
+                
+                if (Object.keys(datac.errors).length > 0) {
+
+                } else {
+                    var chart_civil_state = new Chart(ele_chart_civil_state, {
+                        type: 'horizontalBar',
+                        data: 
+                        datac.data,
+                        options: {
+                            display:true,
+                            scaleStartValue: 0,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        min: 0,
+                                        max:datac.max
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: $("#function_barchart_category").val(),
+            data: {
+                'company_id': $("#dashboard_company_id").val(),
+                "_token": $('#token').val()
+            },
+            success: function (datac) {
+                console.log(datac);
+                if (Object.keys(datac.errors).length > 0) {
+
+                } else {
+                    var chart_category = new Chart(ele_chart_category, {
+                        type: 'horizontalBar',
+                        data: 
+                        datac.data,
+                        options: {
+                            display:true,
+                            scaleStartValue: 0,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        min: 0,
+                                        max:datac.max
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
 
     });
 

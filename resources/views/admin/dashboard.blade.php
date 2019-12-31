@@ -5,6 +5,8 @@
     <!-- Page Heading -->
     <input type="hidden" id="dashboard_company_id" value="{{ auth()->user()->company_id }}">
     <input type="hidden" id="function_barchart_education" value="{{ route('drivers-info.education-chart') }}">
+    <input type="hidden" id="function_barchart_civil_state" value="{{ route('drivers-info.civil-state-chart') }}">
+    <input type="hidden" id="function_barchart_category" value="{{ route('drivers-info.category-chart') }}">
     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard {{ $company_name }}</h1>
@@ -58,12 +60,23 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Conductores por Género
-                                <div class="mb-0 text-gray-700 mt-1">Hombres: <span
-                                        class="text-primary">{{ $total_vehicles }}</span> </div>
-                                <div class="mb-0 text-gray-700">mujeres: <span
-                                        class="text-primary">{{ $total_vehicles }}</span></div>
+                            <div class="text-xs font-weight-bold text-info text-uppercase">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-0">Hombres:</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-0">mujeres: </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mt-1">
+                                        <span class="h5 mb-0 font-weight-bold text-gray-800">{{ $total_man }}</span>
+                                    </div>
+                                    <div class="col-md-6 mt-1">
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $total_woman }}</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-auto">
@@ -82,7 +95,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                 Calificación Promedio</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $score_average }}</div>
                         </div>
                         <div class="col-auto">
                             {{-- <i class="fas fa-comments fa-2x text-gray-300"></i> --}}
@@ -105,35 +118,19 @@
             <!-- Project Card Example -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Nivel de Educación en los Conductores</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Escolaridad Conductores</h6>
                 </div>
                 <div class="card-body">
                     <canvas id="education_chart" width="400" height="200"></canvas>
-                    {{-- <h4 class="small font-weight-bold">Server Migration <span class="float-right">20%</span></h4>
-                    <div class="progress mb-4">
-                        <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20"
-                            aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <h4 class="small font-weight-bold">Sales Tracking <span class="float-right">40%</span></h4>
-                    <div class="progress mb-4">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40"
-                            aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <h4 class="small font-weight-bold">Customer Database <span class="float-right">60%</span></h4>
-                    <div class="progress mb-4">
-                        <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60"
-                            aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <h4 class="small font-weight-bold">Payout Details <span class="float-right">80%</span></h4>
-                    <div class="progress mb-4">
-                        <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80"
-                            aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <h4 class="small font-weight-bold">Account Setup <span class="float-right">Complete!</span></h4>
-                    <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100"
-                            aria-valuemin="0" aria-valuemax="100"></div>
-                    </div> --}}
+                </div>
+            </div>
+
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Categoría de Licencias</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="category_chart" width="400" height="200"></canvas>
                 </div>
             </div>
 
@@ -196,20 +193,10 @@
             <!-- Illustrations -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Estado Civil Conductores</h6>
                 </div>
                 <div class="card-body">
-                    <div class="text-center">
-                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                            src="img/undraw_posting_photo.svg" alt="">
-                    </div>
-                    <p>Add some quality, svg illustrations to your project courtesy of <a target="_blank" rel="nofollow"
-                            href="https://undraw.co/">unDraw</a>, a
-                        constantly updated collection of beautiful svg images that you can use
-                        completely free and without attribution!</p>
-                    <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations
-                        on
-                        unDraw &rarr;</a>
+                    <canvas id="civil_state_chart" width="400" height="200"></canvas>
                 </div>
             </div>
 

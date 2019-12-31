@@ -442,40 +442,77 @@ class DriverInformationController extends Controller
             ->get()->toArray();
     }
 
+    public static function getCivilStateByCompany($company_id)
+    {
+        return DB::table('driver_information')
+            ->select(DB::raw(
+                'driver_information.civil_state,COUNT(*) AS total'
+            ))
+            ->where('driver_information.company_id', '=', $company_id)
+            ->groupBy('civil_state')
+            ->get()->toArray();
+    }
+
+    public static function getGenderByCompany($company_id)
+    {
+        return DB::table('driver_information')
+            ->select(DB::raw(
+                'driver_information.gender,COUNT(*) AS total'
+            ))
+            ->where('driver_information.company_id', '=', $company_id)
+            ->groupBy('gender')
+            ->get()->toArray();
+    }
+
+    public static function getAverageScoreByCompany($company_id)
+    {
+        return DB::table('driver_information')
+            ->select(DB::raw(
+                'avg(driver_information.score) as average'
+            ))
+            ->where('driver_information.company_id', '=', $company_id)
+            ->first();
+    }
+
     public function makeBarChart(Request $request)
     {
-        echo '<pre>';
-        $colors = [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-        ];
-        $colors_border = [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-        ];
         $company_id = $request->get('company_id');
         $education = $this->getEducationGradeByCompany($company_id);
         foreach ($education as $key => $value) {
             $labels[] = $value->education;
             $data_data[] = $value->total;
         }
-        // echo '<pre>';
-        // print_r($labels);
-        // print_r($data_data);
-        // die;
-        $data['label'] = $labels;
-        $data['data'] = $data_data;
-        $data['backgroundColor'] = $colors;
-        $data['borderColor'] = $colors_border;
-        $data['borderWidth'] = 1;
-        return response()->json(['data'=>$data,'errors'=>[]]);
+        $num_register = count($data_data);
+        $arr_colors = $this->fillColorsBarChart($num_register);
+        $maximo = max($data_data)+1;
+        $datasets['label'] = "Frecuencia";
+        $datasets['data'] = $data_data;
+        $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
+        $datasets['borderColor'] = $arr_colors['borderColor'];
+        $datasets['borderWidth'] = 1;
+        $data['datasets'][] = $datasets;
+        $data['labels'] = $labels;
+        return response()->json(['data' => $data, 'errors' => [],'max'=>$maximo]);
+    }
+
+    public function makeBarChartCivilState(Request $request)
+    {
+        $company_id = $request->get('company_id');
+        $civil_state = $this->getCivilStateByCompany($company_id);
+        foreach ($civil_state as $key => $value) {
+            $labels[] = $value->civil_state;
+            $data_data[] = $value->total;
+        }
+        $num_register = count($data_data);
+        $arr_colors = $this->fillColorsBarChart($num_register);
+        $maximo = max($data_data)+1;
+        $datasets['label'] = "Frecuencia";
+        $datasets['data'] = $data_data;
+        $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
+        $datasets['borderColor'] = $arr_colors['borderColor'];
+        $datasets['borderWidth'] = 1;
+        $data['datasets'][] = $datasets;
+        $data['labels'] = $labels;
+        return response()->json(['data' => $data, 'errors' => [],'max'=>$maximo]);
     }
 }

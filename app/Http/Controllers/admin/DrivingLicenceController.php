@@ -223,4 +223,37 @@ class DrivingLicenceController extends Controller
         $result = Excel::import(new DrivingLicenceImport(), $file);
         return response()->json(['response' => 'ok']);
     }
+
+    public static function getCategoryByCompany($company_id)
+    {
+        return DB::table('driving_licence')
+            ->select(DB::raw(
+                'driving_licence.category,COUNT(*) AS total'
+            ))
+            ->join('driver_information', 'driver_information.dni_id', '=', 'driving_licence.driver_information_dni_id')
+            ->where('driver_information.company_id', '=', $company_id)
+            ->groupBy('category')
+            ->get()->toArray();
+    }
+
+    public function makeBarChartCategory(Request $request)
+    {
+        $company_id = $request->get('company_id');
+        $civil_state = $this->getCategoryByCompany($company_id);
+        foreach ($civil_state as $key => $value) {
+            $labels[] = $value->category;
+            $data_data[] = $value->total;
+        }
+        $num_register = count($data_data);
+        $arr_colors = $this->fillColorsBarChart($num_register);
+        $maximo = max($data_data)+1;
+        $datasets['label'] = "Frecuencia";
+        $datasets['data'] = $data_data;
+        $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
+        $datasets['borderColor'] = $arr_colors['borderColor'];
+        $datasets['borderWidth'] = 1;
+        $data['datasets'][] = $datasets;
+        $data['labels'] = $labels;
+        return response()->json(['data' => $data, 'errors' => [],'max'=>$maximo]);
+    }
 }

@@ -21,10 +21,27 @@ class AdminController extends Controller
             $company = CompanyController::getCompanyByid($company_id);
             $total_drivers = DriverInformationController::getNumberDriversByCompany($company_id);
             $total_vehicles = DriverVehicleController::getTotalVehiclesByCompany($company_id);
+            $total_gender = DriverInformationController::getGenderByCompany($company_id);
+            $average_score = DriverInformationController::getAverageScoreByCompany($company_id);
+            $man = 0;
+            $woman = 0;
+            foreach ($total_gender as $key => $value) {
+                if ($value->gender == 0) {
+                    $man = $value->total;
+                } else if ($value->gender == 1) {
+                    $woman = $value->total;
+                }
+            }
+            // echo '<pre>';
+            // print_r($total_gender);
+            // die;
             return view('admin.dashboard', [
                 'company_name' => ucwords(strtolower($company->company)),
                 'total_drivers' => $total_drivers,
-                'total_vehicles' => $total_vehicles
+                'total_vehicles' => $total_vehicles,
+                'total_man' => $man,
+                'total_woman' => $woman,
+                'score_average' => number_format($average_score->average, 3)
             ]);
         } else {
             return view('prohibited');
