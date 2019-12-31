@@ -122,4 +122,8 @@ class VehicleController extends Controller
 
         return response()->json(['success' => 'validación correcta']);
     }
+
+    public static function getTotalNumberVehiclesByCompny($company_id){
+        
+    }
 }

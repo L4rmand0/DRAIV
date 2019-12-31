@@ -89,18 +89,18 @@ class DriverVehicleController extends Controller
         $data_delete = $request->all();
         $plate_id = $data_delete['vehicle_plate_id'];
         $vehicle = DB::table('user_vehicle')
-        ->where('user_vehicle.operation', '!=', 'D')
-        ->where('user_vehicle.vehicle_plate_id', '=', $plate_id)
-        ->select(DB::raw(
-            'user_vehicle.id'
+            ->where('user_vehicle.operation', '!=', 'D')
+            ->where('user_vehicle.vehicle_plate_id', '=', $plate_id)
+            ->select(DB::raw(
+                'user_vehicle.id'
             ))->get()->toArray();
-            
-        $new_numbers = count($vehicle)-1;
+
+        $new_numbers = count($vehicle) - 1;
         $delete = DriverVehicle::where('id', $data_delete['id'])->update(['operation' => 'D', 'user_id' => auth()->id()]);
         $update_vehicles = Vehicle::where('plate_id', $plate_id)->update([
             'operation' => 'U',
             'user_id' => auth()->id(),
-            'number_of_drivers'=>$new_numbers
+            'number_of_drivers' => $new_numbers
         ]);
         if ($delete) {
             return response()->json(['response' => 'Usuario eliminado', 'error' => '']);
@@ -133,7 +133,7 @@ class DriverVehicleController extends Controller
             ->join('driver_information', 'driver_information.dni_id', '=', 'user_vehicle.driver_information_dni_id')
             ->join('vehicle', 'vehicle.plate_id', '=', 'user_vehicle.vehicle_plate_id')
             ->select(DB::raw(
-              'user_vehicle.id, 
+                'user_vehicle.id, 
                user_vehicle.vehicle_plate_id, 
                user_vehicle.driver_information_dni_id, 
                driver_information.first_name, 
@@ -292,5 +292,19 @@ class DriverVehicleController extends Controller
         } else {
             return FALSE;
         }
+    }
+
+
+    public static function getTotalVehiclesByCompany($company_id)
+    {
+        $vechicles = DB::table('driver_information')
+            ->select(DB::raw('count(DISTINCT user_vehicle.vehicle_plate_id) as total_vehicles')
+            )->join('user_vehicle', 'user_vehicle.driver_information_dni_id', '=', 'driver_information.dni_id')
+            ->where('driver_information.company_id', '=', $company_id)->first();
+        if(!empty($vechicles)){
+            return $vechicles->total_vehicles; 
+        }else{
+            return 0; 
+        }   
     }
 }

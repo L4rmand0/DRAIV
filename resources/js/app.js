@@ -13,6 +13,8 @@ window.$ = window.jQuery = $;
 
 import 'jquery-ui/ui/widgets/datepicker.js';
 
+// var Chart = require('chart.js')
+
 // window.Vue = require('vue');
 
 /**

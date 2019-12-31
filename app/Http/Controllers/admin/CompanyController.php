@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\admin;
 
 use DB;
-use App\Http\Controllers\Controller;
+use auth;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CompanyController extends Controller
 {
@@ -129,5 +130,13 @@ class CompanyController extends Controller
                 'company.name_company AS company'
             )
             ->get()->toArray();
+    }
+    public static function getCompanyByid($id){
+        return DB::table('company')
+            ->select(
+                'company.company_id AS nit',
+                'company.name_company AS company'
+            )->where('company.company_id', '=', $id)
+            ->first();
     }
 }

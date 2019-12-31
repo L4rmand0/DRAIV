@@ -79,6 +79,11 @@
     content: "\f057"
 }
 
+.truck_icon:before {
+    font-family: FontAwesome;
+    content: "\f4df"
+}
+
 .icons-fa{
     font-style: normal !important;
 }

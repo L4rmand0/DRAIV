@@ -3,14 +3,18 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
+    <input type="hidden" id="dashboard_company_id" value="{{ auth()->user()->company_id }}">
+    <input type="hidden" id="function_barchart_education" value="{{ route('drivers-info.education-chart') }}">
+    <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+        <h1 class="h3 mb-0 text-gray-800">Dashboard {{ $company_name }}</h1>
         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
     </div>
 
     <!-- Content Row -->
     <div class="row">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
 
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
@@ -19,12 +23,12 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Earnings (Monthly)</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                Número de Conductores</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $total_drivers }}</div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
+                        {{-- <div class="col-auto"> --}}
+                        {{-- <i class="truck_icon icons-fa"></i> --}}
+                        {{-- </div> --}}
                     </div>
                 </div>
             </div>
@@ -37,8 +41,8 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Earnings (Annual)</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                Número de Vehículos</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $total_vehicles }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -55,19 +59,11 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                Tasks
-                            </div>
-                            <div class="row no-gutters align-items-center">
-                                <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="progress progress-sm mr-2">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 50%"
-                                            aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
+                                Conductores por Género
+                                <div class="mb-0 text-gray-700 mt-1">Hombres: <span
+                                        class="text-primary">{{ $total_vehicles }}</span> </div>
+                                <div class="mb-0 text-gray-700">mujeres: <span
+                                        class="text-primary">{{ $total_vehicles }}</span></div>
                             </div>
                         </div>
                         <div class="col-auto">
@@ -85,11 +81,11 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Pending Requests</div>
+                                Calificación Promedio</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                            {{-- <i class="fas fa-comments fa-2x text-gray-300"></i> --}}
                         </div>
                     </div>
                 </div>
@@ -99,7 +95,6 @@
 
     <!-- Content Row -->
 
-    <div class="row">
 
     <!-- Content Row -->
     <div class="row">
@@ -110,10 +105,11 @@
             <!-- Project Card Example -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Nivel de Educación en los Conductores</h6>
                 </div>
                 <div class="card-body">
-                    <h4 class="small font-weight-bold">Server Migration <span class="float-right">20%</span></h4>
+                    <canvas id="education_chart" width="400" height="200"></canvas>
+                    {{-- <h4 class="small font-weight-bold">Server Migration <span class="float-right">20%</span></h4>
                     <div class="progress mb-4">
                         <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20"
                             aria-valuemin="0" aria-valuemax="100"></div>
@@ -137,7 +133,7 @@
                     <div class="progress">
                         <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100"
                             aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
@@ -234,10 +230,11 @@
             </div>
 
         </div>
+
+        <script src="{{ asset('js/admin/dashboard.js') }}" defer></script>
     </div>
 
-</div>
-<!-- /.container-fluid -->
+    <!-- /.container-fluid -->
 
-@endsection
-<!-- End of Main Content -->
+    @endsection
+    <!-- End of Main Content -->

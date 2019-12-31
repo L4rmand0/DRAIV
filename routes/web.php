@@ -52,6 +52,7 @@ Route::prefix('admin')->group(function () {
     Route::post('driver-info/import','admin\DriverInformationController@import')->name('driver-info.import');
     Route::get('driver-info/drivers-select-lists', 'admin\DriverInformationController@getDriveInformationtoSelect2')->name('drivers-select-lists'); 
     Route::get('driver-info/name-driver', 'admin\DriverInformationController@getNameDriver')->name('drivers-get-name'); 
+    Route::post('driver-info/education-chart', 'admin\DriverInformationController@makeBarChart')->name('drivers-info.education-chart'); 
     Route::get('company-search-list', 'admin\CompanyController@getCompanies')->name('company-search-list'); 
     Route::get('company-select-list', 'admin\CompanyController@getCompaniestoSelect2')->name('company-select-list'); 
     Route::get('driving_licence', 'admin\DrivingLicenceController@index')->name('admin.driving_licence');

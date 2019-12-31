@@ -276,7 +276,7 @@ class DriverInformationController extends Controller
             'user_id' => auth()->id(),
             'date_operation' => $now
         ]);
-        
+
         $check_vehicle_driver = DB::table('user_vehicle')
             ->where('user_vehicle.driver_information_dni_id', '=', $dni_id)
             ->where('user_vehicle.operation', '!=', 'D')
@@ -417,5 +417,65 @@ class DriverInformationController extends Controller
         $file = $request->file('file');
         $result = Excel::import(new UsersInformationImport($data_insert), $file);
         return response()->json(['response' => 'ok']);
+    }
+
+    public static function getNumberDriversByCompany($company_id)
+    {
+        $drivers = DB::table('driver_information')
+            ->orderBy('driver_information.date_operation', 'desc')
+            ->where('driver_information.company_id', '=', $company_id)
+            ->select(DB::raw(
+                'driver_information.dni_id'
+            ))->get()->toArray();
+        return count($drivers);
+    }
+
+
+    public static function getEducationGradeByCompany($company_id)
+    {
+        return DB::table('driver_information')
+            ->select(DB::raw(
+                'driver_information.education,COUNT(*) AS total'
+            ))
+            ->where('driver_information.company_id', '=', $company_id)
+            ->groupBy('education')
+            ->get()->toArray();
+    }
+
+    public function makeBarChart(Request $request)
+    {
+        echo '<pre>';
+        $colors = [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+        ];
+        $colors_border = [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+        ];
+        $company_id = $request->get('company_id');
+        $education = $this->getEducationGradeByCompany($company_id);
+        foreach ($education as $key => $value) {
+            $labels[] = $value->education;
+            $data_data[] = $value->total;
+        }
+        // echo '<pre>';
+        // print_r($labels);
+        // print_r($data_data);
+        // die;
+        $data['label'] = $labels;
+        $data['data'] = $data_data;
+        $data['backgroundColor'] = $colors;
+        $data['borderColor'] = $colors_border;
+        $data['borderWidth'] = 1;
+        return response()->json(['data'=>$data,'errors'=>[]]);
     }
 }

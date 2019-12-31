@@ -40,7 +40,7 @@
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-laugh-wink"></i>
                     </div>
-                    <div class="sidebar-brand-text mx-3">Draiv Admin<sup></sup></div>
+                    <div class="sidebar-brand-text mx-3">{{ $company_name }} Admin<sup></sup></div>
                 </a>
 
                 <!-- Divider -->

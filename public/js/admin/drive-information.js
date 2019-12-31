@@ -332,7 +332,7 @@
                 title: '<strong>Eliminar Información</strong>',
                 icon: 'warning',
                 html:
-                    '¿Está seguro que desea eliminar este registro? Se borrarán todos los registros asociados a este usuario.',
+                    '¿Está seguro que desea eliminar este registro? Se borrarán todos los registros asociados a este conductor.',
                 showCloseButton: true,
                 showCancelButton: true,
                 focusConfirm: false,
