@@ -235,6 +235,7 @@ class DrivingLicenceController extends Controller
             ))
             ->join('driver_information', 'driver_information.dni_id', '=', 'driving_licence.driver_information_dni_id')
             ->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.operation', '!=', 'D')
             ->groupBy('category')
             ->get()->toArray();
     }
@@ -247,6 +248,7 @@ class DrivingLicenceController extends Controller
             ))
             ->join('driver_information', 'driver_information.dni_id', '=', 'driving_licence.driver_information_dni_id')
             ->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.operation', '!=', 'D')
             ->groupBy('state')
             ->get()->toArray();
     }

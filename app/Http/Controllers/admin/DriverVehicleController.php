@@ -300,7 +300,10 @@ class DriverVehicleController extends Controller
         $vechicles = DB::table('driver_information')
             ->select(DB::raw('count(DISTINCT user_vehicle.vehicle_plate_id) as total_vehicles')
             )->join('user_vehicle', 'user_vehicle.driver_information_dni_id', '=', 'driver_information.dni_id')
-            ->where('driver_information.company_id', '=', $company_id)->first();
+            ->join('vehicle', 'user_vehicle.vehicle_plate_id', '=', 'vehicle.plate_id')
+            ->where('driver_information.company_id', '=', $company_id)
+            ->where('vehicle.operation', '!=', 'D')
+            ->first();
         if(!empty($vechicles)){
             return $vechicles->total_vehicles; 
         }else{

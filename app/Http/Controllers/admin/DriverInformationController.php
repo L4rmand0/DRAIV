@@ -427,6 +427,7 @@ class DriverInformationController extends Controller
         $drivers = DB::table('driver_information')
             ->orderBy('driver_information.date_operation', 'desc')
             ->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.operation', '!=', 'D')
             ->select(DB::raw(
                 'driver_information.dni_id'
             ))->get()->toArray();
@@ -441,6 +442,7 @@ class DriverInformationController extends Controller
                 'driver_information.education,COUNT(*) AS total'
             ))
             ->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.operation', '!=', 'D')
             ->groupBy('education')
             ->get()->toArray();
     }
@@ -452,6 +454,7 @@ class DriverInformationController extends Controller
                 'driver_information.civil_state,COUNT(*) AS total'
             ))
             ->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.operation', '!=', 'D')
             ->groupBy('civil_state')
             ->get()->toArray();
     }
@@ -463,6 +466,7 @@ class DriverInformationController extends Controller
                 'driver_information.gender,COUNT(*) AS total'
             ))
             ->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.operation', '!=', 'D')
             ->groupBy('gender')
             ->get()->toArray();
     }
@@ -474,6 +478,7 @@ class DriverInformationController extends Controller
                 'avg(driver_information.score) as average'
             ))
             ->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.operation', '!=', 'D')
             ->first();
     }
 
