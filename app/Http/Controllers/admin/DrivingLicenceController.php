@@ -236,6 +236,61 @@ class DrivingLicenceController extends Controller
             ->get()->toArray();
     }
 
+    public static function getDrivingLicenceStateByCompany($company_id)
+    {
+        return DB::table('driving_licence')
+            ->select(DB::raw(
+                'driving_licence.state,COUNT(*) AS total'
+            ))
+            ->join('driver_information', 'driver_information.dni_id', '=', 'driving_licence.driver_information_dni_id')
+            ->where('driver_information.company_id', '=', $company_id)
+            ->groupBy('state')
+            ->get()->toArray();
+    }
+
+    public static function getLicenceExpiDates($company_id)
+    {
+        $fecha_actual = date("Y-m-d");
+        $date_month = date("Y-m-d", strtotime($fecha_actual . "+ 1 month"));
+        $licencias_expiration = DB::table('driving_licence')
+            ->select(DB::raw(
+                'driving_licence.licence_num'
+            ))
+            ->join('driver_information', 'driver_information.dni_id', '=', 'driving_licence.driver_information_dni_id')
+            ->where('driver_information.company_id', '=', $company_id)
+            ->whereBetween('driving_licence.expi_date', [$fecha_actual, $date_month])
+            // ->where(DB::raw(
+            //     "(driving_licence.expi_date BETWEEN '$fecha_actual' AND '$date_month')"
+            // ))
+            ->get()->toArray();
+        // echo '<pre>';
+        // print_r($fecha_actual);
+        // print_r($licencias_expiration);
+        // die;
+        return count($licencias_expiration);
+    }
+
+    public function makeBarChartLicenceState(Request $request)
+    {
+        $company_id = $request->get('company_id');
+        $civil_state = $this->getDrivingLicenceStateByCompany($company_id);
+        foreach ($civil_state as $key => $value) {
+            $labels[] = $value->state;
+            $data_data[] = $value->total;
+        }
+        $num_register = count($data_data);
+        $arr_colors = $this->fillColorsBarChart($num_register);
+        $maximo = max($data_data) + 1;
+        $datasets['label'] = "Frecuencia";
+        $datasets['data'] = $data_data;
+        $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
+        $datasets['borderColor'] = $arr_colors['borderColor'];
+        $datasets['borderWidth'] = 1;
+        $data['datasets'][] = $datasets;
+        $data['labels'] = $labels;
+        return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
+    }
+
     public function makeBarChartCategory(Request $request)
     {
         $company_id = $request->get('company_id');
@@ -246,7 +301,7 @@ class DrivingLicenceController extends Controller
         }
         $num_register = count($data_data);
         $arr_colors = $this->fillColorsBarChart($num_register);
-        $maximo = max($data_data)+1;
+        $maximo = max($data_data) + 1;
         $datasets['label'] = "Frecuencia";
         $datasets['data'] = $data_data;
         $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
@@ -254,6 +309,6 @@ class DrivingLicenceController extends Controller
         $datasets['borderWidth'] = 1;
         $data['datasets'][] = $datasets;
         $data['labels'] = $labels;
-        return response()->json(['data' => $data, 'errors' => [],'max'=>$maximo]);
+        return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
     }
 }

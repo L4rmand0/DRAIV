@@ -11,8 +11,14 @@ select driver_information.gender,count(*) as total
 from sam.driver_information      
 group by gender;
 
-SELECT driver_information.civil_state COUNT(*) AS total
+SELECT driver_information.civil_state, COUNT(*) AS total
 FROM sam.driver_information      
 GROUP BY civil_state;
+
+SELECT driving_licence.category, COUNT(*) AS total
+FROM sam.driving_licence 
+INNER JOIN sam.driver_information ON driving_licence.driver_information_dni_id = driver_information.dni_id
+WHERE driver_information.company_id = 9013380301    
+GROUP BY category;
 
 select avg(driver_information.score) from sam.driver_information WHERE driver_information.company_id = 9013380301;

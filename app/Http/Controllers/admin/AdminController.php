@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\DrivingLicence;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use auth;
@@ -23,6 +24,7 @@ class AdminController extends Controller
             $total_vehicles = DriverVehicleController::getTotalVehiclesByCompany($company_id);
             $total_gender = DriverInformationController::getGenderByCompany($company_id);
             $average_score = DriverInformationController::getAverageScoreByCompany($company_id);
+            $licences_expiration = DrivingLicenceController::getLicenceExpiDates($company_id);
             $man = 0;
             $woman = 0;
             foreach ($total_gender as $key => $value) {
@@ -41,7 +43,8 @@ class AdminController extends Controller
                 'total_vehicles' => $total_vehicles,
                 'total_man' => $man,
                 'total_woman' => $woman,
-                'score_average' => number_format($average_score->average, 3)
+                'score_average' => number_format($average_score->average, 3),
+                'licence_expiration' => $licences_expiration,
             ]);
         } else {
             return view('prohibited');

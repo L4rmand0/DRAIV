@@ -7,6 +7,7 @@
     <input type="hidden" id="function_barchart_education" value="{{ route('drivers-info.education-chart') }}">
     <input type="hidden" id="function_barchart_civil_state" value="{{ route('drivers-info.civil-state-chart') }}">
     <input type="hidden" id="function_barchart_category" value="{{ route('drivers-info.category-chart') }}">
+    <input type="hidden" id="function_barchart_licence_state" value="{{ route('drivers-info.state-licence-chart') }}">
     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard {{ $company_name }}</h1>
@@ -16,8 +17,8 @@
 
     <!-- Content Row -->
     <div class="row">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script>
-
+        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script> --}}
+        <script src="{{ asset('Chartjs/Chart.bundle.js') }}" defer></script>
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
@@ -139,7 +140,7 @@
                 <div class="col-lg-6 mb-4">
                     <div class="card bg-primary text-white shadow">
                         <div class="card-body">
-                            Primary
+                            Licencias Próximas a Vencer
                             <div class="text-white-50 small">#4e73df</div>
                         </div>
                     </div>
@@ -197,6 +198,14 @@
                 </div>
                 <div class="card-body">
                     <canvas id="civil_state_chart" width="400" height="200"></canvas>
+                </div>
+            </div>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Estado De Licencias de Conducir</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="driving_licence_state_chart" width="400" height="200"></canvas>
                 </div>
             </div>
 
