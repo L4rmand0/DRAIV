@@ -26,7 +26,8 @@ class AdminController extends Controller
             $average_score = DriverInformationController::getAverageScoreByCompany($company_id);
             $licences_expiration = DrivingLicenceController::getLicenceExpiDates($company_id);
             $soats_expiration = VehicleController::getSoatExpiDates($company_id);
-            // $technomecanical_expiration = VehicleController::getExpiTecnomecanicalDates($company_id);
+            $technomecanical_expiration = VehicleController::getExpiTecnomecanicalDates($company_id);
+            $total_types_v = VehicleController::getTypesByCompany($company_id);
             // echo $soats_expiration;
             // die;
             $man = 0;
@@ -50,6 +51,7 @@ class AdminController extends Controller
                 'score_average' => number_format($average_score->average, 3),
                 'licences_expiration' => $licences_expiration,
                 'soats_expiration' => $soats_expiration,
+                'technomecanical_expiration' => $technomecanical_expiration
             ]);
         } else {
             return view('prohibited');

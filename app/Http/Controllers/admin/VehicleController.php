@@ -313,7 +313,7 @@ class VehicleController extends Controller
     {
         $fecha_actual = date("Y-m-d");
         $date_month = date("Y-m-d", strtotime($fecha_actual . "+ 2 month"));
-        $licencias_expiration = DB::table('vehicle')
+        $soats_expiration = DB::table('vehicle')
             ->select(DB::raw(
                 'vehicle.plate_id'
             ))
@@ -324,7 +324,7 @@ class VehicleController extends Controller
             ->whereBetween('vehicle.soat_expi_date', [$fecha_actual, $date_month])
             ->groupBy('plate_id')
             ->get()->toArray();
-        return count($licencias_expiration);
+        return count($soats_expiration);
     }
 
     public static function getExpiTecnomecanicalDates($company_id)
@@ -343,44 +343,86 @@ class VehicleController extends Controller
             ->groupBy('plate_id')
             // ->toSql();
             ->get()->toArray();
-            echo '<pre>';
-            print_r($technomecanical_expiration);
-            die;
         return count($technomecanical_expiration);
     }
 
     public static function getTypesByCompany($company_id)
     {
-        $fecha_actual = date("Y-m-d");
-        $date_month = date("Y-m-d", strtotime($fecha_actual . "+ 1 month"));
-        $vehicles_unique = DB::table('user_vehicle')
+        // die;
+        return $vechicles_type = DB::table('user_vehicle As usv')
             ->select(DB::raw(
-                'vehicle_plate_id, driver_information_dni_id'
+                'count(v.type_v) as total, 
+                v.type_v'
             ))
+            ->join('vehicle AS v', 'usv.vehicle_plate_id', '=', 'v.plate_id')
+            ->join('driver_information AS di', 'usv.driver_information_dni_id', '=', 'di.dni_id')
+            ->where('di.company_id', '=', $company_id)
+            ->where('v.operation', '!=', 'D')
+            ->groupBy('v.type_v')
             // ->toSql();
             ->get()->toArray();
-        print_r($vehicles_unique);
-        echo '<pre> debug ';
-        die;
-        $vechicles_type = DB::table('vehicle')
-            ->select(DB::raw(
-                'vehicle.type_v, COUNT(*) AS total'
-            ))
-            ->join(DB::raw(
-                '(SELECT driver_information_dni_id, vehicle_plate_id FROM user_vehicle GROUP BY vehicle_plate_id) AS user_vehicle_d'),
-                function($join){
-                    $join->on('user_vehicle_d.vehicle_plate_id', '=', 'vehicle.plate_id');
-                })          
-            ->join('driver_information', 'driver_information.dni_id', '=', 'user_vehicle_d.driver_information_dni_id')
-            ->where('driver_information.company_id', '=', $company_id)
-            ->where('vehicle.operation', '!=', 'D')
-            ->groupBy('vehicle.type_v')
-            ->toSql();
-            // ->get()->toArray();
-         print_r($vechicles_type);
-         die;   
-        return count($vechicles_type);
     }
+
+    public static function getOwnersVByCompany($company_id)
+    {
+        // die;
+        return $vechicles_type = DB::table('user_vehicle As usv')
+            ->select(DB::raw(
+                'count(v.owner_v) as total, 
+                v.owner_v'
+            ))
+            ->join('vehicle AS v', 'usv.vehicle_plate_id', '=', 'v.plate_id')
+            ->join('driver_information AS di', 'usv.driver_information_dni_id', '=', 'di.dni_id')
+            ->where('di.company_id', '=', $company_id)
+            ->where('v.operation', '!=', 'D')
+            ->groupBy('v.owner_v')
+            // ->toSql();
+            ->get()->toArray();
+    }
+
+    public function makeBarChartTypeV(Request $request)
+    {
+        $company_id = $request->get('company_id');
+        $education = $this->getTypesByCompany($company_id);
+        foreach ($education as $key => $value) {
+            $labels[] = $value->type_v;
+            $data_data[] = $value->total;
+        }
+        $num_register = count($data_data);
+        $arr_colors = $this->fillColorsBarChart($num_register);
+        $maximo = max($data_data)+1;
+        $datasets['label'] = "Frecuencia Tipos Vehículo";
+        $datasets['data'] = $data_data;
+        $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
+        $datasets['borderColor'] = $arr_colors['borderColor'];
+        $datasets['borderWidth'] = 1;
+        $data['datasets'][] = $datasets;
+        $data['labels'] = $labels;
+        return response()->json(['data' => $data, 'errors' => [],'max'=>$maximo]);
+    }
+
+    public function makePieChartOwnerV(Request $request)
+    {
+        $company_id = $request->get('company_id');
+        $education = $this->getOwnersVByCompany($company_id);
+        foreach ($education as $key => $value) {
+            $labels[] = $value->owner_v;
+            $data_data[] = $value->total;
+        }
+        $num_register = count($data_data);
+        $arr_colors = $this->fillColorsBarChart($num_register);
+        $maximo = max($data_data)+1;
+        $datasets['label'] = "Frecuencia Tipos Vehículo";
+        $datasets['data'] = $data_data;
+        $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
+        $datasets['borderColor'] = $arr_colors['borderColor'];
+        $datasets['borderWidth'] = 1;
+        $data['datasets'][] = $datasets;
+        $data['labels'] = $labels;
+        return response()->json(['data' => $data, 'errors' => [],'max'=>$maximo]);
+    }
+
+
 
     public function checkVehicleByPlateId(Request $request)
     {

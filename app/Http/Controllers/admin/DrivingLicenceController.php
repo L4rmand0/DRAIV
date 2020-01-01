@@ -287,7 +287,7 @@ class DrivingLicenceController extends Controller
         $num_register = count($data_data);
         $arr_colors = $this->fillColorsBarChart($num_register);
         $maximo = max($data_data) + 1;
-        $datasets['label'] = "Frecuencia";
+        $datasets['label'] = "Frecuencia Estado Licencia";
         $datasets['data'] = $data_data;
         $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
         $datasets['borderColor'] = $arr_colors['borderColor'];
@@ -308,7 +308,7 @@ class DrivingLicenceController extends Controller
         $num_register = count($data_data);
         $arr_colors = $this->fillColorsBarChart($num_register);
         $maximo = max($data_data) + 1;
-        $datasets['label'] = "Frecuencia";
+        $datasets['label'] = "Frecuencia Categoría Licencia";
         $datasets['data'] = $data_data;
         $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
         $datasets['borderColor'] = $arr_colors['borderColor'];

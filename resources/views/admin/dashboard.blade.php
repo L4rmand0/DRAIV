@@ -8,6 +8,8 @@
     <input type="hidden" id="function_barchart_civil_state" value="{{ route('drivers-info.civil-state-chart') }}">
     <input type="hidden" id="function_barchart_category" value="{{ route('drivers-info.category-chart') }}">
     <input type="hidden" id="function_barchart_licence_state" value="{{ route('drivers-info.state-licence-chart') }}">
+    <input type="hidden" id="function_barchart_type_v" value="{{ route('admin.vehicle.type-v-chart') }}">
+    <input type="hidden" id="function_pie_owner_v" value="{{ route('admin.vehicle.owner-v-chart') }}">
     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard {{ $company_name }}</h1>
@@ -134,7 +136,14 @@
                     <canvas id="category_chart" width="400" height="200"></canvas>
                 </div>
             </div>
-
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Propietarios</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="owner_v_chart" width="400" height="200"></canvas>
+                </div>
+            </div>
             <!-- Color System -->
             <div class="row">
                 <div class="col-lg-6 mb-4">
@@ -153,11 +162,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 mb-4">
+                {{-- <div class="col-lg-6 mb-4">
                     <div class="card bg-info text-white shadow">
                         <div class="card-body">
-                            Info
-                            <div class="text-white-50 small">#36b9cc</div>
+                            Tecnomecánicas Próximas a Vencer
+                        <div class="text-white-50 small">{{ $technomecanical_expiration }}</div>
                         </div>
                     </div>
                 </div>
@@ -168,23 +177,23 @@
                             <div class="text-white-50 small">#f6c23e</div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="col-lg-6 mb-4">
                     <div class="card bg-danger text-white shadow">
                         <div class="card-body">
-                            Danger
-                            <div class="text-white-50 small">#e74a3b</div>
+                            Tecnomecánicas Próximas a Vencer
+                            <div class="text-white-50 small">{{ $technomecanical_expiration }}</div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 mb-4">
+                {{-- <div class="col-lg-6 mb-4">
                     <div class="card bg-secondary text-white shadow">
                         <div class="card-body">
                             Secondary
                             <div class="text-white-50 small">#858796</div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
 
         </div>
@@ -208,9 +217,17 @@
                     <canvas id="driving_licence_state_chart" width="400" height="200"></canvas>
                 </div>
             </div>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Tipos de Vehículo</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="type_v_chart" width="400" height="200"></canvas>
+                </div>
+            </div>
 
             <!-- Approach -->
-            <div class="card shadow mb-4">
+            {{-- <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
                 </div>
@@ -223,7 +240,7 @@
                         the
                         Bootstrap framework, especially the utility classes.</p>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
 
