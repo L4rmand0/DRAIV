@@ -141,15 +141,15 @@
                     <div class="card bg-primary text-white shadow">
                         <div class="card-body">
                             Licencias Próximas a Vencer
-                            <div class="text-white-50 small">#4e73df</div>
+                        <div class="text-white-50 small">{{ $licences_expiration }}</div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 mb-4">
                     <div class="card bg-success text-white shadow">
                         <div class="card-body">
-                            Success
-                            <div class="text-white-50 small">#1cc88a</div>
+                            Soats Próximos a Vencer
+                        <div class="text-white-50 small">{{ $soats_expiration }}</div>
                         </div>
                     </div>
                 </div>

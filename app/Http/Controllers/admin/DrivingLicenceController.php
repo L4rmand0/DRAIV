@@ -263,6 +263,7 @@ class DrivingLicenceController extends Controller
             ))
             ->join('driver_information', 'driver_information.dni_id', '=', 'driving_licence.driver_information_dni_id')
             ->where('driver_information.company_id', '=', $company_id)
+            ->where('driving_licence.operation', '!=', 'D')
             ->whereBetween('driving_licence.expi_date', [$fecha_actual, $date_month])
             // ->where(DB::raw(
             //     "(driving_licence.expi_date BETWEEN '$fecha_actual' AND '$date_month')"

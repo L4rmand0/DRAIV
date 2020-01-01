@@ -309,6 +309,79 @@ class VehicleController extends Controller
         return response()->json(['response' => 'ok']);
     }
 
+    public static function getSoatExpiDates($company_id)
+    {
+        $fecha_actual = date("Y-m-d");
+        $date_month = date("Y-m-d", strtotime($fecha_actual . "+ 2 month"));
+        $licencias_expiration = DB::table('vehicle')
+            ->select(DB::raw(
+                'vehicle.plate_id'
+            ))
+            ->join('user_vehicle', 'user_vehicle.vehicle_plate_id', '=', 'vehicle.plate_id')
+            ->join('driver_information', 'driver_information.dni_id', '=', 'user_vehicle.driver_information_dni_id')
+            ->where('driver_information.company_id', '=', $company_id)
+            ->where('vehicle.operation', '!=', 'D')
+            ->whereBetween('vehicle.soat_expi_date', [$fecha_actual, $date_month])
+            ->groupBy('plate_id')
+            ->get()->toArray();
+        return count($licencias_expiration);
+    }
+
+    public static function getExpiTecnomecanicalDates($company_id)
+    {
+        $fecha_actual = date("Y-m-d");
+        $date_month = date("Y-m-d", strtotime($fecha_actual . "+ 2 month"));
+        $technomecanical_expiration = DB::table('vehicle')
+            ->select(DB::raw(
+                'vehicle.plate_id'
+            ))
+            ->join('user_vehicle', 'user_vehicle.vehicle_plate_id', '=', 'vehicle.plate_id')
+            ->join('driver_information', 'driver_information.dni_id', '=', 'user_vehicle.driver_information_dni_id')
+            ->where('driver_information.company_id', '=', $company_id)
+            ->where('vehicle.operation', '!=', 'D')
+            ->whereBetween('vehicle.technomechanical_date', [$fecha_actual, $date_month])
+            ->groupBy('plate_id')
+            // ->toSql();
+            ->get()->toArray();
+            echo '<pre>';
+            print_r($technomecanical_expiration);
+            die;
+        return count($technomecanical_expiration);
+    }
+
+    public static function getTypesByCompany($company_id)
+    {
+        $fecha_actual = date("Y-m-d");
+        $date_month = date("Y-m-d", strtotime($fecha_actual . "+ 1 month"));
+        $vehicles_unique = DB::table('user_vehicle')
+            ->select(DB::raw(
+                'vehicle_plate_id, driver_information_dni_id'
+            ))
+            // ->toSql();
+            ->get()->toArray();
+        print_r($vehicles_unique);
+        echo '<pre> debug ';
+        die;
+        $vechicles_type = DB::table('vehicle')
+            ->select(DB::raw(
+                'vehicle.type_v, COUNT(*) AS total'
+            ))
+            ->join(DB::raw(
+                '(SELECT driver_information_dni_id, vehicle_plate_id FROM user_vehicle GROUP BY vehicle_plate_id) AS user_vehicle_d'),
+                function($join){
+                    $join->on('user_vehicle_d.vehicle_plate_id', '=', 'vehicle.plate_id');
+                })          
+            ->join('driver_information', 'driver_information.dni_id', '=', 'user_vehicle_d.driver_information_dni_id')
+            ->where('driver_information.company_id', '=', $company_id)
+            ->where('vehicle.operation', '!=', 'D')
+            ->groupBy('vehicle.type_v')
+            ->toSql();
+            // ->get()->toArray();
+         print_r($vechicles_type);
+         die;   
+        return count($vechicles_type);
+    }
+
     public function checkVehicleByPlateId(Request $request)
     {
         $plate_id = $request->get('plate_id');

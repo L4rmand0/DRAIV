@@ -25,6 +25,10 @@ class AdminController extends Controller
             $total_gender = DriverInformationController::getGenderByCompany($company_id);
             $average_score = DriverInformationController::getAverageScoreByCompany($company_id);
             $licences_expiration = DrivingLicenceController::getLicenceExpiDates($company_id);
+            $soats_expiration = VehicleController::getSoatExpiDates($company_id);
+            // $technomecanical_expiration = VehicleController::getExpiTecnomecanicalDates($company_id);
+            // echo $soats_expiration;
+            // die;
             $man = 0;
             $woman = 0;
             foreach ($total_gender as $key => $value) {
@@ -44,7 +48,8 @@ class AdminController extends Controller
                 'total_man' => $man,
                 'total_woman' => $woman,
                 'score_average' => number_format($average_score->average, 3),
-                'licence_expiration' => $licences_expiration,
+                'licences_expiration' => $licences_expiration,
+                'soats_expiration' => $soats_expiration,
             ]);
         } else {
             return view('prohibited');
