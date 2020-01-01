@@ -48,7 +48,27 @@ INNER JOIN sam.driver_information ON driver_information.dni_id = user_vehicle_d.
 WHERE driver_information.company_id = 9013380301 AND vehicle.operation != 'D'   
 GROUP BY type_v;
 
-SELECT * FROM sam.user_vehicle GROUP BY user_vehicle.vehicle_plate_id;
+SELECT user_vehicle.driver_information_dni_id, user_vehicle.vehicle_plate_id FROM sam.user_vehicle GROUP BY user_vehicle.vehicle_plate_id;
+count(distinct video_id)
+
+select  
+usv.vehicle_plate_id, 
+v.type_v
+FROM user_vehicle usv
+inner join vehicle v on(usv.plate_id=v.plate_id)
+select  
+  distinct (usv.vehicle_plate_id), 
+count(v.type_v) as conteo,
+usv.vehicle_plate_id, 
+v.type_v,
+di.company_id
+FROM user_vehicle usv
+inner join vehicle v on(usv.vehicle_plate_id=v.plate_id)
+inner join driver_information di on(usv.driver_information_dni_id=di.dni_id)
+group by 
+v.type_v;
+
+
 
 
  
