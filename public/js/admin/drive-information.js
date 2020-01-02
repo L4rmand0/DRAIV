@@ -62,18 +62,21 @@
         });
 
         var table_search;
-        $('#gender').select2();
-        $('#education').select2();
-        $('#country_born').select2();
-        $('#civil_state').select2();
-        $('#city_residence_place_form').select2();
+        var $company_id_form_select2;
+        var $department_form_select2;
+        var $city_born_form_select2;
+        $gender_select2 = $('#gender_form').select2();
+        $education_select2 = $('#education_form').select2();
+        $country_born_select2 = $('#country_born').select2();
+        $civil_state_select2 = $('#civil_state_form').select2();
+        $city_residence_select2 = $('#city_residence_place_form').select2();
         
         $.ajax({
             type: 'GET',
             url: $('#department_form').data('url'),
             data: { 'type': 'select_admin2' },
             success: function (data) {
-                $('#department_form').select2({
+               $department_form_select2 = $('#department_form').select2({
                     data: data
                 });
             }
@@ -81,7 +84,7 @@
 
         $.ajax({
             type: 'GET',
-            url: $('#company_id').data('url'),
+            url: $('#company_id_form').data('url'),
             data: { 'type': 'companies' },
             success: function (data) {
                 $('#company_id_excel').select2({
@@ -92,10 +95,10 @@
 
         $.ajax({
             type: 'GET',
-            url: $('#company_id').data('url'),
+            url: $('#company_id_form').data('url'),
             data: { 'type': 'companies' },
             success: function (data) {
-                $('#company_id').select2({
+                $company_id_form_select2 = $('#company_id_form').select2({
                     data: data
                 });
             }
@@ -106,7 +109,7 @@
             url: $('#city_born_form').data('url'),
             data: { 'type': 'admin3' },
             success: function (data) {
-                $('#city_born_form').select2({
+               $city_born_form_select2 =  $('#city_born_form').select2({
                     data: data
                 });
             }
@@ -223,6 +226,14 @@
                             $(".error-strong").text("");
                             $("#form_create_driver_information").modal('hide');
                             $('#drive_information_datatable').DataTable().ajax.reload();
+                            $company_id_form_select2.val([""]).trigger("change");
+                            $department_form_select2.val([""]).trigger("change");
+                            $city_born_form_select2.val([""]).trigger("change");
+                            $gender_select2.val([""]).trigger("change");
+                            $education_select2.val([""]).trigger("change");
+                            $country_born_select2.val([""]).trigger("change");
+                            $civil_state_select2.val([""]).trigger("change");
+                            $city_residence_select2.val([""]).trigger("change");
                         }
                     }
                 });

@@ -111,8 +111,8 @@
                         <div class="row" style="margin-top: 15px;">
                             <div class="col-md-6 form_select_conductores">
                                 <label for="gender">Género</label><br>
-                                <select name="driverInformation[gender]" class="form-control form-dataconductores" style="width: 100%"
-                                    id="gender" required>
+                                <select name="driverInformation[gender]" class="form-control" style="width: 100%"
+                                    id="gender_form" required>
                                     <option value="">Seleccionar</option>
                                     <option value="0">Masculino</option>
                                     <option value="1">Femenino</option>
@@ -120,8 +120,8 @@
                             </div>
                             <div class="col-md-6 form_select_conductores">
                                 <label for="education">Educación</label><br>
-                                <select name="driverInformation[education]" class="form-control form-dataconductores" style="width: 100%"
-                                    id="education" required>
+                                <select name="driverInformation[education]" class="form-control" style="width: 100%"
+                                    id="education_form" required>
                                     <option value="">Seleccionar</option>
                                     @foreach ($list_education as $education_item)
                                         <option value="{{ $education_item }}">{{ $education_item }}</option>
@@ -132,15 +132,15 @@
                         <div class="row" style="margin-top: 15px;">
                             <div class="col-md-6 form_select_conductores">
                                 <label for="company_id">Compañía:</label><br>
-                                <select name="driverInformation[company_id]" class="form-control form-dataconductores"
-                                    id="company_id" data-url="{{ route('company-select-list') }}" style="width: 100%"
+                                <select name="driverInformation[company_id]" class="form-control"
+                                    id="company_id_form" data-url="{{ route('company-select-list') }}" style="width: 100%"
                                     required>
                                 </select>
                             </div>
                             <div class="col-md-6 form_select_conductores">
                                 <label for="civil_state">Estado Civil</label><br>
-                                <select name="driverInformation[civil_state]" class="form-control form-dataconductores" style="width: 100%"
-                                    id="civil_state" required>
+                                <select name="driverInformation[civil_state]" class="form-control" style="width: 100%"
+                                    id="civil_state_form" required>
                                     <option value="">Seleccionar</option>
                                     @foreach ($list_civil_state as $civil_state_item)
                                         <option value="{{ $civil_state_item }}">{{ $civil_state_item }}</option>
@@ -151,7 +151,7 @@
                         <div class="row" style="margin-top: 18px;">
                             <div class="col-md-6 form_select_conductores">
                                 <label for="country_born">País</label><br>
-                                <select name="driverInformation[country_born]" class="form-control form-dataconductores" style="width: 100%"
+                                <select name="driverInformation[country_born]" class="form-control" style="width: 100%"
                                     id="country_born" required>
                                     <option value="">Seleccionar</option>
                                     @foreach ($list_country_born as $country_item)
@@ -161,7 +161,7 @@
                             </div>
                             <div class="col-md-6 form_select_conductores">
                                 <label for="department_form">Departamento:</label><br>
-                                <select name="driverInformation[department]" class="form-control form-dataconductores"
+                                <select name="driverInformation[department]" class="form-control"
                                     id="department_form" data-url="{{ route('admin2-select-lists') }}" style="width: 100%"
                                     required>
                                     <option value="">Seleccionar</option>
@@ -171,14 +171,14 @@
                         <div class="row" style="margin-top: 18px;">
                             <div class="col-md-6 form_select_conductores">
                                 <label for="city_born_form">Ciudad de Nacimiento:</label><br>
-                                <select name="driverInformation[city_born]" class="form-control form-dataconductores"
+                                <select name="driverInformation[city_born]" class="form-control"
                                     id="city_born_form" data-url="{{ route('admin3-select-lists') }}" style="width: 100%"
                                      required>
                                 </select>
                             </div>
                             <div class="col-md-6 form_select_conductores">
                                 <label for="city_residence_place_form">Ciudad de Residencia:</label><br>
-                                <select name="driverInformation[city_residence_place]" class="form-control form-dataconductores"
+                                <select name="driverInformation[city_residence_place]" class="form-control"
                                     id="city_residence_place_form" data-url="{{ route('admin3-select-lists') }}" style="width: 100%"
                                     required disabled>
                                 </select>

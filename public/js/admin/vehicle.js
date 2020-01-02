@@ -214,6 +214,7 @@ var table_relation;
 
         $("#form_vehicle_admin").submit(function (event) {
             event.preventDefault();
+            $(".error-strong").text("");
             let data_form = $(this).serialize();
             let arr_values = new Array();
             let repetidos = 0;
@@ -268,7 +269,6 @@ var table_relation;
                     url: $("#form_vehicle_admin").data('url'),
                     data: data_form,
                     success: function (data) {
-                        $(".error-strong").text("");
                         if (Object.keys(data.errors).length > 0) {
                             if (data.errors.response == "vehicle exists") {
                                 let arr_errores = data.errors;
@@ -301,7 +301,6 @@ var table_relation;
 
                         } else {
                             $(".form-vehicles").val("");
-                            $(".error-strong").text("");
                             $("#form_create_vehicle").modal('hide');
                             $('#vehicle_datatable').DataTable().ajax.reload();
                             $type_v_select2.val([""]).trigger("change");
