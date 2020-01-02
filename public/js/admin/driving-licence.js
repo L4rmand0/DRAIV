@@ -122,6 +122,7 @@
 
         $("#form_driving_licence_admin").submit(function (event) {
             event.preventDefault();
+            $(".error-strong").text("");
             let data_form = $(this).serialize();
             let fecha_vencimiento = $("#expi_date_form").datepicker('getDate');
             let fecha_expedicion = $("#expedition_day_form").datepicker('getDate');
@@ -138,7 +139,6 @@
                     data: data_form,
                     success: function (data) {
                         console.log(data);
-
                         if (Object.keys(data.errors).length > 0) {
                             let arr_errores = data.errors;
                             console.log(arr_errores);
@@ -150,7 +150,6 @@
                             });
                         } else {
                             $(".form-dataconductores").val("");
-                            $(".error-strong").text("");
                             $("#form_create_driving_licence").modal('hide');
                             $('#driving_licence_datatable').DataTable().ajax.reload();
                         }

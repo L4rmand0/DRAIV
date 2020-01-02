@@ -73,14 +73,21 @@ class DrivingLicenceController extends Controller
                 'driver_information_dni_id' => ['required', 'max:255', 'unique:driving_licence']
             ],
             [
-                'driver_information_dni_id.unique' => "Este conductor ya tiene una licencia en uso."
+                'driver_information_dni_id.unique' => "Este conductor ya tiene una licencia asignada."
             ]
         );
         $errors = $validator->errors()->getMessages();
         // print_r($errors);
         // die;
         foreach ($errors as $key => $value) {
-            if (strpos($value[0], "uso") !== FALSE) {
+            if (strpos($value[0], "conductor") !== FALSE) {
+                $check_dni_information = DB::table('driving_licence')->select(DB::raw(
+                    'driving_licence.licence_id, driving_licence.operation'
+                ))->where($key, $data_input[$key])->first();
+
+                if($check_dni_information->operation != 'D'){
+                    return response()->json(['errors' => $errors]);
+                }
                 $now = date("Y-m-d H:i:s");
                 $response = DrivingLicence::where($key, $data_input[$key])->update([
                     'driver_information_dni_id' => $data_input['driver_information_dni_id'],
