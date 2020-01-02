@@ -263,7 +263,7 @@ class DrivingLicenceController extends Controller
     public static function getLicenceExpiDates($company_id)
     {
         $fecha_actual = date("Y-m-d");
-        $date_month = date("Y-m-d", strtotime($fecha_actual . "+ 1 month"));
+        $date_month = date("Y-m-d", strtotime($fecha_actual . "+ 3 month"));
         $licencias_expiration = DB::table('driving_licence')
             ->select(DB::raw(
                 'driving_licence.licence_num'

@@ -13,9 +13,10 @@
     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard {{ $company_name }}</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="download_icon icons-fa"></i> Generate Report</a>
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                class="download_icon icons-fa"></i> Generate Report</a>
     </div>
-
+    <h4 class="mb-3">Información de Conductores</h4>
     <!-- Content Row -->
     <div class="row">
         <script src="{{ asset('Chartjs/Chart.min.js') }}" defer></script>
@@ -30,9 +31,6 @@
                                 Número de Conductores</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $total_drivers }}</div>
                         </div>
-                        {{-- <div class="col-auto"> --}}
-                        {{-- <i class="truck_icon icons-fa"></i> --}}
-                        {{-- </div> --}}
                     </div>
                 </div>
             </div>
@@ -109,14 +107,9 @@
     </div>
 
     <!-- Content Row -->
-
-
-    <!-- Content Row -->
     <div class="row">
-
         <!-- Content Column -->
         <div class="col-lg-6 mb-4">
-
             <!-- Project Card Example -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -126,80 +119,8 @@
                     <canvas id="education_chart" width="400" height="200"></canvas>
                 </div>
             </div>
-
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Categoría de Licencias</h6>
-                </div>
-                <div class="card-body">
-                    <canvas id="category_chart" width="400" height="200"></canvas>
-                </div>
-            </div>
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Propietarios</h6>
-                </div>
-                <div class="card-body">
-                    <canvas id="owner_v_chart" width="400" height="200"></canvas>
-                </div>
-            </div>
-            <!-- Color System -->
-            <div class="row">
-                <div class="col-lg-6 mb-4">
-                    <div class="card bg-primary text-white shadow">
-                        <div class="card-body">
-                            Licencias Próximas a Vencer
-                        <div class="text-white-50 small">{{ $licences_expiration }}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 mb-4">
-                    <div class="card bg-success text-white shadow">
-                        <div class="card-body">
-                            Soats Próximos a Vencer
-                        <div class="text-white-50 small">{{ $soats_expiration }}</div>
-                        </div>
-                    </div>
-                </div>
-                {{-- <div class="col-lg-6 mb-4">
-                    <div class="card bg-info text-white shadow">
-                        <div class="card-body">
-                            Tecnomecánicas Próximas a Vencer
-                        <div class="text-white-50 small">{{ $technomecanical_expiration }}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 mb-4">
-                    <div class="card bg-warning text-white shadow">
-                        <div class="card-body">
-                            Warning
-                            <div class="text-white-50 small">#f6c23e</div>
-                        </div>
-                    </div>
-                </div> --}}
-                <div class="col-lg-6 mb-4">
-                    <div class="card bg-danger text-white shadow">
-                        <div class="card-body">
-                            Tecnomecánicas Próximas a Vencer
-                            <div class="text-white-50 small">{{ $technomecanical_expiration }}</div>
-                        </div>
-                    </div>
-                </div>
-                {{-- <div class="col-lg-6 mb-4">
-                    <div class="card bg-secondary text-white shadow">
-                        <div class="card-body">
-                            Secondary
-                            <div class="text-white-50 small">#858796</div>
-                        </div>
-                    </div>
-                </div> --}}
-            </div>
-
         </div>
-
         <div class="col-lg-6 mb-4">
-
-            <!-- Illustrations -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Estado Civil Conductores</h6>
@@ -208,6 +129,12 @@
                     <canvas id="civil_state_chart" width="400" height="200"></canvas>
                 </div>
             </div>
+        </div>
+    </div>
+    <h4 class="mb-3">Información de Licencias de Conducir</h4>
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <!-- Illustrations -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Estado De Licencias de Conducir</h6>
@@ -216,6 +143,21 @@
                     <canvas id="driving_licence_state_chart" width="400" height="200"></canvas>
                 </div>
             </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Categoría de Licencias</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="category_chart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h4 class="mb-3">Información de Vehículos</h4>
+    <div class="row">
+        <div class="col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Tipos de Vehículo</h6>
@@ -224,27 +166,50 @@
                     <canvas id="type_v_chart" width="400" height="200"></canvas>
                 </div>
             </div>
-            
-            <!-- Approach -->
-            {{-- <div class="card shadow mb-4">
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Propietarios</h6>
                 </div>
                 <div class="card-body">
-                    <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to
-                        reduce
-                        CSS bloat and poor page performance. Custom CSS classes are used to create
-                        custom components and custom utility classes.</p>
-                    <p class="mb-0">Before working with this theme, you should become familiar with
-                        the
-                        Bootstrap framework, especially the utility classes.</p>
+                    <canvas id="owner_v_chart" width="400" height="200"></canvas>
                 </div>
-            </div> --}}
-
+            </div>
         </div>
-
-        <script src="{{ asset('js/admin/dashboard.js') }}" defer></script>
     </div>
+    <div class="row">
+        <div class="col-lg-12 mb-4">
+            <!-- Color System -->
+            <div class="row">
+                <div class="col-lg-3 mb-4">
+                    <div class="card bg-primary text-white shadow">
+                        <div class="card-body">
+                            Licencias Próximas a Vencer
+                            <div class="text-white-50 small">{{ $licences_expiration }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 mb-4">
+                    <div class="card bg-success text-white shadow">
+                        <div class="card-body">
+                            Soats Próximos a Vencer
+                            <div class="text-white-50 small">{{ $soats_expiration }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 mb-4">
+                    <div class="card bg-danger text-white shadow">
+                        <div class="card-body">
+                            Tecnomecánicas Próximas a Vencer
+                            <div class="text-white-50 small">{{ $technomecanical_expiration }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ asset('js/admin/dashboard.js') }}" defer></script>
 
     <!-- /.container-fluid -->
 
