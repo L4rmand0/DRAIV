@@ -16,6 +16,9 @@
         var ele_chart_licence_state = $("#driving_licence_state_chart");
         var ele_chart_type_v = $("#type_v_chart");
         var ele_chart_owner_v = $("#owner_v_chart");
+        var ele_chart_line_v = $("#line_v_chart");
+        var ele_chart_brand_v = $("#brand_v_chart");
+        var ele_chart_model_v = $("#model_v_chart");
 
         $.ajax({
             type: 'POST',
@@ -268,6 +271,105 @@
                 } else {
                     var chart_owner_v = new Chart(ele_chart_owner_v, {
                         type: 'pie',
+                        data:
+                            datac.data,
+                        options: {
+                            plugins: {
+                                datalabels: {
+                                    render: 'label',
+                                    font: {
+                                        weight: 'bold',
+                                        size: 14,
+                                    }
+                                }
+                                
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: $("#function_pie_line_v").val(),
+            data: {
+                'company_id': $("#dashboard_company_id").val(),
+                "_token": $('#token').val()
+            },
+            success: function (datac) {
+                console.log(datac);
+                if (Object.keys(datac.errors).length > 0) {
+
+                } else {
+                    var chart_owner_v = new Chart(ele_chart_line_v, {
+                        type: 'pie',
+                        data:
+                            datac.data,
+                        options: {
+                            plugins: {
+                                datalabels: {
+                                    render: 'label',
+                                    font: {
+                                        weight: 'bold',
+                                        size: 14,
+                                    }
+                                }
+                                
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: $("#function_pie_brand_v").val(),
+            data: {
+                'company_id': $("#dashboard_company_id").val(),
+                "_token": $('#token').val()
+            },
+            success: function (datac) {
+                console.log(datac);
+                if (Object.keys(datac.errors).length > 0) {
+
+                } else {
+                    var chart_owner_v = new Chart(ele_chart_brand_v, {
+                        type: 'polarArea',
+                        data:
+                            datac.data,
+                        options: {
+                            plugins: {
+                                datalabels: {
+                                    render: 'label',
+                                    font: {
+                                        weight: 'bold',
+                                        size: 14,
+                                    }
+                                }
+                                
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: $("#function_pie_model_v").val(),
+            data: {
+                'company_id': $("#dashboard_company_id").val(),
+                "_token": $('#token').val()
+            },
+            success: function (datac) {
+                console.log(datac);
+                if (Object.keys(datac.errors).length > 0) {
+
+                } else {
+                    var chart_model_v = new Chart(ele_chart_model_v, {
+                        type: 'polarArea',
                         data:
                             datac.data,
                         options: {

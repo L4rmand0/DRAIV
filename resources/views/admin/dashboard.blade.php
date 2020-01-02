@@ -10,6 +10,9 @@
     <input type="hidden" id="function_barchart_licence_state" value="{{ route('drivers-info.state-licence-chart') }}">
     <input type="hidden" id="function_barchart_type_v" value="{{ route('admin.vehicle.type-v-chart') }}">
     <input type="hidden" id="function_pie_owner_v" value="{{ route('admin.vehicle.owner-v-chart') }}">
+    <input type="hidden" id="function_pie_line_v" value="{{ route('admin.vehicle.line-v-chart') }}">
+    <input type="hidden" id="function_pie_brand_v" value="{{ route('admin.vehicle.brand-v-chart') }}">
+    <input type="hidden" id="function_pie_model_v" value="{{ route('admin.vehicle.model-v-chart') }}">
     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard {{ $company_name }}</h1>
@@ -179,33 +182,70 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Marcas Vehículo</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="brand_v_chart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Línea de Vehículo</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="line_v_chart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Modelo Vehículo</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="model_v_chart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="col-lg-6 mb-4">
+                <div class="card bg-primary text-white shadow">
+                    <div class="card-body">
+                        Licencias Próximas a Vencer
+                        <div class="text-white-50 small">{{ $licences_expiration }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="card bg-success text-white shadow">
+                    <div class="card-body">
+                        Soats Próximos a Vencer
+                        <div class="text-white-50 small">{{ $soats_expiration }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="card bg-danger text-white shadow">
+                    <div class="card-body">
+                        Tecnomecánicas Próximas a Vencer
+                        <div class="text-white-50 small">{{ $technomecanical_expiration }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-lg-12 mb-4">
             <!-- Color System -->
             <div class="row">
-                <div class="col-lg-3 mb-4">
-                    <div class="card bg-primary text-white shadow">
-                        <div class="card-body">
-                            Licencias Próximas a Vencer
-                            <div class="text-white-50 small">{{ $licences_expiration }}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 mb-4">
-                    <div class="card bg-success text-white shadow">
-                        <div class="card-body">
-                            Soats Próximos a Vencer
-                            <div class="text-white-50 small">{{ $soats_expiration }}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 mb-4">
-                    <div class="card bg-danger text-white shadow">
-                        <div class="card-body">
-                            Tecnomecánicas Próximas a Vencer
-                            <div class="text-white-50 small">{{ $technomecanical_expiration }}</div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>

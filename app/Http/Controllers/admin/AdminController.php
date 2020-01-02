@@ -27,7 +27,6 @@ class AdminController extends Controller
             $licences_expiration = DrivingLicenceController::getLicenceExpiDates($company_id);
             $soats_expiration = VehicleController::getSoatExpiDates($company_id);
             $technomecanical_expiration = VehicleController::getExpiTecnomecanicalDates($company_id);
-            $total_types_v = VehicleController::getTypesByCompany($company_id);
             // echo $soats_expiration;
             // die;
             $man = 0;

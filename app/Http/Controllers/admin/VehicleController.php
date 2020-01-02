@@ -380,12 +380,126 @@ class VehicleController extends Controller
             ->get()->toArray();
     }
 
+    public static function getLineVByCompany($company_id)
+    {
+        return $vechicles_type = DB::table('user_vehicle As usv')
+            ->select(DB::raw(
+                'count(v.line) as total, 
+                 v.line'
+            ))
+            ->join('vehicle AS v', 'usv.vehicle_plate_id', '=', 'v.plate_id')
+            ->join('driver_information AS di', 'usv.driver_information_dni_id', '=', 'di.dni_id')
+            ->where('di.company_id', '=', $company_id)
+            ->where('v.operation', '!=', 'D')
+            ->groupBy('v.line')
+            // ->toSql();
+            ->get()->toArray();
+    }
+
+    public static function getBrandByCompany($company_id)
+    {
+        return DB::table('user_vehicle As usv')
+            ->select(DB::raw(
+                'count(v.brand) as total, 
+                 v.brand'
+            ))
+            ->join('vehicle AS v', 'usv.vehicle_plate_id', '=', 'v.plate_id')
+            ->join('driver_information AS di', 'usv.driver_information_dni_id', '=', 'di.dni_id')
+            ->where('di.company_id', '=', $company_id)
+            ->where('v.operation', '!=', 'D')
+            ->groupBy('v.brand')
+            // ->toSql();
+            ->get()->toArray();
+    }
+
+    public static function getModelByCompany($company_id)
+    {
+        return DB::table('user_vehicle As usv')
+            ->select(DB::raw(
+                'count(v.model) as total, 
+                 v.model'
+            ))
+            ->join('vehicle AS v', 'usv.vehicle_plate_id', '=', 'v.plate_id')
+            ->join('driver_information AS di', 'usv.driver_information_dni_id', '=', 'di.dni_id')
+            ->where('di.company_id', '=', $company_id)
+            ->where('v.operation', '!=', 'D')
+            ->groupBy('v.model')
+            // ->toSql();
+            ->get()->toArray();
+    }
+
     public function makeBarChartTypeV(Request $request)
     {
         $company_id = $request->get('company_id');
         $education = $this->getTypesByCompany($company_id);
         foreach ($education as $key => $value) {
             $labels[] = $value->type_v;
+            $data_data[] = $value->total;
+        }
+        $num_register = count($data_data);
+        $arr_colors = $this->fillColorsBarChart($num_register);
+        $maximo = max($data_data)+1;
+        $datasets['label'] = "Frecuencia Tipos Vehículo";
+        $datasets['data'] = $data_data;
+        $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
+        $datasets['borderColor'] = $arr_colors['borderColor'];
+        $datasets['borderWidth'] = 1;
+        $data['datasets'][] = $datasets;
+        $data['labels'] = $labels;
+        return response()->json(['data' => $data, 'errors' => [],'max'=>$maximo]);
+    }
+
+    public function makePieChartLineV(Request $request)
+    {
+        $company_id = $request->get('company_id');
+        $lines = $this->getLineVByCompany($company_id);
+        // echo '<pre>';
+        // print_r($lines);
+        // die;
+        foreach ($lines as $key => $value) {
+            $labels[] = $value->line;
+            $data_data[] = $value->total;
+        }
+        $num_register = count($data_data);
+        $arr_colors = $this->fillColorsBarChart($num_register);
+        $maximo = max($data_data)+1;
+        $datasets['label'] = "Frecuencia Tipos Vehículo";
+        $datasets['data'] = $data_data;
+        $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
+        $datasets['borderColor'] = $arr_colors['borderColor'];
+        $datasets['borderWidth'] = 1;
+        $data['datasets'][] = $datasets;
+        $data['labels'] = $labels;
+        return response()->json(['data' => $data, 'errors' => [],'max'=>$maximo]);
+    }
+
+    public function makePieChartModelV(Request $request)
+    {
+        $company_id = $request->get('company_id');
+        $models = $this->getModelByCompany($company_id);
+        foreach ($models as $key => $value) {
+            $labels[] = $value->model;
+            $data_data[] = $value->total;
+        }
+        $num_register = count($data_data);
+        $arr_colors = $this->fillColorsBarChart($num_register);
+        $maximo = max($data_data)+1;
+        $datasets['label'] = "Frecuencia Tipos Vehículo";
+        $datasets['data'] = $data_data;
+        $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
+        $datasets['borderColor'] = $arr_colors['borderColor'];
+        $datasets['borderWidth'] = 1;
+        $data['datasets'][] = $datasets;
+        $data['labels'] = $labels;
+        return response()->json(['data' => $data, 'errors' => [],'max'=>$maximo]);
+    }
+
+    public function makePolarChartBrandV(Request $request)
+    {
+        $company_id = $request->get('company_id');
+        $brands = $this->getBrandByCompany($company_id);
+        foreach ($brands as $key => $value) {
+            $labels[] = $value->brand;
             $data_data[] = $value->total;
         }
         $num_register = count($data_data);

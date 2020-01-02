@@ -73,6 +73,9 @@ Route::prefix('admin')->group(function () {
     Route::get('vehicle/checkvehiclebyid','admin\VehicleController@checkVehicleByPlateId')->name('admin.vehicle.checkvehiclebyid');
     Route::post('vehicle/type-v-chart','admin\VehicleController@makeBarChartTypeV')->name('admin.vehicle.type-v-chart');
     Route::post('vehicle/owner-v-chart','admin\VehicleController@makePieChartOwnerV')->name('admin.vehicle.owner-v-chart');
+    Route::post('vehicle/line-v-chart','admin\VehicleController@makePieChartLineV')->name('admin.vehicle.line-v-chart');
+    Route::post('vehicle/brand-v-chart','admin\VehicleController@makePolarChartBrandV')->name('admin.vehicle.brand-v-chart');
+    Route::post('vehicle/model-v-chart','admin\VehicleController@makePieChartModelV')->name('admin.vehicle.model-v-chart');
     Route::get('driver-info/admin1-select-lists', 'admin\Admin1Controller@getAdmin1toSelect2')->name('admin1-select-lists'); 
     Route::get('driver-info/admin2-select-lists', 'admin\Admin2Controller@getAdmin2toSelect2')->name('admin2-select-lists'); 
     Route::get('driver-info/admin3-select-lists', 'admin\Admin3Controller@getAdmin3toSelect2')->name('admin3-select-lists'); 

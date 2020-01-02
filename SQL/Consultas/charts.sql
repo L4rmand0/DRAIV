@@ -79,6 +79,36 @@ where di.company_id = 9013380301 and v.operation != 'd'
 group by 
 v.owner_v;
 
+select  
+count(v.line) as conteo, 
+v.line
+from user_vehicle usv
+inner join vehicle v on(usv.vehicle_plate_id=v.plate_id)
+inner join driver_information di on(usv.driver_information_dni_id=di.dni_id)
+where di.company_id = 9013380301 and v.operation != 'd'
+group by 
+v.line;
+
+select  
+COUNT(v.brand) as conteo, 
+v.brand
+from user_vehicle usv
+inner join vehicle v on(usv.vehicle_plate_id=v.plate_id)
+inner join driver_information di on(usv.driver_information_dni_id=di.dni_id)
+where di.company_id = 9013380301 and v.operation != 'd'
+group by 
+v.brand;
+
+select  
+COUNT(v.brand) as conteo, 
+v.brand
+from user_vehicle usv
+inner join vehicle v on(usv.vehicle_plate_id=v.plate_id)
+inner join driver_information di on(usv.driver_information_dni_id=di.dni_id)
+where di.company_id = 9013380301 and v.operation != 'd'
+group by 
+v.brand;
+
 
 
 
