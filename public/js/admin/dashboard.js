@@ -9,6 +9,7 @@
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
     $(function () {
+
         var ele_chart_education = $("#education_chart");
         var ele_chart_civil_state = $("#civil_state_chart");
         var ele_chart_category = $("#category_chart");
@@ -25,16 +26,16 @@
             },
             success: function (datac) {
                 console.log(datac);
-                
+
                 if (Object.keys(datac.errors).length > 0) {
 
                 } else {
                     var chart_education = new Chart(ele_chart_education, {
                         type: 'horizontalBar',
-                        data: 
-                        datac.data,
+                        data:
+                            datac.data,
                         options: {
-                            display:true,
+                            display: true,
                             scaleStartValue: 0,
                             scales: {
                                 yAxes: [{
@@ -45,9 +46,18 @@
                                 xAxes: [{
                                     ticks: {
                                         min: 0,
-                                        max:datac.max
+                                        max: datac.max
                                     }
                                 }]
+                            },
+                            plugins: {
+                                datalabels: {
+                                    render: 'label',
+                                    font: {
+                                        weight: 'bold',
+                                        size: 14,
+                                    }
+                                }
                             }
                         }
                     });
@@ -64,16 +74,16 @@
             },
             success: function (datac) {
                 console.log(datac);
-                
+
                 if (Object.keys(datac.errors).length > 0) {
 
                 } else {
                     var chart_civil_state = new Chart(ele_chart_civil_state, {
                         type: 'horizontalBar',
-                        data: 
-                        datac.data,
+                        data:
+                            datac.data,
                         options: {
-                            display:true,
+                            display: true,
                             scaleStartValue: 0,
                             scales: {
                                 yAxes: [{
@@ -84,9 +94,18 @@
                                 xAxes: [{
                                     ticks: {
                                         min: 0,
-                                        max:datac.max
+                                        max: datac.max
                                     }
                                 }]
+                            },
+                            plugins: {
+                                datalabels: {
+                                    render: 'label',
+                                    font: {
+                                        weight: 'bold',
+                                        size: 14,
+                                    }
+                                }
                             }
                         }
                     });
@@ -108,10 +127,10 @@
                 } else {
                     var chart_category = new Chart(ele_chart_category, {
                         type: 'horizontalBar',
-                        data: 
-                        datac.data,
+                        data:
+                            datac.data,
                         options: {
-                            display:true,
+                            display: true,
                             scaleStartValue: 0,
                             scales: {
                                 yAxes: [{
@@ -122,16 +141,25 @@
                                 xAxes: [{
                                     ticks: {
                                         min: 0,
-                                        max:datac.max
+                                        max: datac.max
                                     }
                                 }]
+                            },
+                            plugins: {
+                                datalabels: {
+                                    render: 'label',
+                                    font: {
+                                        weight: 'bold',
+                                        size: 14,
+                                    }
+                                }
                             }
                         }
                     });
                 }
             }
         });
-        
+
         $.ajax({
             type: 'POST',
             url: $("#function_barchart_licence_state").val(),
@@ -146,10 +174,10 @@
                 } else {
                     var chart_licence_state = new Chart(ele_chart_licence_state, {
                         type: 'horizontalBar',
-                        data: 
-                        datac.data,
+                        data:
+                            datac.data,
                         options: {
-                            display:true,
+                            display: true,
                             scaleStartValue: 0,
                             scales: {
                                 yAxes: [{
@@ -160,9 +188,18 @@
                                 xAxes: [{
                                     ticks: {
                                         min: 0,
-                                        max:datac.max
+                                        max: datac.max
                                     }
                                 }]
+                            },
+                            plugins: {
+                                datalabels: {
+                                    render: 'label',
+                                    font: {
+                                        weight: 'bold',
+                                        size: 14,
+                                    }
+                                }
                             }
                         }
                     });
@@ -184,10 +221,10 @@
                 } else {
                     var chart_type_v = new Chart(ele_chart_type_v, {
                         type: 'horizontalBar',
-                        data: 
-                        datac.data,
+                        data:
+                            datac.data,
                         options: {
-                            display:true,
+                            display: true,
                             scaleStartValue: 0,
                             scales: {
                                 yAxes: [{
@@ -198,9 +235,18 @@
                                 xAxes: [{
                                     ticks: {
                                         min: 0,
-                                        max:datac.max
+                                        max: datac.max
                                     }
                                 }]
+                            },
+                            plugins: {
+                                datalabels: {
+                                    render: 'label',
+                                    font: {
+                                        weight: 'bold',
+                                        size: 14,
+                                    }
+                                }
                             }
                         }
                     });
@@ -222,8 +268,20 @@
                 } else {
                     var chart_owner_v = new Chart(ele_chart_owner_v, {
                         type: 'pie',
-                        data: 
-                        datac.data
+                        data:
+                            datac.data,
+                        options: {
+                            plugins: {
+                                datalabels: {
+                                    render: 'label',
+                                    font: {
+                                        weight: 'bold',
+                                        size: 14,
+                                    }
+                                }
+                                
+                            }
+                        }
                     });
                 }
             }

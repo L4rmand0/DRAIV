@@ -55,18 +55,29 @@ select
 usv.vehicle_plate_id, 
 v.type_v
 FROM user_vehicle usv
-inner join vehicle v on(usv.plate_id=v.plate_id)
+inner join vehicle v on(usv.plate_id=v.plate_id);
+
+
 select  
-  distinct (usv.vehicle_plate_id), 
-count(v.type_v) as conteo,
-usv.vehicle_plate_id, 
-v.type_v,
-di.company_id
-FROM user_vehicle usv
+count(v.type_v) as conteo, 
+v.type_v
+from user_vehicle usv
 inner join vehicle v on(usv.vehicle_plate_id=v.plate_id)
 inner join driver_information di on(usv.driver_information_dni_id=di.dni_id)
+where di.company_id = 9013380301 and v.operation != 'D'
 group by 
 v.type_v;
+
+
+select  
+count(v.owner_v) as conteo, 
+v.owner_v
+from user_vehicle usv
+inner join vehicle v on(usv.vehicle_plate_id=v.plate_id)
+inner join driver_information di on(usv.driver_information_dni_id=di.dni_id)
+where di.company_id = 9013380301 and v.operation != 'd'
+group by 
+v.owner_v;
 
 
 

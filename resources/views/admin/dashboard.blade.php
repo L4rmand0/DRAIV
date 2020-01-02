@@ -13,14 +13,13 @@
     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard {{ $company_name }}</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="download_icon icons-fa"></i> Generate Report</a>
     </div>
 
     <!-- Content Row -->
     <div class="row">
-        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js"></script> --}}
-        <script src="{{ asset('Chartjs/Chart.bundle.js') }}" defer></script>
+        <script src="{{ asset('Chartjs/Chart.min.js') }}" defer></script>
+        <script src="{{ asset('Chartjs/chartjs-datalabel.js') }}" defer></script>
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
@@ -225,7 +224,7 @@
                     <canvas id="type_v_chart" width="400" height="200"></canvas>
                 </div>
             </div>
-
+            
             <!-- Approach -->
             {{-- <div class="card shadow mb-4">
                 <div class="card-header py-3">

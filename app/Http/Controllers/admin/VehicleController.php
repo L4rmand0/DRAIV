@@ -369,7 +369,7 @@ class VehicleController extends Controller
         return $vechicles_type = DB::table('user_vehicle As usv')
             ->select(DB::raw(
                 'count(v.owner_v) as total, 
-                v.owner_v'
+                IF(v.owner_v="Y","Sí","No") AS owner_v'
             ))
             ->join('vehicle AS v', 'usv.vehicle_plate_id', '=', 'v.plate_id')
             ->join('driver_information AS di', 'usv.driver_information_dni_id', '=', 'di.dni_id')

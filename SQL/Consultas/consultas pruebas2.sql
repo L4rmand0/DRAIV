@@ -9,13 +9,11 @@ select user_vehicle.driver_information_dni_id, user_vehicle.vehicle_plate_id fro
 
 
 select  
-distinct (usv.vehicle_plate_id), 
+v.type_v, 
 count(v.type_v) as conteo,
-v.type_v,
-di.company_id
-FROM user_vehicle usv
+from user_vehicle usv
 inner join vehicle v on(usv.vehicle_plate_id=v.plate_id)
 inner join driver_information di on(usv.driver_information_dni_id=di.dni_id)
-where di.company_id='9013380301' and v.operation<>'D'
+where di.company_id='9013380301' and v.operation<>'d'
 group by 
 v.type_v;

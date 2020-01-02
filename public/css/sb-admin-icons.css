@@ -84,6 +84,11 @@
     content: "\f4df"
 }
 
+.download_icon:before {
+    font-family: FontAwesome;
+    content: "\f019"
+}
+
 .icons-fa{
     font-style: normal !important;
 }
