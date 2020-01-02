@@ -53,7 +53,8 @@ class Vehicle extends Model
         'line',
         'brand',
         'color',
-        'technomechanical_date'
+        'technomechanical_date',
+        'company_id'
     ];
 
     

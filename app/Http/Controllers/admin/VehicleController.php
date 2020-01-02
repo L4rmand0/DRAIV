@@ -60,6 +60,9 @@ class VehicleController extends Controller
      */
     public function store(Request $request)
     {
+        $company_id = auth()->user()->company_id;
+        // echo $company_id;
+        // die;
         $data_input_drivers = $request->get('driver_vehicle');
         $data_input = $request->get('vehicle');
         $plate_id = $data_input['plate_id'];
@@ -116,6 +119,7 @@ class VehicleController extends Controller
                 if (empty($check_vehicle)) {
                     return response()->json(['response' => 'vehicle exists', 'errors' => $errors]);
                 }
+        
                 $now = date("Y-m-d H:i:s");
                 $response = Vehicle::where($key, $plate_id)->update([
                     'plate_id' => $data_input['plate_id'],
@@ -135,7 +139,8 @@ class VehicleController extends Controller
                     'technomechanical_date' => $data_input['technomechanical_date'] != "" ? $data_input['technomechanical_date'] : null,
                     'operation' => 'U',
                     'date_operation' => $now,
-                    'user_id' => auth()->id()
+                    'user_id' => auth()->id(),
+                    'company_id' => $company_id
                 ]);
                 if ($response) {
                     $list_drivers = DriverVehicleController::listDriverByPlateId($plate_id);
@@ -155,6 +160,9 @@ class VehicleController extends Controller
         if (!empty($errors)) {
             return response()->json(['errors' => $errors]);
         } else {
+
+            // echo 'else '.$company_id;
+            // die;
             $vehicle = Vehicle::create([
                 'plate_id' => $data_input['plate_id'],
                 'type_v' =>  $data_input['type_v'],
@@ -171,6 +179,7 @@ class VehicleController extends Controller
                 'brand' => $data_input['brand'] != "" ? $data_input['brand'] : "",
                 'color' => $data_input['color'] != "" ? $data_input['color'] : "",
                 'technomechanical_date' => $data_input['technomechanical_date'] != "" ? $data_input['technomechanical_date'] : null,
+                'company_id' => $company_id,
                 'user_id' => auth()->id()
             ]);
             //Inserta todos los conductores elegidos y con la placa enviada en la tabla user_vehicle
