@@ -391,6 +391,7 @@
                     type: 'POST',
                     url: $("#update-driver-info-route").val(),
                     data: dataSend,
+                    async: false,
                     success: function (data) {
                         if (Object.keys(data.error).length > 0)
                             swal.fire(

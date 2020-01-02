@@ -296,6 +296,7 @@
                     type: 'POST',
                     url: $("#update-driving-licence-route").val(),
                     data: dataSend,
+                    async: false,
                     success: function (data) {
                         if (Object.keys(data.error).length > 0)
                             swal.fire(

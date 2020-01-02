@@ -127,7 +127,7 @@ class DriverVehicleController extends Controller
         // print_r($request->all());
         // die;
         $driver_vehicle = DB::table('user_vehicle')
-            ->orderBy('user_vehicle.date_operation', 'desc')
+            ->orderBy('user_vehicle.start_date', 'desc')
             ->where('user_vehicle.operation', '!=', 'D')
             ->where('user_vehicle.vehicle_plate_id', '=', $plate_id)
             ->join('driver_information', 'driver_information.dni_id', '=', 'user_vehicle.driver_information_dni_id')

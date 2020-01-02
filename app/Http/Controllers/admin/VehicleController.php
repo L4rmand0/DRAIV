@@ -108,7 +108,7 @@ class VehicleController extends Controller
                 $plate_id = $data_input[$key];
 
                 $check_vehicle = DB::table('vehicle')
-                    ->orderBy('vehicle.date_operation', 'desc')
+                    ->orderBy('vehicle.start_date', 'desc')
                     ->where('vehicle.operation', '=', 'D')
                     ->where('vehicle.plate_id', '=', $plate_id)
                     ->select(DB::raw(
@@ -286,7 +286,7 @@ class VehicleController extends Controller
     public function vehicleList()
     {
         $vehicle = DB::table('vehicle')
-            ->orderBy('vehicle.date_operation', 'desc')
+            ->orderBy('vehicle.start_date', 'desc')
             ->where('vehicle.operation', '!=', 'D')
             ->select(DB::raw(
                 'vehicle.plate_id, 
@@ -551,7 +551,7 @@ class VehicleController extends Controller
     {
         $plate_id = $request->get('plate_id');
         $check_vehicle = DB::table('vehicle')
-            ->orderBy('vehicle.date_operation', 'desc')
+            ->orderBy('vehicle.start_date', 'desc')
             ->where('vehicle.plate_id', '=', $plate_id)
             ->select(DB::raw(
                 'vehicle.plate_id, 

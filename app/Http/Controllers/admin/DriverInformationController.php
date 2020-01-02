@@ -325,7 +325,7 @@ class DriverInformationController extends Controller
     {
         $company_id = Auth::user()->company_id;
         $drive_information = DB::table('driver_information')
-            ->orderBy('driver_information.date_operation', 'desc')
+            ->orderBy('driver_information.start_date', 'desc')
             ->join('users', 'driver_information.Db_user_id', '=', 'users.id')
             ->join('company', 'company.Company_id', '=', 'driver_information.company_id')
             ->join('admin2', 'admin2.adm2_id', '=', 'driver_information.department')

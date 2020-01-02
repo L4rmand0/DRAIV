@@ -205,7 +205,7 @@ class DrivingLicenceController extends Controller
     {
         $company_id = Auth::user()->company_id;
         $driving_licence = DB::table('driving_licence')
-            ->orderBy('driving_licence.date_operation', 'desc')
+            ->orderBy('driving_licence.start_date', 'desc')
             ->join('driver_information', 'driver_information.dni_id', '=', 'driving_licence.driver_information_dni_id')
             ->where('driver_information.company_id', '=', $company_id)
             ->where('driving_licence.operation', '!=', 'D')

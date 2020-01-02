@@ -153,6 +153,7 @@
                     type: 'POST',
                     url: $("#update-users-route").val(),
                     data: dataSend,
+                    async: false,
                     success: function (data) {
                         if (Object.keys(data.response).length === 0)
                             swal.fire(

@@ -111,7 +111,7 @@ class UserController extends Controller
     public function usersList()
     {
         $company_id = Auth::user()->company_id;
-        $users = DB::table('users')->orderBy('users.date_operation', 'desc')->where('company_id', '=', $company_id)->where('operation', '!=','D')->get();
+        $users = DB::table('users')->orderBy('users.start_date', 'desc')->where('company_id', '=', $company_id)->where('operation', '!=','D')->get();
         $users = $this->addDeleteButtonDatatable($users);
         return datatables()->of($users)->make(true);
     }
