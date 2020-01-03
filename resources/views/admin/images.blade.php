@@ -70,8 +70,8 @@
                                 <div class="row">
                                     <div class="col-md-9" style="margin-top: 4px;">
                                         <div class="custom-file overflow-hidden rounded-pill mb-1">
-                                            <input id="file{{$item_type_images}}" class="input_files_drivers"
-                                                type="file" name="file" class="custom-file-input rounded-pill">
+                                            <input id="file{{$item_type_images}}" type="file" name="file"
+                                                class="custom-file-input rounded-pill input_files_drivers">
                                             <label for="file{{$item_type_images}}"
                                                 class="custom-file-label rounded-pill name_file">Seleccionar ...</label>
                                         </div>
@@ -95,7 +95,9 @@
 
         </div>
         <div class="col-md-6 mb-4">
+
         </div>
+
 
     </div>
     <script src="{{ asset('js/admin/images.js') }}" defer></script>

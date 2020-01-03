@@ -72,7 +72,14 @@
             var element = $(this);
             var datafr = new FormData(element[0]);
             element.find(".error_file").html("");
-            if (driver_information_dni_id == "") {
+            var val_file = element.find(".input_files_drivers").val();
+            if(val_file == ""){
+                swal.fire(
+                    'Archivo vacío!',
+                    'No se ha elegido ningún archivo.',
+                    'error'
+                );
+            }else if (driver_information_dni_id == "") {
                 swal.fire(
                     'Información Incompleta!',
                     'Se debe elegir un conductor.',
@@ -151,6 +158,7 @@
                                                     let dni_id_val = $('#driver_information_dni_id_images').val()
                                                     $dni_drivers_selects2.val([""]).trigger("change");
                                                     $dni_drivers_selects2.val([dni_id_val]).trigger("change");
+                                                    element.find(".input_files_drivers").val("")
                                                     element.find(".name_file").text("Seleccionar ...");
                                                 }
                                             }
@@ -159,6 +167,7 @@
                                 });
                             }
                         } else {
+                            
                             swal.fire(
                                 'Proceso Completado',
                                 'Archivo subido correctamente.',
@@ -168,6 +177,7 @@
                             $dni_drivers_selects2.val([""]).trigger("change");
                             $dni_drivers_selects2.val([dni_id_val]).trigger("change");
                             element.find(".name_file").text("Seleccionar ...");
+                            element.find(".input_files_drivers").val("");
                         }
                     }
                 });

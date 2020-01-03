@@ -35,82 +35,47 @@ SELECT *
 FROM sam.driving_licence
 WHERE (driving_licence.expi_date BETWEEN '2019-12-01' AND '2020-01-31');
 
-SELECT *
-FROM sam.vehicle
-WHERE (vehicle.soat_expi_date BETWEEN '2019-12-31' AND '2020-01-31');
 
-SELECT *
-FROM sam.vehicle
-INNER JOIN sam.user_vehicle ON user_vehicle.vehicle_plate_id = vehicle.plate_id
-INNER JOIN sam.driver_information ON driver_information.dni_id = user_vehicle.driver_information_dni_id
-WHERE driver_information.company_id = 9013380301 AND (vehicle.soat_expi_date BETWEEN '2019-12-31' AND '2020-01-31') AND vehicle.operation != 'D'
-GROUP BY vehicle.plate_id;
+#------------ Consultas Vehículo ---------------
+#número de vehículos
+SELECT COUNT(plate_id) FROM vehicle WHERE vehicle.company_id = 9013380301 AND vehicle.operation != 'D' ;
 
-SELECT vehicle.type_v, COUNT(*) AS total
-FROM sam.vehicle
-INNER JOIN (
-SELECT driver_information_dni_id, vehicle_plate_id
-FROM sam.user_vehicle
-GROUP BY user_vehicle.vehicle_plate_id) AS user_vehicle_d ON user_vehicle_d.vehicle_plate_id = vehicle.plate_id
-INNER JOIN sam.driver_information ON driver_information.dni_id = user_vehicle_d.driver_information_dni_id
-WHERE driver_information.company_id = 9013380301 AND vehicle.operation != 'D'
+#cantidad de tipos de vehículo por empresa
+SELECT type_v, COUNT(type_v) AS total FROM vehicle 
+WHERE vehicle.company_id = 9013380301 
+AND vehicle.operation != 'D' 
 GROUP BY type_v;
 
-SELECT user_vehicle.driver_information_dni_id, user_vehicle.vehicle_plate_id
-FROM sam.user_vehicle
-GROUP BY user_vehicle.vehicle_plate_id;
-SELECT 
-usv.vehicle_plate_id, 
-v.type_v
-FROM user_vehicle usv
-INNER JOIN vehicle v ON(usv.plate_id=v.plate_id);
+#cantidad de propietarios de vehículo por empresa
+SELECT owner_v, COUNT(plate_id) AS total FROM vehicle 
+WHERE vehicle.company_id = 9013380301 
+AND vehicle.operation != 'D' 
+GROUP BY owner_v;
 
-SELECT 
---count(v.type_v) as conteo,
-v.operauser_vehicletion, 
-v.type_v
-FROM user_vehicle usv
-INNER JOIN vehicle v ON(usv.vehicle_plate_id=v.plate_id)
-INNER JOIN driver_information di ON(usv.driver_information_dni_id=di.dni_id)
-WHERE di.company_id = 9013380301 AND v.operation != 'd'
-GROUP BY 
-v.type_v;
+#cantidad de marcas de vehículo por empresa
+SELECT brand, COUNT(plate_id) AS total FROM vehicle 
+WHERE vehicle.company_id = 9013380301 
+AND vehicle.operation != 'D' 
+GROUP BY brand;
 
-SELECT COUNT(v.owner_v) AS conteo, 
-v.owner_v
-FROM user_vehicle usv
-INNER JOIN vehicle v ON(usv.vehicle_plate_id=v.plate_id)
-INNER JOIN driver_information di ON(usv.driver_information_dni_id=di.dni_id)
-WHERE di.company_id = 9013380301 AND v.operation != 'd'
-GROUP BY 
-v.owner_v;
+#cantidad de líneas de vehículo por empresa
+SELECT line, COUNT(plate_id) AS total FROM vehicle 
+WHERE vehicle.company_id = 9013380301 
+AND vehicle.operation != 'D' 
+GROUP BY line;
 
-SELECT COUNT(v.line) AS conteo, 
-v.line
-FROM user_vehicle usv
-INNER JOIN vehicle v ON(usv.vehicle_plate_id=v.plate_id)
-INNER JOIN driver_information di ON(usv.driver_information_dni_id=di.dni_id)
-WHERE di.company_id = 9013380301 AND v.operation != 'd'
-GROUP BY 
-v.line;
+#cantidad de modelos de vehículo por empresa
+SELECT model, COUNT(plate_id) AS total FROM vehicle 
+WHERE vehicle.company_id = 9013380301 
+AND vehicle.operation != 'D' 
+GROUP BY model;
 
-SELECT COUNT(v.brand) AS conteo, 
-v.brand
-FROM user_vehicle usv
-INNER JOIN vehicle v ON(usv.vehicle_plate_id=v.plate_id)
-INNER JOIN driver_information di ON(usv.driver_information_dni_id=di.dni_id)
-WHERE di.company_id = 9013380301 AND v.operation != 'd'
-GROUP BY 
-v.brand;
+#licencias de vehículo próximas a vencer por empresa
 
-SELECT COUNT(v.model) AS conteo, 
-v.model
-FROM user_vehicle usv
-INNER JOIN vehicle v ON(usv.vehicle_plate_id=v.plate_id)
-INNER JOIN driver_information di ON(usv.driver_information_dni_id=di.dni_id)
-WHERE di.company_id = 9013380301 AND v.operation != 'd'
-GROUP BY 
-v.model;
+
+
+
+
 
 
 

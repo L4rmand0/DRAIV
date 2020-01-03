@@ -55,7 +55,9 @@ class ImageController extends Controller
         $now = date("Y-m-d H-i-s");
         $now_new = str_replace(" ", "-", $now);
         $now_new = str_replace("-", "", $now_new);
-
+        // echo '<pre>';
+        // print_r($request->all());
+        // die;
         $file_type = request()->get('key');
         $cedula = request()->get('driver_information_dni_id');
         $file = $request->file('file');
@@ -257,5 +259,37 @@ class ImageController extends Controller
             }
         }
         return response()->json(['errors' => '', 'documents' => $checked_documents]);
+    }
+
+    public function checkIncompleteDocumentDrivers($company_id){
+        $images = $this->getAllImages($company_id);
+        $required_documents = Imagenes::required_documents;
+        $number_documents = count($required_documents);
+        $last_documwent = end($required_documents);
+        foreach ($required_documents as $key => $value) {
+            $number_documents_drivers = 0;
+            foreach ($images as $key => $value) {
+                
+            }
+            if($number_documents_drivers == $number_documents){
+
+            }else{
+
+            }
+        }
+
+    }
+
+    public function getAllImages($company_id)
+    {
+        return  DB::table('imagenes as i')
+            ->select(DB::raw(
+                'tipo_doc, driver_information_dni_id'
+            ))
+            ->join('driver_information as di', 'di.dni_id', '=', 'i.driver_information_dni_id')
+            ->where('i.operation', '!=', 'D')
+            ->where('di.company_id', '=', $company_id)
+            ->orderBy('driver_information_dni_id', 'desc')
+            ->get()->toArray();
     }
 }

@@ -19,28 +19,38 @@ class Imagenes extends Model
         'Foto_usuario_moto'
     ];
 
+    const required_documents = [
+        'Foto' => 'Fotografía_rostro',
+        'Cédula Frente' => 'Cedula_frente',
+        'Cedula reverso' => 'Cedula_reverso',
+        'Eps Frente' => 'Eps_frente',
+        'Eps Reverso' => 'Eps_reverso',
+        'Pensión' => 'Fondo_pension',
+        'ARL' => 'ARL'
+    ];
+
     const enum_assoc_tipo_doc = [
-        'Foto'=>'Fotografía_rostro',
-        'Cédula Frente'=>'Cedula_frente',
-        'Cedula reverso'=>'Cedula_reverso',
-        'Eps Frente'=>'Eps_frente',
-        'Eps Reverso'=>'Eps_reverso',
-        'Pensión'=>'Fondo_pension',
-        'ARL'=>'ARL',
-        'Tarjetón Taxi'=>'Tarjeton_taxi',
-        'Casco'=>'Casco',
-        'Foto Conductor Moto'=>'Foto_usuario_moto'
+        'Foto' => 'Fotografía_rostro',
+        'Cédula Frente' => 'Cedula_frente',
+        'Cedula reverso' => 'Cedula_reverso',
+        'Eps Frente' => 'Eps_frente',
+        'Eps Reverso' => 'Eps_reverso',
+        'Pensión' => 'Fondo_pension',
+        'ARL' => 'ARL',
+        'Tarjetón Taxi' => 'Tarjeton_taxi',
+        'Casco' => 'Casco',
+        'Foto Conductor Moto' => 'Foto_usuario_moto'
     ];
 
 
-    protected $table = 'imagenes'; 
-    
+    protected $table = 'imagenes';
+
     public $timestamps = false;
-    
+
     protected $fillable = [
-        'tipo_doc', 
-        'url', 
-        'size_image', 
+        'tipo_doc',
+        'url',
+        'size_image',
         'type_image',
         'user_id',
         'date_operation',

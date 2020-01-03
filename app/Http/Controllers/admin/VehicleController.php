@@ -119,7 +119,7 @@ class VehicleController extends Controller
                 if (empty($check_vehicle)) {
                     return response()->json(['response' => 'vehicle exists', 'errors' => $errors]);
                 }
-        
+
                 $now = date("Y-m-d H:i:s");
                 $response = Vehicle::where($key, $plate_id)->update([
                     'plate_id' => $data_input['plate_id'],
@@ -144,9 +144,9 @@ class VehicleController extends Controller
                 ]);
                 if ($response) {
                     $list_drivers = DriverVehicleController::listDriverByPlateId($plate_id);
-                    if(empty($list_drivers)){
+                    if (empty($list_drivers)) {
                         $response_transaction = DriverVehicleController::insertOrUpdateDriverNoList($data_input_drivers, $plate_id);
-                    }else{
+                    } else {
                         $response_transaction = DriverVehicleController::insertOrUpdateDrivers($data_input_drivers, $list_drivers, $plate_id);
                     }
                     return response()->json(['response' => 'Información actualizada', 'errors' => []]);
@@ -185,9 +185,9 @@ class VehicleController extends Controller
             //Inserta todos los conductores elegidos y con la placa enviada en la tabla user_vehicle
             if ($vehicle->plate_id != "" && !empty($data_input_drivers)) {
                 $list_drivers = DriverVehicleController::listDriverByPlateId($plate_id);
-                if(empty($list_drivers)){
+                if (empty($list_drivers)) {
                     $response_transaction = DriverVehicleController::insertOrUpdateDriverNoList($data_input_drivers, $plate_id);
-                }else{
+                } else {
                     $response_transaction = DriverVehicleController::insertOrUpdateDrivers($data_input_drivers, $list_drivers, $plate_id);
                 }
                 return response()->json([
@@ -264,13 +264,13 @@ class VehicleController extends Controller
         // echo '<pre>';
         // print_r($plate_id);
         // die;
-        
+
         $delete = Vehicle::where('plate_id', $plate_id)->update([
-            'operation' => 'D', 
+            'operation' => 'D',
             'user_id' => auth()->id(),
             'number_of_drivers' => 0,
             'date_operation' => $now
-            ]);
+        ]);
         if ($delete) {
             $response = DriverVehicle::where('vehicle_plate_id', $plate_id)->update([
                 'operation' => 'D',
@@ -322,67 +322,55 @@ class VehicleController extends Controller
     {
         $fecha_actual = date("Y-m-d");
         $date_month = date("Y-m-d", strtotime($fecha_actual . "+ 2 month"));
-        $soats_expiration = DB::table('vehicle')
+        $soats_expiration = DB::table('vehicle as v')
             ->select(DB::raw(
-                'vehicle.plate_id'
+                'count(v.plate_id) as total' 
             ))
-            ->join('user_vehicle', 'user_vehicle.vehicle_plate_id', '=', 'vehicle.plate_id')
-            ->join('driver_information', 'driver_information.dni_id', '=', 'user_vehicle.driver_information_dni_id')
-            ->where('driver_information.company_id', '=', $company_id)
-            ->where('vehicle.operation', '!=', 'D')
-            ->whereBetween('vehicle.soat_expi_date', [$fecha_actual, $date_month])
-            ->groupBy('plate_id')
-            ->get()->toArray();
-        return count($soats_expiration);
+            ->where('v.company_id', '=', $company_id)
+            ->where('v.operation', '!=', 'D')
+            ->whereBetween('v.soat_expi_date', [$fecha_actual, $date_month])
+            ->first();
+        return $soats_expiration->total;
     }
 
     public static function getExpiTecnomecanicalDates($company_id)
     {
         $fecha_actual = date("Y-m-d");
         $date_month = date("Y-m-d", strtotime($fecha_actual . "+ 2 month"));
-        $technomecanical_expiration = DB::table('vehicle')
+        $tecnomecanical_expiration = DB::table('vehicle as v')
             ->select(DB::raw(
-                'vehicle.plate_id'
+                'count(v.plate_id) as total' 
             ))
-            ->join('user_vehicle', 'user_vehicle.vehicle_plate_id', '=', 'vehicle.plate_id')
-            ->join('driver_information', 'driver_information.dni_id', '=', 'user_vehicle.driver_information_dni_id')
-            ->where('driver_information.company_id', '=', $company_id)
-            ->where('vehicle.operation', '!=', 'D')
-            ->whereBetween('vehicle.technomechanical_date', [$fecha_actual, $date_month])
-            ->groupBy('plate_id')
-            // ->toSql();
-            ->get()->toArray();
-        return count($technomecanical_expiration);
+            ->where('v.company_id', '=', $company_id)
+            ->where('v.operation', '!=', 'D')
+            ->whereBetween('v.technomechanical_date', [$fecha_actual, $date_month])
+            ->first();
+        return $tecnomecanical_expiration->total;
     }
 
     public static function getTypesByCompany($company_id)
     {
-        // die;
-        return $vechicles_type = DB::table('user_vehicle As usv')
+        return DB::table('vehicle as v')
             ->select(DB::raw(
-                'count(v.type_v) as total, 
-                v.type_v'
+                'count(plate_id) as total, 
+                 type_v'
             ))
-            ->join('vehicle AS v', 'usv.vehicle_plate_id', '=', 'v.plate_id')
-            ->join('driver_information AS di', 'usv.driver_information_dni_id', '=', 'di.dni_id')
-            ->where('di.company_id', '=', $company_id)
+            ->where('v.company_id', '=', $company_id)
             ->where('v.operation', '!=', 'D')
             ->groupBy('v.type_v')
             // ->toSql();
             ->get()->toArray();
     }
 
+
     public static function getOwnersVByCompany($company_id)
     {
-        // die;
-        return $vechicles_type = DB::table('user_vehicle As usv')
+        return DB::table('vehicle as v')
             ->select(DB::raw(
-                'count(v.owner_v) as total, 
-                IF(v.owner_v="Y","Sí","No") AS owner_v'
+                'count(plate_id) as total, 
+                IF(owner_v="Y", "Sí", "No") as owner_v'
             ))
-            ->join('vehicle AS v', 'usv.vehicle_plate_id', '=', 'v.plate_id')
-            ->join('driver_information AS di', 'usv.driver_information_dni_id', '=', 'di.dni_id')
-            ->where('di.company_id', '=', $company_id)
+            ->where('v.company_id', '=', $company_id)
             ->where('v.operation', '!=', 'D')
             ->groupBy('v.owner_v')
             // ->toSql();
@@ -391,30 +379,26 @@ class VehicleController extends Controller
 
     public static function getLineVByCompany($company_id)
     {
-        return $vechicles_type = DB::table('user_vehicle As usv')
-            ->select(DB::raw(
-                'count(v.line) as total, 
-                 v.line'
-            ))
-            ->join('vehicle AS v', 'usv.vehicle_plate_id', '=', 'v.plate_id')
-            ->join('driver_information AS di', 'usv.driver_information_dni_id', '=', 'di.dni_id')
-            ->where('di.company_id', '=', $company_id)
-            ->where('v.operation', '!=', 'D')
-            ->groupBy('v.line')
-            // ->toSql();
-            ->get()->toArray();
+        return DB::table('vehicle as v')
+        ->select(DB::raw(
+            'count(plate_id) as total, 
+             line'
+        ))
+        ->where('v.company_id', '=', $company_id)
+        ->where('v.operation', '!=', 'D')
+        ->groupBy('v.line')
+        // ->toSql();
+        ->get()->toArray();
     }
 
     public static function getBrandByCompany($company_id)
     {
-        return DB::table('user_vehicle As usv')
+        return DB::table('vehicle as v')
             ->select(DB::raw(
-                'count(v.brand) as total, 
-                 v.brand'
+                'count(plate_id) as total, 
+                 brand'
             ))
-            ->join('vehicle AS v', 'usv.vehicle_plate_id', '=', 'v.plate_id')
-            ->join('driver_information AS di', 'usv.driver_information_dni_id', '=', 'di.dni_id')
-            ->where('di.company_id', '=', $company_id)
+            ->where('v.company_id', '=', $company_id)
             ->where('v.operation', '!=', 'D')
             ->groupBy('v.brand')
             // ->toSql();
@@ -423,18 +407,16 @@ class VehicleController extends Controller
 
     public static function getModelByCompany($company_id)
     {
-        return DB::table('user_vehicle As usv')
-            ->select(DB::raw(
-                'count(v.model) as total, 
-                 v.model'
-            ))
-            ->join('vehicle AS v', 'usv.vehicle_plate_id', '=', 'v.plate_id')
-            ->join('driver_information AS di', 'usv.driver_information_dni_id', '=', 'di.dni_id')
-            ->where('di.company_id', '=', $company_id)
-            ->where('v.operation', '!=', 'D')
-            ->groupBy('v.model')
-            // ->toSql();
-            ->get()->toArray();
+        return DB::table('vehicle as v')
+        ->select(DB::raw(
+            'count(plate_id) as total, 
+             model'
+        ))
+        ->where('v.company_id', '=', $company_id)
+        ->where('v.operation', '!=', 'D')
+        ->groupBy('v.model')
+        // ->toSql();
+        ->get()->toArray();
     }
 
     public function makeBarChartTypeV(Request $request)
@@ -447,7 +429,7 @@ class VehicleController extends Controller
         }
         $num_register = count($data_data);
         $arr_colors = $this->fillColorsBarChart($num_register);
-        $maximo = max($data_data)+1;
+        $maximo = max($data_data) + 1;
         $datasets['label'] = "Frecuencia Tipos Vehículo";
         $datasets['data'] = $data_data;
         $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
@@ -455,7 +437,7 @@ class VehicleController extends Controller
         $datasets['borderWidth'] = 1;
         $data['datasets'][] = $datasets;
         $data['labels'] = $labels;
-        return response()->json(['data' => $data, 'errors' => [],'max'=>$maximo]);
+        return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
     }
 
     public function makePieChartLineV(Request $request)
@@ -471,7 +453,7 @@ class VehicleController extends Controller
         }
         $num_register = count($data_data);
         $arr_colors = $this->fillColorsBarChart($num_register);
-        $maximo = max($data_data)+1;
+        $maximo = max($data_data) + 1;
         $datasets['label'] = "Frecuencia Tipos Vehículo";
         $datasets['data'] = $data_data;
         $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
@@ -479,7 +461,11 @@ class VehicleController extends Controller
         $datasets['borderWidth'] = 1;
         $data['datasets'][] = $datasets;
         $data['labels'] = $labels;
-        return response()->json(['data' => $data, 'errors' => [],'max'=>$maximo]);
+        return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
+    }
+
+    public function addVehicleDriver($driver_dni_id){
+        
     }
 
     public function makePieChartModelV(Request $request)
@@ -492,7 +478,7 @@ class VehicleController extends Controller
         }
         $num_register = count($data_data);
         $arr_colors = $this->fillColorsBarChart($num_register);
-        $maximo = max($data_data)+1;
+        $maximo = max($data_data) + 1;
         $datasets['label'] = "Frecuencia Tipos Vehículo";
         $datasets['data'] = $data_data;
         $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
@@ -500,7 +486,7 @@ class VehicleController extends Controller
         $datasets['borderWidth'] = 1;
         $data['datasets'][] = $datasets;
         $data['labels'] = $labels;
-        return response()->json(['data' => $data, 'errors' => [],'max'=>$maximo]);
+        return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
     }
 
     public function makePolarChartBrandV(Request $request)
@@ -513,7 +499,7 @@ class VehicleController extends Controller
         }
         $num_register = count($data_data);
         $arr_colors = $this->fillColorsBarChart($num_register);
-        $maximo = max($data_data)+1;
+        $maximo = max($data_data) + 1;
         $datasets['label'] = "Frecuencia Tipos Vehículo";
         $datasets['data'] = $data_data;
         $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
@@ -521,7 +507,7 @@ class VehicleController extends Controller
         $datasets['borderWidth'] = 1;
         $data['datasets'][] = $datasets;
         $data['labels'] = $labels;
-        return response()->json(['data' => $data, 'errors' => [],'max'=>$maximo]);
+        return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
     }
 
     public function makePieChartOwnerV(Request $request)
@@ -534,7 +520,7 @@ class VehicleController extends Controller
         }
         $num_register = count($data_data);
         $arr_colors = $this->fillColorsBarChart($num_register);
-        $maximo = max($data_data)+1;
+        $maximo = max($data_data) + 1;
         $datasets['label'] = "Frecuencia Tipos Vehículo";
         $datasets['data'] = $data_data;
         $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
@@ -542,7 +528,7 @@ class VehicleController extends Controller
         $datasets['borderWidth'] = 1;
         $data['datasets'][] = $datasets;
         $data['labels'] = $labels;
-        return response()->json(['data' => $data, 'errors' => [],'max'=>$maximo]);
+        return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
     }
 
 
@@ -558,13 +544,13 @@ class VehicleController extends Controller
                  vehicle.operation,
                  vehicle.technomechanical_date'
             ))->first();
-            // print_r($check_vehicle);
-            // die;
+        // print_r($check_vehicle);
+        // die;
         if (empty($check_vehicle)) {
             return response()->json(['response' => 'ok', 'errors' => []]);
-        }else if($check_vehicle->operation == "U" || $check_vehicle->operation == "A"){
-            return response()->json(['response' => 'error', 'errors' => ['plate_id'=>['Esta placa ya tiene un vehículo. Para actualizarla debe hacerlo en la tabla.']]]);
-        }else{
+        } else if ($check_vehicle->operation == "U" || $check_vehicle->operation == "A") {
+            return response()->json(['response' => 'error', 'errors' => ['plate_id' => ['Esta placa ya tiene un vehículo. Para actualizarla debe hacerlo en la tabla.']]]);
+        } else {
             return response()->json(['response' => 'ok', 'errors' => []]);
         }
     }

@@ -60,6 +60,46 @@ var table_relation;
         var $capacity_select2 = $("#capacity_form").select2();
         var $service_select2 = $("#service_form").select2();
 
+        $.ajax({
+            type: 'GET',
+            url: $('#driver_information_dni_id_form').data('url'),
+            data: { 'type': 'select_admin2' },
+            success: function (data) {
+                $('#driver_information_dni_id_form').select2({
+                    data: data
+                });
+            }
+        });
+
+        $('#driver_information_dni_id_form').on('change', function () {
+            alert("cambia");
+            let user_info_id = $(this).val();
+            $.ajax({
+                type: 'GET',
+                url: $('#driver_information_dni_id_form').data('url-name'),
+                data: { 'type': 'select_admin2', 'user_info_id': user_info_id },
+                success: function (data) {
+                    $("#name_driver").text(data.name);
+                }
+            });
+            $(".error-strong").text("");
+        });
+
+        $("#form_add_vehicle_driver").submit(function(event){
+            event.preventDefault();
+            let element = $(this);
+            let data_form = element.serialize();
+            $.ajax({
+                type: 'POST',
+                url: element.data('url'),
+                data: data_form,
+                success: function (data) {
+                    console.log(data);
+                    
+                }
+            });
+        });
+
         $("#number_of_drivers_form").on('change', function () {
             $("#vehicle_drivers_relation").attr('hidden', true);
             $("#vehicle_drivers_relation").show();

@@ -9,15 +9,18 @@ use auth;
 
 class AdminController extends Controller
 {
+    private $image_controller;
     public function __construct()
     {
         $this->middleware('auth');
+        $this->image_controller = new ImageController();
     }
 
     public function index(Request $request)
     {
         $profile = auth()->user()->user_profile;
         if ($profile == "administrator") {
+            
             $company_id = auth()->user()->company_id;
             $company = CompanyController::getCompanyByid($company_id);
             $total_drivers = DriverInformationController::getNumberDriversByCompany($company_id);
@@ -27,6 +30,7 @@ class AdminController extends Controller
             $licences_expiration = DrivingLicenceController::getLicenceExpiDates($company_id);
             $soats_expiration = VehicleController::getSoatExpiDates($company_id);
             $technomecanical_expiration = VehicleController::getExpiTecnomecanicalDates($company_id);
+            // $incomplete_document_drivers = $this->image_controller->checkIncompleteDocumentDrivers($company_id);
             // echo $soats_expiration;
             // die;
             $man = 0;

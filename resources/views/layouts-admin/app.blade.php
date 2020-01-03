@@ -30,6 +30,7 @@
 
 <body id="page-top">
     <div id="app">
+        
         <!-- Page Wrapper -->
         <div id="wrapper">
             <!-- Sidebar -->

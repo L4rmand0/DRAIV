@@ -89,6 +89,11 @@
     content: "\f019"
 }
 
+.plus_icon:before {
+    font-family: FontAwesome;
+    content: "\f067"
+}
+
 .icons-fa{
     font-style: normal !important;
 }

@@ -297,11 +297,9 @@ class DriverVehicleController extends Controller
 
     public static function getTotalVehiclesByCompany($company_id)
     {
-        $vechicles = DB::table('driver_information')
-            ->select(DB::raw('count(DISTINCT user_vehicle.vehicle_plate_id) as total_vehicles')
-            )->join('user_vehicle', 'user_vehicle.driver_information_dni_id', '=', 'driver_information.dni_id')
-            ->join('vehicle', 'user_vehicle.vehicle_plate_id', '=', 'vehicle.plate_id')
-            ->where('driver_information.company_id', '=', $company_id)
+        $vechicles = DB::table('vehicle')
+            ->select(DB::raw('count(plate_id) as total_vehicles'))
+            ->where('vehicle.company_id', '=', $company_id)
             ->where('vehicle.operation', '!=', 'D')
             ->first();
         if(!empty($vechicles)){

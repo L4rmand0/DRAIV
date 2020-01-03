@@ -49,7 +49,8 @@
         <hr class='sidebar-divider divider-form-vehicle' style='margin-top: 41px;'>
         <h4 class="text-primary d-flex justify-content-center">Conductores del Vehículo</h4>
         <table id="relation_driver_vehicle_datatable" class="table table-striped table-bordered table-hover nowrap"
-            style="width:100%" data-url-list="{{ route ('driver-vehicle-list') }}" data-url-delete="{{ route ('admin.driver-vehicle.destroy') }}">
+            style="width:100%" data-url-list="{{ route ('driver-vehicle-list') }}"
+            data-url-delete="{{ route ('admin.driver-vehicle.destroy') }}">
             <thead class="thead-dark">
                 <tr>
                     <th></th>
@@ -62,6 +63,10 @@
                 </tr>
             </thead>
         </table>
+        <div class="text-center">
+            <center><button type="button" id="add_driver_vehicle" class="btn btn-primary" data-toggle="modal"
+                    data-target="#add_driver_vehicle_modal"><span class="plus_icon"></span> Agregar</button></center>
+        </div>
     </div>
 </div>
 
@@ -83,7 +88,8 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <input class="form-control form-vehicles" type="text" name="vehicle[plate_id]"
-                            placeholder="Placa" id="plate_id_form" data-check="{{ route('admin.vehicle.checkvehiclebyid') }}" />
+                                    placeholder="Placa" id="plate_id_form"
+                                    data-check="{{ route('admin.vehicle.checkvehiclebyid') }}" />
                                 <span class="error_admin input_user_admin" role="alert" id="plate_id-error">
                                     <strong id="plate_id-error-strong" class="error-strong"> </strong>
                                 </span>
@@ -148,7 +154,7 @@
                             <div class="col-md-6">
                                 <label for="soat_expi_date_form">Fecha de vencimiento de soat</label>
                                 <input type="date" class="form-control form-vehicles" name="vehicle[soat_expi_date]"
-                                    id="soat_expi_date_form" readonly required/>
+                                    id="soat_expi_date_form" readonly required />
                                 <span class="error_admin input_user_admin" role="alert" id="soat_expi_date-error">
                                     <strong id="soat_expi_date-error-strong" class="error-strong"> </strong>
                                 </span>
@@ -201,8 +207,8 @@
                         </div>
                         <div class="row row_form_input_conductores mt-2">
                             <div class="col-md-6">
-                                <input type="number" class="form-control form-vehicles" name="vehicle[model]"
-                                    min="1950" max="2030" placeholder="Modelo (año)" id="model_form" />
+                                <input type="number" class="form-control form-vehicles" name="vehicle[model]" min="1950"
+                                    max="2030" placeholder="Modelo (año)" id="model_form" />
                             </div>
                             <div class="col-md-6">
                                 <input type="text" class="form-control form-vehicles" name="vehicle[line]"
@@ -247,7 +253,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('admin.vehicle.import') }}" id=form_excel_vehicle_admin"
+                <form method="POST" action="{{ route('admin.vehicle.import') }}" id="form_excel_vehicle_admin"
                     data-url="{{ route('admin.vehicle.import') }}" data-url-delete="{{ route('driver-info.destroy') }}"
                     enctype="multipart/form-data">
                     @csrf
@@ -259,14 +265,60 @@
                         </div>
                         <div class="form-group">
                             <label for="file_driver_info">Importar Información de Vehículos</label>
-                            <input type="file" class="form-control-file" id="file_driver_info" name="file" style="margin-bottom: 7px;" required>
-                            <a  href="{{ asset('formats/formato_vehiculo.xlsx') }}" target="_blank" style="color:green;"> <span class="excel_icon"></span>  Descargar Formato</a>
+                            <input type="file" class="form-control-file" id="file_driver_info" name="file"
+                                style="margin-bottom: 7px;" required>
+                            <a href="{{ asset('formats/formato_vehiculo.xlsx') }}" target="_blank" style="color:green;">
+                                <span class="excel_icon"></span> Descargar Formato</a>
                             <div class="d-flex justify-content-center" style="margin-top: 22px;">
                                 <input type="submit" value="Registrar" class="btn btn-primary">
                             </div>
                         </div>
                     </div>
                     <!-- Button trigger modal -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="add_driver_vehicle_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Asignar conductor al vehículo</h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ route('admin.vehicle.add-driver-vehicle') }}" id ="form_add_vehicle_driver"
+                    data-url="{{ route('admin.vehicle.add-driver-vehicle') }}" data-url-delete="{{ route('driver-info.destroy') }}"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-card">
+                        <div class="form-group">
+                            <label for="driver_information_dni_id">C.C Conductor</label>
+                            <select name="drivingLicence[driver_information_dni_id]" class="form-control"
+                                id="driver_information_dni_id_form" style="width: 100%; height: 100%;"
+                                data-url="{{ route('drivers-select-lists')}}"
+                                data-url-name="{{ route('drivers-get-name') }}" required>
+                            </select>
+                            <label class="text-info font-weight-bold" id="name_driver"
+                                style="margin-top: 12px;"></label>
+                            <span class="error_admin input_user_admin" role="alert"
+                                id="driver_information_dni_id-error">
+                                <strong id="driver_information_dni_id-error-strong" class="error-strong"> </strong>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-secondary" type="submit">Agregar</button>
+                        </div>
+                        <!-- Button trigger modal -->
                 </form>
             </div>
             <div class="modal-footer">

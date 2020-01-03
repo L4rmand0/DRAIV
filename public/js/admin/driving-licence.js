@@ -76,11 +76,11 @@
             }
         });
 
-        $('#driver_information_dni_id').on('change', function () {
+        $('#driver_information_dni_id_form').on('change', function () {
             let user_info_id = $(this).val();
             $.ajax({
                 type: 'GET',
-                url: $('#driver_information_dni_id').data('url-name'),
+                url: $('#driver_information_dni_id_form').data('url-name'),
                 data: { 'type': 'select_admin2', 'user_info_id': user_info_id },
                 success: function (data) {
                     $("#name_driver").text(data.name);
