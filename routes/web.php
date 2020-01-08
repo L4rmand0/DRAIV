@@ -64,7 +64,7 @@ Route::prefix('admin')->group(function () {
     Route::post('driving_licence/store','admin\DrivingLicenceController@store')->name('driving_licence.store');
     Route::post('driving_licence/update', 'admin\DrivingLicenceController@update')->name('driving_licence.update'); 
     Route::post('driving_licence/import','admin\DrivingLicenceController@import')->name('driving_licence.import');
-    Route::get('vehicle', 'admin\vehicleController@index')->name('admin.vehicle');
+    Route::get('vehicle', 'admin\VehicleController@index')->name('admin.vehicle');
     Route::get('vehicle-list', 'admin\VehicleController@vehicleList')->name('vehicle-list'); 
     Route::post('vehicle/store','admin\VehicleController@store')->name('admin.vehicle.store');
     Route::post('vehicle/update', 'admin\VehicleController@update')->name('admin.vehicle.update'); 

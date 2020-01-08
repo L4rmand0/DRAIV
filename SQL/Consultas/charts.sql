@@ -70,7 +70,38 @@ WHERE vehicle.company_id = 9013380301
 AND vehicle.operation != 'D' 
 GROUP BY model;
 
-#licencias de vehículo próximas a vencer por empresa
+#licencias de vehículo vencidas
+SELECT
+	driving_licence.licence_num
+FROM
+	`driving_licence`
+INNER JOIN `driver_information` ON
+	`driver_information`.`dni_id` = `driving_licence`.`driver_information_dni_id`
+WHERE
+	`driver_information`.`company_id` = 9013380301
+	AND `driving_licence`.`operation` != 'D'
+	AND `driving_licence`.`expi_date` <= '2020-01-07';
+
+#soat de vehículo vencidos
+select
+	count(v.plate_id) as total
+from
+	`vehicle` as `v`
+where
+	`v`.`company_id` = 9013380301
+	and `v`.`operation` != 'D'
+	and `v`.`soat_expi_date` <= '20-01-07';
+
+#tecnomecánicas vencidas
+select
+	count(v.plate_id) as total
+from
+	`vehicle` as `v`
+where
+	`v`.`company_id` = 9013380301
+	and `v`.`operation` != 'D'
+	and `v`.`technomechanical_date` <= '2020-01-07';
+
 
 
 

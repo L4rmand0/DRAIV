@@ -1,35 +1,48 @@
 // IIFE - Immediately Invoked Function Expression
-(function (runcode) {
+(function(runcode) {
 
     // The global jQuery object is passed as a parameter
     runcode(window.jQuery, window, document);
 
-}(function ($, window, document) {
+}(function($, window, document) {
 
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
-    $(function () {
+    $(function() {
 
         var enums = {
             'User_profile': {
-                'User': 'User', 'Administrator': 'Administrator', 'Evaluator': 'Evaluator'
+                'User': 'User',
+                'Administrator': 'Administrator',
+                'Evaluator': 'Evaluator'
             }
         }
 
-        $("#form_user_admin").submit(function (event) {
+        $.ajax({
+            type: 'GET',
+            url: $('#profile_id_form').data('url'),
+            data: { 'type': 'select_admin2' },
+            success: function(data) {
+                $('#profile_id_form').select2({
+                    data: data
+                });
+            }
+        });
+
+        $("#form_user_admin").submit(function(event) {
             event.preventDefault();
             let data_form = $(this).serialize();
             $.ajax({
                 type: 'POST',
                 url: $("#btn_admin_user ").data('url'),
                 data: data_form,
-                success: function (data) {
+                success: function(data) {
                     console.log(data);
                     $(".error-strong").text("");
                     if (Object.keys(data.errors).length > 0) {
                         let arr_errores = data.errors;
                         console.log(arr_errores);
-                        $.each(arr_errores, function (index, value) {
+                        $.each(arr_errores, function(index, value) {
                             let selector = "#" + index + "-error";
                             let selector_strong = "#" + index + "-error-strong";
                             $(selector).show();
@@ -73,10 +86,9 @@
                 { data: 'user_profile', name: 'user_profile' }
             ],
             language: language_dt,
-            columnDefs: [
-                {
+            columnDefs: [{
                     targets: '_all',
-                    createdCell: function (td, cellData, rowData, row, col) {
+                    createdCell: function(td, cellData, rowData, row, col) {
                         $(td).attr("id", fields[col])
                     }
                 },
@@ -99,22 +111,19 @@
         });
 
 
-        $('#user_datatable').on('click', 'tr td #btn_delete_user', function () {
+        $('#user_datatable').on('click', 'tr td #btn_delete_user', function() {
             let row = $(this).parents('tr')
             let data_delete = table.row(row).data();
             swal.fire({
                 title: '<strong>Eliminar Información</strong>',
                 icon: 'warning',
-                html:
-                    '¿Está seguro que desea eliminar este registro? ',
+                html: '¿Está seguro que desea eliminar este registro? ',
                 showCloseButton: true,
                 showCancelButton: true,
                 focusConfirm: false,
-                confirmButtonText:
-                    'Confirmar',
+                confirmButtonText: 'Confirmar',
                 confirmButtonAriaLabel: 'Thumbs up, great!',
-                cancelButtonText:
-                    'Cancelar',
+                cancelButtonText: 'Cancelar',
                 cancelButtonAriaLabel: 'Thumbs down'
             }).then((result) => {
                 if (result.value) {
@@ -122,7 +131,7 @@
                         type: 'POST',
                         url: $("#form_user_admin").data("url-delete"),
                         data: data_delete,
-                        success: function (data) {
+                        success: function(data) {
                             if (data.error == "") {
                                 swal.fire(
                                     'Proceso Completado',
@@ -154,7 +163,7 @@
                     url: $("#update-users-route").val(),
                     data: dataSend,
                     async: false,
-                    success: function (data) {
+                    success: function(data) {
                         if (Object.keys(data.response).length === 0)
                             swal.fire(
                                 'Error!',
@@ -169,17 +178,15 @@
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            "inputTypes": [
-                {
-                    "column": 4,
-                    "type": "list",
-                    "options": [
-                        { "value": enums.User_profile['User'], "display": enums.User_profile['User'] },
-                        { "value": enums.User_profile['Administrator'], "display": enums.User_profile['Administrator'] },
-                        { "value": enums.User_profile['Evaluator'], "display": enums.User_profile['Evaluator'] }
-                    ]
-                }
-            ]
+            "inputTypes": [{
+                "column": 4,
+                "type": "list",
+                "options": [
+                    { "value": enums.User_profile['User'], "display": enums.User_profile['User'] },
+                    { "value": enums.User_profile['Administrator'], "display": enums.User_profile['Administrator'] },
+                    { "value": enums.User_profile['Evaluator'], "display": enums.User_profile['Evaluator'] }
+                ]
+            }]
         });
 
     });

@@ -105,16 +105,13 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="user_profile" class="col-md-4 col-form-label text-md-right">{{ __('Perfil') }}</label>
+                        <label for="profile_id_form" class="col-md-4 col-form-label text-md-right">{{ __('Perfil') }}</label>
                         <div class="col-md-6">
-                            <select class="form-control" name="user_profile" id="user_profile">
+                        <select class="form-control" name="profile_id" id="profile_id_form" data-url="{{ route('') }}"
                                 <option value="">Seleccionar ...</option>
-                                <option value="Administrator">Administrator</option>
-                                <option value="Evaluator">Evaluator</option>
-                                <option value="User">User</option>
                             </select>
-                            <span class="error_admin" role="alert" id="user_profile-error">
-                                <strong id="user_profile-error-strong" class="error-strong"></strong>
+                            <span class="error_admin" role="alert" id="profile_id-error">
+                                <strong id="profile_id-error-strong" class="error-strong"></strong>
                             </span>
                         </div>
                     </div>

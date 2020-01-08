@@ -275,11 +275,28 @@ class DrivingLicenceController extends Controller
             // ->where(DB::raw(
             //     "(driving_licence.expi_date BETWEEN '$fecha_actual' AND '$date_month')"
             // ))
+            // ->toSql();
             ->get()->toArray();
         // echo '<pre>';
         // print_r($fecha_actual);
         // print_r($licencias_expiration);
         // die;
+        return count($licencias_expiration);
+    }
+
+    public static function getLicencesExpirated($company_id)
+    {
+        $fecha_actual = date("Y-m-d");
+        $licencias_expiration = DB::table('driving_licence')
+            ->select(DB::raw(
+                'driving_licence.licence_num'
+            ))
+            ->join('driver_information', 'driver_information.dni_id', '=', 'driving_licence.driver_information_dni_id')
+            ->where('driver_information.company_id', '=', $company_id)
+            ->where('driving_licence.operation', '!=', 'D')
+            ->where('driving_licence.expi_date', '<=', $fecha_actual)
+            // ->toSql();
+            ->get()->toArray();
         return count($licencias_expiration);
     }
 

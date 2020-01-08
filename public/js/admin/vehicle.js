@@ -1,18 +1,18 @@
 // IIFE - Immediately Invoked Function Expression
 var table_relation;
 
-(function (runcode) {
+(function(runcode) {
 
     // The global jQuery object is passed as a parameter
     runcode(window.jQuery, window, document);
 
-}(function ($, window, document) {
+}(function($, window, document) {
 
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
-    $(function () {
+    $(function() {
 
-        $(document).click(function (event) {
+        $(document).click(function(event) {
             $target = $(event.target);
             if (!$target.closest('#vehicle_datatable tr #taxi_type').length &&
                 $('#vehicle_datatable tr #taxi_type select').is(":visible")) {
@@ -50,7 +50,7 @@ var table_relation;
         //     alert("okay")
         // });
 
-        
+
 
         //Selects de vehículos
         var $type_v_select2 = $("#type_v_form").select2();
@@ -64,28 +64,38 @@ var table_relation;
             type: 'GET',
             url: $('#driver_information_dni_id_form').data('url'),
             data: { 'type': 'select_admin2' },
-            success: function (data) {
+            success: function(data) {
                 $('#driver_information_dni_id_form').select2({
                     data: data
                 });
             }
         });
 
-        $('#driver_information_dni_id_form').on('change', function () {
-            alert("cambia");
+        $('#driver_information_dni_id_form').on('change', function() {
             let user_info_id = $(this).val();
+            $("#name_driver").text("");
             $.ajax({
                 type: 'GET',
                 url: $('#driver_information_dni_id_form').data('url-name'),
                 data: { 'type': 'select_admin2', 'user_info_id': user_info_id },
-                success: function (data) {
+                success: function(data) {
+                    if (Object.keys(data.errors).length > 0) {
+                        let arr_errores = data.errors;
+                        console.log(arr_errores);
+                        $.each(arr_errores, function(index, value) {
+                            let selector = "#" + index + "-error";
+                            let selector_strong = "#" + index + "-error-strong";
+                            $(selector).show();
+                            $(selector_strong).text(value[0]);
+                        });
+                    }
                     $("#name_driver").text(data.name);
                 }
             });
             $(".error-strong").text("");
         });
 
-        $("#form_add_vehicle_driver").submit(function(event){
+        $("#form_add_vehicle_driver").submit(function(event) {
             event.preventDefault();
             let element = $(this);
             let data_form = element.serialize();
@@ -93,14 +103,33 @@ var table_relation;
                 type: 'POST',
                 url: element.data('url'),
                 data: data_form,
-                success: function (data) {
+                success: function(data) {
                     console.log(data);
-                    
+                    if (Object.keys(data.errors).length > 0) {
+                        let arr_errores = data.errors;
+                        console.log(arr_errores);
+                        $.each(arr_errores, function(index, value) {
+                            debugger
+                            let selector = "#" + index + "-error";
+                            let selector_strong = "#" + index + "-error-strong";
+                            $(selector).show();
+                            $(selector_strong).text(value[0]);
+                        });
+                    } else {
+                        swal.fire(
+                            'Proceso completado!',
+                            data.response,
+                            'success'
+                        );
+                        $('#add_driver_vehicle_modal').modal('hide')
+                        $("#div-table-relation-vehicle-driver").hide();
+                        $('#vehicle_datatable').DataTable().ajax.reload();
+                    }
                 }
             });
         });
 
-        $("#number_of_drivers_form").on('change', function () {
+        $("#number_of_drivers_form").on('change', function() {
             $("#vehicle_drivers_relation").attr('hidden', true);
             $("#vehicle_drivers_relation").show();
             let number_of_drivers = parseInt($(this).val());
@@ -153,13 +182,13 @@ var table_relation;
                 type: 'GET',
                 url: $('#drivers-select-list-route').val(),
                 data: { 'type': 'select_admin2' },
-                success: function (data) {
+                success: function(data) {
                     $('.driver_vehicle_form').select2({
                         data: data
                     });
                     $("#vehicle_drivers_relation").attr('hidden', false);
 
-                    $('.driver_vehicle_form').on('change', function () {
+                    $('.driver_vehicle_form').on('change', function() {
                         $(this).parent().find('strong').text("")
                     })
                 }
@@ -176,14 +205,14 @@ var table_relation;
             type: 'GET',
             url: $('#company-select-list-route').val(),
             data: { 'type': 'companies' },
-            success: function (data) {
+            success: function(data) {
                 $('#company_id_excel').select2({
                     data: data
                 });
             }
         });
 
-        $("#btn_search_company").on("click", function () {
+        $("#btn_search_company").on("click", function() {
             $(this).hide();
             table_search = $("#search_company_datatable").DataTable({
                 processing: true,
@@ -197,7 +226,7 @@ var table_relation;
                 language: language_dt,
             });
             // DELETE
-            $('#search_company_datatable tbody').on('click', 'tr', function () {
+            $('#search_company_datatable tbody').on('click', 'tr', function() {
                 var data = table_search.row(this).data();
                 $("#company_id").val(data['nit']);
             });
@@ -205,14 +234,14 @@ var table_relation;
 
 
 
-        $("#plate_id_form").on('change', function () {
+        $("#plate_id_form").on('change', function() {
             let element = $(this);
             $(".error-strong").text("");
             $.ajax({
                 type: 'GET',
                 url: element.data('check'),
                 data: { 'plate_id': element.val() },
-                success: function (data) {
+                success: function(data) {
                     if (Object.keys(data.errors).length > 0) {
                         // swal.fire(
                         //     'Información Errónea',
@@ -226,7 +255,7 @@ var table_relation;
             });
         });
 
-        $("#type_v_form").on('change', function () {
+        $("#type_v_form").on('change', function() {
             if ($(this).val() == "Taxis") {
                 $("#row-taxi-inputs").attr("hidden", false);
             } else {
@@ -235,24 +264,24 @@ var table_relation;
             }
         });
 
-        $('#drive_information_dni_id').on('change', function () {
+        $('#drive_information_dni_id').on('change', function() {
             let user_info_id = $(this).val();
             $.ajax({
                 type: 'GET',
                 url: $('#driver_information_dni_id').data('url-name'),
                 data: { 'type': 'select_admin2', 'user_info_id': user_info_id },
-                success: function (data) {
+                success: function(data) {
                     $("#name_driver").text(data.name);
                 }
             });
             $(".error-strong").text("");
         })
 
-        $("#modal_form_drive_info").on("click", function () {
+        $("#modal_form_drive_info").on("click", function() {
             $("#btn_search_company").show();
         });
 
-        $("#form_vehicle_admin").submit(function (event) {
+        $("#form_vehicle_admin").submit(function(event) {
             event.preventDefault();
             $(".error-strong").text("");
             let data_form = $(this).serialize();
@@ -264,16 +293,16 @@ var table_relation;
                 "background": ""
             });
             let columns = $(".col-select-drivers")
-            $.each(columns, function (index, value) {
+            $.each(columns, function(index, value) {
                 $($(value).find("span")[2]).css("border", "")
                 $(value).find("label").css({ "color": "", "font-weight": "" })
             });
             // valida los valores de los selects de los conductores
-            $.each($(".driver_vehicle_form"), function (index_select, values_select) {
+            $.each($(".driver_vehicle_form"), function(index_select, values_select) {
                 valor_select = $(values_select).val();
                 valor_select_label = "#" + $(values_select).attr('id') + "_label";
                 let coincidencias = 0;
-                $.each(arr_values, function (index_arr, value_arr) {
+                $.each(arr_values, function(index_arr, value_arr) {
                     if (valor_select == value_arr) {
                         coincidencias++;
                     }
@@ -308,7 +337,7 @@ var table_relation;
                     type: 'POST',
                     url: $("#form_vehicle_admin").data('url'),
                     data: data_form,
-                    success: function (data) {
+                    success: function(data) {
                         if (Object.keys(data.errors).length > 0) {
                             if (data.errors.response == "vehicle exists") {
                                 let arr_errores = data.errors;
@@ -319,8 +348,8 @@ var table_relation;
                                 let duplicates = data.duplicates;
                                 let selects = $(".driver_vehicle_form ");
                                 console.log(duplicates);
-                                $.each(selects, function (index_selects, value_selects) {
-                                    $.each(duplicates, function (index_duplicates, value_duplicates) {
+                                $.each(selects, function(index_selects, value_selects) {
+                                    $.each(duplicates, function(index_duplicates, value_duplicates) {
                                         let valor_select = $(value_selects).val();
                                         let valor_duplicate = value_duplicates.driver_information_dni_id;
                                         if (valor_select == valor_duplicate) {
@@ -331,7 +360,7 @@ var table_relation;
                             } else {
                                 let arr_errores = data.errors;
                                 console.log(arr_errores);
-                                $.each(arr_errores, function (index, value) {
+                                $.each(arr_errores, function(index, value) {
                                     let selector = "#" + index + "-error";
                                     let selector_strong = "#" + index + "-error-strong";
                                     $(selector).show();
@@ -357,7 +386,7 @@ var table_relation;
             }
         });
 
-        $("#form_excel_vehicle_admin").submit(function (event) {
+        $("#form_excel_vehicle_admin").submit(function(event) {
             event.preventDefault();
             var datafr = new FormData($("#form_excel_vehicle_admin")[0]);
             $.ajax({
@@ -367,7 +396,7 @@ var table_relation;
                 contentType: false,
                 processData: false,
                 data: datafr,
-                success: function (data) {
+                success: function(data) {
                     console.log(data);
                     if (data.response == "ok") {
                         swal.fire(
@@ -427,7 +456,7 @@ var table_relation;
 
             columnDefs: [{
                 targets: '_all',
-                createdCell: function (td, cellData, rowData, row, col) {
+                createdCell: function(td, cellData, rowData, row, col) {
                     $(td).attr("id", fields[col])
                     if (fields[col] == "plate_id") {
                         $(td).html("<a href='#' id='plate_id_link' style='text-decoration: underline;'>" + rowData[fields[col]] + "</a>")
@@ -436,20 +465,21 @@ var table_relation;
             }],
         });
 
-        $('#vehicle_datatable').on('click', 'tr td #plate_id_link', function () {
+        $('#vehicle_datatable').on('click', 'tr td #plate_id_link', function() {
             let plate_id = $(this).text();
             $.ajax({
                 type: 'POST',
                 url: $('#relation_driver_vehicle_datatable').data('url-list'),
                 data: { "plate_id": plate_id },
-                success: function (dataset) {
+                success: function(dataset) {
                     console.log(dataset);
+                    $("#vehicle_plate_id_add").val(dataset.plate_id);
                     $("#div-table-relation-vehicle-driver").attr("hidden", false);
                     $("#div-table-relation-vehicle-driver").show();
                     table_relation = $('#relation_driver_vehicle_datatable').DataTable({
                         scrollX: true,
                         destroy: true,
-                        data: dataset.data,
+                        data: dataset.datatable.original.data,
                         columns: [
                             { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_driver_vehicle"><span class="trash_icon"></span></button></center>' },
                             { data: 'id', name: 'id', "visible": false },
@@ -466,22 +496,19 @@ var table_relation;
             });
 
         });
-        $('#vehicle_datatable').on('click', 'tr td #btn_delete_vehicle', function () {
+        $('#vehicle_datatable').on('click', 'tr td #btn_delete_vehicle', function() {
             let row = $(this).parents('tr')
             let data_delete = table.row(row).data();
             swal.fire({
                 title: '<strong>Eliminar Información</strong>',
                 icon: 'warning',
-                html:
-                    '¿Está seguro que desea eliminar este registro? ',
+                html: '¿Está seguro que desea eliminar este registro? ',
                 showCloseButton: true,
                 showCancelButton: true,
                 focusConfirm: false,
-                confirmButtonText:
-                    'Confirmar',
+                confirmButtonText: 'Confirmar',
                 confirmButtonAriaLabel: 'Thumbs up, great!',
-                cancelButtonText:
-                    'Cancelar',
+                cancelButtonText: 'Cancelar',
                 cancelButtonAriaLabel: 'Thumbs down'
             }).then((result) => {
                 if (result.value) {
@@ -489,7 +516,7 @@ var table_relation;
                         type: 'POST',
                         url: $("#vehicle_datatable").data("url-delete"),
                         data: data_delete,
-                        success: function (data) {
+                        success: function(data) {
                             if (data.error == "") {
                                 swal.fire(
                                     'Proceso Completado',
@@ -511,22 +538,19 @@ var table_relation;
             });
         });
 
-        $('#relation_driver_vehicle_datatable').on('click', 'tr td #btn_delete_driver_vehicle', function () {
+        $('#relation_driver_vehicle_datatable').on('click', 'tr td #btn_delete_driver_vehicle', function() {
             let row = $(this).parents('tr')
             let data_delete = table_relation.row(row).data();
             swal.fire({
                 title: '<strong>Eliminar Información</strong>',
                 icon: 'warning',
-                html:
-                    '¿Está seguro que desea eliminar este registro? ',
+                html: '¿Está seguro que desea eliminar este registro? ',
                 showCloseButton: true,
                 showCancelButton: true,
                 focusConfirm: false,
-                confirmButtonText:
-                    'Confirmar',
+                confirmButtonText: 'Confirmar',
                 confirmButtonAriaLabel: 'Thumbs up, great!',
-                cancelButtonText:
-                    'Cancelar',
+                cancelButtonText: 'Cancelar',
                 cancelButtonAriaLabel: 'Thumbs down'
             }).then((result) => {
                 if (result.value) {
@@ -534,7 +558,7 @@ var table_relation;
                         type: 'POST',
                         url: $("#relation_driver_vehicle_datatable").data("url-delete"),
                         data: data_delete,
-                        success: function (data) {
+                        success: function(data) {
                             if (data.error == "") {
                                 swal.fire(
                                     'Proceso Completado',
@@ -573,7 +597,7 @@ var table_relation;
                     url: $("#update-vehicle-route").val(),
                     data: dataSend,
                     async: false,
-                    success: function (data) {
+                    success: function(data) {
                         if (Object.keys(data.error).length > 0) {
 
                             swal.fire(
@@ -594,8 +618,7 @@ var table_relation;
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
             columns: [2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-            "inputTypes": [
-                {
+            "inputTypes": [{
                     "column": 2,
                     "type": "list",
                     "options": enum_type_v
@@ -624,7 +647,7 @@ var table_relation;
     });
 
     function displayErrorsSpan(arr_errores) {
-        $.each(arr_errores, function (index, value) {
+        $.each(arr_errores, function(index, value) {
             let selector = "#" + index + "-error";
             let selector_strong = "#" + index + "-error-strong";
             $(selector).show();

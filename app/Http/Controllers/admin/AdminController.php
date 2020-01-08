@@ -19,8 +19,7 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         $profile = auth()->user()->user_profile;
-        if ($profile == "administrator") {
-            
+        if ($profile == "administrator") {   
             $company_id = auth()->user()->company_id;
             $company = CompanyController::getCompanyByid($company_id);
             $total_drivers = DriverInformationController::getNumberDriversByCompany($company_id);
@@ -28,8 +27,11 @@ class AdminController extends Controller
             $total_gender = DriverInformationController::getGenderByCompany($company_id);
             $average_score = DriverInformationController::getAverageScoreByCompany($company_id);
             $licences_expiration = DrivingLicenceController::getLicenceExpiDates($company_id);
+            $licences_expirated = DrivingLicenceController::getLicencesExpirated($company_id);
             $soats_expiration = VehicleController::getSoatExpiDates($company_id);
+            $soats_expirated = VehicleController::getSoatsExpirated($company_id);
             $technomecanical_expiration = VehicleController::getExpiTecnomecanicalDates($company_id);
+            $technomecanical_expirated = VehicleController::getExpiTecnomecanicalExpirated($company_id);
             // $incomplete_document_drivers = $this->image_controller->checkIncompleteDocumentDrivers($company_id);
             // echo $soats_expiration;
             // die;
@@ -42,9 +44,6 @@ class AdminController extends Controller
                     $woman = $value->total;
                 }
             }
-            // echo '<pre>';
-            // print_r($total_gender);
-            // die;
             return view('admin.dashboard', [
                 'company_name' => ucwords(strtolower($company->company)),
                 'total_drivers' => $total_drivers,
@@ -53,8 +52,11 @@ class AdminController extends Controller
                 'total_woman' => $woman,
                 'score_average' => number_format($average_score->average, 3),
                 'licences_expiration' => $licences_expiration,
+                'licences_expirated' => $licences_expirated,
                 'soats_expiration' => $soats_expiration,
-                'technomecanical_expiration' => $technomecanical_expiration
+                'soats_expirated' => $soats_expirated,
+                'technomecanical_expiration' => $technomecanical_expiration,
+                'technomecanical_expirated' => $technomecanical_expirated,
             ]);
         } else {
             return view('prohibited');

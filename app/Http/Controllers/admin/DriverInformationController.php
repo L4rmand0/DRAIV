@@ -2,23 +2,21 @@
 
 namespace App\Http\Controllers\admin;
 
-
 // use Excel;
 
-use DB;
 use App\DriverInformation;
 use App\DriverVehicle;
 use App\DrivingLicence;
-use Illuminate\Http\Request;
-// use Maatwebsite\Excel\Excel;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\UsersInformationImport;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\dataConductores\UserInformationController;
+// use Maatwebsite\Excel\Excel;
 use App\Imagenes;
+use App\Imports\UsersInformationImport;
 use App\Vehicle;
+use DB;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DriverInformationController extends Controller
 {
@@ -55,7 +53,7 @@ class DriverInformationController extends Controller
         $list_country_born = DriverInformation::enum_country_born;
         $company_id = auth()->user()->company_id;
         $company = CompanyController::getCompanyByid($company_id);
-        // echo '<pre>'; 
+        // echo '<pre>';
         // print_r($enum_education);
         // die;
         return view(
@@ -68,7 +66,7 @@ class DriverInformationController extends Controller
                 'list_civil_state' => $list_civil_state,
                 'list_country_born' => $list_country_born,
                 'list_admin3' => $list_admin3,
-                'company_name' => ucwords(strtolower($company->company))
+                'company_name' => ucwords(strtolower($company->company)),
             ]
         );
     }
@@ -110,11 +108,11 @@ class DriverInformationController extends Controller
                 'department' => 'required|max:20',
                 'civil_state' => 'required',
                 'address' => 'required|max:50',
-                'phone' => 'required|max:30'
+                'phone' => 'required|max:30',
             ],
             [
                 'dni_id.unique' => "Esta cédula ya está en uso.",
-                'e_mail_address.unique' => "Este email ya está en uso."
+                'e_mail_address.unique' => "Este email ya está en uso.",
             ]
         );
 
@@ -122,11 +120,11 @@ class DriverInformationController extends Controller
         // print_r($errors);
         // die;
         foreach ($errors as $key => $value) {
-            if (strpos($value[0], "uso") !== FALSE) {
+            if (strpos($value[0], "uso") !== false) {
                 $now = date("Y-m-d H:i:s");
                 $response = DriverInformation::where($key, $data_input[$key])->update([
                     'first_name' => $data_input['first_name'],
-                    'second_name' =>  $data_input['second_name'] != "" ? $data_input['second_name'] : "NA",
+                    'second_name' => $data_input['second_name'] != "" ? $data_input['second_name'] : "NA",
                     'f_last_name' => $data_input['f_last_name'],
                     's_last_name' => $data_input['s_last_name'] != "" ? $data_input['s_last_name'] : "NA",
                     'gender' => $data_input['gender'] == "Masculino",
@@ -142,7 +140,7 @@ class DriverInformationController extends Controller
                     'db_user_id' => $data_input['db_user_id'],
                     'company_id' => $data_input['company_id'],
                     'operation' => 'U',
-                    'date_operation' => $now
+                    'date_operation' => $now,
                 ]);
                 if ($response) {
                     return response()->json(['response' => 'Información actualizada', 'errors' => []]);
@@ -157,7 +155,7 @@ class DriverInformationController extends Controller
             $user_information = DriverInformation::create([
                 'dni_id' => $data_input['dni_id'],
                 'first_name' => $data_input['first_name'],
-                'second_name' =>  $data_input['second_name'] != "" ? $data_input['second_name'] : "NA",
+                'second_name' => $data_input['second_name'] != "" ? $data_input['second_name'] : "NA",
                 'f_last_name' => $data_input['f_last_name'],
                 's_last_name' => $data_input['s_last_name'] != "" ? $data_input['s_last_name'] : "NA",
                 'e_mail_address' => $data_input['e_mail_address'],
@@ -172,12 +170,12 @@ class DriverInformationController extends Controller
                 'address' => $data_input['address'],
                 'phone' => $data_input['phone'],
                 'db_user_id' => $data_input['db_user_id'],
-                'company_id' => $data_input['company_id']
+                'company_id' => $data_input['company_id'],
             ]);
             if ($user_information->dni_id > 0) {
                 return response()->json([
                     'success' => 'Información registrada.',
-                    'errors' => $errors
+                    'errors' => $errors,
                 ]);
             }
         }
@@ -206,15 +204,15 @@ class DriverInformationController extends Controller
     }
 
     /**$.ajax({
-            type: 'GET',
-            url: $('#department').data('url'),
-            data: { 'type': 'select_admin2' },
-            success: function (data) {
-                $('#department').select2({
-                    data: data
-                });
-            }
-        });
+    type: 'GET',
+    url: $('#department').data('url'),
+    data: { 'type': 'select_admin2' },
+    success: function (data) {
+    $('#department').select2({
+    data: data
+    });
+    }
+    });
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -236,7 +234,7 @@ class DriverInformationController extends Controller
             $field => $value,
             'operation' => 'U',
             'date_operation' => $now,
-            'user_id' => auth()->id()
+            'user_id' => auth()->id(),
         ]);
         if ($response) {
             return response()->json(['response' => 'Información actualizada', 'error' => []]);
@@ -263,7 +261,7 @@ class DriverInformationController extends Controller
         $delete = DriverInformation::where('dni_id', $dni_id)->update([
             'operation' => 'D',
             'user_id' => auth()->id(),
-            'date_operation' => $now
+            'date_operation' => $now,
         ]);
         if ($delete <= 0) {
             $errors++;
@@ -271,33 +269,33 @@ class DriverInformationController extends Controller
         $delete = DrivingLicence::where('driver_information_dni_id', $dni_id)->update([
             'operation' => 'D',
             'user_id' => auth()->id(),
-            'date_operation' => $now
+            'date_operation' => $now,
         ]);
 
         $delete = Imagenes::where('driver_information_dni_id', $dni_id)->update([
             'operation' => 'D',
             'user_id' => auth()->id(),
-            'date_operation' => $now
+            'date_operation' => $now,
         ]);
 
         $check_vehicle_driver = DB::table('user_vehicle')
             ->where('user_vehicle.driver_information_dni_id', '=', $dni_id)
             ->where('user_vehicle.operation', '!=', 'D')
             ->select(DB::raw(
-                'user_vehicle.driver_information_dni_id, 
+                'user_vehicle.driver_information_dni_id,
                 user_vehicle.vehicle_plate_id'
             ))->first();
         if (!empty($check_vehicle_driver)) {
             $delete = DriverVehicle::where('driver_information_dni_id', $dni_id)->update([
                 'operation' => 'D',
                 'user_id' => auth()->id(),
-                'date_operation' => $now
+                'date_operation' => $now,
             ]);
             $plate_id_driver = $check_vehicle_driver->vehicle_plate_id;
             $vehicle = DB::table('vehicle')
                 ->where('vehicle.plate_id', '=', $plate_id_driver)
                 ->select(DB::raw(
-                    'vehicle.plate_id, 
+                    'vehicle.plate_id,
                     vehicle.number_of_drivers'
                 ))->first();
             $number_of_drivers = $vehicle->number_of_drivers - 1;
@@ -307,7 +305,7 @@ class DriverInformationController extends Controller
                 'operation' => 'U',
                 'number_of_drivers' => $number_of_drivers,
                 'user_id' => auth()->id(),
-                'date_operation' => $now
+                'date_operation' => $now,
             ]);
             if ($delete <= 0) {
                 $errors++;
@@ -407,10 +405,23 @@ class DriverInformationController extends Controller
             )->where('driver_information.dni_id', '=', $dni_id)
             ->where('driver_information.company_id', '=', $company_id)
             ->get()->toArray();
+        $check_vehicles = DB::table('user_vehicle')
+            ->where('user_vehicle.driver_information_dni_id', '=', $dni_id)
+            ->where('user_vehicle.operation', '!=', 'D')
+            ->select(DB::raw(
+                'user_vehicle.vehicle_plate_id,
+                user_vehicle.driver_information_dni_id,
+                user_vehicle.operation'
+            ))->first();
+
         foreach ($name_driver as $value) {
             $name_id = $value->first_name . " " . $value->second_name . " " . $value->f_last_name . " " . $value->s_last_name;
         }
-        return response()->json(['name' => $name_id]);
+        if(!empty($check_vehicles)){
+            return response()->json(['name' => $name_id, 'errors' => ['driver_information_dni_id'=>['Este conductor ya tiene asociado un vehículo.']]]);
+        }else{
+            return response()->json(['name' => $name_id, 'errors'=>[]]);
+        }
     }
 
     public function import(Request $request)
@@ -433,7 +444,6 @@ class DriverInformationController extends Controller
             ))->get()->toArray();
         return count($drivers);
     }
-
 
     public static function getEducationGradeByCompany($company_id)
     {
@@ -492,7 +502,7 @@ class DriverInformationController extends Controller
         }
         $num_register = count($data_data);
         $arr_colors = $this->fillColorsBarChart($num_register);
-        $maximo = max($data_data)+1;
+        $maximo = max($data_data) + 1;
         $datasets['label'] = "Frecuencia Educación";
         $datasets['data'] = $data_data;
         $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
@@ -500,7 +510,7 @@ class DriverInformationController extends Controller
         $datasets['borderWidth'] = 1;
         $data['datasets'][] = $datasets;
         $data['labels'] = $labels;
-        return response()->json(['data' => $data, 'errors' => [],'max'=>$maximo]);
+        return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
     }
 
     public function makeBarChartCivilState(Request $request)
@@ -513,7 +523,7 @@ class DriverInformationController extends Controller
         }
         $num_register = count($data_data);
         $arr_colors = $this->fillColorsBarChart($num_register);
-        $maximo = max($data_data)+1;
+        $maximo = max($data_data) + 1;
         $datasets['label'] = "Frecuencia Estado Civil";
         $datasets['data'] = $data_data;
         $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
@@ -521,6 +531,6 @@ class DriverInformationController extends Controller
         $datasets['borderWidth'] = 1;
         $data['datasets'][] = $datasets;
         $data['labels'] = $labels;
-        return response()->json(['data' => $data, 'errors' => [],'max'=>$maximo]);
+        return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
     }
 }

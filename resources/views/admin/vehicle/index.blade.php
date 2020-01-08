@@ -300,18 +300,18 @@
                     data-url="{{ route('admin.vehicle.add-driver-vehicle') }}" data-url-delete="{{ route('driver-info.destroy') }}"
                     enctype="multipart/form-data">
                     @csrf
+                    <input type="hidden" name="vehicle_plate_id" id="vehicle_plate_id_add">
                     <div class="form-card">
                         <div class="form-group">
                             <label for="driver_information_dni_id">C.C Conductor</label>
-                            <select name="drivingLicence[driver_information_dni_id]" class="form-control"
+                            <select name="driver_information_dni_id" class="form-control"
                                 id="driver_information_dni_id_form" style="width: 100%; height: 100%;"
                                 data-url="{{ route('drivers-select-lists')}}"
                                 data-url-name="{{ route('drivers-get-name') }}" required>
                             </select>
                             <label class="text-info font-weight-bold" id="name_driver"
                                 style="margin-top: 12px;"></label>
-                            <span class="error_admin input_user_admin" role="alert"
-                                id="driver_information_dni_id-error">
+                            <span class="error_admin input_user_admin" role="alert" id="driver_information_dni_id-error">
                                 <strong id="driver_information_dni_id-error-strong" class="error-strong"> </strong>
                             </span>
                         </div>

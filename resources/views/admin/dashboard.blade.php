@@ -1,5 +1,4 @@
-@extends('layouts-admin.app')
-@section('content')
+@extends('layouts-admin.app') @section('content')
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
@@ -215,27 +214,58 @@
             </div>
         </div>
         <div class="col-lg-6 mb-4">
-            <div class="col-lg-6 mb-4">
-                <div class="card bg-primary text-white shadow">
-                    <div class="card-body">
-                        Licencias Próximas a Vencer
-                        <div class="text-white-50 small">{{ $licences_expiration }}</div>
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-primary text-white shadow">
+                        <div class="card-body">
+                            Licencias Próximas a Vencer
+                            <div class="text-white-50 small">{{ $licences_expiration }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-primary text-white shadow">
+                        <div class="card-body">
+                            Licencias Vencidas
+                            <div class="text-white-50 small">{{ $licences_expirated }}</div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card bg-success text-white shadow">
-                    <div class="card-body">
-                        Soats Próximos a Vencer
-                        <div class="text-white-50 small">{{ $soats_expiration }}</div>
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-success text-white shadow">
+                        <div class="card-body">
+                            Soats Próximos a Vencer
+                            <div class="text-white-50 small">{{ $soats_expiration }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-success text-white shadow">
+                        <div class="card-body">
+                            Soats Vencidos
+                            <div class="text-white-50 small">{{ $soats_expirated }}</div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card bg-danger text-white shadow">
-                    <div class="card-body">
-                        Tecnomecánicas Próximas a Vencer
-                        <div class="text-white-50 small">{{ $technomecanical_expiration }}</div>
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-danger text-white shadow">
+                        <div class="card-body">
+                            Tecnomecánicas Próximos a Vencer
+                            <div class="text-white-50 small">{{ $technomecanical_expiration }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-danger text-white shadow">
+                        <div class="card-body">
+                            Tecnomecánicas Vencidas
+                            <p></p>
+                            <div class="text-white-50 small">{{ $technomecanical_expirated }}</div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -143,7 +143,10 @@ class DriverVehicleController extends Controller
         // print_r($driver_vehicle);
         // die;
         $driver_vehicle = $this->addDeleteButtonDatatable($driver_vehicle);
-        return datatables()->of($driver_vehicle)->make(true);
+        return [
+            'datatable' => datatables()->of($driver_vehicle)->make(true),
+            'plate_id' => $plate_id
+        ];
     }
 
     public static function insertDrivers($driver_list, $plate_id)
