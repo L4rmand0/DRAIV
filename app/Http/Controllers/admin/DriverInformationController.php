@@ -460,6 +460,19 @@ class DriverInformationController extends Controller
             ->get()->toArray();
     }
 
+    public static function getEducationGradeByCompanyADriver($company_id, $dni_id)
+    {
+        return DB::table('driver_information')
+            ->select(DB::raw(
+                'driver_information.education,COUNT(*) AS total'
+            ))
+            ->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.dni_id', '=', $dni_id)
+            ->where('driver_information.operation', '!=', 'D')
+            ->groupBy('education')
+            ->get()->toArray();
+    }
+
     public static function getCivilStateByCompany($company_id)
     {
         return DB::table('driver_information')
@@ -468,6 +481,19 @@ class DriverInformationController extends Controller
             ))
             ->where('driver_information.company_id', '=', $company_id)
             ->where('driver_information.operation', '!=', 'D')
+            ->groupBy('civil_state')
+            ->get()->toArray();
+    }
+
+    public static function getCivilStateByCompanyADriver($company_id, $dni_id)
+    {
+        return DB::table('driver_information')
+            ->select(DB::raw(
+                'driver_information.civil_state,COUNT(*) AS total'
+            ))
+            ->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.operation', '!=', 'D')
+            ->where('driver_information.dni_id', '=', $dni_id)
             ->groupBy('civil_state')
             ->get()->toArray();
     }
@@ -497,8 +523,20 @@ class DriverInformationController extends Controller
 
     public function makeBarChart(Request $request)
     {
+        // echo '<pre>';
+        // print_r($request->all());
+        
         $company_id = $request->get('company_id');
-        $education = $this->getEducationGradeByCompany($company_id);
+        if(!empty($request->get('dni_id'))){
+            // echo ' tiene dni ';
+            $dni_id = $request->get('dni_id');
+            $education = $this->getEducationGradeByCompanyADriver($company_id, $dni_id);
+        }else{
+            // echo ' nada ';
+            $education = $this->getEducationGradeByCompany($company_id);
+        }
+        // print_r($education);
+        // die;
         foreach ($education as $key => $value) {
             $labels[] = $value->education;
             $data_data[] = $value->total;
@@ -519,7 +557,12 @@ class DriverInformationController extends Controller
     public function makeBarChartCivilState(Request $request)
     {
         $company_id = $request->get('company_id');
-        $civil_state = $this->getCivilStateByCompany($company_id);
+        if (!empty($request->get('dni_id'))) {
+            $dni_id = $request->get('dni_id');
+            $civil_state = $this->getCivilStateByCompanyADriver($company_id, $dni_id);
+        }else{
+            $civil_state = $this->getCivilStateByCompany($company_id);
+        }    
         foreach ($civil_state as $key => $value) {
             $labels[] = $value->civil_state;
             $data_data[] = $value->total;

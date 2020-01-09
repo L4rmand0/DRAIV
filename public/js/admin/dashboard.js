@@ -20,6 +20,10 @@
         var ele_chart_brand_v = $("#brand_v_chart");
         var ele_chart_model_v = $("#model_v_chart");
 
+        //Charts
+        var chart_education;
+        var chart_civil_state;
+
         $.ajax({
             type: 'GET',
             url: $('#select_cc_driver').data('url'),
@@ -32,8 +36,27 @@
             }
         });
 
+        // $("#report_generate").on('click', function() {
+        // alert("hola")
+        // var labels = ["naruto", "goku", "picolo", "gohan"];
+        // var data_up = [20, 30, 50, 60];
+        // addData(chart_education, labels, data_up);
+
+        // });
+
+        // function addData(chart, label, data) {
+        //     chart.data.labels.push(label);
+        //     chart.data.datasets.forEach((dataset) => {
+        //         dataset.data.push(data);
+        //     });
+        //     chart.update();
+        // }
+
         $("#select_cc_driver").on('change', function() {
-            alert("Cambia")
+            chart_education.destroy();
+            makeBarChartEducationByDriver(ele_chart_education, chart_education);
+            chart_civil_state.destroy();
+            makeBarChartCivilStateByDriver(ele_chart_civil_state, chart_civil_state);
         });
 
         $.ajax({
@@ -49,7 +72,7 @@
                 if (Object.keys(datac.errors).length > 0) {
 
                 } else {
-                    var chart_education = new Chart(ele_chart_education, {
+                    chart_education = new Chart(ele_chart_education, {
                         type: 'horizontalBar',
                         data: datac.data,
                         options: {
@@ -96,7 +119,7 @@
                 if (Object.keys(datac.errors).length > 0) {
 
                 } else {
-                    var chart_civil_state = new Chart(ele_chart_civil_state, {
+                    chart_civil_state = new Chart(ele_chart_civil_state, {
                         type: 'horizontalBar',
                         data: datac.data,
                         options: {
@@ -399,6 +422,104 @@
 
     });
 
+    function makeBarChartEducationByDriver(ele_chart_education, chart_education) {
+        $.ajax({
+            type: 'POST',
+            url: $("#education_chart").data('url-driver'),
+            data: {
+                'dni_id': $("#select_cc_driver").val(),
+                'company_id': $("#dashboard_company_id").val(),
+                "_token": $('#token').val()
+            },
+            success: function(datac) {
+                console.log(datac);
+                if (Object.keys(datac.errors).length > 0) {
+
+                } else {
+                    chart_education = new Chart(ele_chart_education, {
+                        type: 'horizontalBar',
+                        data: datac.data,
+                        options: {
+                            display: true,
+                            scaleStartValue: 0,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        min: 0,
+                                        max: datac.max
+                                    }
+                                }]
+                            },
+                            plugins: {
+                                datalabels: {
+                                    render: 'label',
+                                    font: {
+                                        weight: 'bold',
+                                        size: 14,
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+
+    function makeBarChartCivilStateByDriver(ele_chart_civil_state, chart_civil_state) {
+        $.ajax({
+            type: 'POST',
+            url: $("#function_barchart_civil_state").val(),
+            data: {
+                'dni_id': $("#select_cc_driver").val(),
+                'company_id': $("#dashboard_company_id").val(),
+                "_token": $('#token').val()
+            },
+            success: function(datac) {
+                console.log(datac);
+                if (Object.keys(datac.errors).length > 0) {
+
+                } else {
+                    chart_civil_state = new Chart(ele_chart_civil_state, {
+                        type: 'horizontalBar',
+                        data: datac.data,
+                        options: {
+                            display: true,
+                            scaleStartValue: 0,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        min: 0,
+                                        max: datac.max
+                                    }
+                                }]
+                            },
+                            plugins: {
+                                datalabels: {
+                                    render: 'label',
+                                    font: {
+                                        weight: 'bold',
+                                        size: 14,
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
 
     // The rest of the code goes here!
 }));

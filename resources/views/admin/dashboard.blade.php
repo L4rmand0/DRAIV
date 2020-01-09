@@ -15,19 +15,19 @@
     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard {{ $company_name }}</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="report_generate"><i
                 class="download_icon icons-fa"></i> Generar Reporte</a>
     </div>
     <div class="row">
         <div class="col-xl-12 col-md-6 mb-4">
-            <div class="card shadow h-90 py-2">
+            <div class="card shadow h-60 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-dark text-uppercase mb-1 ml-1">
                                 Cédula Conductor</div>
                             <form action="">
-                                <select name="" class="mt-3" id="select_cc_driver" style="width: 30%;" data-url="{{ route('drivers-select-lists')}}" hidden>
+                                <select name="" class="mt-3" id="select_cc_driver" style="width: 37%;" data-url="{{ route('drivers-select-lists')}}" hidden>
                                 </select>
                             </form>
                         </div>
@@ -136,7 +136,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">Escolaridad Conductores</h6>
                 </div>
                 <div class="card-body">
-                    <canvas id="education_chart" width="400" height="200"></canvas>
+                <canvas id="education_chart" width="400" height="200" data-url-driver="{{ route('drivers-info.education-chart') }}"></canvas>
                 </div>
             </div>
         </div>
