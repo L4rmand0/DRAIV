@@ -6,11 +6,11 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use App\Traits\PermissionUser;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, PermissionUser;
     public function addDeleteButtonDatatable($data)
     {
         foreach ($data as $key => $value) {

@@ -21,16 +21,19 @@ class ImageController extends Controller
      */
     public function index()
     {
-        $drivers = DriverInformationController::getListDrivers();
-        $type_images = Imagenes::enum_assoc_tipo_doc;
-        $company_id = auth()->user()->company_id;
-        $company = CompanyController::getCompanyByid($company_id);
+        // $user_id = auth()->user()->id;
+        // $permissions = $this->getPermissions($user_id);
+        // $drivers = DriverInformationController::getListDrivers();
+        // $type_images = Imagenes::enum_assoc_tipo_doc;
+        // $company_id = auth()->user()->company_id;
+        // $company = CompanyController::getCompanyByid($company_id);
 
-        return view('admin.images', [
-            'list_drivers' => $drivers,
-            'type_images' => $type_images,
-            'company_name' => ucwords(strtolower($company->company))
-        ]);
+        // return view('admin.images', [
+        //     'list_drivers' => $drivers,
+        //     'type_images' => $type_images,
+        //     'company_name' => ucwords(strtolower($company->company)),
+        //     'permissions' => $permissions,
+        // ]);
     }
 
     /**

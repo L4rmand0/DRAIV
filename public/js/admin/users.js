@@ -9,14 +9,34 @@
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
     $(function() {
+        $(document).click(function(event) {
+            $target = $(event.target);
+            if (!$target.closest('#user_datatable tr #user_profile').length &&
+                $('#user_datatable tr #user_profile select').is(":visible")) {
+                let element = $('#user_datatable tr #user_profile select');
+                let val_item = element.val();
+                element.parent().html(val_item)
+            }
+        });
 
         var enums = {
             'User_profile': {
                 'User': 'User',
-                'Administrator': 'Administrator',
-                'Evaluator': 'Evaluator'
+                'administrator': 'administrator',
+                'evaluator': 'evaluator'
             }
         }
+
+        $.ajax({
+            type: 'GET',
+            url: $('#company_id_form').data('url'),
+            data: { 'type': 'select_admin2' },
+            success: function(data) {
+                $('#company_id_form').select2({
+                    data: data
+                });
+            }
+        });
 
         $.ajax({
             type: 'GET',
@@ -34,7 +54,7 @@
             let data_form = $(this).serialize();
             $.ajax({
                 type: 'POST',
-                url: $("#btn_admin_user ").data('url'),
+                url: $("#btn_admin_user").data('url'),
                 data: data_form,
                 success: function(data) {
                     console.log(data);
@@ -183,8 +203,8 @@
                 "type": "list",
                 "options": [
                     { "value": enums.User_profile['User'], "display": enums.User_profile['User'] },
-                    { "value": enums.User_profile['Administrator'], "display": enums.User_profile['Administrator'] },
-                    { "value": enums.User_profile['Evaluator'], "display": enums.User_profile['Evaluator'] }
+                    { "value": enums.User_profile['administrator'], "display": enums.User_profile['administrator'] },
+                    { "value": enums.User_profile['evaluator'], "display": enums.User_profile['evaluator'] }
                 ]
             }]
         });

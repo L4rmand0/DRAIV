@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\admin;
 
-use DB;
+use App\Http\Controllers\Controller;
+use App\Permission;
 use App\User;
 use DataTables;
+use DB;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -20,11 +21,14 @@ class UserController extends Controller
      */
     public function index()
     {
-        $company_id = auth()->user()->company_id;
-        $company = CompanyController::getCompanyByid($company_id);
-        return view('admin.users.index',[
-            'company_name' => ucwords(strtolower($company->company))
-        ]);
+        // $user_id = auth()->user()->id;
+        // $company_id = auth()->user()->company_id;
+        // $company = CompanyController::getCompanyByid($company_id);
+        // $permissions = $this->getPermissions($user_id);
+        // return view('admin.users.index',[
+        //     'company_name' => ucwords(strtolower($company->company)),
+        //     'permissions' => $permissions,
+        // ]);
     }
 
     /**
@@ -83,7 +87,7 @@ class UserController extends Controller
         $data_updated = $request->all();
         $field = $data_updated['fieldch'];
         $value = $data_updated['valuech'];
-        $response = User::where('id', $data_updated['id'])->update([$field => $value,'Operation'=>'U','Date_operation'=>$now]);
+        $response = User::where('id', $data_updated['id'])->update([$field => $value, 'Operation' => 'U', 'Date_operation' => $now]);
         if ($response) {
             return response()->json(['response' => 'Usuario actualizado']);
         } else {
@@ -102,7 +106,7 @@ class UserController extends Controller
         $data_delete = $request->all();
         $delete = User::where('id', $data_delete['id'])->update(['Operation' => 'D']);
         if ($delete) {
-            return response()->json(['response' => 'Usuario eliminado','error'=>'']);
+            return response()->json(['response' => 'Usuario eliminado', 'error' => '']);
         } else {
             return response()->json(['error' => 'No se pudo eliminar el usuario']);
         }
@@ -111,15 +115,20 @@ class UserController extends Controller
     public function usersList()
     {
         $company_id = Auth::user()->company_id;
-        $users = DB::table('users')->orderBy('users.start_date', 'desc')->where('company_id', '=', $company_id)->where('operation', '!=','D')->get();
+        $users = DB::table('users')->orderBy('users.start_date', 'desc')->where('company_id', '=', $company_id)->where('operation', '!=', 'D')->get();
         $users = $this->addDeleteButtonDatatable($users);
         return datatables()->of($users)->make(true);
     }
 
     public function storeUserAdmin(Request $request)
     {
-        
+
         $data_input = $request->all();
+        $profile_id = $data_input['profile_id'];
+        
+        // echo '<pre>';
+        // print_r($data_input);
+        // die;
         $validator = Validator::make(
             $data_input,
             [
@@ -127,10 +136,9 @@ class UserController extends Controller
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:5', 'confirmed'],
                 'company_id' => ['required'],
-                'user_profile' => ['required']
+                'profile_id' => ['required'],
             ]
         );
-
         $errors = $validator->errors()->getMessages();
         if (!empty($errors)) {
             return response()->json(['errors' => $errors]);
@@ -140,14 +148,34 @@ class UserController extends Controller
                 'email' => $data_input['email'],
                 'password' => Hash::make($data_input['password']),
                 'company_id' => $data_input['company_id'],
-                'user_profile' => $data_input['user_profile']
+                'profile_id' => $data_input['profile_id'],
             ]);
             if ($user->id > 0) {
+                $this->putPermissionsProfile($profile_id, $user->id);
                 return response()->json([
                     'success' => 'Usuario registrado.',
-                    'errors' => $errors
+                    'errors' => $errors,
                 ]);
             }
+        }
+    }
+
+    public function putPermissionsProfile($profile_id, $user_id)
+    {
+        $user_id2 = 1400000001;
+        $profiles = DB::table('profile_ as p')
+            ->orderBy('p.date_operation', 'desc')
+            ->select('p.profile_id', 'p.user_profile', 'permission')
+            ->where('p.operation', '!=', 'D')
+            ->where('p.profile_id', '=', $profile_id)
+            ->first();
+        $modules = json_decode($profiles->permission,TRUE)['modules'];
+        foreach ($modules as $value_modulo) {
+            Permission::create([
+                'users_id' => $user_id,
+                'module_module_id' => $value_modulo,
+                'user_id' => Auth::user()->id,
+            ]);
         }
     }
 }

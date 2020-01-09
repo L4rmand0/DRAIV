@@ -56,7 +56,6 @@
 .trash_icon:before {
     font-family: FontAwesome;
     content: "\f1f8"
-
 }
 
 .excel_icon:before {
@@ -94,6 +93,11 @@
     content: "\f067"
 }
 
-.icons-fa{
+.tachometer_icon:before {
+    font-family: FontAwesome;
+    content: "\f3fd"
+}
+
+.icons-fa {
     font-style: normal !important;
 }

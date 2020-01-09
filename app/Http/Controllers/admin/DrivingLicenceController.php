@@ -20,6 +20,8 @@ class DrivingLicenceController extends Controller
      */
     public function index()
     {
+        $user_id = auth()->user()->id;
+        $permissions = $this->getPermissions($user_id);
         $enum_category = $this->generateOptionsEnumDt(DrivingLicence::enum_category);
         $list_category = DrivingLicence::enum_category;
         $enum_country_expedition = $this->generateOptionsEnumDt(DrivingLicence::enum_country_expedition);
@@ -37,7 +39,8 @@ class DrivingLicenceController extends Controller
                 'list_country_expedition' => $list_country_expedition,
                 'list_category' => $list_category,
                 'list_state' => $list_state,
-                'company_name' => ucwords(strtolower($company->company))
+                'company_name' => ucwords(strtolower($company->company)),
+                'permissions' => $permissions,
             ]
         );
     }

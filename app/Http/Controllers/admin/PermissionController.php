@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use DB;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
-class ProfileController extends Controller
+class PermissionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -85,29 +84,39 @@ class ProfileController extends Controller
         //
     }
 
-    public function profilesSelect2(Request $request){
-        $profiles = DB::table('profile_ as p')
-            ->orderBy('p.date_operation', 'desc')
-            ->select('p.profile_id','p.user_profile')
-            ->where('p.operation', '!=', 'D')
-            // ->toSql();
-            ->get()
-            ->toArray();
-    
-        // echo '<pre>';
-        // print_r($profiles);
-        // die;
-        return response()->json($this->createProfileSelect2($profiles));
+    public function getPermissionByUser($user_id)
+    {
+        $permissions = DB::table('permissions')
+            ->where('permissions.users_id', '=', $user_id)
+            ->where('permissions.operation', '!=', 'D')
+            ->orderBy('module.parent_id', 'asc')
+            ->join('module', 'module.module_id', '=', 'permissions.module_module_id')
+            ->select(DB::raw(
+                'module.module_id,
+               module.module_type,
+               module.type,
+               module.imagen,
+               module.parent_id'
+            ))->get();
+        return $this->organizePermissionArray($permissions);
     }
 
-    public function createProfileSelect2($query_data)
+    public function organizePermissionArray($data)
     {
-        $data[0]['id'] = "";
-        $data[0]['text'] = "Seleccionar";
-        foreach ($query_data as $key => $value) {
-            $data[$key + 1]['id'] = $value->profile_id;
-            $data[$key + 1]['text'] = $value->user_profile;
+        foreach ($data as $key => $value) {
+            if ($value->parent_id == 0 && $value->type == "Group") {
+                $groups[$value->module_type]["name"] = $value->module_type;
+                $groups[$value->module_type]["id"] = $value->module_id;
+                unset($data[$key]);
+            }
         }
-        return $data;
+        foreach ($groups as $key_group => $value_group) {
+            foreach ($data as $key_childs => $value_childs) {
+                if($value_childs->parent_id == $value_group['id']){
+                    $groups[$key_group]['childs'][] = $value_childs;
+                }
+            }
+        }
+        return $groups;
     }
 }

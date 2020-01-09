@@ -91,24 +91,20 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="company_id"
+                        <label for="company_id" style="padding-top: calc(0.135rem + 1px);"
                             class="col-md-4 col-form-label text-md-right">{{ __('Compañía') }}</label>
                         <div class="col-md-6">
-                            <select class="form-control" name="company_id" id="company_id">
-                                <option value="">Seleccionar ...</option>
-                                <option value="9013380301">DRAIV</option>
-                                <option value="9013380302">Smart</option>
+                            <select class="form-control" name="company_id" id="company_id_form" data-url="{{ route('company-select-list') }}" style="width:100%;">
                             </select>
-                            <span class="error_admin" role="alert" id="company_id-error">
-                                <strong id="company_id-error-strong" class="error-strong"></strong>
+                            <span class="error_admin" role="alert" id="company_id_form-error">
+                                <strong id="company_id_form-error-strong" class="error-strong"></strong>
                             </span>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="profile_id_form" class="col-md-4 col-form-label text-md-right">{{ __('Perfil') }}</label>
+                        <label for="profile_id_form" style="padding-top: calc(0.135rem + 1px);" class="col-md-4 col-form-label text-md-right">{{ __('Perfil') }}</label>
                         <div class="col-md-6">
-                        <select class="form-control" name="profile_id" id="profile_id_form" data-url="{{ route('') }}"
-                                <option value="">Seleccionar ...</option>
+                            <select class="form-control" name="profile_id" id="profile_id_form" data-url="{{ route('profile-select-list') }}" style="width:100%;" required>
                             </select>
                             <span class="error_admin" role="alert" id="profile_id-error">
                                 <strong id="profile_id-error-strong" class="error-strong"></strong>

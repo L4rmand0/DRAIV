@@ -1,21 +1,21 @@
 // IIFE - Immediately Invoked Function Expression
-(function (runcode) {
+(function(runcode) {
     // The global jQuery object is passed as a parameter
     runcode(window.jQuery, window, document);
 
-}(function ($, window, document) {
+}(function($, window, document) {
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
-    $(function () {
-        
+    $(function() {
+
     });
 
-    jQuery.fn.dataTable.Api.register('MakeCellsEditable()', function (settings) {
+    jQuery.fn.dataTable.Api.register('MakeCellsEditable()', function(settings) {
         var table = this.table();
-    
+
         jQuery.fn.extend({
             // UPDATE
-            updateEditableCell: function (callingElement) {
+            updateEditableCell: function(callingElement) {
                 // Need to redeclare table here for situations where we have more than one datatable on the page. See issue6 on github
                 var confirmUpdate;
                 var table = $(callingElement).closest("table").DataTable().table();
@@ -23,7 +23,7 @@
                 var cell = table.cell($(callingElement).parents('td, th'));
                 var columnIndex = cell.index().column;
                 var inputField = getInputField(callingElement);
-    
+
                 // Update
                 var newValue = inputField.val();
                 if (!newValue && ((settings.allowNulls) && settings.allowNulls != true)) {
@@ -46,10 +46,10 @@
                     } else {
                         _addValidationCss();
                     }
-                }
-                else {
+                } else {
                     confirmUpdate = _update(newValue);
                 }
+
                 function _addValidationCss() {
                     // Show validation error
                     if (settings.allowNulls.errorClass) {
@@ -58,6 +58,7 @@
                         $(inputField).css({ "border": "red solid 1px" });
                     }
                 }
+
                 function _update(newValue) {
                     var oldValue = cell.data();
                     cell.data(newValue);
@@ -66,44 +67,44 @@
                 }
                 // Get current page
                 var currentPageIndex = table.page.info().page;
-    
+
                 //Redraw table
                 table.page(currentPageIndex).draw(false);
             },
             // CANCEL
-            cancelEditableCell: function (callingElement) {
+            cancelEditableCell: function(callingElement) {
                 var table = $(callingElement.closest("table")).DataTable().table();
                 var cell = table.cell($(callingElement).parents('td, th'));
                 // Set cell to it's original value
                 cell.data(cell.data());
-    
+
                 // Redraw table
                 table.draw();
             }
         });
-    
+
         // Destroy
         if (settings === "destroy") {
             $(table.body()).off("click", "td");
             table = null;
         }
-    
+
         if (table != null) {
             // On cell click
-            $(table.body()).on('click', 'td', function () {
-    
+            $(table.body()).on('click', 'td', function() {
+
                 var currentColumnIndex = table.cell(this).index().column;
-    
+
                 // DETERMINE WHAT COLUMNS CAN BE EDITED
                 if ((settings.columns && settings.columns.indexOf(currentColumnIndex) > -1) || (!settings.columns)) {
                     var row = table.row($(this).parents('tr'));
                     editableCellsRow = row;
-    
+
                     var cell = table.cell(this).node();
                     var oldValue = table.cell(this).data();
                     // Sanitize value
                     oldValue = sanitizeCellValue(oldValue);
-    
+
                     // Show input
                     if (!$(cell).find('input').length && !$(cell).find('select').length && !$(cell).find('textarea').length) {
                         // Input CSS
@@ -116,23 +117,25 @@
                 }
             });
         }
-    
+
     });
-    
+
     function getInputHtml(currentColumnIndex, settings, oldValue) {
-        var inputSetting, inputType, input, inputCss, confirmCss, cancelCss, startWrapperHtml = '', endWrapperHtml = '', listenToKeys = false;
-    
+        var inputSetting, inputType, input, inputCss, confirmCss, cancelCss, startWrapperHtml = '',
+            endWrapperHtml = '',
+            listenToKeys = false;
+
         input = { "focus": true, "html": null };
-    
+
         if (settings.inputTypes) {
-            $.each(settings.inputTypes, function (index, setting) {
+            $.each(settings.inputTypes, function(index, setting) {
                 if (setting.column == currentColumnIndex) {
                     inputSetting = setting;
                     inputType = inputSetting.type.toLowerCase();
                 }
             });
         }
-    
+
         if (settings.inputCss) { inputCss = settings.inputCss; }
         if (settings.wrapperHtml) {
             var elements = settings.wrapperHtml.split('{content}');
@@ -141,7 +144,7 @@
                 endWrapperHtml = elements[1];
             }
         }
-    
+
         if (settings.confirmationButton) {
             if (settings.confirmationButton.listenToKeys) { listenToKeys = settings.confirmationButton.listenToKeys; }
             confirmCss = settings.confirmationButton.confirmCss;
@@ -151,7 +154,7 @@
         switch (inputType) {
             case "list":
                 input.html = startWrapperHtml + "<select class='" + inputCss + "' onchange='$(this).updateEditableCell(this);'>";
-                $.each(inputSetting.options, function (index, option) {
+                $.each(inputSetting.options, function(index, option) {
                     if (oldValue == option.value) {
                         input.html = input.html + "<option value='" + option.value + "' selected>" + option.display + "</option>"
                     } else {
@@ -163,7 +166,7 @@
                 break;
             case "list-confirm": // List w/ confirm
                 input.html = startWrapperHtml + "<select class='" + inputCss + "'>";
-                $.each(inputSetting.options, function (index, option) {
+                $.each(inputSetting.options, function(index, option) {
                     if (oldValue == option.value) {
                         input.html = input.html + "<option value='" + option.value + "'>" + option.display + "</option>"
                     } else {
@@ -182,19 +185,18 @@
                 }
                 jQuery(".datepick").datepicker("destroy");
                 input.html = startWrapperHtml + "<input id='ejbeatycelledit' type='text' name='date' class='datepick " + inputCss + "'   value='" + oldValue + "'></input> &nbsp;<a href='javascript:void(0);' class='" + confirmCss + "' onclick='$(this).updateEditableCell(this)'>Confirm</a> <a href='javascript:void(0);' class='" + cancelCss + "' onclick='$(this).cancelEditableCell(this)'>Cancel</a>" + endWrapperHtml;
-                setTimeout(function () { //Set timeout to allow the script to write the input.html before triggering the datepicker
+                setTimeout(function() { //Set timeout to allow the script to write the input.html before triggering the datepicker
                     var icon = "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif";
                     // Allow the user to provide icon
                     if (typeof inputSetting.options !== 'undefined' && typeof inputSetting.options.icon !== 'undefined') {
                         icon = inputSetting.options.icon;
                     }
-                    var self = jQuery('.datepick').datepicker(
-                        {
-                            showOn: "button",
-                            buttonImage: icon,
-                            buttonImageOnly: true,
-                            buttonText: "Select date"
-                        });
+                    var self = jQuery('.datepick').datepicker({
+                        showOn: "button",
+                        buttonImage: icon,
+                        buttonImageOnly: true,
+                        buttonText: "Select date"
+                    });
                 }, 100);
                 break;
             case "text-confirm": // text input w/ confirm
@@ -216,7 +218,7 @@
         }
         return input;
     }
-    
+
     function getInputField(callingElement) {
         // Update datatables cell value
         var inputField;
@@ -237,12 +239,12 @@
         }
         return inputField;
     }
-    
+
     function sanitizeCellValue(cellValue) {
-        if (typeof (cellValue) === 'undefined' || cellValue === null || cellValue.length < 1) {
+        if (typeof(cellValue) === 'undefined' || cellValue === null || cellValue.length < 1) {
             return "";
         }
-    
+
         // If not a number
         if (isNaN(cellValue)) {
             // escape single quote
@@ -252,6 +254,3 @@
     }
     // The rest of the code goes here!
 }));
-
-
-

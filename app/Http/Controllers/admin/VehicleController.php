@@ -21,25 +21,28 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        $enum_type_v = $this->generateOptionsEnumDt(Vehicle::enum_type_v);
-        $list_type_v = Vehicle::enum_type_v;
-        $enum_service = $this->generateOptionsEnumDt(Vehicle::enum_service);
-        $list_service = Vehicle::enum_service;
-        $enum_taxi_type = $this->generateOptionsEnumDt(Vehicle::enum_taxi_type);
-        $list_taxi_type = Vehicle::enum_taxi_type;
-        $company_id = auth()->user()->company_id;
-        $company = CompanyController::getCompanyByid($company_id);
-        // print_r($enum_type_v);
-        // die;
-        return view('admin.vehicle.index', [
-            'enum_type_v' => $enum_type_v,
-            'enum_service' => $enum_service,
-            'enum_taxi_type' => $enum_taxi_type,
-            'list_type_v' => $list_type_v,
-            'list_service' => $list_service,
-            'list_taxi_type' => $list_taxi_type,
-            'company_name' => ucwords(strtolower($company->company)),
-        ]);
+        // $user_id = auth()->user()->id;
+        // $permissions = $this->getPermissions($user_id);
+        // $enum_type_v = $this->generateOptionsEnumDt(Vehicle::enum_type_v);
+        // $list_type_v = Vehicle::enum_type_v;
+        // $enum_service = $this->generateOptionsEnumDt(Vehicle::enum_service);
+        // $list_service = Vehicle::enum_service;
+        // $enum_taxi_type = $this->generateOptionsEnumDt(Vehicle::enum_taxi_type);
+        // $list_taxi_type = Vehicle::enum_taxi_type;
+        // $company_id = auth()->user()->company_id;
+        // $company = CompanyController::getCompanyByid($company_id);
+        // // print_r($enum_type_v);
+        // // die;
+        // return view('admin.vehicle.index', [
+        //     'enum_type_v' => $enum_type_v,
+        //     'enum_service' => $enum_service,
+        //     'enum_taxi_type' => $enum_taxi_type,
+        //     'list_type_v' => $list_type_v,
+        //     'list_service' => $list_service,
+        //     'list_taxi_type' => $list_taxi_type,
+        //     'company_name' => ucwords(strtolower($company->company)),
+        //     'permissions' => $permissions,
+        // ]);
     }
 
     /**

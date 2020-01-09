@@ -44,31 +44,34 @@ class DriverInformationController extends Controller
      */
     public function index()
     {
-        $list_admin3 = Admin3Controller::listAdmin3();
-        $enum_education = $this->generateOptionsEnumDt(DriverInformation::enum_education);
-        $list_education = DriverInformation::enum_education;
-        $enum_civil_state = $this->generateOptionsEnumDt(DriverInformation::enum_civil_state);
-        $list_civil_state = DriverInformation::enum_civil_state;
-        $enum_country_born = $this->generateOptionsEnumDt(DriverInformation::enum_country_born);
-        $list_country_born = DriverInformation::enum_country_born;
-        $company_id = auth()->user()->company_id;
-        $company = CompanyController::getCompanyByid($company_id);
-        // echo '<pre>';
-        // print_r($enum_education);
-        // die;
-        return view(
-            'admin.information-user.index',
-            [
-                'enum_education' => $enum_education,
-                'enum_civil_state' => $enum_civil_state,
-                'enum_country_born' => $enum_country_born,
-                'list_education' => $list_education,
-                'list_civil_state' => $list_civil_state,
-                'list_country_born' => $list_country_born,
-                'list_admin3' => $list_admin3,
-                'company_name' => ucwords(strtolower($company->company)),
-            ]
-        );
+        // $user_id = auth()->user()->id;
+        // $permissions = $this->getPermissions($user_id);
+        // $list_admin3 = Admin3Controller::listAdmin3();
+        // $enum_education = $this->generateOptionsEnumDt(DriverInformation::enum_education);
+        // $list_education = DriverInformation::enum_education;
+        // $enum_civil_state = $this->generateOptionsEnumDt(DriverInformation::enum_civil_state);
+        // $list_civil_state = DriverInformation::enum_civil_state;
+        // $enum_country_born = $this->generateOptionsEnumDt(DriverInformation::enum_country_born);
+        // $list_country_born = DriverInformation::enum_country_born;
+        // $company_id = auth()->user()->company_id;
+        // $company = CompanyController::getCompanyByid($company_id);
+        // // echo '<pre>';
+        // // print_r($enum_education);
+        // // die;
+        // return view(
+        //     'admin.information-user.index',
+        //     [
+        //         'enum_education' => $enum_education,
+        //         'enum_civil_state' => $enum_civil_state,
+        //         'enum_country_born' => $enum_country_born,
+        //         'list_education' => $list_education,
+        //         'list_civil_state' => $list_civil_state,
+        //         'list_country_born' => $list_country_born,
+        //         'list_admin3' => $list_admin3,
+        //         'company_name' => ucwords(strtolower($company->company)),
+        //         'permissions' => $permissions,
+        //     ]
+        // );
     }
 
     /**
