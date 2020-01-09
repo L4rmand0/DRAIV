@@ -5,25 +5,35 @@
     <input type="hidden" name="users-list-route" value="{{ route ('users-list') }}" id="users-list-route">
     <input type="hidden" name="update-users-route" value="{{ route ('users.update') }}" id="update-users-route">
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Usuarios</h1>
+    <div class="card mb-4">
+        <div class="card-header">
+            <div class="d-sm-flex align-items-center justify-content-between">
+                <h1 class="h5 mb-0 text-gray-800" style="color:#515151 !important;">Usuarios</h1>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="user_datatable" class="table table-bordered table-striped table-hover nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Perfil</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="card-footer">
+            <div class="container text-center">
+                <button class="btn btn-primary" type="button" data-toggle="modal"
+                    data-target="#form_create_user"><span class="plus_icon icons-fa"></span> Agregar Registro</button>
+            </div>
+        </div>
     </div>
-
-    <table id="user_datatable" class="table table-striped table-bordered table-hover nowrap" style="width:100%">
-        <thead class="thead-dark">
-            <tr>
-                <th></th>
-                <th>Id</th>
-                <th>Nombre</th>
-                <th>Correo</th>
-                <th>Perfil</th>
-            </tr>
-        </thead>
-    </table>
-    <div class="container text-center">
-        <button class="btn btn-dark" type="button" style="margin-top: 17px;" data-toggle="modal"
-            data-target="#form_create_user">Agregar Usuario</button>
-    </div>
+    {{-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800" style="color:#333 !important;">Usuarios</h1>
+    </div> --}}
 </div>
 
 <div class="modal fade" id="form_create_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -73,7 +83,8 @@
 
                         <div class="col-md-6">
                             <input id="password" type="password"
-                                class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                class="form-control @error('password') is-invalid @enderror" name="password" required
+                                autocomplete="new-password">
 
                             <span class="error_admin" role="alert" id="password-error">
                                 <strong id="password-error-strong" class="error-strong"></strong>
@@ -94,7 +105,8 @@
                         <label for="company_id" style="padding-top: calc(0.135rem + 1px);"
                             class="col-md-4 col-form-label text-md-right">{{ __('Compañía') }}</label>
                         <div class="col-md-6">
-                            <select class="form-control" name="company_id" id="company_id_form" data-url="{{ route('company-select-list') }}" style="width:100%;">
+                            <select class="form-control" name="company_id" id="company_id_form"
+                                data-url="{{ route('company-select-list') }}" style="width:100%;">
                             </select>
                             <span class="error_admin" role="alert" id="company_id_form-error">
                                 <strong id="company_id_form-error-strong" class="error-strong"></strong>
@@ -102,9 +114,11 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="profile_id_form" style="padding-top: calc(0.135rem + 1px);" class="col-md-4 col-form-label text-md-right">{{ __('Perfil') }}</label>
+                        <label for="profile_id_form" style="padding-top: calc(0.135rem + 1px);"
+                            class="col-md-4 col-form-label text-md-right">{{ __('Perfil') }}</label>
                         <div class="col-md-6">
-                            <select class="form-control" name="profile_id" id="profile_id_form" data-url="{{ route('profile-select-list') }}" style="width:100%;" required>
+                            <select class="form-control" name="profile_id" id="profile_id_form"
+                                data-url="{{ route('profile-select-list') }}" style="width:100%;" required>
                             </select>
                             <span class="error_admin" role="alert" id="profile_id-error">
                                 <strong id="profile_id-error-strong" class="error-strong"></strong>

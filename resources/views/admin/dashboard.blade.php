@@ -16,7 +16,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard {{ $company_name }}</h1>
         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                class="download_icon icons-fa"></i> Generate Report</a>
+                class="download_icon icons-fa"></i> Generar Reporte</a>
     </div>
     <h4 class="mb-3">Información de Conductores</h4>
     <!-- Content Row -->

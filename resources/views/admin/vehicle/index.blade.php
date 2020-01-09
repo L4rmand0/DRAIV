@@ -10,41 +10,52 @@
     <input type="hidden" name="drivers-select-list-route" value="{{ route('drivers-select-lists') }}"
         id="drivers-select-list-route">
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <div class="card mb-4">
+        <div class="card-header">
+            <div class="d-sm-flex align-items-center justify-content-between">
+                <h1 class="h5 mb-0 text-gray-800" style="color:#515151 !important;">Información de Vehículos</h1>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="vehicle_datatable" class="table table-striped table-bordered table-hover nowrap"
+                style="width:100%" data-url-list="{{ route ('vehicle-list') }}"
+                data-url-delete="{{ route ('vehicle-admin.destroy') }}">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Placa</th>
+                        <th>Tipo</th>
+                        <th>Propietario</th>
+                        <th>Tipo de Taxi</th>
+                        <th>Número de Conductores</th>
+                        <th>Fecha de Vencimiento Soat</th>
+                        <th>Capacidad</th>
+                        <th>Servicio</th>
+                        <th>Cilindraje</th>
+                        <th>Clase v</th>
+                        <th>modelo</th>
+                        <th>Línea</th>
+                        <th>Marca</th>
+                        <th>Color</th>
+                        <th>Fecha de Tecnomecánica</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="card-footer">
+            <div class="container text-center">
+                <button class="btn btn-primary" type="button" style="margin-top: 17px;" data-toggle="modal"
+                    data-target="#form_create_vehicle" id="modal_form_create_vehicle"><span class="plus_icon icons-fa"></span> Agregar Registro</button>
+            <div class="container text-center">
+                <button class="btn btn-success" type="button" style="margin-top: 17px;" data-toggle="modal"
+                    data-target="#form_import_excel" id="modal_form_drive_info"><span class="excel_icon"> </span>Importar
+                    Información Masiva</button>
+            </div>
+        </div>
+    </div>
+    {{-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Información de Vehículos</h1>
-    </div>
-    <table id="vehicle_datatable" class="table table-striped table-bordered table-hover nowrap" style="width:100%"
-        data-url-list="{{ route ('vehicle-list') }}" data-url-delete="{{ route ('vehicle-admin.destroy') }}">
-        <thead class="thead-dark">
-            <tr>
-                <th></th>
-                <th>Placa</th>
-                <th>Tipo</th>
-                <th>Propietario</th>
-                <th>Tipo de Taxi</th>
-                <th>Número de Conductores</th>
-                <th>Fecha de Vencimiento Soat</th>
-                <th>Capacidad</th>
-                <th>Servicio</th>
-                <th>Cilindraje</th>
-                <th>Clase v</th>
-                <th>modelo</th>
-                <th>Línea</th>
-                <th>Marca</th>
-                <th>Color</th>
-                <th>Fecha de Tecnomecánica</th>
-            </tr>
-        </thead>
-    </table>
-    <div class="container text-center">
-        <button class="btn btn-dark" type="button" style="margin-top: 17px;" data-toggle="modal"
-            data-target="#form_create_vehicle" id="modal_form_create_vehicle">Registrar Información</button>
-    </div>
-    <div class="container text-center">
-        <button class="btn btn-success" type="button" style="margin-top: 17px;" data-toggle="modal"
-            data-target="#form_import_excel" id="modal_form_drive_info"><span class="excel_icon"> </span>Importar
-            Información Masiva</button>
-    </div>
+    </div> --}}
     <div id="div-table-relation-vehicle-driver" class="mt-4 mb-5" hidden>
         <hr class='sidebar-divider divider-form-vehicle' style='margin-top: 41px;'>
         <h4 class="text-primary d-flex justify-content-center">Conductores del Vehículo</h4>
@@ -296,9 +307,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('admin.vehicle.add-driver-vehicle') }}" id ="form_add_vehicle_driver"
-                    data-url="{{ route('admin.vehicle.add-driver-vehicle') }}" data-url-delete="{{ route('driver-info.destroy') }}"
-                    enctype="multipart/form-data">
+                <form method="POST" action="{{ route('admin.vehicle.add-driver-vehicle') }}"
+                    id="form_add_vehicle_driver" data-url="{{ route('admin.vehicle.add-driver-vehicle') }}"
+                    data-url-delete="{{ route('driver-info.destroy') }}" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="vehicle_plate_id" id="vehicle_plate_id_add">
                     <div class="form-card">
@@ -311,7 +322,8 @@
                             </select>
                             <label class="text-info font-weight-bold" id="name_driver"
                                 style="margin-top: 12px;"></label>
-                            <span class="error_admin input_user_admin" role="alert" id="driver_information_dni_id-error">
+                            <span class="error_admin input_user_admin" role="alert"
+                                id="driver_information_dni_id-error">
                                 <strong id="driver_information_dni_id-error-strong" class="error-strong"> </strong>
                             </span>
                         </div>

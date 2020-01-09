@@ -7,43 +7,56 @@
     <input type="hidden" name="update-driver-info-route" value="{{ route ('driver-info.update') }}"
         id="update-driver-info-route">
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <div class="card mb-4">
+        <div class="card-header">
+            <div class="d-sm-flex align-items-center justify-content-between">
+                <h1 class="h5 mb-0 text-gray-800" style="color:#515151 !important;">Información de Conductores</h1>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="drive_information_datatable" class="table table-striped table-bordered table-hover nowrap"
+                style="width:100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Cédula</th>
+                        <th>Primer Nombre</th>
+                        <th>Segundo Nombre</th>
+                        <th>Primer Apellido</th>
+                        <th>Segundo Apellido</th>
+                        <th>Género</th>
+                        <th>Educación</th>
+                        <th>Email</th>
+                        <th>Dirección</th>
+                        <th>País</th>
+                        <th>Departamento</th>
+                        <th>Ciudad Residencia</th>
+                        <th>Número Celular</th>
+                        <th>Estado Civil</th>
+                        <th>Puntaje</th>
+                        <th>Db_user_id</th>
+                        <th>Company_id</th>
+                        <th>Registro User</th>
+                        <th>Compañía</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="card-footer">
+            <div class="container text-center">
+                <button class="btn btn-primary" type="button" style="margin-top: 17px;" data-toggle="modal"
+                    data-target="#form_create_driver_information" id="modal_form_drive_info"><span class="plus_icon icons-fa"></span> Agregar Registro</button>
+            </div>
+            <div class="container text-center">
+                <button class="btn btn-success" type="button" style="margin-top: 17px;" data-toggle="modal"
+                    data-target="#form_import_excel" id="modal_form_drive_info"><span class="excel_icon">
+                    </span>Importar Información Masiva</button>
+            </div>
+        </div>
+    </div>
+    {{-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Información de Conductores</h1>
-    </div>
-    <table id="drive_information_datatable" class="table table-striped table-bordered table-hover nowrap" style="width:100%">
-        <thead class="thead-dark">
-            <tr>
-                <th></th>
-                <th>Cédula</th>
-                <th>Primer Nombre</th>
-                <th>Segundo Nombre</th>
-                <th>Primer Apellido</th>
-                <th>Segundo Apellido</th>
-                <th>Género</th>
-                <th>Educación</th>
-                <th>Email</th>
-                <th>Dirección</th>
-                <th>País</th>
-                <th>Departamento</th>
-                <th>Ciudad Residencia</th>
-                <th>Número Celular</th>
-                <th>Estado Civil</th>
-                <th>Puntaje</th>
-                <th>Db_user_id</th>
-                <th>Company_id</th>
-                <th>Registro User</th>
-                <th>Compañía</th>
-            </tr>
-        </thead>
-    </table>
-    <div class="container text-center">
-        <button class="btn btn-dark" type="button" style="margin-top: 17px;" data-toggle="modal"
-            data-target="#form_create_driver_information" id="modal_form_drive_info">Registrar Información</button>
-    </div>
-    <div class="container text-center">
-        <button class="btn btn-success" type="button" style="margin-top: 17px;" data-toggle="modal"
-            data-target="#form_import_excel" id="modal_form_drive_info"><span class="excel_icon"> </span>Importar Información Masiva</button>
-    </div>
+    </div> --}}
 </div>
 
 <div class="modal fade" id="form_create_driver_information" tabindex="-1" role="dialog"
@@ -124,7 +137,7 @@
                                     id="education_form" required>
                                     <option value="">Seleccionar</option>
                                     @foreach ($list_education as $education_item)
-                                        <option value="{{ $education_item }}">{{ $education_item }}</option>
+                                    <option value="{{ $education_item }}">{{ $education_item }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -132,9 +145,8 @@
                         <div class="row" style="margin-top: 15px;">
                             <div class="col-md-6 form_select_conductores">
                                 <label for="company_id">Compañía:</label><br>
-                                <select name="driverInformation[company_id]" class="form-control"
-                                    id="company_id_form" data-url="{{ route('company-select-list') }}" style="width: 100%"
-                                    required>
+                                <select name="driverInformation[company_id]" class="form-control" id="company_id_form"
+                                    data-url="{{ route('company-select-list') }}" style="width: 100%" required>
                                 </select>
                             </div>
                             <div class="col-md-6 form_select_conductores">
@@ -143,7 +155,7 @@
                                     id="civil_state_form" required>
                                     <option value="">Seleccionar</option>
                                     @foreach ($list_civil_state as $civil_state_item)
-                                        <option value="{{ $civil_state_item }}">{{ $civil_state_item }}</option>
+                                    <option value="{{ $civil_state_item }}">{{ $civil_state_item }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -155,15 +167,14 @@
                                     id="country_born" required>
                                     <option value="">Seleccionar</option>
                                     @foreach ($list_country_born as $country_item)
-                                        <option value="{{ $country_item }}">{{ $country_item }}</option>
+                                    <option value="{{ $country_item }}">{{ $country_item }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-6 form_select_conductores">
                                 <label for="department_form">Departamento:</label><br>
-                                <select name="driverInformation[department]" class="form-control"
-                                    id="department_form" data-url="{{ route('admin2-select-lists') }}" style="width: 100%"
-                                    required>
+                                <select name="driverInformation[department]" class="form-control" id="department_form"
+                                    data-url="{{ route('admin2-select-lists') }}" style="width: 100%" required>
                                     <option value="">Seleccionar</option>
                                 </select>
                             </div>
@@ -171,16 +182,15 @@
                         <div class="row" style="margin-top: 18px;">
                             <div class="col-md-6 form_select_conductores">
                                 <label for="city_born_form">Ciudad de Nacimiento:</label><br>
-                                <select name="driverInformation[city_born]" class="form-control"
-                                    id="city_born_form" data-url="{{ route('admin3-select-lists') }}" style="width: 100%"
-                                     required>
+                                <select name="driverInformation[city_born]" class="form-control" id="city_born_form"
+                                    data-url="{{ route('admin3-select-lists') }}" style="width: 100%" required>
                                 </select>
                             </div>
                             <div class="col-md-6 form_select_conductores">
                                 <label for="city_residence_place_form">Ciudad de Residencia:</label><br>
                                 <select name="driverInformation[city_residence_place]" class="form-control"
-                                    id="city_residence_place_form" data-url="{{ route('admin3-select-lists') }}" style="width: 100%"
-                                    required disabled>
+                                    id="city_residence_place_form" data-url="{{ route('admin3-select-lists') }}"
+                                    style="width: 100%" required disabled>
                                 </select>
                             </div>
                         </div>
@@ -234,8 +244,10 @@
                         </div>
                         <div class="form-group">
                             <label for="file_driver_info">Importar Información de Conductores</label>
-                            <input type="file" class="form-control-file" id="file_driver_info" name="file" style="margin-bottom: 7px;" required>
-                            <a  href="{{ asset('formats/formato_informacion_conductor.xlsx') }}" target="_blank" style="color:green;"> <span class="excel_icon"></span> Descargar Formato</a>
+                            <input type="file" class="form-control-file" id="file_driver_info" name="file"
+                                style="margin-bottom: 7px;" required>
+                            <a href="{{ asset('formats/formato_informacion_conductor.xlsx') }}" target="_blank"
+                                style="color:green;"> <span class="excel_icon"></span> Descargar Formato</a>
                             <div class="d-flex justify-content-center" style="margin-top: 25px;">
                                 <input type="submit" value="Registrar" class="btn btn-primary">
                             </div>

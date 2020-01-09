@@ -170,8 +170,7 @@ class AdminController extends Controller
         $enum_taxi_type = $this->generateOptionsEnumDt(Vehicle::enum_taxi_type);
         $list_taxi_type = Vehicle::enum_taxi_type;
         $company_id = auth()->user()->company_id;
-        $company = CompanyController::getCompanyByid($company_id);
-        [
+        return [
             'enum_type_v' => $enum_type_v,
             'enum_service' => $enum_service,
             'enum_taxi_type' => $enum_taxi_type,

@@ -7,37 +7,49 @@
     <input type="hidden" name="company-select-list-route" value="{{ route('company-select-list') }}"
         id="company-select-list-route">
     <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <div class="d-sm-flex align-items-center justify-content-between">
+                <h1 class="h5 mb-0 text-gray-800" style="color:#515151 !important;">Licencia de Conducir</h1>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="driving_licence_datatable" class="table table-striped table-bordered table-hover nowrap"
+                style="width:100%" data-url-list="{{ route ('driving-licence-list') }}"
+                data-url-delete="{{ route ('driving_licence.destroy') }}">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Licence_id</th>
+                        <th>Número de Licencia</th>
+                        <th>Cédula</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>País de Expedición</th>
+                        <th>Categoría</th>
+                        <th>Estado</th>
+                        <th>Fecha de Expedición</th>
+                        <th>Fecha de Vencimiento</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="card-footer">
+            <div class="container text-center">
+                <button class="btn btn-primary" type="button" style="margin-top: 17px;" data-toggle="modal"
+                    data-target="#form_create_driving_licence" id="modal_form_create_driving_licence"><span class="plus_icon icons-fa"></span> Agregar Registro</button>
+            </div>
+            <div class="container text-center">
+                <button class="btn btn-success" type="button" style="margin-top: 17px;" data-toggle="modal"
+                    data-target="#form_import_excel" id="modal_form_drive_info"><span class="excel_icon"> </span>Importar
+                    Información Masiva</button>
+            </div>
+        </div>
+    </div>
+    {{-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Licencia de Conducir</h1>
-    </div>
-    <table id="driving_licence_datatable" class="table table-striped table-bordered table-hover nowrap" style="width:100%"
-        data-url-list="{{ route ('driving-licence-list') }}" data-url-delete="{{ route ('driving_licence.destroy') }}">
-        <thead class="thead-dark">
-            <tr>
-                <th></th>
-                <th>Licence_id</th>
-                <th>Número de Licencia</th>
-                <th>Cédula</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>País de Expedición</th>
-                <th>Categoría</th>
-                <th>Estado</th>
-                <th>Fecha de Expedición</th>
-                <th>Fecha de Vencimiento</th>
-            </tr>
-        </thead>
-    </table>
-    <div class="container text-center">
-        <button class="btn btn-dark" type="button" style="margin-top: 17px;" data-toggle="modal"
-            data-target="#form_create_driving_licence" id="modal_form_create_driving_licence">Registrar
-            Información</button>
-    </div>
-    <div class="container text-center">
-        <button class="btn btn-success" type="button" style="margin-top: 17px;" data-toggle="modal"
-            data-target="#form_import_excel" id="modal_form_drive_info"><span class="excel_icon"> </span>Importar
-            Información Masiva</button>
-    </div>
+    </div> --}}   
 </div>
 
 <div class="modal fade" id="form_create_driving_licence" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -51,13 +63,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="" id="form_driving_licence_admin" data-url="{{ route('driving_licence.store') }}">
+                <form method="POST" action="" id="form_driving_licence_admin"
+                    data-url="{{ route('driving_licence.store') }}">
                     @csrf
                     <div class="form-card">
                         <div class="row mt-1">
                             <div class="col-md-6">
                                 <input type="text" name="drivingLicence[licence_num]"
-                                    class="form-control form-dataconductores" placeholder="Número de licencia" required/>
+                                    class="form-control form-dataconductores" placeholder="Número de licencia"
+                                    required />
                             </div>
                         </div>
                         <div class="row mt-2">
@@ -67,16 +81,18 @@
                                     id="country_expedition" style="width: 100%; height: 100%;" required>
                                     <option value="">Seleccionar</option>
                                     @foreach ($list_country_expedition as $country_expedition_item)
-                                        <option value="{{ $country_expedition_item }}">{{ $country_expedition_item }}</option>
+                                    <option value="{{ $country_expedition_item }}">{{ $country_expedition_item }}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-6 form_select_conductores">
                                 <label for="category">Categoría</label>
-                                <select name="drivingLicence[category]" class="form-control" id="category" style="width: 100%; height: 100%;" required>
+                                <select name="drivingLicence[category]" class="form-control" id="category"
+                                    style="width: 100%; height: 100%;" required>
                                     <option value="">Seleccionar</option>
                                     @foreach ($list_category as $category_item)
-                                        <option value="{{ $category_item }}">{{ $category_item }}</option>
+                                    <option value="{{ $category_item }}">{{ $category_item }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -84,19 +100,25 @@
                         <div class="row mt-2">
                             <div class="col-md-6 form_select_conductores">
                                 <label for="state">Estado</label>
-                                <select name="drivingLicence[state]" class="form-control" id="state" style="width: 100%; height: 100%;" required>
+                                <select name="drivingLicence[state]" class="form-control" id="state"
+                                    style="width: 100%; height: 100%;" required>
                                     <option value="">Seleccionar</option>
                                     @foreach ($list_state as $state_item)
-                                        <option value="{{ $state_item }}">{{ $state_item }}</option>
+                                    <option value="{{ $state_item }}">{{ $state_item }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label for="driver_information_dni_id">C.C Conductor</label>
-                                <select name="drivingLicence[driver_information_dni_id]" class="form-control" id="driver_information_dni_id_form" style="width: 100%; height: 100%;" data-url="{{ route('drivers-select-lists')}}" data-url-name="{{ route('drivers-get-name') }}" required>
+                                <select name="drivingLicence[driver_information_dni_id]" class="form-control"
+                                    id="driver_information_dni_id_form" style="width: 100%; height: 100%;"
+                                    data-url="{{ route('drivers-select-lists')}}"
+                                    data-url-name="{{ route('drivers-get-name') }}" required>
                                 </select>
-                                <label class="text-info font-weight-bold" id="name_driver" style="margin-top: 12px;"></label>
-                                <span class="error_admin input_user_admin" role="alert" id="driver_information_dni_id-error">
+                                <label class="text-info font-weight-bold" id="name_driver"
+                                    style="margin-top: 12px;"></label>
+                                <span class="error_admin input_user_admin" role="alert"
+                                    id="driver_information_dni_id-error">
                                     <strong id="driver_information_dni_id-error-strong" class="error-strong"> </strong>
                                 </span>
                             </div>
@@ -104,11 +126,13 @@
                         <div class="row mt-2">
                             <div class="col-6 form_select_conductores">
                                 <label for="Expedition_day_form">Fecha de expedición</label>
-                                <input type="date" class="form-control" name="drivingLicence[expedition_day]" id="expedition_day_form" readonly required/>
+                                <input type="date" class="form-control" name="drivingLicence[expedition_day]"
+                                    id="expedition_day_form" readonly required />
                             </div>
                             <div class="col-6 form_select_conductores">
                                 <label for="expi_date_form">Fecha de vencimiento</label>
-                                <input type="date" class="form-control" name="drivingLicence[expi_date]" id="expi_date_form" readonly required/>
+                                <input type="date" class="form-control" name="drivingLicence[expi_date]"
+                                    id="expi_date_form" readonly required />
                             </div>
                         </div>
                         <div class="d-flex justify-content-center" style="margin-top: 25px;">
@@ -148,8 +172,10 @@
                         </div>
                         <div class="form-group">
                             <label for="file_driver_info">Importar Información de Conductores</label>
-                            <input type="file" class="form-control-file" id="file_driver_info" name="file" style="margin-bottom: 7px;" required>
-                            <a  href="{{ asset('formats/formato_licencia_conducir.xlsx') }}" target="_blank" style="color:green;"> <span class="excel_icon"></span> Descargar Formato</a>
+                            <input type="file" class="form-control-file" id="file_driver_info" name="file"
+                                style="margin-bottom: 7px;" required>
+                            <a href="{{ asset('formats/formato_licencia_conducir.xlsx') }}" target="_blank"
+                                style="color:green;"> <span class="excel_icon"></span> Descargar Formato</a>
                             <div class="d-flex justify-content-center" style="margin-top: 25px;">
                                 <input type="submit" value="Registrar" class="btn btn-primary">
                             </div>
