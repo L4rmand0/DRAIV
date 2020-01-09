@@ -18,6 +18,24 @@
         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                 class="download_icon icons-fa"></i> Generar Reporte</a>
     </div>
+    <div class="row">
+        <div class="col-xl-12 col-md-6 mb-4">
+            <div class="card shadow h-90 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1 ml-1">
+                                Cédula Conductor</div>
+                            <form action="">
+                                <select name="" class="mt-3" id="select_cc_driver" style="width: 30%;" data-url="{{ route('drivers-select-lists')}}" hidden>
+                                </select>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <h4 class="mb-3">Información de Conductores</h4>
     <!-- Content Row -->
     <div class="row">

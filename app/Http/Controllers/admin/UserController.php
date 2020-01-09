@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    public function __construct() 
+    {
+        // $this->middleware(['guest','check.permissions']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -162,7 +166,6 @@ class UserController extends Controller
 
     public function putPermissionsProfile($profile_id, $user_id)
     {
-        $user_id2 = 1400000001;
         $profiles = DB::table('profile_ as p')
             ->orderBy('p.date_operation', 'desc')
             ->select('p.profile_id', 'p.user_profile', 'permission')

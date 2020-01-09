@@ -6,6 +6,7 @@ use App\DriverInformation;
 use App\DrivingLicence;
 use App\Http\Controllers\Controller;
 use App\Imagenes;
+use App\Module;
 use App\Vehicle;
 use auth;
 use Illuminate\Http\Request;
@@ -14,16 +15,20 @@ class AdminController extends Controller
 {
     private $permissions;
     private $image_controller;
+    private $module;
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth']);
         $this->image_controller = new ImageController();
     }
 
     public function index(Request $request, $module = null)
     {
         $user_id = auth()->user()->id;
+        //Revisa si tiene permisos sonbre ese módulo y si no lo redirije a su módulo principal
+        $module = $this->checkModulePermission($module, $user_id);
+        $this->module = $module;
         $profile = auth()->user()->user_profile;
         $profile_id = auth()->user()->profile_id;
         $company_id = auth()->user()->company_id;
@@ -53,9 +58,12 @@ class AdminController extends Controller
                     $data_images = $this->showIndexDriverImages($company_name);
                     return view('admin.images', $data_images);
                     break;
-                default:
+                case 'dashboard':
                     $data_dashboard = $this->showIndexDashboard($company_id);
                     return view('admin.dashboard', $data_dashboard);
+                    break;
+                default:
+                    return view('404_draiv');
                     break;
             }
         } else {

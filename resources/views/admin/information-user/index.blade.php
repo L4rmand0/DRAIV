@@ -7,7 +7,7 @@
     <input type="hidden" name="update-driver-info-route" value="{{ route ('driver-info.update') }}"
         id="update-driver-info-route">
     <!-- Page Heading -->
-    <div class="card mb-4">
+    <div class="card mb-4" style="width: 100%;">
         <div class="card-header">
             <div class="d-sm-flex align-items-center justify-content-between">
                 <h1 class="h5 mb-0 text-gray-800" style="color:#515151 !important;">Información de Conductores</h1>

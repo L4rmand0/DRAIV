@@ -41,7 +41,7 @@
                                 Productos
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownSolutions">
-                                <a class="dropdown-item" href="{{ route('admin') }}">Dashboard Enterprise</a>
+                                <a class="dropdown-item" href="{{ route('admin','dashboard') }}">Dashboard Enterprise</a>
                             </div>
                         </li>
                         <li class="nav-item">
