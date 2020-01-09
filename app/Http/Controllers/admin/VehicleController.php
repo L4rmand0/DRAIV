@@ -104,8 +104,8 @@ class VehicleController extends Controller
         );
 
         $errors = $validator->errors()->getMessages();
-        print_r($errors);
-        die;
+        // print_r($errors);
+        // die;
 
         //Revisa que ya se haya insertado un vehículo con esa placa y lo actualiza
         foreach ($errors as $key => $value) {
