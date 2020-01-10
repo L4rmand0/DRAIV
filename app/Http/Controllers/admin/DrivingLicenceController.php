@@ -81,7 +81,6 @@ class DrivingLicenceController extends Controller
         );
         $errors = $validator->errors()->getMessages();
         // print_r($errors);
-        // die;
         foreach ($errors as $key => $value) {
             if (strpos($value[0], "conductor") !== FALSE) {
                 $check_dni_information = DB::table('driving_licence')->select(DB::raw(
@@ -250,6 +249,20 @@ class DrivingLicenceController extends Controller
             ->get()->toArray();
     }
 
+    public static function getCategoryByCompanyADriver($company_id, $dni_id)
+    {
+        return DB::table('driving_licence')
+            ->select(DB::raw(
+                'driving_licence.category,COUNT(*) AS total'
+            ))
+            ->join('driver_information', 'driver_information.dni_id', '=', 'driving_licence.driver_information_dni_id')
+            ->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.dni_id', '=', $dni_id)
+            ->where('driver_information.operation', '!=', 'D')
+            ->groupBy('category')
+            ->get()->toArray();
+    }
+
     public static function getDrivingLicenceStateByCompany($company_id)
     {
         return DB::table('driving_licence')
@@ -258,6 +271,20 @@ class DrivingLicenceController extends Controller
             ))
             ->join('driver_information', 'driver_information.dni_id', '=', 'driving_licence.driver_information_dni_id')
             ->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.operation', '!=', 'D')
+            ->groupBy('state')
+            ->get()->toArray();
+    }
+
+    public static function getDrivingLicenceStateByCompanyADriver($company_id, $dni_id)
+    {
+        return DB::table('driving_licence')
+            ->select(DB::raw(
+                'driving_licence.state,COUNT(*) AS total'
+            ))
+            ->join('driver_information', 'driver_information.dni_id', '=', 'driving_licence.driver_information_dni_id')
+            ->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.dni_id', '=', $dni_id)
             ->where('driver_information.operation', '!=', 'D')
             ->groupBy('state')
             ->get()->toArray();
@@ -306,8 +333,13 @@ class DrivingLicenceController extends Controller
     public function makeBarChartLicenceState(Request $request)
     {
         $company_id = $request->get('company_id');
-        $civil_state = $this->getDrivingLicenceStateByCompany($company_id);
-        foreach ($civil_state as $key => $value) {
+        if(!empty($request->get('dni_id'))){
+            $dni_id = $request->get('dni_id');
+            $licence_state = $this->getDrivingLicenceStateByCompanyADriver($company_id, $dni_id);
+        }else{
+            $licence_state = $this->getDrivingLicenceStateByCompany($company_id);
+        }
+        foreach ($licence_state as $key => $value) {
             $labels[] = $value->state;
             $data_data[] = $value->total;
         }
@@ -327,7 +359,12 @@ class DrivingLicenceController extends Controller
     public function makeBarChartCategory(Request $request)
     {
         $company_id = $request->get('company_id');
-        $civil_state = $this->getCategoryByCompany($company_id);
+        if(!empty($request->get('dni_id'))){
+            $dni_id = $request->get('dni_id');
+            $civil_state = $this->getCategoryByCompanyADriver($company_id, $dni_id);
+        }else{
+            $civil_state = $this->getCategoryByCompany($company_id);
+        }
         foreach ($civil_state as $key => $value) {
             $labels[] = $value->category;
             $data_data[] = $value->total;

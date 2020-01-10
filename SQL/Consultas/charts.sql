@@ -102,6 +102,28 @@ where
 	and `v`.`operation` != 'D'
 	and `v`.`technomechanical_date` <= '2020-01-07';
 
+#cantidad de tipos por conductor
+SELECT type_v, COUNT(type_v) AS total FROM vehicle
+INNER JOIN user_vehicle uv on uv.vehicle_plate_id = vehicle.plate_id
+INNER JOIN driver_information di on di.dni_id = uv.driver_information_dni_id
+WHERE vehicle.company_id = 9013380301 and 
+di.dni_id = 129298828
+AND vehicle.operation != 'D' 
+GROUP BY type_v;
+
+
+#número de vehículos por conductor
+SELECT
+	COUNT(plate_id)
+FROM
+	vehicle as v
+INNER JOIN user_vehicle as uv on uv.vehicle_plate_id = v.plate_id
+INNER JOIN driver_information di on di.dni_id = uv.driver_information_dni_id
+WHERE
+	v.company_id = 9013380301
+	AND di.dni_id = 129298828
+	AND v.operation != 'D' ;
+
 
 
 

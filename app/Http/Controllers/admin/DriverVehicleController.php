@@ -311,4 +311,27 @@ class DriverVehicleController extends Controller
             return 0; 
         }   
     }
+
+    public static function getTotalVehiclesByCompanyR(Request $request)
+    {
+        $company_id = $request->get('company_id');
+        if(!empty($request->get('dni_id'))){
+            $dni_id = $request->get('dni_id');
+            $vechicles = DB::table('vehicle')
+                ->select(DB::raw('count(plate_id) as total_vehicles'))
+                ->join('user_vehicle as uv', 'uv.vehicle_plate_id', '=', 'v.plate_id')
+                ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+                ->where('vehicle.dni_id', '=', $dni_id)
+                ->where('vehicle.company_id', '=', $company_id)
+                ->where('vehicle.operation', '!=', 'D')
+                ->first();
+        }else{
+            $vechicles = DB::table('vehicle')
+                ->select(DB::raw('count(plate_id) as total_vehicles'))
+                ->where('vehicle.company_id', '=', $company_id)
+                ->where('vehicle.operation', '!=', 'D')
+                ->first();
+        }
+        return response()->json(['response' => count($vechicles), 'errors' => []]);
+    }
 }

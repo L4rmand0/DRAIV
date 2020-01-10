@@ -407,6 +407,23 @@ class VehicleController extends Controller
             ->get()->toArray();
     }
 
+    public static function getTypesByCompanyADriver($company_id, $dni_id)
+    {
+        return DB::table('vehicle as v')
+            ->select(DB::raw(
+                'count(plate_id) as total,
+                 type_v'
+            ))
+            ->join('user_vehicle as uv', 'uv.vehicle_plate_id', '=', 'v.plate_id')
+            ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+            ->where('v.company_id', '=', $company_id)
+            ->where('v.operation', '!=', 'D')
+            ->where('di.dni_id', '=', $dni_id)
+            ->groupBy('v.type_v')
+        // ->toSql();
+            ->get()->toArray();
+    }
+
     public static function getOwnersVByCompany($company_id)
     {
         return DB::table('vehicle as v')
@@ -416,6 +433,23 @@ class VehicleController extends Controller
             ))
             ->where('v.company_id', '=', $company_id)
             ->where('v.operation', '!=', 'D')
+            ->groupBy('v.owner_v')
+        // ->toSql();
+            ->get()->toArray();
+    }
+
+    public static function getOwnersVByCompanyADriver($company_id, $dni_id)
+    {
+        return DB::table('vehicle as v')
+            ->select(DB::raw(
+                'count(plate_id) as total,
+                IF(owner_v="Y", "Sí", "No") as owner_v'
+            ))
+            ->join('user_vehicle as uv', 'uv.vehicle_plate_id', '=', 'v.plate_id')
+            ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+            ->where('v.company_id', '=', $company_id)
+            ->where('v.operation', '!=', 'D')
+            ->where('di.dni_id', '=', $dni_id)
             ->groupBy('v.owner_v')
         // ->toSql();
             ->get()->toArray();
@@ -435,6 +469,23 @@ class VehicleController extends Controller
             ->get()->toArray();
     }
 
+    public static function getLineVByCompanyADriver($company_id, $dni_id)
+    {
+        return DB::table('vehicle as v')
+            ->select(DB::raw(
+                'count(plate_id) as total,
+             line'
+            ))
+            ->join('user_vehicle as uv', 'uv.vehicle_plate_id', '=', 'v.plate_id')
+            ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+            ->where('v.company_id', '=', $company_id)
+            ->where('v.operation', '!=', 'D')
+            ->where('di.dni_id', '=', $dni_id)
+            ->groupBy('v.line')
+        // ->toSql();
+            ->get()->toArray();
+    }
+
     public static function getBrandByCompany($company_id)
     {
         return DB::table('vehicle as v')
@@ -444,6 +495,23 @@ class VehicleController extends Controller
             ))
             ->where('v.company_id', '=', $company_id)
             ->where('v.operation', '!=', 'D')
+            ->groupBy('v.brand')
+        // ->toSql();
+            ->get()->toArray();
+    }
+
+    public static function getBrandByCompanyADriver($company_id, $dni_id)
+    {
+        return DB::table('vehicle as v')
+            ->select(DB::raw(
+                'count(plate_id) as total,
+                 brand'
+            ))
+            ->join('user_vehicle as uv', 'uv.vehicle_plate_id', '=', 'v.plate_id')
+            ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+            ->where('v.company_id', '=', $company_id)
+            ->where('v.operation', '!=', 'D')
+            ->where('di.dni_id', '=', $dni_id)
             ->groupBy('v.brand')
         // ->toSql();
             ->get()->toArray();
@@ -463,11 +531,33 @@ class VehicleController extends Controller
             ->get()->toArray();
     }
 
+    public static function getModelByCompanyADriver($company_id, $dni_id)
+    {
+        return DB::table('vehicle as v')
+            ->select(DB::raw(
+                'count(plate_id) as total,
+             model'
+            ))
+            ->join('user_vehicle as uv', 'uv.vehicle_plate_id', '=', 'v.plate_id')
+            ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+            ->where('v.company_id', '=', $company_id)
+            ->where('v.operation', '!=', 'D')
+            ->where('di.dni_id', '=', $dni_id)
+            ->groupBy('v.model')
+        // ->toSql();
+            ->get()->toArray();
+    }
+
     public function makeBarChartTypeV(Request $request)
     {
         $company_id = $request->get('company_id');
-        $education = $this->getTypesByCompany($company_id);
-        foreach ($education as $key => $value) {
+        if(!empty($request->get('dni_id'))){
+            $dni_id = $request->get('dni_id');
+            $type_v = $this->getTypesByCompanyADriver($company_id, $dni_id);
+        }else{
+            $type_v = $this->getTypesByCompany($company_id);
+        }
+        foreach ($type_v as $key => $value) {
             $labels[] = $value->type_v;
             $data_data[] = $value->total;
         }
@@ -487,7 +577,12 @@ class VehicleController extends Controller
     public function makePieChartLineV(Request $request)
     {
         $company_id = $request->get('company_id');
-        $lines = $this->getLineVByCompany($company_id);
+        if(!empty($request->get('dni_id'))){
+            $dni_id = $request->get('dni_id');
+            $lines = $this->getLineVByCompanyADriver($company_id, $dni_id);
+        }else{
+            $lines = $this->getLineVByCompany($company_id);
+        }
         // echo '<pre>';
         // print_r($lines);
         // die;
@@ -581,10 +676,15 @@ class VehicleController extends Controller
         }
     }
 
-    public function makePieChartModelV(Request $request)
+    public function makePolarChartModelV(Request $request)
     {
         $company_id = $request->get('company_id');
-        $models = $this->getModelByCompany($company_id);
+        if(!empty($request->get('dni_id'))){
+            $dni_id = $request->get('dni_id');
+            $models = $this->getModelByCompanyADriver($company_id, $dni_id);
+        }else{
+            $models = $this->getModelByCompany($company_id);
+        }
         foreach ($models as $key => $value) {
             $labels[] = $value->model;
             $data_data[] = $value->total;
@@ -605,7 +705,12 @@ class VehicleController extends Controller
     public function makePolarChartBrandV(Request $request)
     {
         $company_id = $request->get('company_id');
-        $brands = $this->getBrandByCompany($company_id);
+        if(!empty($request->get('dni_id'))){
+            $dni_id = $request->get('dni_id');
+            $brands = $this->getBrandByCompanyADriver($company_id, $dni_id);
+        }else{
+            $brands = $this->getBrandByCompany($company_id);
+        }
         foreach ($brands as $key => $value) {
             $labels[] = $value->brand;
             $data_data[] = $value->total;
@@ -626,8 +731,13 @@ class VehicleController extends Controller
     public function makePieChartOwnerV(Request $request)
     {
         $company_id = $request->get('company_id');
-        $education = $this->getOwnersVByCompany($company_id);
-        foreach ($education as $key => $value) {
+        if(!empty($request->get('dni_id'))){
+            $dni_id = $request->get('dni_id');
+            $owner_v = $this->getOwnersVByCompanyADriver($company_id, $dni_id);
+        }else{
+            $owner_v = $this->getOwnersVByCompany($company_id);
+        }
+        foreach ($owner_v as $key => $value) {
             $labels[] = $value->owner_v;
             $data_data[] = $value->total;
         }

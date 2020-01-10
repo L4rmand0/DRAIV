@@ -51,6 +51,8 @@ Route::prefix('admin')->group(function () {
     Route::post('driver-info/store','admin\DriverInformationController@store')->name('driver-info.store');
     Route::post('driver-info/destroy','admin\DriverInformationController@destroy')->name('driver-info.destroy');
     Route::post('driver-info/import','admin\DriverInformationController@import')->name('driver-info.import');
+    Route::post('driver-info/total-drivers', 'admin\DriverInformationController@getNumberDriversByCompanyR')->name('drivers-info.total-drivers'); 
+    Route::post('driver-info/total-vehicles', 'admin\DriverVehicleController@getTotalVehiclesByCompanyR')->name('drivers-info.total-vehicles'); 
     Route::get('driver-info/drivers-select-lists', 'admin\DriverInformationController@getDriveInformationtoSelect2')->name('drivers-select-lists'); 
     Route::get('driver-info/name-driver', 'admin\DriverInformationController@getNameDriver')->name('drivers-get-name'); 
     Route::post('driver-info/education-chart', 'admin\DriverInformationController@makeBarChart')->name('drivers-info.education-chart'); 
@@ -76,7 +78,7 @@ Route::prefix('admin')->group(function () {
     Route::post('vehicle/owner-v-chart','admin\VehicleController@makePieChartOwnerV')->name('admin.vehicle.owner-v-chart');
     Route::post('vehicle/line-v-chart','admin\VehicleController@makePieChartLineV')->name('admin.vehicle.line-v-chart');
     Route::post('vehicle/brand-v-chart','admin\VehicleController@makePolarChartBrandV')->name('admin.vehicle.brand-v-chart');
-    Route::post('vehicle/model-v-chart','admin\VehicleController@makePieChartModelV')->name('admin.vehicle.model-v-chart');
+    Route::post('vehicle/model-v-chart','admin\VehicleController@makePolarChartModelV')->name('admin.vehicle.model-v-chart');
     Route::post('vehicle/add-driver-vehicle','admin\VehicleController@addVehicleDriver')->name('admin.vehicle.add-driver-vehicle');
     Route::get('driver-info/admin1-select-lists', 'admin\Admin1Controller@getAdmin1toSelect2')->name('admin1-select-lists'); 
     Route::get('driver-info/admin2-select-lists', 'admin\Admin2Controller@getAdmin2toSelect2')->name('admin2-select-lists'); 

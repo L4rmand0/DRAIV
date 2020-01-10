@@ -448,6 +448,35 @@ class DriverInformationController extends Controller
         return count($drivers);
     }
 
+    public static function getNumberDriversByCompanyR(Request $request)
+    {
+        // echo '<pre>';
+        // print_r($request->all());
+        // die;
+        $company_id = $request->get('company_id');
+        if(!empty($request->get('dni_id'))){
+            $dni_id = $request->get('dni_id');
+            $drivers = DB::table('driver_information')
+            ->orderBy('driver_information.date_operation', 'desc')
+            ->where('driver_information.dni_id', '=', $dni_id)
+            ->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.operation', '!=', 'D')
+            ->select(DB::raw(
+                'driver_information.dni_id'
+            ))->get()->toArray();
+        }else{
+            $drivers = DB::table('driver_information')
+            ->orderBy('driver_information.date_operation', 'desc')
+            ->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.operation', '!=', 'D')
+            ->select(DB::raw(
+                'driver_information.dni_id'
+            ))->get()->toArray();
+        }
+        
+        return response()->json(['response' => count($drivers), 'errors' => []]);
+    }
+
     public static function getEducationGradeByCompany($company_id)
     {
         return DB::table('driver_information')

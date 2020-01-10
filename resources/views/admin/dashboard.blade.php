@@ -13,6 +13,8 @@
     <input type="hidden" id="function_pie_brand_v" value="{{ route('admin.vehicle.brand-v-chart') }}">
     <input type="hidden" id="function_pie_model_v" value="{{ route('admin.vehicle.model-v-chart') }}">
     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+    <input type="hidden" id="function_total_drivers" value="{{ route('drivers-info.total-drivers') }}">
+    <input type="hidden" id="function_total_vehicles" value="{{ route('drivers-info.total-vehicles') }}">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard {{ $company_name }}</h1>
         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="report_generate"><i
@@ -49,7 +51,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 Número de Conductores</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $total_drivers }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="card_driver_number">{{ $total_drivers }}</div>
                         </div>
                     </div>
                 </div>
@@ -64,7 +66,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Número de Vehículos</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $total_vehicles }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="card_vehicle_number">{{ $total_vehicles }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
