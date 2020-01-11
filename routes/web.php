@@ -53,6 +53,14 @@ Route::prefix('admin')->group(function () {
     Route::post('driver-info/import','admin\DriverInformationController@import')->name('driver-info.import');
     Route::post('driver-info/total-drivers', 'admin\DriverInformationController@getNumberDriversByCompanyR')->name('drivers-info.total-drivers'); 
     Route::post('driver-info/total-vehicles', 'admin\DriverVehicleController@getTotalVehiclesByCompanyR')->name('drivers-info.total-vehicles'); 
+    Route::post('driver-info/gender', 'admin\DriverInformationController@getGenderByCompanyR')->name('drivers-info.gender'); 
+    Route::post('driver-info/average-score', 'admin\DriverInformationController@getAverageScoreByCompanyR')->name('drivers-info.average-score'); 
+    Route::post('driver-info/licence-expiration-number', 'admin\DrivingLicenceController@getLicenceExpiDatesR')->name('drivers-info.licence-expiration-number'); 
+    Route::post('driver-info/licence-expirated-number', 'admin\DrivingLicenceController@getLicencesExpiratedR')->name('drivers-info.licence-expirated-number'); 
+    Route::post('driver-info/soat-expiration-number', 'admin\VehicleController@getSoatExpiDatesR')->name('drivers-info.soat-expiration-number'); 
+    Route::post('driver-info/soat-expirated-number', 'admin\VehicleController@getSoatsExpiratedR')->name('drivers-info.soat-expirated-number'); 
+    Route::post('driver-info/technomecanical-expiration-number', 'admin\VehicleController@getExpiTechnomecanicalDatesR')->name('drivers-info.technomecanical-expiration-number'); 
+    Route::post('driver-info/technomecanical-expirated-number', 'admin\VehicleController@getExpiTecnomecanicalExpiratedR')->name('drivers-info.technomecanical-expirated-number'); 
     Route::get('driver-info/drivers-select-lists', 'admin\DriverInformationController@getDriveInformationtoSelect2')->name('drivers-select-lists'); 
     Route::get('driver-info/name-driver', 'admin\DriverInformationController@getNameDriver')->name('drivers-get-name'); 
     Route::post('driver-info/education-chart', 'admin\DriverInformationController@makeBarChart')->name('drivers-info.education-chart'); 

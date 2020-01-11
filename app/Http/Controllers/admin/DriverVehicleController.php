@@ -317,13 +317,13 @@ class DriverVehicleController extends Controller
         $company_id = $request->get('company_id');
         if(!empty($request->get('dni_id'))){
             $dni_id = $request->get('dni_id');
-            $vechicles = DB::table('vehicle')
-                ->select(DB::raw('count(plate_id) as total_vehicles'))
+            $vechicles = DB::table('vehicle as v')
+                ->select(DB::raw('count(v.plate_id) as total_vehicles'))
                 ->join('user_vehicle as uv', 'uv.vehicle_plate_id', '=', 'v.plate_id')
                 ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
-                ->where('vehicle.dni_id', '=', $dni_id)
-                ->where('vehicle.company_id', '=', $company_id)
-                ->where('vehicle.operation', '!=', 'D')
+                ->where('di.dni_id', '=', $dni_id)
+                ->where('v.company_id', '=', $company_id)
+                ->where('v.operation', '!=', 'D')
                 ->first();
         }else{
             $vechicles = DB::table('vehicle')
@@ -332,6 +332,9 @@ class DriverVehicleController extends Controller
                 ->where('vehicle.operation', '!=', 'D')
                 ->first();
         }
-        return response()->json(['response' => count($vechicles), 'errors' => []]);
+        // echo '<pre>';
+        // print_r($vechicles);
+        // die;
+        return response()->json(['response' => $vechicles->total_vehicles, 'errors' => []]);
     }
 }

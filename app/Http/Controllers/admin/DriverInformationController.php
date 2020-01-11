@@ -420,10 +420,10 @@ class DriverInformationController extends Controller
         foreach ($name_driver as $value) {
             $name_id = $value->first_name . " " . $value->second_name . " " . $value->f_last_name . " " . $value->s_last_name;
         }
-        if(!empty($check_vehicles)){
-            return response()->json(['name' => $name_id, 'errors' => ['driver_information_dni_id'=>['Este conductor ya tiene asociado un vehículo.']]]);
-        }else{
-            return response()->json(['name' => $name_id, 'errors'=>[]]);
+        if (!empty($check_vehicles)) {
+            return response()->json(['name' => $name_id, 'errors' => ['driver_information_dni_id' => ['Este conductor ya tiene asociado un vehículo.']]]);
+        } else {
+            return response()->json(['name' => $name_id, 'errors' => []]);
         }
     }
 
@@ -454,26 +454,26 @@ class DriverInformationController extends Controller
         // print_r($request->all());
         // die;
         $company_id = $request->get('company_id');
-        if(!empty($request->get('dni_id'))){
+        if (!empty($request->get('dni_id'))) {
             $dni_id = $request->get('dni_id');
             $drivers = DB::table('driver_information')
-            ->orderBy('driver_information.date_operation', 'desc')
-            ->where('driver_information.dni_id', '=', $dni_id)
-            ->where('driver_information.company_id', '=', $company_id)
-            ->where('driver_information.operation', '!=', 'D')
-            ->select(DB::raw(
-                'driver_information.dni_id'
-            ))->get()->toArray();
-        }else{
+                ->orderBy('driver_information.date_operation', 'desc')
+                ->where('driver_information.dni_id', '=', $dni_id)
+                ->where('driver_information.company_id', '=', $company_id)
+                ->where('driver_information.operation', '!=', 'D')
+                ->select(DB::raw(
+                    'driver_information.dni_id'
+                ))->get()->toArray();
+        } else {
             $drivers = DB::table('driver_information')
-            ->orderBy('driver_information.date_operation', 'desc')
-            ->where('driver_information.company_id', '=', $company_id)
-            ->where('driver_information.operation', '!=', 'D')
-            ->select(DB::raw(
-                'driver_information.dni_id'
-            ))->get()->toArray();
+                ->orderBy('driver_information.date_operation', 'desc')
+                ->where('driver_information.company_id', '=', $company_id)
+                ->where('driver_information.operation', '!=', 'D')
+                ->select(DB::raw(
+                    'driver_information.dni_id'
+                ))->get()->toArray();
         }
-        
+
         return response()->json(['response' => count($drivers), 'errors' => []]);
     }
 
@@ -539,6 +539,47 @@ class DriverInformationController extends Controller
             ->get()->toArray();
     }
 
+    public static function getGenderByCompanyR(Request $request)
+    {
+        $company_id = $request->get('company_id');
+        if (!empty($request->get('dni_id'))) {
+            $dni_id = $request->get('dni_id');
+            $gender = DB::table('driver_information')
+                ->select(DB::raw(
+                    'driver_information.gender,COUNT(*) AS total'
+                ))
+                ->where('driver_information.dni_id', '=', $dni_id)
+                ->where('driver_information.company_id', '=', $company_id)
+                ->where('driver_information.operation', '!=', 'D')
+                ->groupBy('gender')
+                ->get()->toArray();
+        } else {
+            $gender = DB::table('driver_information')
+                ->select(DB::raw(
+                    'driver_information.gender,COUNT(*) AS total'
+                ))
+                ->where('driver_information.company_id', '=', $company_id)
+                ->where('driver_information.operation', '!=', 'D')
+                ->groupBy('gender')
+                ->get()->toArray();
+        }
+        $man = 0;
+        $woman = 0;
+        foreach ($gender as $key => $value) {
+            if ($value->gender == 0) {
+                $man = $value->total;
+            } else if ($value->gender == 1) {
+                $woman = $value->total;
+            }
+        }
+
+        return response()->json(['response' => ['man' => $man, 'woman' => $woman], 'errors' => []]);
+        // echo ' man ' . $man;
+        // echo ' woman ' . $woman;
+        // echo '<pre>';
+        // print_r($gender);
+    }
+
     public static function getAverageScoreByCompany($company_id)
     {
         return DB::table('driver_information')
@@ -550,17 +591,44 @@ class DriverInformationController extends Controller
             ->first();
     }
 
+    public static function getAverageScoreByCompanyR(Request $request)
+    {
+        $company_id = $request->get('company_id');
+        if (!empty($request->get('dni_id'))) {
+            $dni_id = $request->get('dni_id');
+            $average = DB::table('driver_information')
+                ->select(DB::raw(
+                    'avg(driver_information.score) as average'
+                ))
+                ->where('driver_information.dni_id', '=', $dni_id)
+                ->where('driver_information.company_id', '=', $company_id)
+                ->where('driver_information.operation', '!=', 'D')
+                ->first();
+        } else {
+            $average = DB::table('driver_information')
+                ->select(DB::raw(
+                    'avg(driver_information.score) as average'
+                ))
+                ->where('driver_information.company_id', '=', $company_id)
+                ->where('driver_information.operation', '!=', 'D')
+                ->first();
+        }
+        // echo '<pre>';
+        // print_r($average);
+        // die;
+        return response()->json(['response' => number_format($average->average, 3), 'errors' => []]);
+    }
+
     public function makeBarChart(Request $request)
     {
         // echo '<pre>';
         // print_r($request->all());
-        
+
         $company_id = $request->get('company_id');
-        if(!empty($request->get('dni_id'))){
-            // echo ' tiene dni ';
+        if (!empty($request->get('dni_id'))) {
             $dni_id = $request->get('dni_id');
             $education = $this->getEducationGradeByCompanyADriver($company_id, $dni_id);
-        }else{
+        } else {
             // echo ' nada ';
             $education = $this->getEducationGradeByCompany($company_id);
         }
@@ -589,9 +657,9 @@ class DriverInformationController extends Controller
         if (!empty($request->get('dni_id'))) {
             $dni_id = $request->get('dni_id');
             $civil_state = $this->getCivilStateByCompanyADriver($company_id, $dni_id);
-        }else{
+        } else {
             $civil_state = $this->getCivilStateByCompany($company_id);
-        }    
+        }
         foreach ($civil_state as $key => $value) {
             $labels[] = $value->civil_state;
             $data_data[] = $value->total;

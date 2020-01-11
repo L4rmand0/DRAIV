@@ -15,6 +15,14 @@
     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
     <input type="hidden" id="function_total_drivers" value="{{ route('drivers-info.total-drivers') }}">
     <input type="hidden" id="function_total_vehicles" value="{{ route('drivers-info.total-vehicles') }}">
+    <input type="hidden" id="function_gender" value="{{ route('drivers-info.gender') }}">
+    <input type="hidden" id="function_calification_average" value="{{ route('drivers-info.average-score') }}">
+    <input type="hidden" id="function_licence_expiration" value="{{ route('drivers-info.licence-expiration-number') }}">
+    <input type="hidden" id="function_licence_expirated" value="{{ route('drivers-info.licence-expirated-number') }}">
+    <input type="hidden" id="function_soat_expiration" value="{{ route('drivers-info.soat-expiration-number') }}">
+    <input type="hidden" id="function_soat_expirated" value="{{ route('drivers-info.soat-expirated-number') }}">
+    <input type="hidden" id="function_technomecanical_expiration" value="{{ route('drivers-info.technomecanical-expiration-number') }}">
+    <input type="hidden" id="function_technomecanical_expirated" value="{{ route('drivers-info.technomecanical-expirated-number') }}">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard {{ $company_name }}</h1>
         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="report_generate"><i
@@ -93,10 +101,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 mt-1">
-                                        <span class="h5 mb-0 font-weight-bold text-gray-800">{{ $total_man }}</span>
+                                        <span class="h5 mb-0 font-weight-bold text-gray-800" id="man_number">{{ $total_man }}</span>
                                     </div>
                                     <div class="col-md-6 mt-1">
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $total_woman }}</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="woman_number">{{ $total_woman }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -117,7 +125,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                 Calificación Promedio</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $score_average }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="calification_average_number">{{ $score_average }}</div>
                         </div>
                         <div class="col-auto">
                             {{-- <i class="fas fa-comments fa-2x text-gray-300"></i> --}}
@@ -239,7 +247,7 @@
                     <div class="card bg-primary text-white shadow">
                         <div class="card-body">
                             Licencias Próximas a Vencer
-                            <div class="text-white-50 small">{{ $licences_expiration }}</div>
+                            <div class="text-white-50 small" id="prox_expi_licences_number">{{ $licences_expiration }}</div>
                         </div>
                     </div>
                 </div>
@@ -247,7 +255,7 @@
                     <div class="card bg-primary text-white shadow">
                         <div class="card-body">
                             Licencias Vencidas
-                            <div class="text-white-50 small">{{ $licences_expirated }}</div>
+                            <div class="text-white-50 small" id="card_licence_expirated_number">{{ $licences_expirated }}</div>
                         </div>
                     </div>
                 </div>
@@ -257,7 +265,7 @@
                     <div class="card bg-success text-white shadow">
                         <div class="card-body">
                             Soats Próximos a Vencer
-                            <div class="text-white-50 small">{{ $soats_expiration }}</div>
+                            <div class="text-white-50 small" id="card_soat_expiration_number">{{ $soats_expiration }}</div>
                         </div>
                     </div>
                 </div>
@@ -265,7 +273,7 @@
                     <div class="card bg-success text-white shadow">
                         <div class="card-body">
                             Soats Vencidos
-                            <div class="text-white-50 small">{{ $soats_expirated }}</div>
+                            <div class="text-white-50 small" id="card_soat_expirated_number">{{ $soats_expirated }}</div>
                         </div>
                     </div>
                 </div>
@@ -275,7 +283,7 @@
                     <div class="card bg-danger text-white shadow">
                         <div class="card-body">
                             Tecnomecánicas Próximos a Vencer
-                            <div class="text-white-50 small">{{ $technomecanical_expiration }}</div>
+                            <div class="text-white-50 small" id="card_technomecanical_expiration_number">{{ $technomecanical_expiration }}</div>
                         </div>
                     </div>
                 </div>
@@ -284,7 +292,7 @@
                         <div class="card-body">
                             Tecnomecánicas Vencidas
                             <p></p>
-                            <div class="text-white-50 small">{{ $technomecanical_expirated }}</div>
+                            <div class="text-white-50 small" id="card_technomecanical_expirated_number">{{ $technomecanical_expirated }}</div>
                         </div>
                     </div>
                 </div>

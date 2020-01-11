@@ -314,6 +314,41 @@ class DrivingLicenceController extends Controller
         return count($licencias_expiration);
     }
 
+    public static function getLicenceExpiDatesR(Request $request)
+    {
+        $company_id = $request->get('company_id');
+        $fecha_actual = date("Y-m-d");
+        $date_month = date("Y-m-d", strtotime($fecha_actual . "+ 3 month"));
+        if (!empty($request->get('dni_id'))) {
+            $dni_id = $request->get('dni_id');
+            $licencias_expiration = DB::table('driving_licence')
+                ->select(DB::raw(
+                    'driving_licence.licence_num'
+                ))
+                ->join('driver_information', 'driver_information.dni_id', '=', 'driving_licence.driver_information_dni_id')
+                ->where('driver_information.company_id', '=', $company_id)
+                ->where('driver_information.dni_id', '=', $dni_id)
+                ->where('driving_licence.operation', '!=', 'D')
+                ->whereBetween('driving_licence.expi_date', [$fecha_actual, $date_month])
+                ->get()->toArray();
+        }else{
+            $licencias_expiration = DB::table('driving_licence')
+                ->select(DB::raw(
+                    'driving_licence.licence_num'
+                ))
+                ->join('driver_information', 'driver_information.dni_id', '=', 'driving_licence.driver_information_dni_id')
+                ->where('driver_information.company_id', '=', $company_id)
+                ->where('driving_licence.operation', '!=', 'D')
+                ->whereBetween('driving_licence.expi_date', [$fecha_actual, $date_month])
+                ->get()->toArray();
+        }    
+        // echo '<pre>';
+        // print_r($fecha_actual);
+        // print_r($licencias_expiration);
+        // die;
+        return response()->json(['response' => count($licencias_expiration), 'errors' => []]);
+    }
+
     public static function getLicencesExpirated($company_id)
     {
         $fecha_actual = date("Y-m-d");
@@ -328,6 +363,38 @@ class DrivingLicenceController extends Controller
             // ->toSql();
             ->get()->toArray();
         return count($licencias_expiration);
+    }
+
+    public static function getLicencesExpiratedR(Request $request)
+    {
+        $fecha_actual = date("Y-m-d");
+        $company_id = $request->get('company_id'); 
+        if (!empty($request->get('dni_id'))) {
+            $dni_id = $request->get('dni_id');
+            $licencias_expiration = DB::table('driving_licence')
+                ->select(DB::raw(
+                    'driving_licence.licence_num'
+                ))
+                ->join('driver_information', 'driver_information.dni_id', '=', 'driving_licence.driver_information_dni_id')
+                ->where('driver_information.dni_id', '=', $dni_id)
+                ->where('driver_information.company_id', '=', $company_id)
+                ->where('driving_licence.operation', '!=', 'D')
+                ->where('driving_licence.expi_date', '<=', $fecha_actual)
+                // ->toSql();
+                ->get()->toArray();
+        }else{
+            $licencias_expiration = DB::table('driving_licence')
+                ->select(DB::raw(
+                    'driving_licence.licence_num'
+                ))
+                ->join('driver_information', 'driver_information.dni_id', '=', 'driving_licence.driver_information_dni_id')
+                ->where('driver_information.company_id', '=', $company_id)
+                ->where('driving_licence.operation', '!=', 'D')
+                ->where('driving_licence.expi_date', '<=', $fecha_actual)
+                // ->toSql();
+                ->get()->toArray();
+        }
+        return response()->json(['response' => count($licencias_expiration), 'errors' => []]);
     }
 
     public function makeBarChartLicenceState(Request $request)

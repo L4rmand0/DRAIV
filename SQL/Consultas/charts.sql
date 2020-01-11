@@ -92,6 +92,16 @@ where
 	and `v`.`operation` != 'D'
 	and `v`.`soat_expi_date` <= '20-01-07';
 
+#soat de vehículo próximos a vencer
+select
+	count(v.plate_id) as total
+from
+	`vehicle` as `v`
+where
+	`v`.`company_id` = 9013380301
+	and `v`.`operation` != 'D'
+	and `v`.`soat_expi_date` <= '20-01-07';
+
 #tecnomecánicas vencidas
 select
 	count(v.plate_id) as total
@@ -123,6 +133,33 @@ WHERE
 	v.company_id = 9013380301
 	AND di.dni_id = 129298828
 	AND v.operation != 'D' ;
+
+#soat de vehículo próximos a vencer por conductor
+select
+	count(v.plate_id) as total
+from
+	vehicle as v
+	INNER JOIN user_vehicle as uv on uv.vehicle_plate_id = v.plate_id
+	INNER JOIN driver_information as di on di.dni_id = uv.driver_information_dni_id
+where
+	`v`.`company_id` = 9013380301
+	and di.dni_id = 129298828
+	and `v`.`operation` != 'D'
+	and `v`.`soat_expi_date` <= '20-01-07';
+
+
+#tecnomecánicas vencidas por conductor
+select
+	count(v.plate_id) as total
+from
+	vehicle as v
+	INNER JOIN user_vehicle as uv on uv.vehicle_plate_id = v.plate_id
+	INNER JOIN driver_information as di on di.dni_id = uv.driver_information_dni_id
+where
+	`v`.`company_id` = 9013380301
+	and `v`.`operation` != 'D'
+	and di.dni_id = 129298828
+	and `v`.`technomechanical_date` <= '2020-01-07';
 
 
 

@@ -341,6 +341,42 @@ class VehicleController extends Controller
         return $soats_expiration->total;
     }
 
+    public static function getSoatExpiDatesR(Request $request)
+    {
+        // echo '<pre>';
+        // print_r($request->all());
+        // die;
+        $fecha_actual = date("Y-m-d");
+        $date_month = date("Y-m-d", strtotime($fecha_actual . "+ 2 month"));
+        $company_id = $request->get('company_id');
+        if (!empty($request->get('dni_id'))) {
+            $dni_id = $request->get('dni_id');
+            $soats_expiration = DB::table('vehicle as v')
+                ->select(DB::raw(
+                    'count(v.plate_id) as total'
+                ))
+                ->join('user_vehicle as uv', 'uv.vehicle_plate_id', '=', 'v.plate_id')
+                ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+                ->where('v.company_id', '=', $company_id)
+                ->where('v.operation', '!=', 'D')
+                ->where('di.dni_id', '=', $dni_id)
+                ->whereBetween('v.soat_expi_date', [$fecha_actual, $date_month])
+                ->first();
+        } else {
+            $soats_expiration = DB::table('vehicle as v')
+                ->select(DB::raw(
+                    'count(v.plate_id) as total'
+                ))
+                ->where('v.company_id', '=', $company_id)
+                ->where('v.operation', '!=', 'D')
+                ->whereBetween('v.soat_expi_date', [$fecha_actual, $date_month])
+                ->first();
+        }
+        // print_r($soats_expiration);
+        // die;
+        return response()->json(['response' => $soats_expiration->total, 'errors' => []]);
+    }
+
     public static function getSoatsExpirated($company_id)
     {
         $fecha_actual = date("Y-m-d");
@@ -356,6 +392,36 @@ class VehicleController extends Controller
         // die;
             ->first();
         return $soats_expiration->total;
+    }
+
+    public static function getSoatsExpiratedR(Request $request)
+    {
+        $fecha_actual = date("Y-m-d");
+        $company_id = $request->get('company_id');
+        if (!empty($request->get('dni_id'))) {
+            $dni_id = $request->get('dni_id');
+            $soats_expirated = DB::table('vehicle as v')
+                ->select(DB::raw(
+                    'count(v.plate_id) as total'
+                ))
+                ->join('user_vehicle as uv', 'uv.vehicle_plate_id', '=', 'v.plate_id')
+                ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+                ->where('v.company_id', '=', $company_id)
+                ->where('v.operation', '!=', 'D')
+                ->where('di.dni_id', '=', $dni_id)
+                ->where('v.soat_expi_date', '<=', $fecha_actual)
+                ->first();
+        } else {
+            $soats_expirated = DB::table('vehicle as v')
+                ->select(DB::raw(
+                    'count(v.plate_id) as total'
+                ))
+                ->where('v.company_id', '=', $company_id)
+                ->where('v.operation', '!=', 'D')
+                ->where('v.soat_expi_date', '<=', $fecha_actual)
+                ->first();
+        }
+        return response()->json(['response' => $soats_expirated->total, 'errors' => []]);
     }
 
     public static function getExpiTecnomecanicalDates($company_id)
@@ -376,6 +442,37 @@ class VehicleController extends Controller
         return $tecnomecanical_expiration->total;
     }
 
+    public static function getExpiTechnomecanicalDatesR(Request $request)
+    {
+        $fecha_actual = date("Y-m-d");
+        $date_month = date("Y-m-d", strtotime($fecha_actual . "+ 2 month"));
+        $company_id = $request->get('company_id');
+        if (!empty($request->get('dni_id'))) {
+            $dni_id = $request->get('dni_id');
+            $tecnomecanical_expiration = DB::table('vehicle as v')
+                ->select(DB::raw(
+                    'count(v.plate_id) as total'
+                ))
+                ->join('user_vehicle as uv', 'uv.vehicle_plate_id', '=', 'v.plate_id')
+                ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+                ->where('v.company_id', '=', $company_id)
+                ->where('v.operation', '!=', 'D')
+                ->where('di.dni_id', '=', $dni_id)
+                ->whereBetween('v.technomechanical_date', [$fecha_actual, $date_month])
+                ->first();
+        } else {
+            $tecnomecanical_expiration = DB::table('vehicle as v')
+                ->select(DB::raw(
+                    'count(v.plate_id) as total'
+                ))
+                ->where('v.company_id', '=', $company_id)
+                ->where('v.operation', '!=', 'D')
+                ->whereBetween('v.technomechanical_date', [$fecha_actual, $date_month])
+                ->first();
+        }
+        return response()->json(['response' => $tecnomecanical_expiration->total, 'errors' => []]);
+    }
+
     public static function getExpiTecnomecanicalExpirated($company_id)
     {
         $fecha_actual = date("Y-m-d");
@@ -386,11 +483,38 @@ class VehicleController extends Controller
             ->where('v.company_id', '=', $company_id)
             ->where('v.operation', '!=', 'D')
             ->where('v.technomechanical_date', '<=', $fecha_actual)
-        // ->toSql();
-        // print_r($tecnomecanical_expiration);
-        // die;
             ->first();
         return $tecnomecanical_expiration->total;
+    }
+
+    public static function getExpiTecnomecanicalExpiratedR(Request $request)
+    {
+        $fecha_actual = date("Y-m-d");
+        $company_id = $request->get('company_id');
+        if (!empty($request->get('dni_id'))) {
+            $dni_id = $request->get('dni_id');
+            $tecnomecanical_expirated = DB::table('vehicle as v')
+                ->select(DB::raw(
+                    'count(v.plate_id) as total'
+                ))
+                ->join('user_vehicle as uv', 'uv.vehicle_plate_id', '=', 'v.plate_id')
+                ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+                ->where('v.company_id', '=', $company_id)
+                ->where('v.operation', '!=', 'D')
+                ->where('di.dni_id', '=', $dni_id)
+                ->where('v.technomechanical_date', '<=', $fecha_actual)
+                ->first();
+        } else {
+            $tecnomecanical_expirated = DB::table('vehicle as v')
+                ->select(DB::raw(
+                    'count(v.plate_id) as total'
+                ))
+                ->where('v.company_id', '=', $company_id)
+                ->where('v.operation', '!=', 'D')
+                ->where('v.technomechanical_date', '<=', $fecha_actual)
+                ->first();
+        }
+        return response()->json(['response' => $tecnomecanical_expirated->total, 'errors' => []]);
     }
 
     public static function getTypesByCompany($company_id)
@@ -551,10 +675,10 @@ class VehicleController extends Controller
     public function makeBarChartTypeV(Request $request)
     {
         $company_id = $request->get('company_id');
-        if(!empty($request->get('dni_id'))){
+        if (!empty($request->get('dni_id'))) {
             $dni_id = $request->get('dni_id');
             $type_v = $this->getTypesByCompanyADriver($company_id, $dni_id);
-        }else{
+        } else {
             $type_v = $this->getTypesByCompany($company_id);
         }
         foreach ($type_v as $key => $value) {
@@ -577,10 +701,10 @@ class VehicleController extends Controller
     public function makePieChartLineV(Request $request)
     {
         $company_id = $request->get('company_id');
-        if(!empty($request->get('dni_id'))){
+        if (!empty($request->get('dni_id'))) {
             $dni_id = $request->get('dni_id');
             $lines = $this->getLineVByCompanyADriver($company_id, $dni_id);
-        }else{
+        } else {
             $lines = $this->getLineVByCompany($company_id);
         }
         // echo '<pre>';
@@ -679,10 +803,10 @@ class VehicleController extends Controller
     public function makePolarChartModelV(Request $request)
     {
         $company_id = $request->get('company_id');
-        if(!empty($request->get('dni_id'))){
+        if (!empty($request->get('dni_id'))) {
             $dni_id = $request->get('dni_id');
             $models = $this->getModelByCompanyADriver($company_id, $dni_id);
-        }else{
+        } else {
             $models = $this->getModelByCompany($company_id);
         }
         foreach ($models as $key => $value) {
@@ -705,10 +829,10 @@ class VehicleController extends Controller
     public function makePolarChartBrandV(Request $request)
     {
         $company_id = $request->get('company_id');
-        if(!empty($request->get('dni_id'))){
+        if (!empty($request->get('dni_id'))) {
             $dni_id = $request->get('dni_id');
             $brands = $this->getBrandByCompanyADriver($company_id, $dni_id);
-        }else{
+        } else {
             $brands = $this->getBrandByCompany($company_id);
         }
         foreach ($brands as $key => $value) {
@@ -731,10 +855,10 @@ class VehicleController extends Controller
     public function makePieChartOwnerV(Request $request)
     {
         $company_id = $request->get('company_id');
-        if(!empty($request->get('dni_id'))){
+        if (!empty($request->get('dni_id'))) {
             $dni_id = $request->get('dni_id');
             $owner_v = $this->getOwnersVByCompanyADriver($company_id, $dni_id);
-        }else{
+        } else {
             $owner_v = $this->getOwnersVByCompany($company_id);
         }
         foreach ($owner_v as $key => $value) {
