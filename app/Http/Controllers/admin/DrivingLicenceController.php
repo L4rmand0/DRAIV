@@ -2,17 +2,32 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\DrivingLicence;
 use DB;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
-use App\Imports\DrivingLicenceImport;
-use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Validator;
+use App\DrivingLicence;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ChartJS;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\DrivingLicenceImport;
+use Illuminate\Support\Facades\Validator;
 
 class DrivingLicenceController extends Controller
 {
+    private $chart_js;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        // $this->excel = $excel;
+        // $this->middleware('guest');
+        $this->chart_js = new ChartJS();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -406,21 +421,22 @@ class DrivingLicenceController extends Controller
         }else{
             $licence_state = $this->getDrivingLicenceStateByCompany($company_id);
         }
-        foreach ($licence_state as $key => $value) {
-            $labels[] = $value->state;
-            $data_data[] = $value->total;
-        }
-        $num_register = count($data_data);
-        $arr_colors = $this->fillColorsBarChart($num_register);
-        $maximo = max($data_data) + 1;
-        $datasets['label'] = "Frecuencia Estado Licencia";
-        $datasets['data'] = $data_data;
-        $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
-        $datasets['borderColor'] = $arr_colors['borderColor'];
-        $datasets['borderWidth'] = 1;
-        $data['datasets'][] = $datasets;
-        $data['labels'] = $labels;
-        return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
+        return $this->chart_js->makeChart($licence_state);
+        // foreach ($licence_state as $key => $value) {
+        //     $labels[] = $value->state;
+        //     $data_data[] = $value->total;
+        // }
+        // $num_register = count($data_data);
+        // $arr_colors = $this->fillColorsBarChart($num_register);
+        // $maximo = max($data_data) + 1;
+        // $datasets['label'] = "Frecuencia Estado Licencia";
+        // $datasets['data'] = $data_data;
+        // $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
+        // $datasets['borderColor'] = $arr_colors['borderColor'];
+        // $datasets['borderWidth'] = 1;
+        // $data['datasets'][] = $datasets;
+        // $data['labels'] = $labels;
+        // return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
     }
 
     public function makeBarChartCategory(Request $request)
@@ -432,20 +448,21 @@ class DrivingLicenceController extends Controller
         }else{
             $civil_state = $this->getCategoryByCompany($company_id);
         }
-        foreach ($civil_state as $key => $value) {
-            $labels[] = $value->category;
-            $data_data[] = $value->total;
-        }
-        $num_register = count($data_data);
-        $arr_colors = $this->fillColorsBarChart($num_register);
-        $maximo = max($data_data) + 1;
-        $datasets['label'] = "Frecuencia Categoría Licencia";
-        $datasets['data'] = $data_data;
-        $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
-        $datasets['borderColor'] = $arr_colors['borderColor'];
-        $datasets['borderWidth'] = 1;
-        $data['datasets'][] = $datasets;
-        $data['labels'] = $labels;
-        return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
+        return $this->chart_js->makeChart($civil_state);
+        // foreach ($civil_state as $key => $value) {
+        //     $labels[] = $value->category;
+        //     $data_data[] = $value->total;
+        // }
+        // $num_register = count($data_data);
+        // $arr_colors = $this->fillColorsBarChart($num_register);
+        // $maximo = max($data_data) + 1;
+        // $datasets['label'] = "Frecuencia Categoría Licencia";
+        // $datasets['data'] = $data_data;
+        // $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
+        // $datasets['borderColor'] = $arr_colors['borderColor'];
+        // $datasets['borderWidth'] = 1;
+        // $data['datasets'][] = $datasets;
+        // $data['labels'] = $labels;
+        // return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
     }
 }

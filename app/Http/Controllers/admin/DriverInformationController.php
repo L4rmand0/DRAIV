@@ -7,6 +7,7 @@ namespace App\Http\Controllers\admin;
 use App\DriverInformation;
 use App\DriverVehicle;
 use App\DrivingLicence;
+use App\Http\Controllers\ChartJS;
 use App\Http\Controllers\Controller;
 // use Maatwebsite\Excel\Excel;
 use App\Imagenes;
@@ -22,11 +23,13 @@ class DriverInformationController extends Controller
 {
 
     private $excel;
+    private $chart_js;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
+
     /**
      * Create a new controller instance.
      *
@@ -36,7 +39,9 @@ class DriverInformationController extends Controller
     {
         // $this->excel = $excel;
         // $this->middleware('guest');
+        $this->chart_js = new ChartJS();
     }
+    
     /**
      * Display a listing of the resource.
      *
@@ -621,34 +626,14 @@ class DriverInformationController extends Controller
 
     public function makeBarChart(Request $request)
     {
-        // echo '<pre>';
-        // print_r($request->all());
-
         $company_id = $request->get('company_id');
         if (!empty($request->get('dni_id'))) {
             $dni_id = $request->get('dni_id');
             $education = $this->getEducationGradeByCompanyADriver($company_id, $dni_id);
         } else {
-            // echo ' nada ';
             $education = $this->getEducationGradeByCompany($company_id);
         }
-        // print_r($education);
-        // die;
-        foreach ($education as $key => $value) {
-            $labels[] = $value->education;
-            $data_data[] = $value->total;
-        }
-        $num_register = count($data_data);
-        $arr_colors = $this->fillColorsBarChart($num_register);
-        $maximo = max($data_data) + 1;
-        $datasets['label'] = "Frecuencia Educación";
-        $datasets['data'] = $data_data;
-        $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
-        $datasets['borderColor'] = $arr_colors['borderColor'];
-        $datasets['borderWidth'] = 1;
-        $data['datasets'][] = $datasets;
-        $data['labels'] = $labels;
-        return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
+        return $this->chart_js->makeChart($education);
     }
 
     public function makeBarChartCivilState(Request $request)
@@ -660,20 +645,6 @@ class DriverInformationController extends Controller
         } else {
             $civil_state = $this->getCivilStateByCompany($company_id);
         }
-        foreach ($civil_state as $key => $value) {
-            $labels[] = $value->civil_state;
-            $data_data[] = $value->total;
-        }
-        $num_register = count($data_data);
-        $arr_colors = $this->fillColorsBarChart($num_register);
-        $maximo = max($data_data) + 1;
-        $datasets['label'] = "Frecuencia Estado Civil";
-        $datasets['data'] = $data_data;
-        $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
-        $datasets['borderColor'] = $arr_colors['borderColor'];
-        $datasets['borderWidth'] = 1;
-        $data['datasets'][] = $datasets;
-        $data['labels'] = $labels;
-        return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
+        return $this->chart_js->makeChart($civil_state);
     }
 }

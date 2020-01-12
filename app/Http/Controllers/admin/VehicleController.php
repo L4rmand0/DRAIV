@@ -2,18 +2,33 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\DriverVehicle;
-use App\Http\Controllers\Controller;
-use App\Imports\VehiclesImport;
-use App\Vehicle;
 use DB;
+use App\Vehicle;
+use App\DriverVehicle;
 use Illuminate\Http\Request;
+use App\Imports\VehiclesImport;
+use App\Http\Controllers\ChartJS;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
 
 class VehicleController extends Controller
 {
+    private $chart_js;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        // $this->excel = $excel;
+        // $this->middleware('guest');
+        $this->chart_js = new ChartJS();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -681,21 +696,22 @@ class VehicleController extends Controller
         } else {
             $type_v = $this->getTypesByCompany($company_id);
         }
-        foreach ($type_v as $key => $value) {
-            $labels[] = $value->type_v;
-            $data_data[] = $value->total;
-        }
-        $num_register = count($data_data);
-        $arr_colors = $this->fillColorsBarChart($num_register);
-        $maximo = max($data_data) + 1;
-        $datasets['label'] = "Frecuencia Tipos Vehículo";
-        $datasets['data'] = $data_data;
-        $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
-        $datasets['borderColor'] = $arr_colors['borderColor'];
-        $datasets['borderWidth'] = 1;
-        $data['datasets'][] = $datasets;
-        $data['labels'] = $labels;
-        return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
+        return $this->chart_js->makeChart($type_v);
+        // foreach ($type_v as $key => $value) {
+        //     $labels[] = $value->type_v;
+        //     $data_data[] = $value->total;
+        // }
+        // $num_register = count($data_data);
+        // $arr_colors = $this->fillColorsBarChart($num_register);
+        // $maximo = max($data_data) + 1;
+        // $datasets['label'] = "Frecuencia Tipos Vehículo";
+        // $datasets['data'] = $data_data;
+        // $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
+        // $datasets['borderColor'] = $arr_colors['borderColor'];
+        // $datasets['borderWidth'] = 1;
+        // $data['datasets'][] = $datasets;
+        // $data['labels'] = $labels;
+        // return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
     }
 
     public function makePieChartLineV(Request $request)
@@ -707,24 +723,25 @@ class VehicleController extends Controller
         } else {
             $lines = $this->getLineVByCompany($company_id);
         }
+        return $this->chart_js->makeChart($lines);
         // echo '<pre>';
         // print_r($lines);
         // die;
-        foreach ($lines as $key => $value) {
-            $labels[] = $value->line;
-            $data_data[] = $value->total;
-        }
-        $num_register = count($data_data);
-        $arr_colors = $this->fillColorsBarChart($num_register);
-        $maximo = max($data_data) + 1;
-        $datasets['label'] = "Frecuencia Tipos Vehículo";
-        $datasets['data'] = $data_data;
-        $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
-        $datasets['borderColor'] = $arr_colors['borderColor'];
-        $datasets['borderWidth'] = 1;
-        $data['datasets'][] = $datasets;
-        $data['labels'] = $labels;
-        return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
+        // foreach ($lines as $key => $value) {
+        //     $labels[] = $value->line;
+        //     $data_data[] = $value->total;
+        // }
+        // $num_register = count($data_data);
+        // $arr_colors = $this->fillColorsBarChart($num_register);
+        // $maximo = max($data_data) + 1;
+        // $datasets['label'] = "Frecuencia Tipos Vehículo";
+        // $datasets['data'] = $data_data;
+        // $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
+        // $datasets['borderColor'] = $arr_colors['borderColor'];
+        // $datasets['borderWidth'] = 1;
+        // $data['datasets'][] = $datasets;
+        // $data['labels'] = $labels;
+        // return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
     }
 
     public function addVehicleDriver(Request $request)
@@ -809,21 +826,23 @@ class VehicleController extends Controller
         } else {
             $models = $this->getModelByCompany($company_id);
         }
-        foreach ($models as $key => $value) {
-            $labels[] = $value->model;
-            $data_data[] = $value->total;
-        }
-        $num_register = count($data_data);
-        $arr_colors = $this->fillColorsBarChart($num_register);
-        $maximo = max($data_data) + 1;
-        $datasets['label'] = "Frecuencia Tipos Vehículo";
-        $datasets['data'] = $data_data;
-        $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
-        $datasets['borderColor'] = $arr_colors['borderColor'];
-        $datasets['borderWidth'] = 1;
-        $data['datasets'][] = $datasets;
-        $data['labels'] = $labels;
-        return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
+        return $this->chart_js->makeChart($models);
+
+        // foreach ($models as $key => $value) {
+        //     $labels[] = $value->model;
+        //     $data_data[] = $value->total;
+        // }
+        // $num_register = count($data_data);
+        // $arr_colors = $this->fillColorsBarChart($num_register);
+        // $maximo = max($data_data) + 1;
+        // $datasets['label'] = "Frecuencia Tipos Vehículo";
+        // $datasets['data'] = $data_data;
+        // $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
+        // $datasets['borderColor'] = $arr_colors['borderColor'];
+        // $datasets['borderWidth'] = 1;
+        // $data['datasets'][] = $datasets;
+        // $data['labels'] = $labels;
+        // return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
     }
 
     public function makePolarChartBrandV(Request $request)
@@ -835,21 +854,22 @@ class VehicleController extends Controller
         } else {
             $brands = $this->getBrandByCompany($company_id);
         }
-        foreach ($brands as $key => $value) {
-            $labels[] = $value->brand;
-            $data_data[] = $value->total;
-        }
-        $num_register = count($data_data);
-        $arr_colors = $this->fillColorsBarChart($num_register);
-        $maximo = max($data_data) + 1;
-        $datasets['label'] = "Frecuencia Tipos Vehículo";
-        $datasets['data'] = $data_data;
-        $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
-        $datasets['borderColor'] = $arr_colors['borderColor'];
-        $datasets['borderWidth'] = 1;
-        $data['datasets'][] = $datasets;
-        $data['labels'] = $labels;
-        return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
+        return $this->chart_js->makeChart($brands);
+        // foreach ($brands as $key => $value) {
+        //     $labels[] = $value->brand;
+        //     $data_data[] = $value->total;
+        // }
+        // $num_register = count($data_data);
+        // $arr_colors = $this->fillColorsBarChart($num_register);
+        // $maximo = max($data_data) + 1;
+        // $datasets['label'] = "Frecuencia Tipos Vehículo";
+        // $datasets['data'] = $data_data;
+        // $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
+        // $datasets['borderColor'] = $arr_colors['borderColor'];
+        // $datasets['borderWidth'] = 1;
+        // $data['datasets'][] = $datasets;
+        // $data['labels'] = $labels;
+        // return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
     }
 
     public function makePieChartOwnerV(Request $request)
@@ -861,21 +881,22 @@ class VehicleController extends Controller
         } else {
             $owner_v = $this->getOwnersVByCompany($company_id);
         }
-        foreach ($owner_v as $key => $value) {
-            $labels[] = $value->owner_v;
-            $data_data[] = $value->total;
-        }
-        $num_register = count($data_data);
-        $arr_colors = $this->fillColorsBarChart($num_register);
-        $maximo = max($data_data) + 1;
-        $datasets['label'] = "Frecuencia Tipos Vehículo";
-        $datasets['data'] = $data_data;
-        $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
-        $datasets['borderColor'] = $arr_colors['borderColor'];
-        $datasets['borderWidth'] = 1;
-        $data['datasets'][] = $datasets;
-        $data['labels'] = $labels;
-        return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
+        return $this->chart_js->makeChart($owner_v);
+        // foreach ($owner_v as $key => $value) {
+        //     $labels[] = $value->owner_v;
+        //     $data_data[] = $value->total;
+        // }
+        // $num_register = count($data_data);
+        // $arr_colors = $this->fillColorsBarChart($num_register);
+        // $maximo = max($data_data) + 1;
+        // $datasets['label'] = "Frecuencia Tipos Vehículo";
+        // $datasets['data'] = $data_data;
+        // $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
+        // $datasets['borderColor'] = $arr_colors['borderColor'];
+        // $datasets['borderWidth'] = 1;
+        // $data['datasets'][] = $datasets;
+        // $data['labels'] = $labels;
+        // return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
     }
 
     public function checkVehicleByPlateId(Request $request)

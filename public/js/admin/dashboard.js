@@ -66,6 +66,11 @@
             $("#woman_number").text("...");
             $("#calification_average_number").text("cargando ...");
             $("#prox_expi_licences_number").text("cargando ...");
+            $("#card_licence_expirated_number").text("cargando ...");
+            $("#card_soat_expiration_number").text("cargando ...");
+            $("#card_soat_expirated_number").text("cargando ...");
+            $("#card_technomecanical_expiration_number").text("cargando ...");
+            $("#card_technomecanical_expirated_number").text("cargando ...");
 
             makeBarChartEducationByDriver().done(function(response) {
                 chart_education.data.datasets.forEach((dataset) => {
@@ -75,6 +80,7 @@
                         chart_education.data.labels.pop();
                     }
                 });
+                chart_education.options.scales = response.options.scales;
                 chart_education.data = response.data;
                 chart_education.update();
             });
@@ -87,6 +93,7 @@
                         chart_civil_state.data.labels.pop();
                     }
                 });
+                chart_civil_state.options.scales = response.options.scales;
                 chart_civil_state.data = response.data;
                 chart_civil_state.update();
             });
@@ -100,6 +107,7 @@
                         chart_licence_state.data.labels.pop();
                     }
                 });
+                chart_licence_state.options.scales = response.options.scales;
                 chart_licence_state.data = response.data;
                 chart_licence_state.update();
             });
@@ -112,6 +120,7 @@
                         chart_category.data.labels.pop();
                     }
                 });
+                chart_category.options.scales = response.options.scales;
                 chart_category.data = response.data;
                 chart_category.update();
             });
@@ -124,6 +133,7 @@
                         chart_type_v.data.labels.pop();
                     }
                 });
+                chart_type_v.options.scales = response.options.scales;
                 chart_type_v.data = response.data;
                 chart_type_v.update();
             });
@@ -136,6 +146,7 @@
                         chart_owner_v.data.labels.pop();
                     }
                 });
+                chart_owner_v.options.scales = response.options.scales;
                 chart_owner_v.data = response.data;
                 chart_owner_v.update();
             });
@@ -148,6 +159,7 @@
                         chart_line_v.data.labels.pop();
                     }
                 });
+                chart_line_v.options.scales = response.options.scales;
                 chart_line_v.data = response.data;
                 chart_line_v.update();
             });
@@ -160,6 +172,7 @@
                         chart_brand_v.data.labels.pop();
                     }
                 });
+                chart_brand_v.options.scales = response.options.scales;
                 chart_brand_v.data = response.data;
                 chart_brand_v.update();
             });
@@ -172,6 +185,7 @@
                         chart_model_v.data.labels.pop();
                     }
                 });
+                chart_model_v.options.scales = response.options.scales;
                 chart_model_v.data = response.data;
                 chart_model_v.update();
             });
@@ -196,39 +210,13 @@
             },
             success: function(datac) {
                 console.log(datac);
-
                 if (Object.keys(datac.errors).length > 0) {
 
                 } else {
                     chart_education = new Chart(ele_chart_education, {
                         type: 'horizontalBar',
                         data: datac.data,
-                        options: {
-                            display: true,
-                            scaleStartValue: 0,
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true,
-                                    }
-                                }],
-                                xAxes: [{
-                                    ticks: {
-                                        min: 0,
-                                        max: datac.max
-                                    }
-                                }]
-                            },
-                            plugins: {
-                                datalabels: {
-                                    render: 'label',
-                                    font: {
-                                        weight: 'bold',
-                                        size: 14,
-                                    }
-                                }
-                            }
-                        }
+                        options: datac.options
                     });
                 }
             }
