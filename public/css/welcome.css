@@ -2,3 +2,12 @@
     color: #DE3928;
     font-size: 0.8em;
 }
+
+#label_product_dashboard:hover {
+    font-weight: 600;
+}
+
+#label_product_dashboard:hover {
+    color: #FF6600;
+    font-weight: 600;
+}

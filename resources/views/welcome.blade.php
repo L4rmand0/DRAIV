@@ -5,38 +5,38 @@
   <ol class="carousel-indicators">
     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+    {{-- <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li> --}}
   </ol>
   <div class="carousel-inner" role="listbox">
     <!-- Slide One - Set the background image for this slide in the line below -->
-    <div class="carousel-item active" style="background-image: url('{{ asset('img/logo_draiv-02.png') }}')">
+    <div class="carousel-item active" style="background-image: url('{{ asset('img/draiv_slide-web.jpg') }}')">
       <div class="carousel-caption d-none d-md-block">
         <h3>First Slide</h3>
         <p>This is a description for the first slide.</p>
       </div>
     </div>
     <!-- Slide Two - Set the background image for this slide in the line below -->
-    <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
+    <div class="carousel-item" style="background-image: url('{{ asset('img/logo_draiv-02.png') }}')">
       <div class="carousel-caption d-none d-md-block">
         <h3>Second Slide</h3>
         <p>This is a description for the second slide.</p>
       </div>
     </div>
     <!-- Slide Three - Set the background image for this slide in the line below -->
-    <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
+    {{-- <div class="carousel-item" style="background-image: url('{{ asset('img/stock_prueba4.jpg') }}')">
       <div class="carousel-caption d-none d-md-block">
         <h3>Third Slide</h3>
         <p>This is a description for the third slide.</p>
       </div>
-    </div>
+    </div> --}}
     <!-- Slide Three - Set the background image for this slide in the line below -->
-    <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
+    {{-- <div class="carousel-item" style="background-image: url('{{ asset('img/slide-1pr.png') }}')">
       <div class="carousel-caption d-none d-md-block">
         <h3>Fourth Slide</h3>
         <p>This is a description for the third slide.</p>
       </div>
-    </div>
+    </div> --}}
   </div>
   <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -50,47 +50,106 @@
 </header>
 <!-- Page Content -->
 <div class="container">
-  <h1 class="my-4">Welcome to Modern Business</h1>
-  <!-- Marketing Icons Section -->
+  <h1 class="my-4 mt-5">Administración de Conductores</h1>
   <div class="row">
-    <div class="col-lg-4 mb-4">
-      <div class="card h-100">
-        <h4 class="card-header">Card Title</h4>
-        <div class="card-body">
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus
-            neque.</p>
-        </div>
-        <div class="card-footer">
-          <a href="#" class="btn btn-primary">Learn More</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4 mb-4">
-      <div class="card h-100">
-        <h4 class="card-header">Card Title</h4>
-        <div class="card-body">
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis ipsam eos, nam
-            perspiciatis natus commodi similique totam consectetur praesentium molestiae atque exercitationem ut
-            consequuntur, sed eveniet, magni nostrum sint fuga.</p>
-        </div>
-        <div class="card-footer">
-          <a href="#" class="btn btn-primary">Learn More</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4 mb-4">
-      <div class="card h-100">
-        <h4 class="card-header">Card Title</h4>
-        <div class="card-body">
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus
-            neque.</p>
-        </div>
-        <div class="card-footer">
-          <a href="#" class="btn btn-primary">Learn More</a>
-        </div>
-      </div>
+    <div class="col-lg-12">
+      <p>Nuestra plataforma web permite capturar y ordenar información relacionada a conductor-vehiculo de forma
+        eficiente, permitiendo visualizar y analizar la data de forma sencilla, permitiendo que nuestros usuarios
+        visualicen y prevengan problemas, favoreciendo la correcta toma de decisiones orientada a evitar riesgos en el
+        negocio.</p>
     </div>
   </div>
+  <div class="row">
+    <div class="col-lg-4 col-sm-6 portfolio-item">
+      <div class="card h-100">
+        <a href="#"><img class="card-img-top" src="{{ asset('img/eye-orange.png') }}" style="padding: 4.3em;"
+            alt=""></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="#" style="color: #3f454d">Análisis</a>
+          </h4>
+          <p class="card-text">Visualice y analice sus datos favoreciendo la correcta toma de decisiones.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 portfolio-item">
+      <div class="card h-100">
+        <a href="#"><img class="card-img-top" src="{{ asset('img/board-orange.png') }}" style="padding: 4.3em;"
+            alt=""></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="#" style="color: #3f454d">Gestión</a>
+          </h4>
+          <p class="card-text">Administre información relacionada a conductores, vehiculos y documentacion de forma
+            eficiente.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 portfolio-item">
+      <div class="card h-100">
+        <a href="#"><img class="card-img-top" src="{{ asset('img/Page-2.png') }}" style="padding-left: 4.3em;padding-right: 4.3em;padding-top: 2.5em;padding-bottom: 2.5em;"
+            alt=""></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="#" style="color: #3f454d">Validación</a>
+          </h4>
+          <p class="card-text">Valide información documental mediante algoritmos de reconocimiento óptico de caracteres
+            OCR.</p>
+        </div>
+      </div>
+    </div>
+    {{-- <div class="col-lg-4 col-sm-6 portfolio-item">
+      <div class="card h-100">
+        <a href="#"><img class="card-img-top" src="{{ asset('img/check-orange.png') }}" style="padding: 4.3em;"
+            alt=""></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="#" style="color: #3f454d">Validación</a>
+          </h4>
+          <p class="card-text">Valide información documental mediante algoritmos de reconocimiento óptico de caracteres
+            OCR.</p>
+        </div>
+      </div>
+    </div> --}}
+  </div>
+  <!-- Marketing Icons Section -->
+
+  {{--<div class="row">
+    <div class="col-lg-4 mb-4">
+      <div class="card h-100">
+        <h4 class="card-header">Gestión</h4>
+        <div class="card-body">
+          <p class="card-text">Administre información relacionada a conductores, vehiculos y documentacion de forma eficiente.</p>
+        </div>
+        <div class="card-footer">
+          <a href="#" class="btn btn-primary">Learn More</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 mb-4">
+      <div class="card h-100">
+        <h4 class="card-header">Validación</h4>
+        <div class="card-body">
+          <p class="card-text">Valide información documental mediante algoritmos de reconocimiento óptico de caracteres OCR.</p>
+        </div>
+        <div class="card-footer">
+          <a href="#" class="btn btn-primary">Learn More</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 mb-4">
+      <div class="card h-100">
+        <h4 class="card-header">Análisis</h4>
+        <div class="card-body">
+          <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+          <p class="card-text">Visualice y analice sus datos favoreciendo la correcta toma de decisiones.</p>
+        </div>
+        <div class="card-footer">
+          <a href="#" class="btn btn-primary">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </div> --}}
   <!-- /.row -->
 
   <!-- Portfolio Section -->
@@ -201,7 +260,7 @@
   <hr>
 
   <!-- Call to Action Section -->
-  <div class="row mb-4">
+  {{-- <div class="row mb-4">
     <div class="col-md-8">
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias, expedita, saepe, vero rerum deleniti
         beatae veniam harum neque nemo praesentium cum alias asperiores commodi.</p>
@@ -209,7 +268,7 @@
     <div class="col-md-4">
       <a class="btn btn-lg btn-secondary btn-block" href="#">Call to Action</a>
     </div>
-  </div>
+  </div> --}}
 
 </div>
 
