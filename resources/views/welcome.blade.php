@@ -10,17 +10,17 @@
   </ol>
   <div class="carousel-inner" role="listbox">
     <!-- Slide One - Set the background image for this slide in the line below -->
-    <div class="carousel-item active" style="background-image: url('{{ asset('img/draiv_slide-web.jpg') }}')">
+    <div class="carousel-item active" style="background-image: url('{{ asset('img/slide1.jpg') }}')">
       <div class="carousel-caption d-none d-md-block">
-        <h3>First Slide</h3>
-        <p>This is a description for the first slide.</p>
+        <h3>Administre</h3>
+        <p>Administre los datos de conductores.</p>
       </div>
     </div>
     <!-- Slide Two - Set the background image for this slide in the line below -->
     <div class="carousel-item" style="background-image: url('{{ asset('img/logo_draiv-02.png') }}')">
       <div class="carousel-caption d-none d-md-block">
-        <h3>Second Slide</h3>
-        <p>This is a description for the second slide.</p>
+        <h3>Análisis de Datos</h3>
+        <p>Tome decisiones de acuerdo al análisis de datos.</p>
       </div>
     </div>
     <!-- Slide Three - Set the background image for this slide in the line below -->

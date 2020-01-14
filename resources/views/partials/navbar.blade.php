@@ -16,7 +16,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownSolutions">
                         <a class="dropdown-item" href="{{ route('admin','dashboard') }}" id="label_product_dashboard">Tablero de Administración</a>
-                        <p class="ml-4 mr-4 mt-2" style="font-size: 0.8em;">Administre, visualice y verifique data de conductores.</p>
+                        <p class="ml-4 mr-4 mt-2" style="font-size: 0.8em; margin-bottom:0.4em !important; ">Administre, visualice y verifique data de conductores.</p>
                         <p class="ml-4 mr-4" style="font-size: 0.8em; font-weight: 600">1 producto</p>
                     </div>
                 </li>

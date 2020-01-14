@@ -14,9 +14,14 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function __construct() 
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
     {
-        // $this->middleware(['guest','check.permissions']);
+        $this->middleware('auth');
     }
     /**
      * Display a listing of the resource.

@@ -26,6 +26,7 @@ class VehicleController extends Controller
     {
         // $this->excel = $excel;
         // $this->middleware('guest');
+        $this->middleware('auth');
         $this->chart_js = new ChartJS();
     }
 

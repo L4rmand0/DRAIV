@@ -23,8 +23,7 @@ class DrivingLicenceController extends Controller
      */
     public function __construct()
     {
-        // $this->excel = $excel;
-        // $this->middleware('guest');
+        $this->middleware('auth');
         $this->chart_js = new ChartJS();
     }
 
