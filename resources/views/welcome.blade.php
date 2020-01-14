@@ -10,7 +10,7 @@
   </ol>
   <div class="carousel-inner" role="listbox">
     <!-- Slide One - Set the background image for this slide in the line below -->
-    <div class="carousel-item active" style="background-image: url('http://placehold.it/1900x1080')">
+    <div class="carousel-item active" style="background-image: url('{{ asset('img/logo_draiv-02.png') }}')">
       <div class="carousel-caption d-none d-md-block">
         <h3>First Slide</h3>
         <p>This is a description for the first slide.</p>
@@ -94,7 +94,7 @@
   <!-- /.row -->
 
   <!-- Portfolio Section -->
-  <h2>Portfolio Heading</h2>
+  {{-- <h2>Portfolio Heading</h2>
 
   <div class="row">
     <div class="col-lg-4 col-sm-6 portfolio-item">
@@ -172,11 +172,11 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> --}}
   <!-- /.row -->
 
   <!-- Features Section -->
-  <div class="row">
+  {{-- <div class="row">
     <div class="col-lg-6">
       <h2>Modern Business Features</h2>
       <p>The Modern Business template by Start Bootstrap includes:</p>
@@ -195,7 +195,7 @@
     <div class="col-lg-6">
       <img class="img-fluid rounded" src="http://placehold.it/700x450" alt="">
     </div>
-  </div>
+  </div> --}}
   <!-- /.row -->
 
   <hr>
@@ -212,5 +212,7 @@
   </div>
 
 </div>
+
+@include('partials.footer')
 @endsection
 <!-- /.container -->

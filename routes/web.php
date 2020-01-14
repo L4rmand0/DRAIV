@@ -102,6 +102,8 @@ Route::prefix('admin')->group(function () {
 
 Route::post('/saveimg', 'ImageController@saveImgS3')->name('saveimg');
 
+Route::get('send-email', 'EmailController@send')->name('send-email');
+
 Auth::routes();
 
 

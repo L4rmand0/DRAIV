@@ -3,11 +3,12 @@
  * Copyright 2013-2019 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-logomodern-business-nav/blob/master/LICENSE)
  */
- body {
+
+body {
     padding-top: 56px;
-  }
-  
-  .carousel-item {
+}
+
+.carousel-item {
     height: 65vh;
     min-height: 300px;
     background: no-repeat center center scroll;
@@ -15,14 +16,13 @@
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-  }
-  
-  .portfolio-item {
+}
+
+.portfolio-item {
     margin-bottom: 30px;
-  }
-  
-  .profile_i:before {
+}
+
+.profile_i:before {
     font-family: FontAwesome;
     content: "\f2bd"
-  }
-  
+}
