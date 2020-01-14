@@ -57,7 +57,7 @@ return [
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'notification@draiv.co'),
-        'name' => env('MAIL_FROM_NAME', 'Notificaciones Draiv'),
+        'name' => env('MAIL_FROM_NAME', 'notification@draiv.co'),
     ],
 
     /*

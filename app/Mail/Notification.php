@@ -3,10 +3,11 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ContactUs extends Mailable
+class Notification extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -32,14 +33,16 @@ class ContactUs extends Mailable
         $lastname = $this->data['lastname_contact_us'];
         $company = $this->data['company_contact_us'];
         $email = $this->data['email_contact_us'];
-        $message = $this->data['message_contact_us'];
+        $message = filter_var ($this->data['message_contact_us'], FILTER_SANITIZE_STRING);
+        // var_dump($message);
+        // die;
         $industry = $this->data['industry_contact_us'];
-        return $this->view('mails.mailcontactus', [
+        return $this->view('mails.mailnotification', [
             'name' => $name,
             'lastname' => $lastname,
             'company' => $company,
             'email' => $email,
-            'message' => $message,
+            'messagef' => $message,
             'industry' => $industry,
         ])
         ->from('notification@draiv.co');

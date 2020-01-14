@@ -88,15 +88,15 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             {{-- <div class="modal-header"> --}}
-                <div class="row mr-2 mt-3">
-                    <div class="col-lg-11">
-                    </div>
-                    <div class="col-lg-1">
-                        <button type="button" class="close text-right" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true" style="font-size: 1.4em;">&times;</span>
-                        </button>
-                    </div>
+            <div class="row mr-2 mt-3">
+                <div class="col-lg-11">
                 </div>
+                <div class="col-lg-1">
+                    <button type="button" class="close text-right" data-dismiss="modal" aria-label="Close" id="close_modal_c">
+                        <span aria-hidden="true" style="font-size: 1.4em;">&times;</span>
+                    </button>
+                </div>
+            </div>
             {{-- </div> --}}
             <div class="row mb-5 mr-4 ml-4">
                 <div class="col-lg-4 mt-2">
@@ -106,25 +106,54 @@
                 </div>
                 <div class="col-lg-8 mt-2">
                     <div class="container">
-                        <form action="">
+                        <form action="" data-url="{{ route('mail.contact-us') }}" id="form_contact_us">
+                            @csrf
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <label for="name">Nombre*</label>
-                                    <input class="form-control" type="text" name="name" id="name">
+                                <div class="col-lg-12">
+                                    <label for="name">Industria*</label>
+                                    <select class="form-control" name="industry_contact_us" id="industry_contact_us">
+                                        <option value="tecnologia">Tecnología</option>
+                                        <option value="transporte">Transporte</option>
+                                        <option value="eduacion">Educación</option>
+                                    </select>
+                                    <span class="error_contact_us input_user_admin" role="alert"
+                                        id="industry_contact_us-error">
+                                        <strong id="industry_contact_us-error-strong" class="error-strong">&nbsp;</strong>
+                                    </span>
                                 </div>
-                                <div class="col-lg-6">
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 mt-2">
+                                    <label for="name">Nombre*</label>
+                                    <input class="form-control" type="text" name="name_contact_us" id="name_contact_us">
+                                    <span class="error_contact_us input_user_admin" role="alert" id="name_contact_us-error">
+                                        <strong id="name_contact_us-error-strong" class="error-strong">&nbsp;</strong>
+                                    </span>
+                                </div>
+                                <div class="col-lg-6 mt-2">
                                     <label for="lastname">Apellido*</label>
-                                    <input class="form-control" type="text" name="lastname" id="lastname">
+                                    <input class="form-control" type="text" name="lastname_contact_us" id="lastname_contact_us">
+                                    <span class="error_contact_us input_user_admin" role="alert"
+                                        id="lastname_contact_us-error">
+                                        <strong id="lastname_contact_us-error-strong" class="error-strong">&nbsp;</strong>
+                                    </span>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-6 mt-2">
                                     <label for="name">Compañía*</label>
-                                    <input class="form-control" type="text" name="name" id="name">
+                                    <input class="form-control" type="text" name="company_contact_us" id="company_contact_us">
+                                    <span class="error_contact_us input_user_admin" role="alert"
+                                        id="company_contact_us-error">
+                                        <strong id="company_contact_us-error-strong" class="error-strong">&nbsp;</strong>
+                                    </span>
                                 </div>
                                 <div class="col-lg-6 mt-2">
                                     <label for="lastname">Correo*</label>
-                                    <input class="form-control" type="text" name="lastname" id="lastname">
+                                    <input class="form-control" type="email" name="email_contact_us" id="email_contact_us">
+                                    <span class="error_contact_us input_user_admin" role="alert" id="email_contact_us-error">
+                                        <strong id="email_contact_us-error-strong" class="error-strong">&nbsp;</strong>
+                                    </span>
                                 </div>
                             </div>
                             <div class="row">
@@ -132,7 +161,11 @@
                                     <label for="name">Mensaje*</label>
                                 </div>
                                 <div class="col-lg-12">
-                                    <textarea class="form-control" name="" id="" cols="40" rows="5"></textarea>
+                                    <textarea class="form-control" name="message_contact_us" id="message_contact_us" cols="40"
+                                        rows="5"></textarea>
+                                    <span class="error_contact_us input_user_admin" role="alert" id="message_contact_us-error">
+                                        <strong id="message_contact_us-error-strong" class="error-strong">&nbsp;</strong>
+                                    </span>
                                 </div>
                             </div>
                             <div class="row">
@@ -148,3 +181,5 @@
         </div>
     </div>
 </div>
+<script src="{{ asset('js/email.js') }}" defer></script>
+<link href="{{ asset('css/welcome.css') }}" rel="stylesheet">

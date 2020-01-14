@@ -621,7 +621,6 @@ class VehicleController extends Controller
             ->where('v.operation', '!=', 'D')
             ->where('di.dni_id', '=', $dni_id)
             ->groupBy('v.line')
-        // ->toSql();
             ->get()->toArray();
     }
 

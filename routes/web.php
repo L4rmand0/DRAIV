@@ -16,6 +16,7 @@
 //     echo "<pre> {$query->sql } </pre>";
 //   });
 
+
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
@@ -100,9 +101,18 @@ Route::prefix('admin')->group(function () {
     Route::post('images/update', 'admin\ImageController@update')->name('images.update');
 });
 
+
+// Probar plantillas
+Route::get('/plantilla', function () {
+    return view('mails.mailcontactus');
+})->name('plantilla');
+
 Route::post('/saveimg', 'ImageController@saveImgS3')->name('saveimg');
 
-Route::get('send-email', 'EmailController@send')->name('send-email');
+
+Route::prefix('mail')->group(function () {
+    Route::post('contact-us', 'EmailController@sendContactUS')->name('mail.contact-us');
+});
 
 Auth::routes();
 
