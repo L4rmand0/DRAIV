@@ -435,7 +435,7 @@ var table_relation;
             pageLength: 7,
             ajax: $('#vehicle_datatable').data('url-list'),
             columns: [
-                { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_vehicle"><span class="trash_icon"></span></button></center>' },
+                { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_vehicle"><i class="fas fa-trash"></i></button></center>' },
                 { data: 'plate_id', name: 'plate_id' },
                 { data: 'type_v', name: 'type_v' },
                 { data: 'owner_v', name: 'owner_v' },
@@ -481,7 +481,7 @@ var table_relation;
                         destroy: true,
                         data: dataset.datatable.original.data,
                         columns: [
-                            { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_driver_vehicle"><span class="trash_icon"></span></button></center>' },
+                            { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_driver_vehicle"><i class="fas fa-trash"></i></button></center>' },
                             { data: 'id', name: 'id', "visible": false },
                             { data: 'driver_information_dni_id', name: 'driver_information_dni_id' },
                             { data: 'first_name', name: 'first_name' },

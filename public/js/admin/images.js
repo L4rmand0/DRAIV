@@ -1,25 +1,25 @@
 // IIFE - Immediately Invoked Function Expression
-(function (runcode) {
+(function(runcode) {
 
     // The global jQuery object is passed as a parameter
     runcode(window.jQuery, window, document);
 
-}(function ($, window, document) {
+}(function($, window, document) {
 
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
-    $(function () {
+    $(function() {
 
         var $dni_drivers_selects2 = $('#driver_information_dni_id_images').select2();
 
-        $('#driver_information_dni_id_images').on('change', function () {
+        $('#driver_information_dni_id_images').on('change', function() {
             let element = $(this);
             let driver_information_dni_id = element.val();
             $.ajax({
                 type: 'POST',
                 url: element.data('url'),
                 data: { 'driver_information_dni_id': driver_information_dni_id },
-                success: function (data) {
+                success: function(data) {
                     console.log(data);
                     if (Object.keys(data.errors).length > 0) {
                         console.log(errors);
@@ -31,34 +31,34 @@
                         table += "  <th><center>Archivo</center></th>"
                         table += "</thead>"
                         table += "<tbody>"
-                        $.each(data.documents, function (index, value) {
+                        $.each(data.documents, function(index, value) {
                             table += "<tr>"
                             table += "  <td>" + index + "</td>"
                             if (value.check == "Y") {
                                 let str = value.url;
                                 let newurl = str.replace("/", " ");
-                                table += "<td><center><span class='check_icon' aria-hidden='true' style='color:green;'></span></center></td>"
+                                table += "<td><center><i class='fas fa-check-square' aria-hidden='true' style='color:green;'></i></center></td>"
                                 table += '<td><center><a href="downloads3/' + newurl + '" style="cursor:pointer;" class="a_file_image" class="download-file-s3"><span class="file_image_icon" style="color:#B62A2A;"></span></a></center></td>';
                                 // table += '<td><center><a href="downloads3/'+value.url+'" class="download-file-s3"><span class="file_image_icon" style="color:#B62A2A;"></span></a></center></td>';
                             } else {
-                                table += "<td><center><span class='x_icon' aria-hidden='true' style='color:red;'></span></center></td>"
+                                table += "<td><center><i class='fas fa-times-circle' aria-hidden='true' style='color:red;'></i></center></td>"
                                 table += "<td></td>"
                             }
                             table += "</tr>"
                         });
                         table += "</tbody>"
                         table += "</table>"
-                        // table += '<script>'+
-                        // '          $(".a_file_image").on("click", function(){'+
-                        //          '  window.location.href = $(this).data("url");'+
-                        //          ' })'+
-                        //         '</script>';
+                            // table += '<script>'+
+                            // '          $(".a_file_image").on("click", function(){'+
+                            //          '  window.location.href = $(this).data("url");'+
+                            //          ' })'+
+                            //         '</script>';
                         $("#card_body_list_documents").html(table)
-                        // swal.fire(
-                        //     'Proceso Completado',
-                        //     'Archivo subido correctamente.',
-                        //     'success'
-                        // );
+                            // swal.fire(
+                            //     'Proceso Completado',
+                            //     'Archivo subido correctamente.',
+                            //     'success'
+                            // );
                     }
                 }
             });
@@ -66,20 +66,20 @@
 
 
 
-        $(".form_upload_image").submit(function (event) {
+        $(".form_upload_image").submit(function(event) {
             event.preventDefault();
             let driver_information_dni_id = $("#driver_information_dni_id_images").val();
             var element = $(this);
             var datafr = new FormData(element[0]);
             element.find(".error_file").html("");
             var val_file = element.find(".input_files_drivers").val();
-            if(val_file == ""){
+            if (val_file == "") {
                 swal.fire(
                     'Archivo vacío!',
                     'No se ha elegido ningún archivo.',
                     'error'
                 );
-            }else if (driver_information_dni_id == "") {
+            } else if (driver_information_dni_id == "") {
                 swal.fire(
                     'Información Incompleta!',
                     'Se debe elegir un conductor.',
@@ -95,7 +95,7 @@
                     contentType: false,
                     processData: false,
                     data: datafr,
-                    success: function (data) {
+                    success: function(data) {
                         console.log(data);
                         if (Object.keys(data.errors).length > 0) {
                             if (data.response == "Carga fallida") {
@@ -106,7 +106,7 @@
                                 );
                             } else if (data.response == "validator errors") {
                                 let cadena = "";
-                                $.each(data.errors, function (index, value) {
+                                $.each(data.errors, function(index, value) {
                                     cadena = cadena + "<strong id='file-error-strong' class='error-strong'>" + value[0] + "</strong>";
                                 });
                                 element.find(".error_file").html(cadena);
@@ -127,11 +127,9 @@
                                     showCloseButton: true,
                                     showCancelButton: true,
                                     focusConfirm: false,
-                                    confirmButtonText:
-                                        'Confirmar',
+                                    confirmButtonText: 'Confirmar',
                                     confirmButtonAriaLabel: 'Sí, reemplazarlo!',
-                                    cancelButtonText:
-                                        'Cancelar',
+                                    cancelButtonText: 'Cancelar',
                                     cancelButtonAriaLabel: 'Thumbs down'
                                 }).then((result) => {
                                     if (result.value) {
@@ -142,7 +140,7 @@
                                             contentType: false,
                                             processData: false,
                                             data: datafr,
-                                            success: function (data) {
+                                            success: function(data) {
                                                 if (Object.keys(data.errors).length > 0) {
                                                     swal.fire(
                                                         'Error en el proceso',
@@ -167,7 +165,7 @@
                                 });
                             }
                         } else {
-                            
+
                             swal.fire(
                                 'Proceso Completado',
                                 'Archivo subido correctamente.',
@@ -200,7 +198,7 @@
         //     });
         // });
 
-        $(".input_files_drivers").on('change', function () {
+        $(".input_files_drivers").on('change', function() {
             let element = $(this);
             let name = element[0].files[0].name;
             $(this).parent().find("label").text(name)
@@ -261,4 +259,3 @@
 
     // The rest of the code goes here!
 }));
-

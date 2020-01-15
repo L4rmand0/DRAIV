@@ -1,55 +1,55 @@
 // IIFE - Immediately Invoked Function Expression
-(function (runcode) {
+(function(runcode) {
 
     // The global jQuery object is passed as a parameter
     runcode(window.jQuery, window, document);
 
-}(function ($, window, document) {
+}(function($, window, document) {
 
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
-    $(function () {
+    $(function() {
 
-        $(document).click(function(event) { 
+        $(document).click(function(event) {
             $target = $(event.target);
-            if(!$target.closest('#drive_information_datatable tr #gender').length && 
-            $('#drive_information_datatable tr #gender select').is(":visible")) {
+            if (!$target.closest('#drive_information_datatable tr #gender').length &&
+                $('#drive_information_datatable tr #gender select').is(":visible")) {
                 let element = $('#drive_information_datatable tr #gender select');
                 let val_item = element.val();
                 element.parent().html(val_item)
             }
-            
-            if(!$target.closest('#drive_information_datatable tr #civil_state').length && 
-            $('#drive_information_datatable tr #civil_state select').is(":visible")) {
+
+            if (!$target.closest('#drive_information_datatable tr #civil_state').length &&
+                $('#drive_information_datatable tr #civil_state select').is(":visible")) {
                 let element = $('#drive_information_datatable tr #civil_state select');
                 let val_item = element.val();
                 element.parent().html(val_item)
             }
 
-            if(!$target.closest('#drive_information_datatable tr #education').length && 
-            $('#drive_information_datatable tr #education select').is(":visible")) {
+            if (!$target.closest('#drive_information_datatable tr #education').length &&
+                $('#drive_information_datatable tr #education select').is(":visible")) {
                 let element = $('#drive_information_datatable tr #education select');
                 let val_item = element.val();
                 element.parent().html(val_item)
             }
-                    
-            if(!$target.closest('#drive_information_datatable tr #country_born').length && 
-            $('#drive_information_datatable tr #country_born select').is(":visible")) {
+
+            if (!$target.closest('#drive_information_datatable tr #country_born').length &&
+                $('#drive_information_datatable tr #country_born select').is(":visible")) {
                 let element = $('#drive_information_datatable tr #country_born select');
                 let val_item = element.val();
                 element.parent().html(val_item)
-            }        
+            }
         });
 
-        $("#department_form").on('change', function(){
+        $("#department_form").on('change', function() {
             let data_admin2 = $(this).val();
             let data_cities = new Array();
-            let item = {"id":"","text":"Seleccionar"};
+            let item = { "id": "", "text": "Seleccionar" };
             data_cities.push(item)
-            $.each(list_admin3, function( index, value ) {
+            $.each(list_admin3, function(index, value) {
                 let admin2_item = value.adm2_id;
-                if(data_admin2==admin2_item){
-                    let admin3_item = {"id":value.adm3_id,"text":value.name};
+                if (data_admin2 == admin2_item) {
+                    let admin3_item = { "id": value.adm3_id, "text": value.name };
                     data_cities.push(admin3_item)
                 }
             });
@@ -57,7 +57,7 @@
 
             $('#city_residence_place_form').html("");
             $("#city_residence_place_form").select2({
-                data:data_cities
+                data: data_cities
             });
         });
 
@@ -70,13 +70,13 @@
         $country_born_select2 = $('#country_born').select2();
         $civil_state_select2 = $('#civil_state_form').select2();
         $city_residence_select2 = $('#city_residence_place_form').select2();
-        
+
         $.ajax({
             type: 'GET',
             url: $('#department_form').data('url'),
             data: { 'type': 'select_admin2' },
-            success: function (data) {
-               $department_form_select2 = $('#department_form').select2({
+            success: function(data) {
+                $department_form_select2 = $('#department_form').select2({
                     data: data
                 });
             }
@@ -86,7 +86,7 @@
             type: 'GET',
             url: $('#company_id_form').data('url'),
             data: { 'type': 'companies' },
-            success: function (data) {
+            success: function(data) {
                 $('#company_id_excel').select2({
                     data: data
                 });
@@ -97,7 +97,7 @@
             type: 'GET',
             url: $('#company_id_form').data('url'),
             data: { 'type': 'companies' },
-            success: function (data) {
+            success: function(data) {
                 $company_id_form_select2 = $('#company_id_form').select2({
                     data: data
                 });
@@ -108,14 +108,14 @@
             type: 'GET',
             url: $('#city_born_form').data('url'),
             data: { 'type': 'admin3' },
-            success: function (data) {
-               $city_born_form_select2 =  $('#city_born_form').select2({
+            success: function(data) {
+                $city_born_form_select2 = $('#city_born_form').select2({
                     data: data
                 });
             }
         });
 
-        
+
 
         // $('#Company_id').select2({
         //     ajax: {
@@ -139,7 +139,7 @@
         //     }
         // });
 
-        $("#btn_search_company").on("click", function () {
+        $("#btn_search_company").on("click", function() {
             $(this).hide();
             // let company = $("#search_name_company").val();
             // let nit_company = $("#search_nit").val();
@@ -166,7 +166,7 @@
 
 
             // DELETE
-            $('#search_company_datatable tbody').on('click', 'tr', function () {
+            $('#search_company_datatable tbody').on('click', 'tr', function() {
                 var data = table_search.row(this).data();
                 $("#Company_id").val(data['nit']);
             });
@@ -188,31 +188,31 @@
             // });
         });
 
-        $("#modal_form_drive_info").on("click", function () {
+        $("#modal_form_drive_info").on("click", function() {
             $("#btn_search_company").show();
         });
 
-        $("#form_driver_info_admin").submit(function (event) {
+        $("#form_driver_info_admin").submit(function(event) {
             event.preventDefault();
             let score_val = parseFloat($("#score_form").val());
-            if(score_val > 5 || score_val < 0){
+            if (score_val > 5 || score_val < 0) {
                 swal.fire(
                     'Error de formato',
                     'El puntaje deber ser un decimal entre 0 y 5. Ejemplo: 5.00',
                     'error'
                 );
-            }else{
+            } else {
                 let data_form = $(this).serialize();
                 $.ajax({
                     type: 'POST',
                     url: $("#form_driver_info_admin").data('url'),
                     data: data_form,
-                    success: function (data) {
+                    success: function(data) {
                         console.log(data);
                         if (Object.keys(data.errors).length > 0) {
                             let arr_errores = data.errors;
                             console.log(arr_errores);
-                            $.each(arr_errores, function (index, value) {
+                            $.each(arr_errores, function(index, value) {
                                 let selector = "#" + index + "-error";
                                 let selector_strong = "#" + index + "-error-strong";
                                 $(selector).show();
@@ -239,7 +239,7 @@
                 });
             }
         });
-        $("#form_excel_driver_info_admin").submit(function (event) {
+        $("#form_excel_driver_info_admin").submit(function(event) {
             event.preventDefault();
             var datafr = new FormData($("#form_excel_driver_info_admin")[0]);
             $.ajax({
@@ -249,7 +249,7 @@
                 contentType: false,
                 processData: false,
                 data: datafr,
-                success: function (data) {
+                success: function(data) {
                     console.log(data);
                     if (data.response == "ok") {
                         swal.fire(
@@ -289,7 +289,7 @@
             scrollX: true,
             ajax: $('#driver-info-list-route').val(),
             columns: [
-                { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_drive_info"><span class="trash_icon"></span></button></center>' },
+                { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_drive_info"><i class="fas fa-trash"></i></button></center>' },
                 { data: 'dni_id', name: 'dni_id' },
                 { data: 'first_name', name: 'first_name' },
                 { data: 'second_name', name: 'second_name' },
@@ -314,7 +314,7 @@
 
             columnDefs: [{
                 targets: '_all',
-                createdCell: function (td, cellData, rowData, row, col) {
+                createdCell: function(td, cellData, rowData, row, col) {
                     $(td).attr("id", fields[col])
                 }
             }],
@@ -328,7 +328,7 @@
             // }
 
         });
-        
+
         // $("#drive_information_datatable").on("click",'tr #gender', function(){
         //     alert("entra")
         //     $("#drive_information_datatable").on("click",'tr #gender select', function(){
@@ -336,22 +336,19 @@
         //     });
         // });
 
-        $('#drive_information_datatable').on('click', 'tr td #btn_delete_drive_info', function () {
+        $('#drive_information_datatable').on('click', 'tr td #btn_delete_drive_info', function() {
             let row = $(this).parents('tr')
             let data_delete = table.row(row).data();
             swal.fire({
                 title: '<strong>Eliminar Información</strong>',
                 icon: 'warning',
-                html:
-                    '¿Está seguro que desea eliminar este registro? Se borrarán todos los registros asociados a este conductor.',
+                html: '¿Está seguro que desea eliminar este registro? Se borrarán todos los registros asociados a este conductor.',
                 showCloseButton: true,
                 showCancelButton: true,
                 focusConfirm: false,
-                confirmButtonText:
-                    'Confirmar',
+                confirmButtonText: 'Confirmar',
                 confirmButtonAriaLabel: 'Thumbs up, great!',
-                cancelButtonText:
-                    'Cancelar',
+                cancelButtonText: 'Cancelar',
                 cancelButtonAriaLabel: 'Thumbs down'
             }).then((result) => {
                 if (result.value) {
@@ -359,7 +356,7 @@
                         type: 'POST',
                         url: $("#form_driver_info_admin").data("url-delete"),
                         data: data_delete,
-                        success: function (data) {
+                        success: function(data) {
                             if (data.error == "") {
                                 swal.fire(
                                     'Proceso Completado',
@@ -392,16 +389,16 @@
                     url: $("#update-driver-info-route").val(),
                     data: dataSend,
                     async: false,
-                    success: function (data) {
+                    success: function(data) {
                         if (Object.keys(data.error).length > 0)
                             swal.fire(
                                 'Error!',
-                                 data.error.response,
+                                data.error.response,
                                 'error'
                             )
                     }
                 });
-            }else{
+            } else {
                 $('#drive_information_datatable').DataTable().ajax.reload();
             }
             console.log("The values for each cell in that row are: " + updatedRow.data());
@@ -410,13 +407,12 @@
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
             columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 16, 17],
-            "inputTypes": [
-                {
+            "inputTypes": [{
                     "column": 6,
                     "type": "list",
                     "options": [
-                        {"value":"Masculino","display":"Masculino"},
-                        {"value":"Femenino","display":"Femenino"}
+                        { "value": "Masculino", "display": "Masculino" },
+                        { "value": "Femenino", "display": "Femenino" }
                     ]
                 },
                 {
@@ -438,7 +434,7 @@
         });
 
     });
-    
+
     function validateDecimal(valor) {
         var RE = /^\d*(\.\d{1})?\d{0,1}$/;
         if (RE.test(valor)) {

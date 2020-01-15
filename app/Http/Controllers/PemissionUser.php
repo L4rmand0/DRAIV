@@ -30,6 +30,9 @@ trait PermissionUser
 
     public function organizePermissionArray($data)
     {
+        // echo '<pre>';
+        // print_r($data);
+        // die;
         foreach ($data as $key => $value) {
             if ($value->parent_id == 0 && $value->type == "Group") {
                 $groups[$value->route]["name"] = $value->name;
@@ -53,26 +56,62 @@ trait PermissionUser
             }
             $length_childs = count($groups[$key_group]['childs']);
             for ($i = 1; $i <= $length_childs; $i++) {
-                $groups_organized[$key_group]['childs'][] = $groups[$key_group]['childs'][$i]; 
+                $groups_organized[$key_group]['childs'][] = $groups[$key_group]['childs'][$i];
             }
             $groups_organized[$key_group]['name'] = $groups[$key_group]['name'];
             $groups_organized[$key_group]['id'] = $groups[$key_group]['id'];
             $groups_organized[$key_group]['image'] = $groups[$key_group]['image'];
             $groups_organized[$key_group]['module_type'] = $groups[$key_group]['module_type'];
         }
-        // echo '<pre>';
-        // print_r($groups_organized);
-        // die;
-        //ordenar el array
-        $lenght_groups = count($groups_organized);
 
-        for ($i = 1; $i <= $lenght_groups; $i++) {
-            $new_groups[] = $groups_organized[$i];
+        $lenght_groups = count($groups_organized);
+        $cont = 0;
+        foreach ($groups_organized as $key => $value) {
+            $new_gr_or[$cont] = $value;
+            $new_gr_or[$cont]['key'] = $key;
+            $cont++;
         }
+        //ordenar de menor a mayor
+        for ($i = 0; $i < $lenght_groups; $i++) {
+            for ($j = $i; $j < $lenght_groups; $j++) {
+                // echo $new_gr_or[$i]['key'].' => '.$new_gr_or[$j]['key'].' || ';
+                if ($new_gr_or[$i]['key'] > $new_gr_or[$j]['key']) {
+                    $item_actual = $new_gr_or[$i];
+                    $item_comparativo = $new_gr_or[$j];
+                    $new_gr_or[$i] = $item_comparativo;
+                    $new_gr_or[$j] = $item_actual;
+                }
+            }
+        }
+        // print_r($new_gr_or);
+        // die;
+        // $this->orderGroups($groups_organized);
+        // echo '<pre>';
+        //ordenar el array
+
+        // for ($i = 1; $i <= $lenght_groups; $i++) {
+        //     $new_groups[] = $groups_organized[$i];
+        // }
         // echo '<pre>  xxx ';
         // print_r($new_groups);
         // die;
-        return $new_groups;
+        return $new_gr_or;
+    }
+
+    public function orderGroups($groups)
+    {
+
+    }
+
+    public function orderArrayKeys($array)
+    {
+        foreach ($array as $key_main => $value_main) {
+            foreach ($array as $key => $value) {
+                if ($key_main < $key) {
+
+                }
+            }
+        }
     }
 
     public function checkModulePermission($module, $user_id)

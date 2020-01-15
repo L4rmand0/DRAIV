@@ -27,7 +27,7 @@
         <div class="card-footer">
             <div class="container text-center">
                 <button class="btn btn-primary" type="button" data-toggle="modal"
-                    data-target="#form_create_user"><span class="plus_icon icons-fa"></span> Agregar Registro</button>
+                    data-target="#form_create_user"><i class="fas fa-plus"></i> Agregar Registro</button>
             </div>
         </div>
     </div>

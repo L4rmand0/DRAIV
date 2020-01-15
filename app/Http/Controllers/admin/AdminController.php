@@ -62,6 +62,10 @@ class AdminController extends Controller
                     $data_dashboard = $this->showIndexDashboard($company_id);
                     return view('admin.dashboard', $data_dashboard);
                     break;
+                case 'doc_verification':
+                    $data_dashboard = $this->showIndexDashboard($company_id);
+                    return view('admin.dashboard', $data_dashboard);
+                    break;
                 default:
                     return view('404_draiv');
                     break;

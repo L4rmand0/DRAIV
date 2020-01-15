@@ -45,12 +45,10 @@
         <div class="card-footer">
             <div class="container text-center">
                 <button class="btn btn-primary" type="button" style="margin-top: 17px;" data-toggle="modal"
-                    data-target="#form_create_vehicle" id="modal_form_create_vehicle"><span
-                        class="plus_icon icons-fa"></span> Agregar Registro</button>
+                    data-target="#form_create_vehicle" id="modal_form_create_vehicle"><i class="fas fa-plus"></i> Agregar Registro</button>
                 <div class="container text-center">
                     <button class="btn btn-success" type="button" style="margin-top: 17px;" data-toggle="modal"
-                        data-target="#form_import_excel" id="modal_form_drive_info"><span class="excel_icon">
-                        </span>Importar
+                        data-target="#form_import_excel" id="modal_form_drive_info"><i class="fas fa-file-excel"></i> Importar
                         Información Masiva</button>
                 </div>
             </div>
@@ -93,7 +91,7 @@
                     </div> --}}
                 <div class="text-center">
                     <center><button type="button" id="add_driver_vehicle" class="btn btn-primary" data-toggle="modal"
-                            data-target="#add_driver_vehicle_modal"><span class="plus_icon icons-fa"></span> Agregar
+                            data-target="#add_driver_vehicle_modal"><i class="fas fa-plus"></i> Agregar
                             Registro</button>
                     </center>
                 </div>

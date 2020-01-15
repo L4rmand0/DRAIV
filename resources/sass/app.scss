@@ -1,15 +1,17 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
-
 // Variables
 @import 'variables';
-
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-
 // FontAwesome
-@import "node_modules/font-awesome/scss/font-awesome.scss";
-
+// @import "node_modules/font-awesome/scss/font-awesome.scss";
 @import '~jquery-ui/themes/base/all.css';
-
 @import '~datatables.net-bs4/css/dataTables.bootstrap4.css';
+// $ vi resources/sass/app.scss
+// // ...
+// $fa-font-path: "../webfonts";
+@import '~@fortawesome/fontawesome-free/scss/brands';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';

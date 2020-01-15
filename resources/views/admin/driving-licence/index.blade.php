@@ -38,11 +38,11 @@
         <div class="card-footer">
             <div class="container text-center">
                 <button class="btn btn-primary" type="button" style="margin-top: 17px;" data-toggle="modal"
-                    data-target="#form_create_driving_licence" id="modal_form_create_driving_licence"><span class="plus_icon icons-fa"></span> Agregar Registro</button>
+                    data-target="#form_create_driving_licence" id="modal_form_create_driving_licence"><i class="fas fa-plus"></i> Agregar RAgregar Registro</button>
             </div>
             <div class="container text-center">
                 <button class="btn btn-success" type="button" style="margin-top: 17px;" data-toggle="modal"
-                    data-target="#form_import_excel" id="modal_form_drive_info"><span class="excel_icon"> </span>Importar
+                    data-target="#form_import_excel" id="modal_form_drive_info"><i class="fas fa-file-excel"></i> Importar
                     Información Masiva</button>
             </div>
         </div>

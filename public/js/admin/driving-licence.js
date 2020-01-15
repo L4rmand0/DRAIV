@@ -1,38 +1,38 @@
 // IIFE - Immediately Invoked Function Expression
-(function (runcode) {
+(function(runcode) {
 
     // The global jQuery object is passed as a parameter
     runcode(window.jQuery, window, document);
 
-}(function ($, window, document) {
+}(function($, window, document) {
 
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
-    $(function () {
-        
-        $(document).click(function(event) { 
+    $(function() {
+
+        $(document).click(function(event) {
             $target = $(event.target);
-            if(!$target.closest('#driving_licence_datatable tr #country_expedition').length && 
-            $('#driving_licence_datatable tr #country_expedition select').is(":visible")) {
+            if (!$target.closest('#driving_licence_datatable tr #country_expedition').length &&
+                $('#driving_licence_datatable tr #country_expedition select').is(":visible")) {
                 let element = $('#driving_licence_datatable tr #country_expedition select');
                 let val_item = element.val();
                 element.parent().html(val_item)
             }
-            if(!$target.closest('#driving_licence_datatable tr #category').length && 
-            $('#driving_licence_datatable tr #category select').is(":visible")) {
+            if (!$target.closest('#driving_licence_datatable tr #category').length &&
+                $('#driving_licence_datatable tr #category select').is(":visible")) {
                 let element = $('#driving_licence_datatable tr #category select');
                 let val_item = element.val();
                 element.parent().html(val_item)
             }
-            if(!$target.closest('#driving_licence_datatable tr #state').length && 
-            $('#driving_licence_datatable tr #state select').is(":visible")) {
+            if (!$target.closest('#driving_licence_datatable tr #state').length &&
+                $('#driving_licence_datatable tr #state select').is(":visible")) {
                 let element = $('#driving_licence_datatable tr #state select');
                 let val_item = element.val();
                 element.parent().html(val_item)
             }
-            
+
         });
-        
+
         var table_search;
         // $.ajax({
         //     type: 'GET',
@@ -54,7 +54,7 @@
             type: 'GET',
             url: $('#company-select-list-route').val(),
             data: { 'type': 'companies' },
-            success: function (data) {
+            success: function(data) {
                 $('#company_id_excel').select2({
                     data: data
                 });
@@ -69,20 +69,20 @@
             type: 'GET',
             url: $('#driver_information_dni_id_form').data('url'),
             data: { 'type': 'select_admin2' },
-            success: function (data) {
+            success: function(data) {
                 $('#driver_information_dni_id_form').select2({
                     data: data
                 });
             }
         });
 
-        $('#driver_information_dni_id_form').on('change', function () {
+        $('#driver_information_dni_id_form').on('change', function() {
             let user_info_id = $(this).val();
             $.ajax({
                 type: 'GET',
                 url: $('#driver_information_dni_id_form').data('url-name'),
                 data: { 'type': 'select_admin2', 'user_info_id': user_info_id },
-                success: function (data) {
+                success: function(data) {
                     $("#name_driver").text(data.name);
                 }
             });
@@ -90,7 +90,7 @@
         })
 
 
-        $("#btn_search_company").on("click", function () {
+        $("#btn_search_company").on("click", function() {
             $(this).hide();
             table_search = $("#search_company_datatable").DataTable({
                 processing: true,
@@ -106,7 +106,7 @@
 
 
             // DELETE
-            $('#search_company_datatable tbody').on('click', 'tr', function () {
+            $('#search_company_datatable tbody').on('click', 'tr', function() {
                 var data = table_search.row(this).data();
                 $("#company_id").val(data['nit']);
             });
@@ -116,11 +116,11 @@
 
 
 
-        $("#modal_form_drive_info").on("click", function () {
+        $("#modal_form_drive_info").on("click", function() {
             $("#btn_search_company").show();
         });
 
-        $("#form_driving_licence_admin").submit(function (event) {
+        $("#form_driving_licence_admin").submit(function(event) {
             event.preventDefault();
             $(".error-strong").text("");
             let data_form = $(this).serialize();
@@ -137,12 +137,12 @@
                     type: 'POST',
                     url: $("#form_driving_licence_admin").data('url'),
                     data: data_form,
-                    success: function (data) {
+                    success: function(data) {
                         console.log(data);
                         if (Object.keys(data.errors).length > 0) {
                             let arr_errores = data.errors;
                             console.log(arr_errores);
-                            $.each(arr_errores, function (index, value) {
+                            $.each(arr_errores, function(index, value) {
                                 let selector = "#" + index + "-error";
                                 let selector_strong = "#" + index + "-error-strong";
                                 $(selector).show();
@@ -157,7 +157,7 @@
                 });
             }
         });
-        $("#form_excel_driving_licence_admin").submit(function (event) {
+        $("#form_excel_driving_licence_admin").submit(function(event) {
             event.preventDefault();
             var datafr = new FormData($("#form_excel_driving_licence_admin")[0]);
             $.ajax({
@@ -167,7 +167,7 @@
                 contentType: false,
                 processData: false,
                 data: datafr,
-                success: function (data) {
+                success: function(data) {
                     console.log(data);
                     if (data.response == "ok") {
                         swal.fire(
@@ -196,10 +196,20 @@
 
         var enums = {
             'Education': {
-                'Primaria': 'Primaria', 'Secundaria': 'Secundaria', 'Pregrado': 'Pregrado', 'Postgrado': 'Postgrado', 'Sin informacion': 'Sin informacion'
+                'Primaria': 'Primaria',
+                'Secundaria': 'Secundaria',
+                'Pregrado': 'Pregrado',
+                'Postgrado': 'Postgrado',
+                'Sin informacion': 'Sin informacion'
             },
             'Civil_state': {
-                'Soltero': 'Soltero', 'Casado': 'Casado', 'Separado': 'Separado', 'Divorciado': 'Divorciado', 'Viudo': 'Viudo', 'Union libre': 'Union libre', 'Sin información': 'Sin información'
+                'Soltero': 'Soltero',
+                'Casado': 'Casado',
+                'Separado': 'Separado',
+                'Divorciado': 'Divorciado',
+                'Viudo': 'Viudo',
+                'Union libre': 'Union libre',
+                'Sin información': 'Sin información'
             }
         }
 
@@ -210,7 +220,7 @@
             scrollX: true,
             ajax: $('#driving_licence_datatable').data('url-list'),
             columns: [
-                { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_driving_licence"><span class="trash_icon"></span></button></center>' },
+                { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_driving_licence"><i class="fas fa-trash"></i></button></center>' },
                 { data: 'licence_id', name: 'licence_id', "visible": false },
                 { data: 'licence_num', name: 'licence_num' },
                 { data: 'driver_information_dni_id', name: 'driver_information_dni_id' },
@@ -226,7 +236,7 @@
 
             columnDefs: [{
                 targets: '_all',
-                createdCell: function (td, cellData, rowData, row, col) {
+                createdCell: function(td, cellData, rowData, row, col) {
                     $(td).attr("id", fields[col])
                 }
             }],
@@ -241,22 +251,19 @@
 
         });
 
-        $('#driving_licence_datatable').on('click', 'tr td #btn_delete_driving_licence', function () {
+        $('#driving_licence_datatable').on('click', 'tr td #btn_delete_driving_licence', function() {
             let row = $(this).parents('tr')
             let data_delete = table.row(row).data();
             swal.fire({
                 title: '<strong>Eliminar Información</strong>',
                 icon: 'warning',
-                html:
-                    '¿Está seguro que desea eliminar este registro?',
+                html: '¿Está seguro que desea eliminar este registro?',
                 showCloseButton: true,
                 showCancelButton: true,
                 focusConfirm: false,
-                confirmButtonText:
-                    'Confirmar',
+                confirmButtonText: 'Confirmar',
                 confirmButtonAriaLabel: 'Thumbs up, great!',
-                cancelButtonText:
-                    'Cancelar',
+                cancelButtonText: 'Cancelar',
                 cancelButtonAriaLabel: 'Thumbs down'
             }).then((result) => {
                 if (result.value) {
@@ -264,7 +271,7 @@
                         type: 'POST',
                         url: $("#driving_licence_datatable").data("url-delete"),
                         data: data_delete,
-                        success: function (data) {
+                        success: function(data) {
                             if (data.error == "") {
                                 swal.fire(
                                     'Proceso Completado',
@@ -297,7 +304,7 @@
                     url: $("#update-driving-licence-route").val(),
                     data: dataSend,
                     async: false,
-                    success: function (data) {
+                    success: function(data) {
                         if (Object.keys(data.error).length > 0)
                             swal.fire(
                                 'Error!',
@@ -313,8 +320,7 @@
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
             columns: [2, 6, 7, 8, 9, 10],
-            "inputTypes": [
-                {
+            "inputTypes": [{
                     "column": 6,
                     "type": "list",
                     "options": enum_country_expedition
