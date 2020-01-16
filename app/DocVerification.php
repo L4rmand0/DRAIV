@@ -11,7 +11,8 @@ class DocVerification extends Model
     public $timestamps = false;
     
     protected $fillable = [
-        'validated_data', 
+        'user_vehicle_id', 
         'type_v', 
+        'date_operation', 
     ];
 }

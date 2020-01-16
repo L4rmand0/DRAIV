@@ -15,6 +15,7 @@ class Module extends Model
         'administratrion'=> 6,
         'users'=> 7,
         'dashboard'=> 8,
+        'doc_verification'=> 9,
     ];
 
     protected $table = 'module';

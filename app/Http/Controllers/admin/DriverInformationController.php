@@ -21,14 +21,8 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class DriverInformationController extends Controller
 {
-
     private $excel;
     private $chart_js;
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
 
     /**
      * Create a new controller instance.
@@ -37,8 +31,7 @@ class DriverInformationController extends Controller
      */
     public function __construct()
     {
-        // $this->excel = $excel;
-        // $this->middleware('guest');
+        $this->middleware('auth');
         $this->chart_js = new ChartJS();
     }
     

@@ -63,8 +63,8 @@ class AdminController extends Controller
                     return view('admin.dashboard', $data_dashboard);
                     break;
                 case 'doc_verification':
-                    $data_dashboard = $this->showIndexDashboard($company_id);
-                    return view('admin.dashboard', $data_dashboard);
+                    $data_doc_verification = $this->showIndexDocVerification($company_name);
+                    return view('admin.doc-verification.index', $data_doc_verification);
                     break;
                 default:
                     return view('404_draiv');
@@ -113,6 +113,14 @@ class AdminController extends Controller
             'soats_expirated' => $soats_expirated,
             'technomecanical_expiration' => $technomecanical_expiration,
             'technomecanical_expirated' => $technomecanical_expirated,
+            'permissions' => $this->permissions,
+        ];
+    }
+
+    private function showIndexDocVerification($company_name)
+    {
+        return [
+            'company_name' => ucwords(strtolower($company_name)),
             'permissions' => $this->permissions,
         ];
     }

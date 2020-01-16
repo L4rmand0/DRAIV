@@ -71,7 +71,8 @@ trait PermissionUser
             $new_gr_or[$cont]['key'] = $key;
             $cont++;
         }
-        //ordenar de menor a mayor
+        
+        //ordenar de menor a mayor los grupos de los modulos
         for ($i = 0; $i < $lenght_groups; $i++) {
             for ($j = $i; $j < $lenght_groups; $j++) {
                 // echo $new_gr_or[$i]['key'].' => '.$new_gr_or[$j]['key'].' || ';
@@ -141,7 +142,6 @@ trait PermissionUser
                 $permiso = true;
             }
         }
-        // var_dump($permiso);
         // echo $principal . ' <pre> permisos ';
         // print_r($permissions);
         // die;
