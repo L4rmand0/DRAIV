@@ -32,9 +32,9 @@
                         Noticias
                     </a>
                 </li> --}}
-                {{-- <li class="nav-item" id="drivers">
+                <li class="nav-item" id="drivers">
                     <a class="nav-link" href="{{ route('dataconductores') }}">Conductores</a>
-                </li> --}}
+                </li>
                 <li class="nav-item" id="about">
                     <a class="nav-link" href="{{ route('about') }}">Nosotros</a>
                 </li>
