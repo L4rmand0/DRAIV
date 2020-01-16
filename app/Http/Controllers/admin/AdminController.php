@@ -88,6 +88,7 @@ class AdminController extends Controller
         $soats_expirated = VehicleController::getSoatsExpirated($company_id);
         $technomecanical_expiration = VehicleController::getExpiTecnomecanicalDates($company_id);
         $technomecanical_expirated = VehicleController::getExpiTecnomecanicalExpirated($company_id);
+        // $drivers_verified = DocVerificationController::getNumberValidatedDrivers($company_id);
         // $incomplete_document_drivers = $this->image_controller->checkIncompleteDocumentDrivers($company_id);
         // echo $soats_expiration;
         // die;

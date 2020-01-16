@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\DriverInformation;
-use App\Http\Controllers\Controller;
 use DB;
+use App\DriverInformation;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ChartJS;
+use App\Http\Controllers\Controller;
 
 class DocVerificationController extends Controller
 {
+    private $chart_js;
     /**
      * Create a new controller instance.
      *
@@ -17,6 +19,7 @@ class DocVerificationController extends Controller
     public function __construct()
     {
         // $this->middleware('auth');
+        $this->chart_js = new ChartJS();
     }
     /**
      * Display a listing of the resource.
@@ -127,4 +130,69 @@ class DocVerificationController extends Controller
         $list_verifieds = $this->addDeleteButtonDatatable($list_verifieds);
         return datatables()->of($list_verifieds)->make(true);
     }
+
+    public static function getNumberValidatedDrivers($company_id){
+        $drivers_verifieds = DB::table('driver_information as di')
+            ->select(DB::raw(
+                'di.validated_data, 
+                count(di.dni_id) as total'
+            ))
+            ->where('di.company_id', '=', $company_id)
+            ->where('di.operation', '!=', 'D')
+            ->groupBy('validated_data')
+            ->get()->toArray();
+        foreach ($drivers_verifieds as $key => $value) {
+            if($value->validated_data == 1){
+                $drivers_verifieds[$key]->validated_data = "Verificado";
+            }else{
+                $drivers_verifieds[$key]->validated_data = "Sin Verificar";
+            }
+            $drivers_verifieds[$key]= (array) $value;
+        }
+        return $drivers_verifieds;
+    }
+
+    public static function getNumberValidatedDriversADriver($company_id, $dni_id){
+        $drivers_verifieds = DB::table('driver_information as di')
+            ->select(DB::raw(
+                'di.validated_data, 
+                count(di.dni_id) as total'
+            ))
+            ->where('di.company_id', '=', $company_id)
+            ->where('di.dni_id', '=', $dni_id)
+            ->where('di.operation', '!=', 'D')
+            ->groupBy('validated_data')
+            ->get()->toArray();
+        foreach ($drivers_verifieds as $key => $value) {
+            if($value->validated_data == 1){
+                $drivers_verifieds[$key]->validated_data = "Verificado";
+            }else{
+                $drivers_verifieds[$key]->validated_data = "Sin Verificar";
+            }
+            $drivers_verifieds[$key]= (array) $value;
+        }
+        return $drivers_verifieds;
+    }
+
+    public function makePieChartDriversVerified(Request $request)
+    {
+        $company_id = $request->get('company_id');
+        if (!empty($request->get('dni_id'))) {
+            $dni_id = $request->get('dni_id');
+            $education = $this->getNumberValidatedDriversADriver($company_id, $dni_id);
+        } else {
+            $education = $this->getNumberValidatedDrivers($company_id);
+        }
+        return $this->chart_js->makeChart($education);
+    }
+
+//     select
+// 	di.validated_data, count(di.dni_id) as total
+// from
+// 	driver_information as di 
+// where
+// 	di.company_id = 9013380301
+// 	and di.operation != 'D'
+// GROUP BY validated_data;
+
 }

@@ -162,6 +162,18 @@ where
 	and `v`.`technomechanical_date` <= '2020-01-07';
 
 
+#conductores validados
+select
+	di.validated_data, count(di.dni_id) as total
+from
+	driver_information as di 
+where
+	di.company_id = 9013380301
+	and di.operation != 'D'
+GROUP BY validated_data;
+
+
+
 
 
 
