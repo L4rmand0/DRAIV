@@ -19,6 +19,7 @@
         var ele_chart_line_v = $("#line_v_chart");
         var ele_chart_brand_v = $("#brand_v_chart");
         var ele_chart_model_v = $("#model_v_chart");
+        var ele_chart_drivers_v = $("#drivers_v_chart");
 
         //Charts
         var chart_education;
@@ -30,6 +31,7 @@
         var chart_line_v;
         var chart_brand_v;
         var chart_model_v;
+        var chart_drivers_v;
 
         $.ajax({
             type: 'GET',
@@ -224,6 +226,45 @@
 
         $.ajax({
             type: 'POST',
+            url: $("#function_drivers_verify").val(),
+            data: {
+                'company_id': $("#dashboard_company_id").val(),
+                "_token": $('#token').val()
+            },
+            success: function(datac) {
+                console.log(datac);
+                if (Object.keys(datac.errors).length > 0) {
+
+                } else {
+                    chart_drivers_v = new Chart(ele_chart_drivers_v, {
+                        type: 'doughnut',
+                        data: datac.data,
+                        options:
+                        // datac.options
+                        {
+                            display: true,
+                            scaleStartValue: 0,
+                            scales: datac.options.scales,
+                            plugins: {
+                                datalabels: {
+                                    render: 'label',
+                                    font: {
+                                        weight: 'bold',
+                                        size: 14,
+                                    },
+                                    formatter: function(value, context) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
             url: $("#function_barchart_civil_state").val(),
             data: {
                 'company_id': $("#dashboard_company_id").val(),
@@ -245,7 +286,7 @@
                                 yAxes: [{
                                     ticks: {
                                         beginAtZero: true,
-                                    }
+                                    },
                                 }],
                                 xAxes: [{
                                     ticks: {
@@ -256,7 +297,8 @@
                             },
                             plugins: {
                                 datalabels: {
-                                    render: 'label',
+                                    // render: 'label',
+                                    render: 'percentage',
                                     font: {
                                         weight: 'bold',
                                         size: 14,

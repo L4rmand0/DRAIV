@@ -31,7 +31,7 @@
         var table = $('#doc_verification_datatable').DataTable({
             processing: true,
             serverSide: true,
-            pageLength: 5,
+            pageLength: 10,
             ajax: $('#doc-verify-list-route').val(),
             columns: [
                 // { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_user"><i class="fas fa-trash"></i></button></center>' },

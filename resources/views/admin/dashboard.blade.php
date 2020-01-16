@@ -21,11 +21,16 @@
     <input type="hidden" id="function_licence_expirated" value="{{ route('drivers-info.licence-expirated-number') }}">
     <input type="hidden" id="function_soat_expiration" value="{{ route('drivers-info.soat-expiration-number') }}">
     <input type="hidden" id="function_soat_expirated" value="{{ route('drivers-info.soat-expirated-number') }}">
-    <input type="hidden" id="function_technomecanical_expiration" value="{{ route('drivers-info.technomecanical-expiration-number') }}">
-    <input type="hidden" id="function_technomecanical_expirated" value="{{ route('drivers-info.technomecanical-expirated-number') }}">
+    <input type="hidden" id="function_technomecanical_expiration"
+        value="{{ route('drivers-info.technomecanical-expiration-number') }}">
+    <input type="hidden" id="function_technomecanical_expirated"
+        value="{{ route('drivers-info.technomecanical-expirated-number') }}">
+    <input type="hidden" id="function_drivers_verify"
+        value="{{ route('admin.doc-verification.drivers-verify-chart') }}">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard {{ $company_name }}</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="report_generate"><i class="fas fa-download"></i> Generar Reporte</a>
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="report_generate"><i
+                class="fas fa-download"></i> Generar Reporte</a>
     </div>
     <div class="row">
         <div class="col-xl-12 col-md-6 mb-4">
@@ -36,7 +41,8 @@
                             <div class="text-xs font-weight-bold text-dark text-uppercase mb-1 ml-1">
                                 Cédula Conductor</div>
                             <form action="">
-                                <select name="" class="mt-3" id="select_cc_driver" style="width: 37%;" data-url="{{ route('drivers-select-lists')}}" hidden>
+                                <select name="" class="mt-3" id="select_cc_driver" style="width: 37%;"
+                                    data-url="{{ route('drivers-select-lists')}}" hidden>
                                 </select>
                             </form>
                         </div>
@@ -48,8 +54,11 @@
     <h4 class="mb-3">Información de Conductores</h4>
     <!-- Content Row -->
     <div class="row">
-        <script src="{{ asset('Chartjs/Chart.min.js') }}" defer></script>
-        <script src="{{ asset('Chartjs/chartjs-datalabel.js') }}" defer></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.7.3/dist/Chart.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
+        {{-- <script src="{{ asset('Chartjs/Chart.min.js') }}" defer></script>
+        <script src="{{ asset('Chartjs/chartjs-datalabel.js') }}" defer></script> --}}
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
@@ -58,7 +67,8 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 Número de Conductores</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="card_driver_number">{{ $total_drivers }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="card_driver_number">
+                                {{ $total_drivers }}</div>
                         </div>
                     </div>
                 </div>
@@ -73,7 +83,8 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Número de Vehículos</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="card_vehicle_number">{{ $total_vehicles }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="card_vehicle_number">
+                                {{ $total_vehicles }}</div>
                         </div>
                         {{-- <div class="col-auto">
                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -100,10 +111,12 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 mt-1">
-                                        <span class="h5 mb-0 font-weight-bold text-gray-800" id="man_number">{{ $total_man }}</span>
+                                        <span class="h5 mb-0 font-weight-bold text-gray-800"
+                                            id="man_number">{{ $total_man }}</span>
                                     </div>
                                     <div class="col-md-6 mt-1">
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="woman_number">{{ $total_woman }}</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="woman_number">
+                                            {{ $total_woman }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -124,7 +137,8 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                 Calificación Promedio</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="calification_average_number">{{ $score_average }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="calification_average_number">
+                                {{ $score_average }}</div>
                         </div>
                         <div class="col-auto">
                             {{-- <i class="fas fa-comments fa-2x text-gray-300"></i> --}}
@@ -145,7 +159,8 @@
                     <h6 class="m-0 font-weight-bold text-primary">Escolaridad Conductores</h6>
                 </div>
                 <div class="card-body">
-                <canvas id="education_chart" width="400" height="200" data-url-driver="{{ route('drivers-info.education-chart') }}"></canvas>
+                    <canvas id="education_chart" width="400" height="200"
+                        data-url-driver="{{ route('drivers-info.education-chart') }}"></canvas>
                 </div>
             </div>
         </div>
@@ -246,7 +261,8 @@
                     <div class="card bg-primary text-white shadow">
                         <div class="card-body">
                             Licencias Próximas a Vencer
-                            <div class="text-white-50 small" id="prox_expi_licences_number">{{ $licences_expiration }}</div>
+                            <div class="text-white-50 small" id="prox_expi_licences_number">{{ $licences_expiration }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -254,7 +270,8 @@
                     <div class="card bg-primary text-white shadow">
                         <div class="card-body">
                             Licencias Vencidas
-                            <div class="text-white-50 small" id="card_licence_expirated_number">{{ $licences_expirated }}</div>
+                            <div class="text-white-50 small" id="card_licence_expirated_number">
+                                {{ $licences_expirated }}</div>
                         </div>
                     </div>
                 </div>
@@ -264,7 +281,8 @@
                     <div class="card bg-success text-white shadow">
                         <div class="card-body">
                             Soats Próximos a Vencer
-                            <div class="text-white-50 small" id="card_soat_expiration_number">{{ $soats_expiration }}</div>
+                            <div class="text-white-50 small" id="card_soat_expiration_number">{{ $soats_expiration }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -272,7 +290,8 @@
                     <div class="card bg-success text-white shadow">
                         <div class="card-body">
                             Soats Vencidos
-                            <div class="text-white-50 small" id="card_soat_expirated_number">{{ $soats_expirated }}</div>
+                            <div class="text-white-50 small" id="card_soat_expirated_number">{{ $soats_expirated }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -282,7 +301,8 @@
                     <div class="card bg-danger text-white shadow">
                         <div class="card-body">
                             Tecnomecánicas Próximos a Vencer
-                            <div class="text-white-50 small" id="card_technomecanical_expiration_number">{{ $technomecanical_expiration }}</div>
+                            <div class="text-white-50 small" id="card_technomecanical_expiration_number">
+                                {{ $technomecanical_expiration }}</div>
                         </div>
                     </div>
                 </div>
@@ -291,18 +311,23 @@
                         <div class="card-body">
                             Tecnomecánicas Vencidas
                             <p></p>
-                            <div class="text-white-50 small" id="card_technomecanical_expirated_number">{{ $technomecanical_expirated }}</div>
+                            <div class="text-white-50 small" id="card_technomecanical_expirated_number">
+                                {{ $technomecanical_expirated }}</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-12 mb-4">
-            <!-- Color System -->
-            <div class="row">
-
+    <div class="row" style="display: flex; justify-content: center;">
+        <div class="col-lg-7 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Conductores Verificados RidePro</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="drivers_v_chart" width="400" height="300"></canvas>
+                </div>
             </div>
         </div>
     </div>

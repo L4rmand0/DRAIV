@@ -101,6 +101,7 @@ Route::prefix('admin')->group(function () {
     Route::post('images/update', 'admin\ImageController@update')->name('images.update');
     Route::get('/doc-verification/list', 'admin\DocVerificationController@listVerifiedDrivers')->name('admin.doc-verification.list');
     Route::post('/doc-verification/update', 'admin\DocVerificationController@update')->name('admin.doc-verification.update');
+    Route::post('/doc-verification/drivers-verify-chart', 'admin\DocVerificationController@makeDonutChartDriversVerified')->name('admin.doc-verification.drivers-verify-chart'); 
 });
 
 

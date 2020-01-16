@@ -6,33 +6,50 @@ class ChartJS
 {
     private $data;
 
-    public function __construct() {
-        
+    public function __construct()
+    {
+
     }
 
-    public function makeChart($data_query){
-        // echo '<pre> make ';
-        // print_r($data_query);
-        // die;
+    public function makeChart($data_query, $percentage = null)
+    {
         if (!empty($data_query)) {
             $column_name = $this->getLabelQuery($data_query[0]);
-            foreach ($data_query as $key => $value) {
-                $labels[] = $value->$column_name;
-                $data_data[] = $value->total;
+            if ($percentage != null) {
+                $get_data = $this->transformPercentage($data_query);
+                $data_query = $get_data['data_query'];
+                $maximo = $get_data['maximo'] + 1;
+                foreach ($data_query as $key => $value) {
+                    $labels[] = $value[$column_name];
+                    $data_data[] = $value['total'];
+                }
+                $num_register = count($data_data);
+                $arr_colors = $this->fillColorsBarChartVerifiedsDrivers($num_register);
+            } else {
+                foreach ($data_query as $key => $value) {
+                    $labels[] = $value->$column_name;
+                    $data_data[] = $value->total;
+                }
+                $maximo = max($data_data) + 1;
+                $num_register = count($data_data);
+                $arr_colors = $this->fillColorsBarChart($num_register);
             }
-            $num_register = count($data_data);
-            $arr_colors = $this->fillColorsBarChart($num_register);
-            $maximo = max($data_data) + 1;
+
         } else {
             $arr_colors['backgroundColor'] = ['rgba(255, 99, 132, 0.2)'];
             $arr_colors['borderColor'] = ['rgba(255, 99, 132, 0.2)'];
-            $data_data[]=['0'];
-            $labels[]=['No data'];
+            $data_data[] = ['0'];
+            $labels[] = ['No data'];
             $maximo = 1;
         }
         // echo ' máximo '.$maximo;
         // die;
-        $options = $this->createOptions($maximo);
+
+        if ($percentage != null) {
+            $options = $this->createOptionsPercentage($maximo);
+        } else {
+            $options = $this->createOptions($maximo);
+        }
         $datasets['label'] = "Frecuencia Educación";
         $datasets['data'] = $data_data;
         $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
@@ -44,11 +61,34 @@ class ChartJS
         return response()->json(['data' => $data, 'options' => $options, 'errors' => [], 'max' => $maximo]);
     }
 
-    public function getLabelQuery($element){
+    public function transformPercentage($data_query)
+    {
+        $sum = 0;
+        $maximo = 0;
+        foreach ($data_query as $key => $value) {
+            $sum += $value->total;
+            if ($maximo < $value->total) {
+                $maximo = $value->total;
+            }
+            // echo '<pre>';
+            // print_r($data_query);
+            $data_query[$key] = (array) $value;
+        }
+        // print_r($data_query);
+        // die;
+        foreach ($data_query as $key => $value) {
+            // echo ' || value: '.$value['total'].' sum: '.$sum.'  || ';
+            $data_query[$key]['total'] = number_format(floatval(($value['total'] * 100) / $sum), 2);
+        }
+        return ['data_query' => $data_query, 'maximo' => $maximo];
+    }
+
+    public function getLabelQuery($element)
+    {
         $element = (array) $element;
         // print_r($element);
         foreach ($element as $key => $value) {
-            if($key != "total"){
+            if ($key != "total") {
                 return $key;
             }
         }
@@ -115,7 +155,36 @@ class ChartJS
         return ['backgroundColor' => $bg_colors, 'borderColor' => $borders];
     }
 
-    function createOptions($maximo){
+    public function fillColorsBarChartVerifiedsDrivers($number)
+    {
+        $colors = [
+            'rgba(87, 213, 100)',
+            'rgba(213, 87, 87)',
+        ];
+
+        $borders_colors = [
+            'rgba(87, 213, 100)',
+            'rgba(213, 87, 87)',
+        ];
+        $borders = [];
+        $bg_colors = [];
+        $cursor_colors = 0;
+        for ($i = 0; $i < $number; $i++) {
+            if ($cursor_colors == 2) {
+                $cursor_colors = 0;
+                $bg_colors[] = $colors[$cursor_colors];
+                $borders[] = $borders_colors[$cursor_colors];
+            } else {
+                $bg_colors[] = $colors[$cursor_colors];
+                $borders[] = $borders_colors[$cursor_colors];
+            }
+            $cursor_colors++;
+        }
+        return ['backgroundColor' => $bg_colors, 'borderColor' => $borders];
+    }
+
+    public function createOptions($maximo)
+    {
         return [
             'display' => true,
             'scaleStartValue' => 0,
@@ -143,4 +212,41 @@ class ChartJS
             ],
         ];
     }
+
+    public function createOptionsPercentage($maximo)
+    {
+        return [
+            'display' => true,
+            'scaleStartValue' => 0,
+            'scales' => [
+                'yAxes' => [[
+                    'ticks' => [
+                        'beginAtZero' => true,
+                    ],
+                ]],
+                'xAxes' => [[
+                    'ticks' => [
+                        'min' => 0,
+                        'max' => $maximo,
+                    ],
+                ]],
+            ],
+            'plugins' => [
+                'datalabels' => [
+                    'render' => 'label',
+                    'font' => [
+                        'weight' => 'bold',
+                        'size' => 14,
+                    ],
+                    'formatter' => 'function(value, context) {
+                        return context.dataIndex +"%";
+                    }',
+                ],
+            ],
+        ];
+    }
 }
+
+// formatter: function(value, context) {
+//     return context.dataIndex +'%';
+// }

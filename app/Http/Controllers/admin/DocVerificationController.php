@@ -137,6 +137,9 @@ class DocVerificationController extends Controller
                 'di.validated_data, 
                 count(di.dni_id) as total'
             ))
+            ->join('user_vehicle as uv', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+            ->join('vehicle as v', 'v.plate_id', '=', 'uv.vehicle_plate_id')
+            ->join('driving_licence as dl', 'dl.driver_information_dni_id', '=', 'di.dni_id')
             ->where('di.company_id', '=', $company_id)
             ->where('di.operation', '!=', 'D')
             ->groupBy('validated_data')
@@ -147,7 +150,6 @@ class DocVerificationController extends Controller
             }else{
                 $drivers_verifieds[$key]->validated_data = "Sin Verificar";
             }
-            $drivers_verifieds[$key]= (array) $value;
         }
         return $drivers_verifieds;
     }
@@ -169,21 +171,20 @@ class DocVerificationController extends Controller
             }else{
                 $drivers_verifieds[$key]->validated_data = "Sin Verificar";
             }
-            $drivers_verifieds[$key]= (array) $value;
         }
         return $drivers_verifieds;
     }
 
-    public function makePieChartDriversVerified(Request $request)
+    public function makeDonutChartDriversVerified(Request $request)
     {
         $company_id = $request->get('company_id');
         if (!empty($request->get('dni_id'))) {
             $dni_id = $request->get('dni_id');
-            $education = $this->getNumberValidatedDriversADriver($company_id, $dni_id);
+            $verify_drivers = $this->getNumberValidatedDriversADriver($company_id, $dni_id);
         } else {
-            $education = $this->getNumberValidatedDrivers($company_id);
+            $verify_drivers = $this->getNumberValidatedDrivers($company_id);
         }
-        return $this->chart_js->makeChart($education);
+        return $this->chart_js->makeChart($verify_drivers, true);
     }
 
 //     select
