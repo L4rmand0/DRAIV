@@ -12,33 +12,10 @@
 
         $(document).click(function(event) {
             $target = $(event.target);
-            if (!$target.closest('#drive_information_datatable tr #gender').length &&
-                $('#drive_information_datatable tr #gender select').is(":visible")) {
-                let element = $('#drive_information_datatable tr #gender select');
-                let val_item = element.val();
-                element.parent().html(val_item)
-            }
-
-            if (!$target.closest('#drive_information_datatable tr #civil_state').length &&
-                $('#drive_information_datatable tr #civil_state select').is(":visible")) {
-                let element = $('#drive_information_datatable tr #civil_state select');
-                let val_item = element.val();
-                element.parent().html(val_item)
-            }
-
-            if (!$target.closest('#drive_information_datatable tr #education').length &&
-                $('#drive_information_datatable tr #education select').is(":visible")) {
-                let element = $('#drive_information_datatable tr #education select');
-                let val_item = element.val();
-                element.parent().html(val_item)
-            }
-
-            if (!$target.closest('#drive_information_datatable tr #country_born').length &&
-                $('#drive_information_datatable tr #country_born select').is(":visible")) {
-                let element = $('#drive_information_datatable tr #country_born select');
-                let val_item = element.val();
-                element.parent().html(val_item)
-            }
+            $(this).editBehaviourDataTable($target, "#drive_information_datatable", "#gender");
+            $(this).editBehaviourDataTable($target, "#drive_information_datatable", "#civil_state");
+            $(this).editBehaviourDataTable($target, "#drive_information_datatable", "#education");
+            $(this).editBehaviourDataTable($target, "#drive_information_datatable", "#country_born");
         });
 
         $("#department_form").on('change', function() {
@@ -54,7 +31,6 @@
                 }
             });
             $("#city_residence_place_form").attr('disabled', false);
-
             $('#city_residence_place_form').html("");
             $("#city_residence_place_form").select2({
                 data: data_cities
@@ -115,35 +91,8 @@
             }
         });
 
-
-
-        // $('#Company_id').select2({
-        //     ajax: {
-        //         url: $('#Company_id').data('url'),
-        //         dataType: 'json'
-        //     }
-        // });
-
-        // $('#City_born').select2({
-        //     ajax: {
-        //         url: $('#City_born').data('url'),
-        //         dataType: 'json'
-        //     }
-        // });
-
-
-        // $('#Company_id').select2({
-        //     ajax: {
-        //         url: $('#Company_id').data('url'),
-        //         dataType: 'json'
-        //     }
-        // });
-
         $("#btn_search_company").on("click", function() {
             $(this).hide();
-            // let company = $("#search_name_company").val();
-            // let nit_company = $("#search_nit").val();
-            // data_send = { 'company': company, 'nit_company': nit_company }
 
             // DELETE
             table_search = $("#search_company_datatable").DataTable({
@@ -156,12 +105,6 @@
                     { data: 'company', name: 'company' },
                 ],
                 language: language_dt,
-                // columnDefs: [{
-                //     targets: '_all',
-                //     createdCell: function (td, cellData, rowData, row, col) {
-                //         $(td).attr("id", fields[col])
-                //     }
-                // }]
             });
 
 
@@ -171,21 +114,6 @@
                 $("#Company_id").val(data['nit']);
             });
 
-
-
-            // $('#button').click( function () {
-            //     table.row('.selected').remove().draw( false );
-            // } );
-
-            // $.ajax({
-            //     type: 'POST',
-            //     url: $(this).data('url'),
-            //     data: data_send,
-            //     success: function (data) {
-            //         console.log(data);
-
-            //     }
-            // });
         });
 
         $("#modal_form_drive_info").on("click", function() {
@@ -217,9 +145,6 @@
                                 let selector_strong = "#" + index + "-error-strong";
                                 $(selector).show();
                                 $(selector_strong).text(value[0]);
-                                // $(selector).show();
-                                // $(selector).text(value);
-                                // error_founds = error_founds + 1;
                             });
                         } else {
                             $(".form-dataconductores").val("");
@@ -318,23 +243,7 @@
                     $(td).attr("id", fields[col])
                 }
             }],
-            // createdRow: function( row, data, dataIndex ) {
-
-            //     if( data.hasOwnProperty("id") ) {
-            //         row.id = "row-" + data.id;
-            //     } 
-            //     debugger
-            //     $( row ).attr({'data-id': data.id, id:'idUser'});
-            // }
-
         });
-
-        // $("#drive_information_datatable").on("click",'tr #gender', function(){
-        //     alert("entra")
-        //     $("#drive_information_datatable").on("click",'tr #gender select', function(){
-        //         // alert("sale")
-        //     });
-        // });
 
         $('#drive_information_datatable').on('click', 'tr td #btn_delete_drive_info', function() {
             let row = $(this).parents('tr')
@@ -406,7 +315,7 @@
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 16, 17],
+            columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 17],
             "inputTypes": [{
                     "column": 6,
                     "type": "list",
@@ -434,15 +343,5 @@
         });
 
     });
-
-    function validateDecimal(valor) {
-        var RE = /^\d*(\.\d{1})?\d{0,1}$/;
-        if (RE.test(valor)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     // The rest of the code goes here!
 }));

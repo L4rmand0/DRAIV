@@ -1,4 +1,7 @@
 // IIFE - Immediately Invoked Function Expression
+var prev_element = new Array();
+var new_element = new Array();
+
 (function(runcode) {
     // The global jQuery object is passed as a parameter
     runcode(window.jQuery, window, document);
@@ -10,9 +13,41 @@
 
     });
 
+    jQuery.fn.editBehaviourDataTable = function($target, $selector_table, $selector_cell) {
+        if ($target.closest($selector_table + ' tr ' + $selector_cell).length) {
+            if (typeof new_element['index'] === 'undefined') {
+                prev_element['index'] = $target.find("select").data("index");
+                prev_element['value'] = $target.find("select").val();
+                new_element['index'] = $target.find("select").data("index");
+                new_element['value'] = $target.find("select").val();
+            } else {
+                let old_new_element = new Array();
+                old_new_element['index'] = new_element['index'];
+                old_new_element['value'] = new_element['value'];
+                console.log("new class: " + $target.find("select").data("index"));
+                console.log("new class: " + $target.find("select").val());
+                if (typeof $target.find("select").data("index") === 'undefined') {} else {
+                    new_element['index'] = $target.find("select").data("index");
+                    new_element['value'] = $target.find("select").val();
+                    prev_element = old_new_element;
+                }
+                if (new_element['index'] != prev_element['index']) {
+                    let selector = $selector_table + " tr " + $selector_cell + " ." + prev_element['index'];
+                    $(selector).parent().html(prev_element['value']);
+                }
+            }
+        } else {
+            if (!$target.closest($selector_table + ' tr ' + $selector_cell).length &&
+                $($selector_table + ' tr ' + $selector_cell + ' select').is(":visible")) {
+                let element = $($selector_table + ' tr ' + $selector_cell + ' select');
+                let val_item = element.val();
+                element.parent().html(val_item)
+            }
+        }
+    }
+
     jQuery.fn.dataTable.Api.register('MakeCellsEditable()', function(settings) {
         var table = this.table();
-
         jQuery.fn.extend({
             // UPDATE
             updateEditableCell: function(callingElement) {
@@ -80,7 +115,8 @@
 
                 // Redraw table
                 table.draw();
-            }
+            },
+
         });
 
         // Destroy
@@ -108,7 +144,7 @@
                     // Show input
                     if (!$(cell).find('input').length && !$(cell).find('select').length && !$(cell).find('textarea').length) {
                         // Input CSS
-                        var input = getInputHtml(currentColumnIndex, settings, oldValue);
+                        var input = getInputHtml(currentColumnIndex, settings, oldValue, row);
                         $(cell).html(input.html);
                         if (input.focus) {
                             $('#ejbeatycelledit').focus();
@@ -120,7 +156,7 @@
 
     });
 
-    function getInputHtml(currentColumnIndex, settings, oldValue) {
+    function getInputHtml(currentColumnIndex, settings, oldValue, row) {
         var inputSetting, inputType, input, inputCss, confirmCss, cancelCss, startWrapperHtml = '',
             endWrapperHtml = '',
             listenToKeys = false;
@@ -153,7 +189,7 @@
         }
         switch (inputType) {
             case "list":
-                input.html = startWrapperHtml + "<select class='" + inputCss + "' onchange='$(this).updateEditableCell(this);'>";
+                input.html = startWrapperHtml + "<select class='" + inputCss + " selselector" + row[0][0] + "' onchange='$(this).updateEditableCell(this);' data-index='selselector" + row[0][0] + "'> ";
                 $.each(inputSetting.options, function(index, option) {
                     if (oldValue == option.value) {
                         input.html = input.html + "<option value='" + option.value + "' selected>" + option.display + "</option>"
@@ -217,7 +253,7 @@
                 // input.html = startWrapperHtml + "<input id='ejbeatycelledit' type='number' class='" + inputCss + "' value='" + oldValue + "'" + (listenToKeys ? " onkeyup='if(event.keyCode==13) {$(this).updateEditableCell(this);} else if (event.keyCode===27) {$(this).cancelEditableCell(this);}'" : "") + "></input>&nbsp;<a href='javascript:void(0);' class='" + confirmCss + "' onclick='$(this).updateEditableCell(this)'>Confirm</a> <a href='javascript:void(0);' class='" + cancelCss + "' onclick='$(this).cancelEditableCell(this)'>Cancel</a>" + endWrapperHtml;
                 break;
             default: // text input
-                input.html = startWrapperHtml + "<input id='ejbeatycelledit' class='" + inputCss + "' onfocusout='$(this).updateEditableCell(this)' value='" + oldValue + "' style='width:107%'></input>" + endWrapperHtml;
+                input.html = startWrapperHtml + "<input id='ejbeatycelledit' class='" + inputCss + "' onfocusout='$(this).updateEditableCell(this)' value='" + oldValue + "' style='width:100%'></input>" + endWrapperHtml;
                 break;
         }
         return input;

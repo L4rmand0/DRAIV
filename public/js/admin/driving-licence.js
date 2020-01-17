@@ -12,38 +12,12 @@
 
         $(document).click(function(event) {
             $target = $(event.target);
-            if (!$target.closest('#driving_licence_datatable tr #country_expedition').length &&
-                $('#driving_licence_datatable tr #country_expedition select').is(":visible")) {
-                let element = $('#driving_licence_datatable tr #country_expedition select');
-                let val_item = element.val();
-                element.parent().html(val_item)
-            }
-            if (!$target.closest('#driving_licence_datatable tr #category').length &&
-                $('#driving_licence_datatable tr #category select').is(":visible")) {
-                let element = $('#driving_licence_datatable tr #category select');
-                let val_item = element.val();
-                element.parent().html(val_item)
-            }
-            if (!$target.closest('#driving_licence_datatable tr #state').length &&
-                $('#driving_licence_datatable tr #state select').is(":visible")) {
-                let element = $('#driving_licence_datatable tr #state select');
-                let val_item = element.val();
-                element.parent().html(val_item)
-            }
-
+            $(this).editBehaviourDataTable($target, "#driving_licence_datatable", "#country_expedition");
+            $(this).editBehaviourDataTable($target, "#driving_licence_datatable", "#category");
+            $(this).editBehaviourDataTable($target, "#driving_licence_datatable", "#state");
         });
 
         var table_search;
-        // $.ajax({
-        //     type: 'GET',
-        //     url: $('#Country_born').data('url'),
-        //     data: { 'type': 'select_admin1' },
-        //     success: function (data) {
-        //         $('#Country_born').select2({
-        //             data: data
-        //         });
-        //     }
-        // });
 
         //Datepickers del formulario de licencia
         $("#expi_date_form").datepicker({ dateFormat: 'yy-mm-dd' });
@@ -112,9 +86,6 @@
             });
 
         });
-
-
-
 
         $("#modal_form_drive_info").on("click", function() {
             $("#btn_search_company").show();
@@ -240,15 +211,6 @@
                     $(td).attr("id", fields[col])
                 }
             }],
-            // createdRow: function( row, data, dataIndex ) {
-
-            //     if( data.hasOwnProperty("id") ) {
-            //         row.id = "row-" + data.id;
-            //     } 
-            //     debugger
-            //     $( row ).attr({'data-id': data.id, id:'idUser'});
-            // }
-
         });
 
         $('#driving_licence_datatable').on('click', 'tr td #btn_delete_driving_licence', function() {
@@ -335,14 +297,8 @@
                     "type": "list",
                     "options": enum_state
                 }
-
             ]
         });
-
-        // $('#user_datatable').on('click', 'tbody td', function () {
-        //     alert('oye mi perro')
-        //     table_user.cell( this ).edit();
-        // } );
     });
 
 

@@ -14,32 +14,10 @@ var table_relation;
 
         $(document).click(function(event) {
             $target = $(event.target);
-            if (!$target.closest('#vehicle_datatable tr #taxi_type').length &&
-                $('#vehicle_datatable tr #taxi_type select').is(":visible")) {
-                let element = $('#vehicle_datatable tr #taxi_type select');
-                let val_item = element.val();
-                element.parent().html(val_item)
-            }
-            if (!$target.closest('#vehicle_datatable tr #type_v').length &&
-                $('#vehicle_datatable tr #type_v select').is(":visible")) {
-                let element = $('#vehicle_datatable tr #type_v select');
-                let val_item = element.val();
-                element.parent().html(val_item)
-            }
-            if (!$target.closest('#vehicle_datatable tr #service').length &&
-                $('#vehicle_datatable tr #service select').is(":visible")) {
-                let element = $('#vehicle_datatable tr #service select');
-                let val_item = element.val();
-                element.parent().html(val_item)
-            }
-            if (!$target.closest('#vehicle_datatable tr #owner_v').length &&
-                $('#vehicle_datatable tr #owner_v select').is(":visible")) {
-                let element = $('#vehicle_datatable tr #owner_v select');
-                let val_item = element.val();
-                element.parent().html(val_item)
-            }
-
-
+            $(this).editBehaviourDataTable($target, "#vehicle_datatable", "#taxi_type");
+            $(this).editBehaviourDataTable($target, "#vehicle_datatable", "#type_v");
+            $(this).editBehaviourDataTable($target, "#vehicle_datatable", "#service");
+            $(this).editBehaviourDataTable($target, "#vehicle_datatable", "#owner_v");
         });
 
         var table_search;

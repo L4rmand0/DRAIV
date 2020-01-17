@@ -1,4 +1,9 @@
 // IIFE - Immediately Invoked Function Expression
+// var previous_element;
+// var new_element;
+// var new_element_val;
+
+
 (function(runcode) {
 
     // The global jQuery object is passed as a parameter
@@ -6,17 +11,41 @@
 
 }(function($, window, document) {
 
-    // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
     $(function() {
         $(document).click(function(event) {
             $target = $(event.target);
-            if (!$target.closest('#user_datatable tr #user_profile').length &&
-                $('#user_datatable tr #user_profile select').is(":visible")) {
-                let element = $('#user_datatable tr #user_profile select');
-                let val_item = element.val();
-                element.parent().html(val_item)
-            }
+            $(this).editBehaviourDataTable($target, "#user_datatable", "#user_profile");
+            // if ($target.closest('#user_datatable tr #user_profile').length) {
+            //     if (typeof new_element['index'] === 'undefined') {
+            //         prev_element['index'] = $target.find("select").data("index");
+            //         prev_element['value'] = $target.find("select").val();
+            //         new_element['index'] = $target.find("select").data("index");
+            //         new_element['value'] = $target.find("select").val();
+            //     } else {
+            //         let old_new_element = new Array();
+            //         old_new_element['index'] = new_element['index'];
+            //         old_new_element['value'] = new_element['value'];
+            //         console.log("new class: " + $target.find("select").data("index"));
+            //         console.log("new class: " + $target.find("select").val());
+            //         if (typeof $target.find("select").data("index") === 'undefined') {} else {
+            //             new_element['index'] = $target.find("select").data("index");
+            //             new_element['value'] = $target.find("select").val();
+            //             prev_element = old_new_element;
+            //         }
+            //         if (new_element['index'] != prev_element['index']) {
+            //             let selector = "#user_datatable tr #user_profile ." + prev_element['index'];
+            //             $(selector).parent().html(prev_element['value']);
+            //         }
+            //     }
+            // } else {
+            //     if (!$target.closest('#user_datatable tr #user_profile').length &&
+            //         $('#user_datatable tr #user_profile select').is(":visible")) {
+            //         let element = $('#user_datatable tr #user_profile select');
+            //         let val_item = element.val();
+            //         element.parent().html(val_item)
+            //     }
+            // }
         });
 
         var enums = {
@@ -96,7 +125,7 @@
         var table = $('#user_datatable').DataTable({
             processing: true,
             serverSide: true,
-            pageLength: 5,
+            pageLength: 10,
             ajax: $('#users-list-route').val(),
             columns: [
                 { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_user"><i class="fas fa-trash"></i></button></center>' },
@@ -210,7 +239,5 @@
         });
 
     });
-
-
     // The rest of the code goes here!
 }));
