@@ -63,7 +63,7 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
-        $date = date("Y-m-d");
+        // $date = date("Y-m-d");
         $now = date("Y-m-d H-i-s");
         $now_new = str_replace(" ", "-", $now);
         $now_new = str_replace("-", "", $now_new);
@@ -73,24 +73,34 @@ class ImageController extends Controller
         $file_type = request()->get('key');
         $cedula = request()->get('driver_information_dni_id');
         $file = $request->file('file');
-        $size = $file->getSize();
-
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'file' => ['required', 'max:1000', 'mimes:jpeg']
-            ],
-            [
-                'file.required' => "Se debe seleccionar un archivo.",
-                'file.max' => "El archivo supera el máximo peso permitido (2MB).",
-                'file.mimes' => "Los formatos permitidos son: jpg.",
-            ]
-        );
-
-        $errors = $validator->errors()->getMessages();
-        if (!empty($errors)) {
-            return response()->json(['response' => 'validator errors', 'errors' => $errors]);
+        $size = $file->getSize()/1024;
+        $extension = $file->getClientOriginalExtension();
+        $extensions_permited = ['jpg'];
+        if(!in_array($extension, $extensions_permited)){
+            return response()->json(['response' => 'validator errors', 'errors' => ['file'=>['Los formatos permitidos son: jpg']]]); 
         }
+        if($size > 5120){
+            return response()->json(['response' => 'validator errors', 'errors' => ['file'=>['El archivo supera el máximo peso permitido (5MB).']]]); 
+        }
+        // $validator = Validator::make(
+        //     $request->all(),
+        //     [
+        //         'file' => ['required','mimes:jpeg', 'max:2000' ]
+        //     ],
+        //     [
+        //         'file.required' => "Se debe seleccionar un archivo.",
+        //         'file.max' => "El archivo supera el máximo peso permitido (2MB).",
+        //         'file.mimes' => "Los formatos permitidos son: jpg.",
+        //     ]
+        // );
+
+        // $errors = $validator->errors()->getMessages();
+        // echo '<pre>';
+        // print_r($errors);
+        // die;
+        // if (!empty($errors)) {
+        //     return response()->json(['response' => 'validator errors', 'errors' => $errors]);
+        // }
 
         $check_document = DB::table('imagenes')
             ->where('imagenes.type_image', '=', $file_type)

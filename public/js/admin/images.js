@@ -38,7 +38,7 @@
                                 let str = value.url;
                                 let newurl = str.replace("/", " ");
                                 table += "<td><center><i class='fas fa-check-square' aria-hidden='true' style='color:green;'></i></center></td>"
-                                table += '<td><center><a href="downloads3/' + newurl + '" style="cursor:pointer;" class="a_file_image" class="download-file-s3"><span class="file_image_icon" style="color:#B62A2A;"></span></a></center></td>';
+                                table += '<td><center><a href="downloads3/' + newurl + '" style="cursor:pointer;" class="a_file_image download-file-s3"><i class="fas fa-file-image" style="color:#DE7925;"></i></a></center></td>';
                                 // table += '<td><center><a href="downloads3/'+value.url+'" class="download-file-s3"><span class="file_image_icon" style="color:#B62A2A;"></span></a></center></td>';
                             } else {
                                 table += "<td><center><i class='fas fa-times-circle' aria-hidden='true' style='color:red;'></i></center></td>"

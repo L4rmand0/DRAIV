@@ -70,8 +70,8 @@
                                 <div class="row">
                                     <div class="col-md-9" style="margin-top: 4px;">
                                         <div class="custom-file overflow-hidden rounded-pill mb-1">
-                                            <input id="file{{$item_type_images}}" type="file" name="file"
-                                                class="custom-file-input rounded-pill input_files_drivers">
+                                            <input id="file{{$item_type_images}}" type="file" name="file" style="cursor:pointer;"
+                                                class="custom-file-input rounded-pill input_files_drivers" accept=".jpg, .jpeg">
                                             <label for="file{{$item_type_images}}"
                                                 class="custom-file-label rounded-pill name_file">Seleccionar ...</label>
                                         </div>

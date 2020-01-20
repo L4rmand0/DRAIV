@@ -14,11 +14,6 @@ var new_element = new Array();
     });
 
     jQuery.fn.editBehaviourSelectFixedDT = function($target, $selector_table, $selector_cell) {
-        console.log('entra');
-        console.log($target);
-        console.log($selector_table);
-        console.log($selector_cell);
-
         // debugger
         if ($target.closest($selector_table + ' tr ' + $selector_cell).length) {
             if (typeof new_element['index'] === 'undefined') {
