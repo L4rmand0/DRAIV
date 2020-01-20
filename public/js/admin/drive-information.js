@@ -12,10 +12,10 @@
 
         $(document).click(function(event) {
             $target = $(event.target);
-            $(this).editBehaviourDataTable($target, "#drive_information_datatable", "#gender");
-            $(this).editBehaviourDataTable($target, "#drive_information_datatable", "#civil_state");
-            $(this).editBehaviourDataTable($target, "#drive_information_datatable", "#education");
-            $(this).editBehaviourDataTable($target, "#drive_information_datatable", "#country_born");
+            $(this).editBehaviourSelectDT($target, "#drive_information_datatable", "#gender");
+            $(this).editBehaviourSelectDT($target, "#drive_information_datatable", "#civil_state");
+            $(this).editBehaviourSelectDT($target, "#drive_information_datatable", "#education");
+            $(this).editBehaviourSelectDT($target, "#drive_information_datatable", "#country_born");
         });
 
         $("#department_form").on('change', function() {
@@ -315,7 +315,7 @@
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 17],
+            columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17],
             "inputTypes": [{
                     "column": 6,
                     "type": "list",

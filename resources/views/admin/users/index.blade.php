@@ -145,5 +145,8 @@
 </div>
 <!-- /.container-fluid -->
 <script src="{{ asset('js/admin/users.js') }}" defer></script>
+<script> 
+    var profile_list = {!! $profile_list !!};
+</script>
 @endsection
 <!-- End of Main Content -->

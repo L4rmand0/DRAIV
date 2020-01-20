@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Profile;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\Auth;
@@ -109,5 +110,9 @@ class ProfileController extends Controller
             $data[$key + 1]['text'] = $value->user_profile;
         }
         return $data;
+    }
+
+    public function getArrPermissionByProfile($profile_id){
+        Profile::where('','')->first();
     }
 }

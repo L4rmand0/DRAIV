@@ -15,7 +15,7 @@
     $(function() {
         $(document).click(function(event) {
             $target = $(event.target);
-            $(this).editBehaviourDataTable($target, "#user_datatable", "#user_profile");
+            $(this).editBehaviourSelectFixedDT($target, "#user_datatable", "#profile_id");
             // if ($target.closest('#user_datatable tr #user_profile').length) {
             //     if (typeof new_element['index'] === 'undefined') {
             //         prev_element['index'] = $target.find("select").data("index");
@@ -115,13 +115,15 @@
             });
         });
 
+        //Arreglo que genera los id de cada celda del datatable
         var fields = [
             'delete_row',
             'id',
             'name',
             'email',
-            'user_profile',
+            'profile_id',
         ];
+
         var table = $('#user_datatable').DataTable({
             processing: true,
             serverSide: true,
@@ -137,6 +139,7 @@
             language: language_dt,
             columnDefs: [{
                     targets: '_all',
+                    //Función que crea el atributo id de cada celda
                     createdCell: function(td, cellData, rowData, row, col) {
                         $(td).attr("id", fields[col])
                     }
@@ -201,11 +204,15 @@
             });
         });
 
-        function myCallbackFunction(updatedCell, updatedRow, oldValue) {
+        function myCallbackFunction(updatedCell, updatedRow, oldValue, id = false) {
             console.log("The new value for the cell is: " + updatedCell.data());
             if (oldValue != updatedCell.data()) {
                 dataSend = updatedRow.data();
-                dataSend.valuech = updatedCell.data();
+                if (id == false) {
+                    dataSend.valuech = updatedCell.data();
+                } else {
+                    dataSend.valuech = id;
+                }
                 dataSend.fieldch = updatedCell.nodes()[0].id;
                 $.ajax({
                     type: 'POST',
@@ -213,12 +220,14 @@
                     data: dataSend,
                     async: false,
                     success: function(data) {
-                        if (Object.keys(data.response).length === 0)
+                        if (Object.keys(data.errors).length > 0) {
                             swal.fire(
                                 'Error!',
-                                data.response,
+                                data.errors.response,
                                 'error'
                             )
+                        }
+
                     }
                 });
             }
@@ -229,12 +238,13 @@
             "onUpdate": myCallbackFunction,
             "inputTypes": [{
                 "column": 4,
-                "type": "list",
-                "options": [
-                    { "value": enums.User_profile['User'], "display": enums.User_profile['User'] },
-                    { "value": enums.User_profile['administrator'], "display": enums.User_profile['administrator'] },
-                    { "value": enums.User_profile['evaluator'], "display": enums.User_profile['evaluator'] }
-                ]
+                "type": "list-fixed",
+                "options": profile_list
+                    // [
+                    //     { "value": enums.User_profile['User'], "display": enums.User_profile['User'] },
+                    //     { "value": enums.User_profile['administrator'], "display": enums.User_profile['administrator'] },
+                    //     { "value": enums.User_profile['evaluator'], "display": enums.User_profile['evaluator'] }
+                    // ]
             }]
         });
 

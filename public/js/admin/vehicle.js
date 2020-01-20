@@ -14,10 +14,10 @@ var table_relation;
 
         $(document).click(function(event) {
             $target = $(event.target);
-            $(this).editBehaviourDataTable($target, "#vehicle_datatable", "#taxi_type");
-            $(this).editBehaviourDataTable($target, "#vehicle_datatable", "#type_v");
-            $(this).editBehaviourDataTable($target, "#vehicle_datatable", "#service");
-            $(this).editBehaviourDataTable($target, "#vehicle_datatable", "#owner_v");
+            $(this).editBehaviourSelectDT($target, "#vehicle_datatable", "#taxi_type");
+            $(this).editBehaviourSelectDT($target, "#vehicle_datatable", "#type_v");
+            $(this).editBehaviourSelectDT($target, "#vehicle_datatable", "#service");
+            $(this).editBehaviourSelectDT($target, "#vehicle_datatable", "#owner_v");
         });
 
         var table_search;
@@ -565,7 +565,7 @@ var table_relation;
             if (oldValue != updatedCell.data()) {
                 console.log("datax new " + updatedCell.data());
                 console.log("datax old " + oldValue);
-
+                debugger
                 dataSend = updatedRow.data();
                 dataSend.valuech = updatedCell.data();
                 dataSend.fieldch = updatedCell.nodes()[0].id;

@@ -119,4 +119,20 @@ class PermissionController extends Controller
         }
         return $groups;
     }
+
+    public function getArrUserPermissions($user_id){
+        return DB::table('permissions')
+            ->where('permissions.users_id', '=', $user_id)
+            ->orderBy('module.parent_id', 'asc')
+            ->join('module', 'module.module_id', '=', 'permissions.module_module_id')
+            ->select(DB::raw(
+              'permissions.permission_id,
+               permissions.operation,
+               module.module_id,
+               module.module_type,
+               module.type,
+               module.imagen,
+               module.parent_id'
+            ))->get()->toArray();
+    }
 }

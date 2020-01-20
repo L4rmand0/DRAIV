@@ -13,7 +13,44 @@ var new_element = new Array();
 
     });
 
-    jQuery.fn.editBehaviourDataTable = function($target, $selector_table, $selector_cell) {
+    jQuery.fn.editBehaviourSelectFixedDT = function($target, $selector_table, $selector_cell) {
+        console.log('entra');
+        console.log($target);
+        console.log($selector_table);
+        console.log($selector_cell);
+
+        // debugger
+        if ($target.closest($selector_table + ' tr ' + $selector_cell).length) {
+            if (typeof new_element['index'] === 'undefined') {
+                prev_element['index'] = $target.find("select").data("index");
+                prev_element['value'] = $target.find("select").children("option:selected").text();
+                new_element['index'] = $target.find("select").data("index");
+                new_element['value'] = $target.find("select").children("option:selected").text();
+            } else {
+                let old_new_element = new Array();
+                old_new_element['index'] = new_element['index'];
+                old_new_element['value'] = new_element['value'];
+                if (typeof $target.find("select").data("index") === 'undefined') {} else {
+                    new_element['index'] = $target.find("select").data("index");
+                    new_element['value'] = $target.find("select").children("option:selected").text();
+                    prev_element = old_new_element;
+                }
+                if (new_element['index'] != prev_element['index']) {
+                    let selector = $selector_table + " tr " + $selector_cell + " ." + prev_element['index'];
+                    $(selector).parent().html(prev_element['value']);
+                }
+            }
+        } else {
+            if (!$target.closest($selector_table + ' tr ' + $selector_cell).length &&
+                $($selector_table + ' tr ' + $selector_cell + ' select').is(":visible")) {
+                let element = $($selector_table + ' tr ' + $selector_cell + ' select');
+                let val_item = element.children("option:selected").text();
+                element.parent().html(val_item)
+            }
+        }
+    }
+
+    jQuery.fn.editBehaviourSelectDT = function($target, $selector_table, $selector_cell) {
         if ($target.closest($selector_table + ' tr ' + $selector_cell).length) {
             if (typeof new_element['index'] === 'undefined') {
                 prev_element['index'] = $target.find("select").data("index");
@@ -46,6 +83,7 @@ var new_element = new Array();
         }
     }
 
+
     jQuery.fn.dataTable.Api.register('MakeCellsEditable()', function(settings) {
         var table = this.table();
         jQuery.fn.extend({
@@ -58,6 +96,11 @@ var new_element = new Array();
                 var cell = table.cell($(callingElement).parents('td, th'));
                 var columnIndex = cell.index().column;
                 var inputField = getInputField(callingElement);
+                var textoption = "";
+                //Si el inputfield es select acutualiza la tabla con el texto de la opción seleccionada
+                if (inputField.is("select")) {
+                    textoption = inputField.children("option:selected").text()
+                }
 
                 // Update
                 var newValue = inputField.val();
@@ -77,12 +120,18 @@ var new_element = new Array();
                     //All columns allow null
                 } else if (newValue && settings.onValidate) {
                     if (settings.onValidate(cell, row, newValue)) {
+                        debugger
                         _update(newValue);
                     } else {
                         _addValidationCss();
                     }
                 } else {
-                    confirmUpdate = _update(newValue);
+                    // confirmUpdate = _update(newValue);
+                    if (textoption == "") {
+                        confirmUpdate = _update(newValue);
+                    } else {
+                        confirmUpdate = _update(newValue, textoption);
+                    }
                 }
 
                 function _addValidationCss() {
@@ -94,11 +143,17 @@ var new_element = new Array();
                     }
                 }
 
-                function _update(newValue) {
+                function _update(newValue, text = false) {
                     var oldValue = cell.data();
-                    cell.data(newValue);
+                    //revisa que se deba poner el texto de la tabla y no el valor si es select
+                    if (text == false) {
+                        cell.data(newValue);
+                        return settings.onUpdate(cell, row, oldValue);
+                    } else {
+                        cell.data(text);
+                        return settings.onUpdate(cell, row, oldValue, newValue);
+                    }
                     //Return cell & row.
-                    return settings.onUpdate(cell, row, oldValue);
                 }
                 // Get current page
                 var currentPageIndex = table.page.info().page;
@@ -128,9 +183,7 @@ var new_element = new Array();
         if (table != null) {
             // On cell click
             $(table.body()).on('click', 'td', function() {
-
                 var currentColumnIndex = table.cell(this).index().column;
-
                 // DETERMINE WHAT COLUMNS CAN BE EDITED
                 if ((settings.columns && settings.columns.indexOf(currentColumnIndex) > -1) || (!settings.columns)) {
                     var row = table.row($(this).parents('tr'));
@@ -192,6 +245,18 @@ var new_element = new Array();
                 input.html = startWrapperHtml + "<select class='" + inputCss + " selselector" + row[0][0] + "' onchange='$(this).updateEditableCell(this);' data-index='selselector" + row[0][0] + "'> ";
                 $.each(inputSetting.options, function(index, option) {
                     if (oldValue == option.value) {
+                        input.html = input.html + "<option value='" + option.value + "' selected>" + option.display + "</option>"
+                    } else {
+                        input.html = input.html + "<option value='" + option.value + "' >" + option.display + "</option>"
+                    }
+                });
+                input.html = input.html + "</select>" + endWrapperHtml;
+                input.focus = false;
+                break;
+            case "list-fixed":
+                input.html = startWrapperHtml + "<select class='" + inputCss + " selselector" + row[0][0] + "' onchange='$(this).updateEditableCell(this);' data-index='selselector" + row[0][0] + "'> ";
+                $.each(inputSetting.options, function(index, option) {
+                    if (oldValue == option.display) {
                         input.html = input.html + "<option value='" + option.value + "' selected>" + option.display + "</option>"
                     } else {
                         input.html = input.html + "<option value='" + option.value + "' >" + option.display + "</option>"

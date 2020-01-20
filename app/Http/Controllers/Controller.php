@@ -68,4 +68,11 @@ class Controller extends BaseController
         }
         return ['backgroundColor' => $bg_colors, 'borderColor' => $borders];
     }
+
+    public static function sanitazeArr($array_objects){
+        foreach ($array_objects as $key => $value) {
+            $array_objects[$key] = (array) $value;
+        }
+        return $array_objects;
+    }
 }

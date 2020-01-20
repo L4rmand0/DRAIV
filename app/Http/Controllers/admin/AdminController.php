@@ -15,12 +15,14 @@ class AdminController extends Controller
 {
     private $permissions;
     private $image_controller;
+    private $user_controller;
     private $module;
 
     public function __construct()
     {
         $this->middleware(['auth']);
         $this->image_controller = new ImageController();
+        $this->user_controller = new UserController();
     }
 
     public function index(Request $request, $module = null)
@@ -37,9 +39,11 @@ class AdminController extends Controller
         if ($profile_id != 1) {
             switch ($module) {
                 case 'users':
+                    $profile_list = $this->user_controller->MakeProfileList();
                     return view('admin.users.index', [
                         'company_name' => ucwords(strtolower($company_name)),
                         'permissions' => $this->permissions,
+                        'profile_list' => json_encode($profile_list)
                     ]);
                     break;
                 case 'driver_information':

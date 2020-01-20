@@ -12,9 +12,9 @@
 
         $(document).click(function(event) {
             $target = $(event.target);
-            $(this).editBehaviourDataTable($target, "#driving_licence_datatable", "#country_expedition");
-            $(this).editBehaviourDataTable($target, "#driving_licence_datatable", "#category");
-            $(this).editBehaviourDataTable($target, "#driving_licence_datatable", "#state");
+            $(this).editBehaviourSelectDT($target, "#driving_licence_datatable", "#country_expedition");
+            $(this).editBehaviourSelectDT($target, "#driving_licence_datatable", "#category");
+            $(this).editBehaviourSelectDT($target, "#driving_licence_datatable", "#state");
         });
 
         var table_search;

@@ -102,6 +102,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/doc-verification/list', 'admin\DocVerificationController@listVerifiedDrivers')->name('admin.doc-verification.list');
     Route::post('/doc-verification/update', 'admin\DocVerificationController@update')->name('admin.doc-verification.update');
     Route::post('/doc-verification/drivers-verify-chart', 'admin\DocVerificationController@makeDonutChartDriversVerified')->name('admin.doc-verification.drivers-verify-chart'); 
+    Route::get('/list-datatable', 'admin\UserController@MakeListProfile')->name('list-datatable');
 });
 
 
@@ -111,6 +112,8 @@ Route::get('/plantilla', function () {
 })->name('plantilla');
 
 Route::post('/saveimg', 'ImageController@saveImgS3')->name('saveimg');
+
+
 
 
 Route::prefix('mail')->group(function () {
