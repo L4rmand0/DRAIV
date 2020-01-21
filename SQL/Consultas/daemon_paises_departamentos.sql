@@ -1,4 +1,5 @@
 
+
 SELECT * FROM	sam.admin_country;
 
 SELECT DISTINCT admin1, adm1_id FROM sam.Admin_Country;

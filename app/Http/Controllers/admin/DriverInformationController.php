@@ -228,6 +228,11 @@ class DriverInformationController extends Controller
         if ($field == "gender") {
             $value = $value == "Masculino" ? 0 : 1;
         }
+        // var_dump(is_numeric($value));
+        // die;
+        if(!is_numeric($value)){
+            return response()->json(['error' => ['response' => 'Formato incorrecto, el número no puede llevar comas ni texto. Ejemplo Correcto: 4.00']]);
+        }
         if ($field == "score" && ($value > 5 || $value < 0)) {
             return response()->json(['error' => ['response' => 'El score no puede mayor a 5 ni menor a 0. Ejemplo: 5.00']]);
         }

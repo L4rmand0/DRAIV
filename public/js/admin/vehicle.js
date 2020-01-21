@@ -28,8 +28,6 @@ var table_relation;
         //     alert("okay")
         // });
 
-
-
         //Selects de vehículos
         var $type_v_select2 = $("#type_v_form").select2();
         var $owner_v_select2 = $("#owner_v_form").select2();
@@ -565,7 +563,6 @@ var table_relation;
             if (oldValue != updatedCell.data()) {
                 console.log("datax new " + updatedCell.data());
                 console.log("datax old " + oldValue);
-                debugger
                 dataSend = updatedRow.data();
                 dataSend.valuech = updatedCell.data();
                 dataSend.fieldch = updatedCell.nodes()[0].id;

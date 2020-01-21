@@ -254,7 +254,6 @@ class VehicleController extends Controller
         $data_updated = $request->all();
         $field = $data_updated['fieldch'];
         $value = $data_updated['valuech'];
-        // print_r($request->all());
         if ($field == "owner_v") {
             $value = $value == "Sí" ? 'Y' : 'N';
         }
@@ -498,8 +497,12 @@ class VehicleController extends Controller
             ))
             ->where('v.company_id', '=', $company_id)
             ->where('v.operation', '!=', 'D')
-            ->where('v.technomechanical_date', '<=', $fecha_actual)
+            ->where('v.technomechanical_date', '>', $fecha_actual)
+            // ->toSql();
             ->first();
+        // echo '<pre>';
+        // print_r($tecnomecanical_expiration->total);
+        // die;    
         return $tecnomecanical_expiration->total;
     }
 

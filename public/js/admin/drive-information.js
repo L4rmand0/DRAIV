@@ -123,7 +123,7 @@
         $("#form_driver_info_admin").submit(function(event) {
             event.preventDefault();
             let score_val = parseFloat($("#score_form").val());
-            if (score_val > 5 || score_val < 0) {
+            if (score_val > 5 || score_val < 0 || !$.isNumeric($('#score_form').val())) {
                 swal.fire(
                     'Error de formato',
                     'El puntaje deber ser un decimal entre 0 y 5. Ejemplo: 5.00',

@@ -172,6 +172,7 @@ where
 	and di.operation != 'D'
 GROUP BY validated_data;
 
+CREATE DATABASE larablog;
 
 
 
