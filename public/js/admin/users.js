@@ -16,6 +16,9 @@
         $(document).click(function(event) {
             $target = $(event.target);
             $(this).editBehaviourSelectFixedDT($target, "#user_datatable", "#profile_id");
+            // $(this).editBehaviourSelectFixedDT($target, "#user_datatable", "#id");
+            $(this).editBehaviourInputDT($target, "#user_datatable", "#name");
+            $(this).editBehaviourInputDT($target, "#user_datatable", "#email");
             // if ($target.closest('#user_datatable tr #user_profile').length) {
             //     if (typeof new_element['index'] === 'undefined') {
             //         prev_element['index'] = $target.find("select").data("index");
@@ -206,6 +209,7 @@
 
         function myCallbackFunction(updatedCell, updatedRow, oldValue, id = false) {
             console.log("The new value for the cell is: " + updatedCell.data());
+            // debugger
             if (oldValue != updatedCell.data()) {
                 dataSend = updatedRow.data();
                 if (id == false) {

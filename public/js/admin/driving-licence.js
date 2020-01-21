@@ -15,6 +15,9 @@
             $(this).editBehaviourSelectDT($target, "#driving_licence_datatable", "#country_expedition");
             $(this).editBehaviourSelectDT($target, "#driving_licence_datatable", "#category");
             $(this).editBehaviourSelectDT($target, "#driving_licence_datatable", "#state");
+            $(this).editBehaviourInputDT($target, "#driving_licence_datatable", "#licence_num");
+            $(this).editBehaviourInputDT($target, "#driving_licence_datatable", "#expedition_day");
+            $(this).editBehaviourInputDT($target, "#driving_licence_datatable", "#expi_date");
         });
 
         var table_search;
@@ -100,7 +103,7 @@
             if (fecha_expedicion >= fecha_vencimiento) {
                 swal.fire(
                     'Fechas Incorrectas!',
-                    'La fecha de expedición no puede ser mayor a la fecha de vencimiento.',
+                    'La fecha de expedición no puede ser mayor a la fecha de vencimiento. El formato debe ser: YYY-MM-DD',
                     'warning'
                 );
             } else {

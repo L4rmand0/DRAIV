@@ -16,6 +16,14 @@
             $(this).editBehaviourSelectDT($target, "#drive_information_datatable", "#civil_state");
             $(this).editBehaviourSelectDT($target, "#drive_information_datatable", "#education");
             $(this).editBehaviourSelectDT($target, "#drive_information_datatable", "#country_born");
+            $(this).editBehaviourInputDT($target, "#drive_information_datatable", "#first_name");
+            $(this).editBehaviourInputDT($target, "#drive_information_datatable", "#second_name");
+            $(this).editBehaviourInputDT($target, "#drive_information_datatable", "#f_last_name");
+            $(this).editBehaviourInputDT($target, "#drive_information_datatable", "#s_last_name");
+            $(this).editBehaviourInputDT($target, "#drive_information_datatable", "#e_mail_address");
+            $(this).editBehaviourInputDT($target, "#drive_information_datatable", "#address");
+            $(this).editBehaviourInputDT($target, "#drive_information_datatable", "#phone");
+            $(this).editBehaviourInputDT($target, "#drive_information_datatable", "#score");
         });
 
         $("#department_form").on('change', function() {
@@ -315,7 +323,7 @@
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17],
+            columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 14, 15, 16, 17],
             "inputTypes": [{
                     "column": 6,
                     "type": "list",

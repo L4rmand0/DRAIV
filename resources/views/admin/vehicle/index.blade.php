@@ -32,7 +32,7 @@
                         <th>Capacidad</th>
                         <th>Servicio</th>
                         <th>Cilindraje</th>
-                        <th>Clase v</th>
+                        <th>Clase Vehículo</th>
                         <th>modelo</th>
                         <th>Línea</th>
                         <th>Marca</th>

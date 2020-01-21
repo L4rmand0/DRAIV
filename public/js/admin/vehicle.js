@@ -18,6 +18,15 @@ var table_relation;
             $(this).editBehaviourSelectDT($target, "#vehicle_datatable", "#type_v");
             $(this).editBehaviourSelectDT($target, "#vehicle_datatable", "#service");
             $(this).editBehaviourSelectDT($target, "#vehicle_datatable", "#owner_v");
+            $(this).editBehaviourInputDT($target, "#vehicle_datatable", "#soat_expi_date");
+            $(this).editBehaviourInputDT($target, "#vehicle_datatable", "#capacity");
+            $(this).editBehaviourInputDT($target, "#vehicle_datatable", "#cylindrical_cc");
+            $(this).editBehaviourInputDT($target, "#vehicle_datatable", "#v_class");
+            $(this).editBehaviourInputDT($target, "#vehicle_datatable", "#model");
+            $(this).editBehaviourInputDT($target, "#vehicle_datatable", "#line");
+            $(this).editBehaviourInputDT($target, "#vehicle_datatable", "#brand");
+            $(this).editBehaviourInputDT($target, "#vehicle_datatable", "#color");
+            $(this).editBehaviourInputDT($target, "#vehicle_datatable", "#technomechanical_date");
         });
 
         var table_search;
