@@ -50,6 +50,34 @@
 </header>
 <!-- Page Content -->
 <div class="container">
+  <h1 class="my-4 mt-5">Productos</h1>
+  <div class="row mt-2">
+    <div class="col-md-2">  
+      <h4>Gestión</h4>
+    </div>
+    <div class="col-md-10">
+      <div class="row">
+        <div class="col-md-4">
+          <p>Centralice y gestione la información de sus conductores-vehículos.</p>
+        </div>
+        <div class="col-md-4">
+        2
+        </div>
+        <div class="col-md-4">
+        3
+        </div>
+        {{-- <div class="col-md-2">
+        4
+        </div>
+        <div class="col-md-2">
+        5
+        </div>
+        <div class="col-md-2">
+        6
+        </div> --}}
+      </div>  
+    </div>
+  </div>
   <h1 class="my-4 mt-5">Administración de Conductores</h1>
   <div class="row">
     <div class="col-lg-12">

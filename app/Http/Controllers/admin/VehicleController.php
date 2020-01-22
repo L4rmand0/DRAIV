@@ -305,9 +305,11 @@ class VehicleController extends Controller
 
     public function vehicleList()
     {
+        $company_id = auth()->user()->company_id;
         $vehicle = DB::table('vehicle')
             ->orderBy('vehicle.start_date', 'desc')
             ->where('vehicle.operation', '!=', 'D')
+            ->where('vehicle.company_id', '=', $company_id)
             ->select(DB::raw(
                 'vehicle.plate_id,
                 vehicle.type_v,
