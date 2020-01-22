@@ -21,19 +21,18 @@
                     </div>
                 </li> --}}
                 <li class="nav-item dropdown" id="products">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdownSolutions" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link" href="{{ route('admin','dashboard') }}" id="navbarDropdownSolutions" aria-expanded="false">
                         Empresas
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownSolutions">
+                    {{-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownSolutions">
                         <a class="dropdown-item" href="{{ route('admin','dashboard') }}" id="label_product_dashboard">Tablero de Administración</a>
                         <p class="ml-4 mr-4 mt-2" style="font-size: 0.8em; margin-bottom:0.4em !important; ">Administre, visualice y verifique data de conductores.</p>
                         <p class="ml-4 mr-4" style="font-size: 0.8em; font-weight: 600">1 producto</p>
-                    </div>
+                    </div> --}}
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link" href="#">Soluciones</a>
-                </li>
+                </li> --}}
                 {{-- <li class="nav-item">
                     <a class="nav-link" href="#">Partner</a>
                 </li> --}}
@@ -46,9 +45,9 @@
                 <li class="nav-item" id="drivers">
                     <a class="nav-link" href="{{ route('dataconductores') }}">Conductores</a>
                 </li>
-                <li class="nav-item" id="about">
+                {{-- <li class="nav-item" id="about">
                     <a class="nav-link" href="{{ route('about') }}">Nosotros</a>
-                </li>
+                </li> --}}
                 <li class="nav-item" id="contact_us">
                     <button class="btn nav-link"
                         style="color: #fff; border-radius: 3em;border: 0.8px solid #343a40; padding: 0.7em; background: linear-gradient(90deg, #57C6D7, #687F8B );"
@@ -58,13 +57,13 @@
 
                 <!-- Authentication Links -->
                 @guest
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link" href="{{ route('login') }}">{{ __('Iniciar Sesión') }}</a>
-                </li>
+                </li> --}}
                 @if (Route::has('register'))
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                </li>
+                </li> --}}
                 @endif
                 @else
                 <li class="nav-item dropdown">

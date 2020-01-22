@@ -25,63 +25,53 @@
     </div>
     <!-- Slide Three - Set the background image for this slide in the line below -->
     {{-- <div class="carousel-item" style="background-image: url('{{ asset('img/stock_prueba4.jpg') }}')">
-      <div class="carousel-caption d-none d-md-block">
-        <h3>Third Slide</h3>
-        <p>This is a description for the third slide.</p>
-      </div>
-    </div> --}}
-    <!-- Slide Three - Set the background image for this slide in the line below -->
-    {{-- <div class="carousel-item" style="background-image: url('{{ asset('img/slide-1pr.png') }}')">
-      <div class="carousel-caption d-none d-md-block">
-        <h3>Fourth Slide</h3>
-        <p>This is a description for the third slide.</p>
-      </div>
-    </div> --}}
+    <div class="carousel-caption d-none d-md-block">
+      <h3>Third Slide</h3>
+      <p>This is a description for the third slide.</p>
+    </div>
+  </div> --}}
+  <!-- Slide Three - Set the background image for this slide in the line below -->
+  {{-- <div class="carousel-item" style="background-image: url('{{ asset('img/slide-1pr.png') }}')">
+  <div class="carousel-caption d-none d-md-block">
+    <h3>Fourth Slide</h3>
+    <p>This is a description for the third slide.</p>
   </div>
-  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
+</div> --}}
+</div>
+<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+  <span class="sr-only">Previous</span>
+</a>
+<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+  <span class="sr-only">Next</span>
+</a>
 </div>
 </header>
 <!-- Page Content -->
 <div class="container">
-  <h1 class="my-4 mt-5">Productos</h1>
-  <div class="row mt-2">
-    <div class="col-md-2">  
-      <h4>Gestión</h4>
-    </div>
-    <div class="col-md-10">
-      <div class="row">
-        <div class="col-md-4">
-          <p>Centralice y gestione la información de sus conductores-vehículos.</p>
-        </div>
-        <div class="col-md-4">
-        2
-        </div>
-        <div class="col-md-4">
-        3
-        </div>
-        {{-- <div class="col-md-2">
-        4
-        </div>
-        <div class="col-md-2">
-        5
-        </div>
-        <div class="col-md-2">
-        6
-        </div> --}}
-      </div>  
+  <div class="row mt-5">
+    <div class="col-md-12">
+      <h1 class="my-4 mt-5 text-center" style="font-size: 4em;">Soluciones</h1>
     </div>
   </div>
-  <h1 class="my-4 mt-5">Administración de Conductores</h1>
+  <div class="row mt-4">
+    <div class="col-md-12" style="text-align: justify;">
+      <p style="font-size: 1.42em; color: #7D7D7D;">DRAIV desarrolla soluciones tecnológicas específicamente diseñadas
+        para centralizar, almacenar, analizar y gestionar los datos de conductores-vehículos. Con DRAIV olvídese del
+        desorden documental, aumente la velocidad de captura de datos, visualice, analice y extraiga información para la
+        correcta toma de decisiones. DRAIV le ofrece un sistema de validación y verificación de datos que le permitirá
+        tener el control en cuanto a los estados y riesgos de sus conductores. Nuestro compromiso va más haya de la
+        gestión de información, por ello DRAIV ofrece soluciones relacionadas a mejorar y profesionalizar sus
+        conductores, detectando fortalezas y debilidades por medio de un programa de certificación, el cual asegura una
+        reducción de accidentalidad de hasta el 90%. Con nuestros servicios de nivel empresarial tendrá el poder de
+        tomar decisiones para administrar y prevenir riesgos en su negocio.</p>
+    </div>
+  </div>
+  <h1 class="my-4 mt-5">Productos</h1>
   <div class="row">
     <div class="col-lg-12">
-      <p>Nuestra plataforma web permite capturar y ordenar información relacionada a conductor-vehiculo de forma
+      <p style="font-size: 1.12em; color: #7D7D7D;">Nuestra plataforma web permite capturar y ordenar información relacionada a conductor-vehiculo de forma
         eficiente, permitiendo visualizar y analizar la data de forma sencilla, permitiendo que nuestros usuarios
         visualicen y prevengan problemas, favoreciendo la correcta toma de decisiones orientada a evitar riesgos en el
         negocio.</p>
@@ -90,55 +80,104 @@
   <div class="row">
     <div class="col-lg-4 col-sm-6 portfolio-item">
       <div class="card h-100">
-        <a href="#"><img class="card-img-top" src="{{ asset('img/eye-orange.png') }}" style="padding: 4.3em;"
-            alt=""></a>
+        <a href="#"><img class="card-img-top" src="{{ asset('img/dashboard.png') }}"
+            style="padding-bottom: 1em;padding-top: 3em;padding-left: 8em;padding-right: 8em;" alt=""></a>
         <div class="card-body">
           <h4 class="card-title">
-            <a href="#" style="color: #3f454d">Análisis</a>
+            <a href="#" style="color: #3f454d">Tablero de administración</a>
           </h4>
-          <p class="card-text">Visualice y analice sus datos favoreciendo la correcta toma de decisiones.</p>
+          <p class="card-text mt-2" style="color: #7D7D7D;">Centralice y gestione la información de sus
+            conductores-vehículos-documentos de forma rapida y ordenada.</p>
+          <a class="text-primary" style="text-decoration: underline; text-align: right;" type="button">Ver mas</a>
         </div>
       </div>
     </div>
     <div class="col-lg-4 col-sm-6 portfolio-item">
       <div class="card h-100">
-        <a href="#"><img class="card-img-top" src="{{ asset('img/board-orange.png') }}" style="padding: 4.3em;"
-            alt=""></a>
+        <a href="#"><img class="card-img-top" src="{{ asset('img/cloud.png') }}"
+            style="padding-bottom: 1em;padding-top: 1em;padding-left: 7em;padding-right: 7em;" alt=""></a>
         <div class="card-body">
           <h4 class="card-title">
-            <a href="#" style="color: #3f454d">Gestión</a>
+            <a href="#" style="color: #3f454d">Almacenamiento de documentos digitales</a>
           </h4>
-          <p class="card-text">Administre información relacionada a conductores, vehiculos y documentacion de forma
-            eficiente.</p>
+          <p class="card-text" style="color: #7D7D7D;">Asegure su información digital documental en la nube (Imágenes de
+            identificación de conductor, licencias, Afiliaciones de salud ...).</p>
+          <a class="text-primary" style="text-decoration: underline; text-align: right;" type="button">Ver mas</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-sm-6 portfolio-item">
+      <div class="card h-100">
+        <a href="#"><img class="card-img-top" src="{{ asset('img/eye.png') }}"
+            style="padding-left: 7.2em;padding-right: 7.2em;padding-top: 1em;padding-bottom: 1em;" alt=""></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="#" style="color: #3f454d">Visualización y analisis de datos</a>
+          </h4>
+          <p class="card-text" style="color: #7D7D7D;">Analice sus datos por empresa o persona, permitiendo prevenir
+            riesgos en el negocio.</p>
+          <a class="text-primary" style="text-decoration: underline; text-align: right;" type="button">Ver mas</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-4 col-sm-6 portfolio-item">
+      <div class="card h-100">
+        <a href="#"><img class="card-img-top" src="{{ asset('img/extractdata.png') }}"
+            style="padding-bottom: 1em;padding-top: 3em;padding-left: 8em;padding-right: 8em;" alt=""></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="#" style="color: #3f454d">Extracción / validación de datos</a>
+          </h4>
+          <p class="card-text mt-2" style="color: #7D7D7D;">Valide y/o almacene información proveniente de documentación digital.</p>
+          <a class="text-primary" style="text-decoration: underline; text-align: right;" type="button">Ver mas</a>
         </div>
       </div>
     </div>
     <div class="col-lg-4 col-sm-6 portfolio-item">
       <div class="card h-100">
-        <a href="#"><img class="card-img-top" src="{{ asset('img/Page-2.png') }}" style="padding-left: 4.3em;padding-right: 4.3em;padding-top: 2.5em;padding-bottom: 2.5em;"
-            alt=""></a>
+        <a href="#"><img class="card-img-top" src="{{ asset('img/bell.png') }}"
+            style="padding-bottom: 1em;padding-top: 1em;padding-left: 6em;padding-right: 8em;" alt=""></a>
         <div class="card-body">
           <h4 class="card-title">
-            <a href="#" style="color: #3f454d">Validación</a>
+            <a href="#" style="color: #3f454d">Notificación de alertas</a>
           </h4>
-          <p class="card-text">Valide información documental mediante algoritmos de reconocimiento óptico de caracteres
-            OCR.</p>
+          <p class="card-text" style="color: #7D7D7D;">Alertas automáticas y periódicas para el vencimiento de documentación vehicular.</p>
+          <a class="text-primary" style="text-decoration: underline; text-align: right;" type="button">Ver mas</a>
         </div>
       </div>
     </div>
-    {{-- <div class="col-lg-4 col-sm-6 portfolio-item">
+
+    <div class="col-lg-4 col-sm-6 portfolio-item">
       <div class="card h-100">
-        <a href="#"><img class="card-img-top" src="{{ asset('img/check-orange.png') }}" style="padding: 4.3em;"
-            alt=""></a>
+        <a href="#"><img class="card-img-top" src="{{ asset('img/tercerosbases.png') }}"
+            style="padding-left: 7.2em;padding-right: 7.2em;padding-top: 1em;padding-bottom: 1em;" alt=""></a>
         <div class="card-body">
           <h4 class="card-title">
-            <a href="#" style="color: #3f454d">Validación</a>
+            <a href="#" style="color: #3f454d">Consulta de información a terceros</a>
           </h4>
-          <p class="card-text">Valide información documental mediante algoritmos de reconocimiento óptico de caracteres
-            OCR.</p>
+          <p class="card-text" style="color: #7D7D7D;">Consulte información de terceros en tiempo real  ( Estados de licencia de conducción, otros).</p>
+          <a class="text-primary" style="text-decoration: underline; text-align: right;" type="button">Ver mas</a>
         </div>
       </div>
-    </div> --}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-4 col-sm-6 portfolio-item">
+      <div class="card h-100">
+        <a href="#"><img class="card-img-top" src="{{ asset('img/certificate.png') }}"
+            style="padding-bottom: 1em;padding-top: 3em;padding-left: 8em;padding-right: 8em;" alt=""></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="#" style="color: #3f454d">Certificación de conductores</a>
+          </h4>
+          <p class="card-text mt-2" style="color: #7D7D7D;">Profesionalización y certificación de conductores.</p>
+          <a class="text-primary" style="text-decoration: underline; text-align: right;" type="button">Ver mas</a>
+        </div>
+      </div>
+    </div>
   </div>
   <!-- Marketing Icons Section -->
 
