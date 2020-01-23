@@ -61,7 +61,7 @@
         para centralizar, almacenar, analizar y gestionar los datos de conductores-vehículos. Con DRAIV olvídese del
         desorden documental, aumente la velocidad de captura de datos, visualice, analice y extraiga información para la
         correcta toma de decisiones. DRAIV le ofrece un sistema de validación y verificación de datos que le permitirá
-        tener el control en cuanto a los estados y riesgos de sus conductores. Nuestro compromiso va más haya de la
+        tener el control en cuanto a los estados y riesgos de sus conductores. Nuestro compromiso va más allá de la
         gestión de información, por ello DRAIV ofrece soluciones relacionadas a mejorar y profesionalizar sus
         conductores, detectando fortalezas y debilidades por medio de un programa de certificación, el cual asegura una
         reducción de accidentalidad de hasta el 90%. Con nuestros servicios de nivel empresarial tendrá el poder de
