@@ -13,7 +13,7 @@ class DataConductoresController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth.driver');
     }
 
     public function index(Request $request)

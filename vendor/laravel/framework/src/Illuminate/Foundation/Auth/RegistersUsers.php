@@ -28,8 +28,14 @@ trait RegistersUsers
      */
     public function register(Request $request)
     {
-        $this->validator($request->all())->validate();
-
+        if($request->ajax()){
+         echo ' petición ajax ';
+         die;    
+        }
+        $validation = $this->validator($request->all())->validate();
+        echo '<pre>';
+        print_r($validation);
+        die;
         event(new Registered($user = $this->create($request->all())));
 
         $this->guard()->login($user);

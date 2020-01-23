@@ -2,7 +2,7 @@
 
 @section('content')
 
-@include('auth.partials._form_login', ['company' => true])
+@include('auth.partials._form_login', ['company' => false])
 <!-- Modal -->
 <div class="modal fade" id="data_agree" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
@@ -358,6 +358,4 @@
     </div>
 </div>
 <script src="{{ asset('js/login.js') }}" defer></script>
-<link href="{{ asset('css/multistepform.css') }}" rel="stylesheet">
-<script src="{{ asset('js/multistepform.js') }}" defer></script>
 @endsection

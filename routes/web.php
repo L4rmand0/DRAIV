@@ -105,20 +105,22 @@ Route::prefix('admin')->group(function () {
     Route::get('/list-datatable', 'admin\UserController@MakeListProfile')->name('list-datatable');
 });
 
-
 // Probar plantillas
 Route::get('/plantilla', function () {
     return view('mails.mailcontactus');
 })->name('plantilla');
 
-Route::post('/saveimg', 'ImageController@saveImgS3')->name('saveimg');
-
-
-
 
 Route::prefix('mail')->group(function () {
     Route::post('contact-us', 'EmailController@sendContactUS')->name('mail.contact-us');
 });
+
+Route::prefix('driver')->group(function () {
+    
+});
+
+
+Route::post('/saveimg', 'ImageController@saveImgS3')->name('saveimg');
 
 Auth::routes();
 
@@ -127,6 +129,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('data-conductores')->group(function () {
     Route::get('/', 'dataConductores\DataConductoresController@index')->name("dataconductores");
+    Route::get('login','Auth\LoginDriverController@index')->name('login.driver');
     Route::get('/save', 'dataConductores\DataConductoresController@store')->name("storeDataConductores");
     Route::resource('user-information', 'dataConductores\UserInformationController');
     route::post('user-information/validate', 'dataConductores\UserInformationController@validateUserInformation')->name('user-information.validate');

@@ -1,16 +1,16 @@
-(function (runcode) {
+(function(runcode) {
 
     // The global jQuery object is passed as a parameter
     runcode(window.jQuery, window, document);
 
-}(function ($, window, document) {
+}(function($, window, document) {
 
     // The $ is now locally scoped 
     var current_fs, next_fs, previous_fs; //fieldsets
     var opacity;
 
     // Listen for the jQuery ready event on the document
-    $(function () {
+    $(function() {
         let arr_inputs_errors = {
             'info_user': {
                 '1': 'small_f_name',
@@ -43,17 +43,16 @@
             }
         };
         var error_founds = 0;
-        $(".next").click(function () {
-            debugger
+        $(".next").click(function() {
             let element_button = $(this);
             let url_action = element_button.data("url");
             let data_error = element_button.data("error");
             let form_data = $("#msform").serialize();
-            $.post(url_action, form_data, function (result) {
+            $.post(url_action, form_data, function(result) {
                 $(".small_forms").hide();
                 if (!$.isEmptyObject(result.error)) {
                     let arr_errores = result.error;
-                    $.each(arr_errores, function (index, value) {
+                    $.each(arr_errores, function(index, value) {
                         // console.log("En el índice "+index+" value: "+value);
                         let selector = "#" + arr_inputs_errors[data_error][index];
                         $(selector).show();
@@ -71,7 +70,7 @@
                     next_fs.show();
                     //hide the current fieldset with style
                     current_fs.animate({ opacity: 0 }, {
-                        step: function (now) {
+                        step: function(now) {
                             // for making fielset appear animation
                             opacity = 1 - now;
 
@@ -85,10 +84,9 @@
                     });
                 }
             });
-            // }
         });
 
-        $(".previous").click(function () {
+        $(".previous").click(function() {
 
             current_fs = $(this).parent();
             previous_fs = $(this).parent().prev();
@@ -101,7 +99,7 @@
 
             //hide the current fieldset with style
             current_fs.animate({ opacity: 0 }, {
-                step: function (now) {
+                step: function(now) {
                     // for making fielset appear animation
                     opacity = 1 - now;
 
@@ -115,12 +113,12 @@
             });
         });
 
-        $('.radio-group .radio').click(function () {
+        $('.radio-group .radio').click(function() {
             $(this).parent().find('.radio').removeClass('selected');
             $(this).addClass('selected');
         });
 
-        $(".submit").click(function () {
+        $(".submit").click(function() {
             return false;
         });
 

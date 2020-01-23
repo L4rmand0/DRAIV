@@ -60697,15 +60697,27 @@ __webpack_require__(/*! datatables.net-scroller-bs4 */ "./node_modules/datatable
 
 /***/ }),
 
+/***/ "./resources/sass/multistepform.scss":
+/*!*******************************************!*\
+  !*** ./resources/sass/multistepform.scss ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ 0:
-/*!*************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/app.scss ***!
-  \*************************************************************/
+/*!*************************************************************************************************!*\
+  !*** multi ./resources/js/app.js ./resources/sass/app.scss ./resources/sass/multistepform.scss ***!
+  \*************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! /home/sebastian/Documentos/DRAIV/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/sebastian/Documentos/DRAIV/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/sebastian/Documentos/DRAIV/resources/sass/app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! /home/sebastian/Documentos/DRAIV/resources/sass/multistepform.scss */"./resources/sass/multistepform.scss");
 
 
 /***/ })

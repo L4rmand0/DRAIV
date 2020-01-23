@@ -140,75 +140,79 @@
                             </fieldset>
 
                             <fieldset>
-                        <div class="form-card">
-                            <h2 class="fs-title" style="margin-bottom: 20px">Información de Licencia</h2>
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <input type="text" name="drivingLicence[Licence_num]"
-                                        class="form-control form-dataconductores" placeholder="Número de licencia" />
-                                    <small class="text-danger small_forms" id="small_licence_num"></small>
+                                <div class="form-card">
+                                    <h2 class="fs-title" style="margin-bottom: 20px">Información de Licencia</h2>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <input type="text" name="drivingLicence[Licence_num]"
+                                                class="form-control form-dataconductores"
+                                                placeholder="Número de licencia" />
+                                            <small class="text-danger small_forms" id="small_licence_num"></small>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 form_select_conductores">
+                                            <label for="Country_expedition">País</label>
+                                            <select name="drivingLicence[Country_expedition]" class="form-control"
+                                                id="Country_expedition">
+                                                <option value="">Seleccionar</option>
+                                                <option value="Colombia">Colombia</option>
+                                                <option value="Venezuela">Venezuela</option>
+                                                <option value="Argentina">Argentina</option>
+                                                <option value="Brasil">Brasil</option>
+                                                <option value="Ecuador">Ecuador</option>
+                                                <option value="Bolivia">Bolivia</option>
+                                                <option value="Otro">Otro</option>
+                                            </select>
+                                            <small class="text-danger small_forms"
+                                                id="small_country_expedition"></small>
+                                        </div>
+                                        <div class="col-md-6 form_select_conductores">
+                                            <label for="Category">Categoría</label>
+                                            <select name="drivingLicence[Category]" class="form-control" id="Category">
+                                                <option value="">Seleccionar</option>
+                                                <option value="A1">A1</option>
+                                                <option value="A2">A2</option>
+                                                <option value="B1">B1</option>
+                                                <option value="B2">B2</option>
+                                                <option value="C1">C1</option>
+                                                <option value="C2">C2</option>
+                                                <option value="C2">C3</option>
+                                                <option value="Otro">Otro</option>
+                                            </select>
+                                            <small class="text-danger small_forms" id="small_category"></small>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8 form_select_conductores">
+                                            <label for="State">Estado</label>
+                                            <select name="drivingLicence[State]" class="form-control" id="State">
+                                                <option value="">Seleccionar</option>
+                                                <option value="Vigente">Vigente</option>
+                                                <option value="Vencida">Vencida</option>
+                                                <option value="Suspendida">Suspendida</option>
+                                            </select>
+                                            <small class="text-danger small_forms" id="small_state"></small>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 form_select_conductores">
+                                            <label for="Expedition_day">Fecha de expedición*</label>
+                                            <input type="date" name="drivingLicence[Expedition_day]"
+                                                id="Expedition_day" />
+                                            <small class="text-danger small_forms" id="small_expidition_day"></small>
+                                        </div>
+                                        <div class="col-6 form_select_conductores">
+                                            <label for="">Fecha de vencimiento*</label>
+                                            <input type="date" name="drivingLicence[Expi_date]" id="Expi_date" />
+                                            <small class="text-danger small_forms" id="small_expi_date"></small>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 form_select_conductores">
-                                    <label for="Country_expedition">País</label>
-                                    <select name="drivingLicence[Country_expedition]" class="form-control"
-                                        id="Country_expedition">
-                                        <option value="">Seleccionar</option>
-                                        <option value="Colombia">Colombia</option>
-                                        <option value="Venezuela">Venezuela</option>
-                                        <option value="Argentina">Argentina</option>
-                                        <option value="Brasil">Brasil</option>
-                                        <option value="Ecuador">Ecuador</option>
-                                        <option value="Bolivia">Bolivia</option>
-                                        <option value="Otro">Otro</option>
-                                    </select>
-                                    <small class="text-danger small_forms" id="small_country_expedition"></small>
-                                </div>
-                                <div class="col-md-6 form_select_conductores">
-                                    <label for="Category">Categoría</label>
-                                    <select name="drivingLicence[Category]" class="form-control" id="Category">
-                                        <option value="">Seleccionar</option>
-                                        <option value="A1">A1</option>
-                                        <option value="A2">A2</option>
-                                        <option value="B1">B1</option>
-                                        <option value="B2">B2</option>
-                                        <option value="C1">C1</option>
-                                        <option value="C2">C2</option>
-                                        <option value="C2">C3</option>
-                                        <option value="Otro">Otro</option>
-                                    </select>
-                                    <small class="text-danger small_forms" id="small_category"></small>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-8 form_select_conductores">
-                                    <label for="State">Estado</label>
-                                    <select name="drivingLicence[State]" class="form-control" id="State">
-                                        <option value="">Seleccionar</option>
-                                        <option value="Vigente">Vigente</option>
-                                        <option value="Vencida">Vencida</option>
-                                        <option value="Suspendida">Suspendida</option>
-                                    </select>
-                                    <small class="text-danger small_forms" id="small_state"></small>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 form_select_conductores">
-                                    <label for="Expedition_day">Fecha de expedición*</label>
-                                    <input type="date" name="drivingLicence[Expedition_day]" id="Expedition_day" />
-                                    <small class="text-danger small_forms" id="small_expidition_day"></small>
-                                </div>
-                                <div class="col-6 form_select_conductores">
-                                    <label for="">Fecha de vencimiento*</label>
-                                    <input type="date" name="drivingLicence[Expi_date]" id="Expi_date" />
-                                    <small class="text-danger small_forms" id="small_expi_date"></small>
-                                </div>
-                            </div>
-                        </div>
-                        <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                        <input type="button" name="next" class="next action-button" value="Next Step"
-                            data-url="{{ route('driving-licence.validate') }}" data-error="driving_licence" />
+                                <input type="button" name="previous" class="previous action-button-previous"
+                                    value="Previous" />
+                                <input type="button" name="next" class="next action-button" value="Next Step"
+                                    data-url="{{ route('driving-licence.validate') }}" data-error="driving_licence" />
                             </fieldset>
                             <fieldset>
                                 <div class="form-card">
@@ -264,7 +268,8 @@
                                     <div class="row row_form_input_vehicle">
                                         <div class="col-md-8">
                                             <label for="Soat_expi_date">Fecha de vencimiento de soat*</label>
-                                            <input type="date" name="vehicle[Soat_expi_date]" id="user_Soat_expi_date" />
+                                            <input type="date" name="vehicle[Soat_expi_date]"
+                                                id="user_Soat_expi_date" />
                                             <small class="text-danger small_forms" id="small_soat_expi_date"></small>
                                         </div>
                                     </div>
@@ -344,62 +349,59 @@
                                     value="Previous" />
                                 <input type="button" class="next action-button" value="Confirm"
                                     data-url="{{ route('vehicle.validate') }}" data-error="vehicle" />
-                        
-                        </fieldset>
-                        {{-- <fieldset>
+
+                            </fieldset>
+                            {{-- <fieldset>
                             <div class="row">
                                 <div class="col-lg-8 mx-auto">
                                     <div class="p-4 bg-white shadow rounded-lg">
                                         <h2 class="fs-title" style="text-align: center">Agregar Imágenes</h2>
                                         <form method="POST" action="{{ route('saveimg') }}" accept-charset="UTF-8"
-                                            enctype="multipart/form-data">
-                                            @csrf
-                                            <button type="submit" class="btn" id="btn_upload_img"
-                                                data-function="saveimg" data-url="{{ route('saveimg') }}"><img
-                                                    src="https://res.cloudinary.com/mhmd/image/upload/v1557366994/img_epm3iz.png"
-                                                    alt="" width="200"
-                                                    class="d-block mx-auto mb-4 rounded-pill"></button>
-                                            <h5 class="text-center">Click para subir</h5>
-                                            <!-- Default bootstrap file upload-->
-                                            <h6 class="text-center mb-4 text-muted">
-                                                Tu puedes usar esta sección para subir imágenes
-                                            </h6>
-                                            <div class="custom-file overflow-hidden rounded-pill mb-5">
-                                                <input id="customFile" type="file" name="file"
-                                                    class="custom-file-input rounded-pill">
-                                                <label for="customFile" class="custom-file-label rounded-pill">elegir
-                                                    archivo</label>
-                                            </div>
-                                        </form>
-                                        <!-- End -->
-                                    </div>
-                                </div>
+                            enctype="multipart/form-data">
+                            @csrf
+                            <button type="submit" class="btn" id="btn_upload_img" data-function="saveimg"
+                                data-url="{{ route('saveimg') }}"><img
+                                    src="https://res.cloudinary.com/mhmd/image/upload/v1557366994/img_epm3iz.png" alt=""
+                                    width="200" class="d-block mx-auto mb-4 rounded-pill"></button>
+                            <h5 class="text-center">Click para subir</h5>
+                            <!-- Default bootstrap file upload-->
+                            <h6 class="text-center mb-4 text-muted">
+                                Tu puedes usar esta sección para subir imágenes
+                            </h6>
+                            <div class="custom-file overflow-hidden rounded-pill mb-5">
+                                <input id="customFile" type="file" name="file" class="custom-file-input rounded-pill">
+                                <label for="customFile" class="custom-file-label rounded-pill">elegir
+                                    archivo</label>
                             </div>
-                            <input type="button" name="previous" class="previous action-button-previous"
-                                value="Previous" />
-                        </fieldset> --}}
-                        <fieldset>
-                            <div class="form-card">
-                                <h2 class="fs-title text-center">Completado !</h2> <br><br>
-                                <div class="row justify-content-center">
-                                    <div class="col-3"> <img src="https://img.icons8.com/color/96/000000/ok--v2.png"
-                                            class="fit-image"> </div>
-                                </div> <br><br>
-                                <div class="row justify-content-center">
-                                    <div class="col-7 text-center">
-                                        <h5>Has completado el registro de información</h5>
-                                        <a href="{{ route('welcome') }}">Terminar</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                        </fieldset>
-                    </form>
+                        </form>
+                        <!-- End -->
                     </div>
                 </div>
             </div>
+            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+            </fieldset> --}}
+            <fieldset>
+                <div class="form-card">
+                    <h2 class="fs-title text-center">Completado !</h2> <br><br>
+                    <div class="row justify-content-center">
+                        <div class="col-3"> <img src="https://img.icons8.com/color/96/000000/ok--v2.png"
+                                class="fit-image"> </div>
+                    </div> <br><br>
+                    <div class="row justify-content-center">
+                        <div class="col-7 text-center">
+                            <h5>Has completado el registro de información</h5>
+                            <a href="{{ route('welcome') }}">Terminar</a>
+                        </div>
+                    </div>
+                </div>
+                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+            </fieldset>
+            </form>
         </div>
     </div>
+</div>
+</div>
+</div>
 </div>
 <link href="{{ asset('css/upload-form.css') }}" rel="stylesheet">
 <link href="{{ asset('css/styleinfouser.css') }}" rel="stylesheet">
