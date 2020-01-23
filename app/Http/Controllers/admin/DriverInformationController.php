@@ -230,11 +230,11 @@ class DriverInformationController extends Controller
         }
         // var_dump(is_numeric($value));
         // die;
-        if(!is_numeric($value)){
+        if(!is_numeric($value) && $field == "score"){
             return response()->json(['error' => ['response' => 'Formato incorrecto, el número no puede llevar comas ni texto. Ejemplo Correcto: 4.00']]);
         }
         if ($field == "score" && ($value > 5 || $value < 0)) {
-            return response()->json(['error' => ['response' => 'El score no puede mayor a 5 ni menor a 0. Ejemplo: 5.00']]);
+            return response()->json(['error' => ['response' => 'El score no puede ser mayor a 5 ni menor a 0. Ejemplo: 5.00']]);
         }
         $response = DriverInformation::where('dni_id', $data_updated['dni_id'])->update([
             $field => $value,
