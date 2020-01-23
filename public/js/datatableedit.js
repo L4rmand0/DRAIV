@@ -369,7 +369,7 @@ var new_element = new Array();
                 // input.html = startWrapperHtml + "<input id='ejbeatycelledit' type='number' class='" + inputCss + "' value='" + oldValue + "'" + (listenToKeys ? " onkeyup='if(event.keyCode==13) {$(this).updateEditableCell(this);} else if (event.keyCode===27) {$(this).cancelEditableCell(this);}'" : "") + "></input>&nbsp;<a href='javascript:void(0);' class='" + confirmCss + "' onclick='$(this).updateEditableCell(this)'>Confirm</a> <a href='javascript:void(0);' class='" + cancelCss + "' onclick='$(this).cancelEditableCell(this)'>Cancel</a>" + endWrapperHtml;
                 break;
             default: // text input
-                input.html = startWrapperHtml + "<input id='ejbeatycelledit' class='" + inputCss + " inputselector" + row[0][0] + "' onfocusout='$(this).updateEditableCell(this)' value='" + oldValue + "' style='width:100%' data-index='inputselector" + row[0][0] + "'></input>" + endWrapperHtml;
+                input.html = startWrapperHtml + "<input id='ejbeatycelledit' class='" + inputCss + " inputselector" + row[0][0] + "' onfocusout='$(this).updateEditableCell(this)' value='" + oldValue + "' style='width:100%' data-index='inputselector" + row[0][0] + "' onkeyup='if(event.keyCode==13) {$(this).updateEditableCell(this);} else if (event.keyCode===27) {$(this).cancelEditableCell(this);}' ></input>" + endWrapperHtml;
                 break;
         }
         return input;
