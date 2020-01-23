@@ -3,25 +3,8 @@
 @section('content')
 <!-- Page Content -->
 <div class="container">
-
-  <!-- Page Heading/Breadcrumbs -->
-  {{-- <small id="pageactive" data-page="#about"></small> --}}
-  {{-- <h1 class="mt-4 mb-3">Nosotros
-    <small>Subheading</small>
-  </h1> --}}
-
-  {{-- <ol class="breadcrumb">
-    <li class="breadcrumb-item">
-      <a href="index.html">Home</a>
-    </li>
-    <li class="breadcrumb-item active">About</li>
-  </ol> --}}
-
   <!-- Intro Content -->
   <div class="row mb-2">
-    {{-- <div class="col-lg-6">
-        <img class="img-fluid rounded mb-4" src="http://placehold.it/750x450" alt="">
-      </div> --}}
     <div class="col-lg-4 mt-5">
       <h5>Nuestra historia</h5>
       <h3>Administración y Análisis de Datos de Conductores</h2>
@@ -41,14 +24,7 @@
       <p> • Cursos enfocados en conductores con el fin de mejorar y dignificar l profesión del conductor.</p>
     </div>
   </div>
-  <!-- /.row -->
 </div>
-<!-- /.container -->
-<!-- Team Members -->
-
-{{-- <div class="row" style="background-color: #f8f8f8"> --}}
-{{-- <div class="col-lg-12">
-    </div> --}}
 
 <div style="background-color: #f8f8f8; width: 100%;">
   <div class="container" style="background-color: #f8f8f8">
@@ -62,7 +38,9 @@
           <div class="card-body">
             <h4 class="card-title">Juan Roldan</h4>
             <h6 class="card-subtitle mb-2 text-muted">CEO</h6>
-            <p class="card-text" style="text-align: justify;">Empresario e inversionista colombiano, CEO de Smart taxi con mas de 6 años de experiencia en el gremio del transporte de personas. Juan fue co-fundador de Mentez una empresa de desarrollo de juegos de video enfocados en redes sociales. </p>
+            <p class="card-text" style="text-align: justify;">Empresario e inversionista colombiano, CEO de Smart taxi
+              con mas de 6 años de experiencia en el gremio del transporte de personas. Juan fue co-fundador de Mentez
+              una empresa de desarrollo de juegos de video enfocados en redes sociales. </p>
           </div>
           {{-- <div class="card-footer">
             <a href="#">name@example.com</a>
@@ -75,7 +53,10 @@
           <div class="card-body">
             <h4 class="card-title">Germán Acevedo</h4>
             <h6 class="card-subtitle mb-2 text-muted">Manager</h6>
-            <p class="card-text" style="text-align: justify;">Empresario colombiano, Ingeniero Naval con Maestría en Automática, director del centro de innovación para motociclistas, precursor del plan de seguridad vial nacional laboral el cual estableció un modelo de intervención que es capaz de reducir en más de un 90% los índices de siniestralidad (Motos) en las empresas intervenidas.</p>
+            <p class="card-text" style="text-align: justify;">Empresario colombiano, Ingeniero Naval con Maestría en
+              Automática, director del centro de innovación para motociclistas, precursor del plan de seguridad vial
+              nacional laboral el cual estableció un modelo de intervención que es capaz de reducir en más de un 90% los
+              índices de siniestralidad (Motos) en las empresas intervenidas.</p>
           </div>
           {{-- <div class="card-footer">
             <a href="#">name@example.com</a>
@@ -88,7 +69,10 @@
           <div class="card-body">
             <h4 class="card-title">Daniel Villaveces</h4>
             <h6 class="card-subtitle mb-2 text-muted">Manager</h6>
-            <p class="card-text" style="text-align: justify;">Empresario fundador de RAIDE PRO, consultor de innovación en movilidad segura, auditor interno ISO 39001:2012 y director de Asuntos Públicos FIM (Federación nacional de motociclismo) Latinoamérica. Daniel es un implementador de estrategias en seguridad vial enfocado en la mejora continua de conductores.</p>
+            <p class="card-text" style="text-align: justify;">Empresario fundador de RAIDE PRO, consultor de innovación
+              en movilidad segura, auditor interno ISO 39001:2012 y director de Asuntos Públicos FIM (Federación
+              nacional de motociclismo) Latinoamérica. Daniel es un implementador de estrategias en seguridad vial
+              enfocado en la mejora continua de conductores.</p>
           </div>
           {{-- <div class="card-footer">
             <a href="#">name@example.com</a>

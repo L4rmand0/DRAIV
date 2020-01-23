@@ -52,7 +52,7 @@
 <div class="container">
   <div class="row mt-5">
     <div class="col-md-12">
-      <h1 class="my-4 mt-5 text-center" style="font-size: 4em;">Soluciones</h1>
+      <h1 class="my-4 mt-5 text-center" style="font-size: 3.5em;">Soluciones</h1>
     </div>
   </div>
   <div class="row mt-4">
@@ -68,10 +68,11 @@
         tomar decisiones para administrar y prevenir riesgos en su negocio.</p>
     </div>
   </div>
-  <h1 class="my-4 mt-5">Productos</h1>
+  <h1 class="my-4 mt-5 mb-2 text-center" style="font-size: 3.5em;">Productos</h1>
   <div class="row">
     <div class="col-lg-12">
-      <p style="font-size: 1.12em; color: #7D7D7D;">Nuestra plataforma web permite capturar y ordenar información relacionada a conductor-vehiculo de forma
+      <p style="font-size: 1.12em; color: #7D7D7D;">Nuestra plataforma web permite capturar y ordenar información
+        relacionada a conductor-vehiculo de forma
         eficiente, permitiendo visualizar y analizar la data de forma sencilla, permitiendo que nuestros usuarios
         visualicen y prevengan problemas, favoreciendo la correcta toma de decisiones orientada a evitar riesgos en el
         negocio.</p>
@@ -131,7 +132,8 @@
           <h4 class="card-title">
             <a href="#" style="color: #3f454d">Extracción / validación de datos</a>
           </h4>
-          <p class="card-text mt-2" style="color: #7D7D7D;">Valide y/o almacene información proveniente de documentación digital.</p>
+          <p class="card-text mt-2" style="color: #7D7D7D;">Valide y/o almacene información proveniente de documentación
+            digital.</p>
           <a class="text-primary" style="text-decoration: underline; text-align: right;" type="button">Ver mas</a>
         </div>
       </div>
@@ -144,7 +146,8 @@
           <h4 class="card-title">
             <a href="#" style="color: #3f454d">Notificación de alertas</a>
           </h4>
-          <p class="card-text" style="color: #7D7D7D;">Alertas automáticas y periódicas para el vencimiento de documentación vehicular.</p>
+          <p class="card-text" style="color: #7D7D7D;">Alertas automáticas y periódicas para el vencimiento de
+            documentación vehicular.</p>
           <a class="text-primary" style="text-decoration: underline; text-align: right;" type="button">Ver mas</a>
         </div>
       </div>
@@ -158,7 +161,8 @@
           <h4 class="card-title">
             <a href="#" style="color: #3f454d">Consulta de información a terceros</a>
           </h4>
-          <p class="card-text" style="color: #7D7D7D;">Consulte información de terceros en tiempo real  ( Estados de licencia de conducción, otros).</p>
+          <p class="card-text" style="color: #7D7D7D;">Consulte información de terceros en tiempo real ( Estados de
+            licencia de conducción, otros).</p>
           <a class="text-primary" style="text-decoration: underline; text-align: right;" type="button">Ver mas</a>
         </div>
       </div>
@@ -179,9 +183,44 @@
       </div>
     </div>
   </div>
-  <!-- Marketing Icons Section -->
+  <h1 class="my-4 mt-5 text-center" style="font-size: 3.5em;">Nosotros</h1>
+  <div class="row mb-5">
+    <div class="col-lg-12 mt-3 mb-5">
+      <p style="text-align: justify;color: #7D7D7D; font-size: 1.12em;">Compañía fundada en 2019 que se enfoca en la
+        captura, procesamiento, administración y visualización de
+        datos relacionados con la profesión de conductor. Nuestro core se encuentra orientado hacia conductores en lugar
+        de vehículos “como tradicionalmente se maneja en el mercado”. Por ello nuestros servicios no solo permiten que
+        las empresas tengan un espacio donde puedan agregar e identificar su flota de trabajo, sino que también
+        evaluamos a los conductores de tal forma que caracterizamos fortalezas y debilidades permitiendo implementar
+        mejoras y corregir malos hábitos de manejo. Adicionalmente contamos con algoritmos que nos permiten realizar
+        validación documental de manera automática, minimizando la incertidumbre en cuanto a la validez de los datos
+        suministrados.</p>
+      <a class="text-primary" href="{{ route('about') }}" style="text-decoration: underline; text-align: right;"
+        type="button">Ver mas</a>
+    </div>
+  </div>
 
-  {{--<div class="row">
+  <h1 class="my-4 mt-5 text-center" style="font-size: 3.5em;">Nuestros Aliados Estratégicos</h1>
+  <div class="row">
+    <p style="text-align: justify;color: #7D7D7D; font-size: 1.12em;">Nuestras asociaciones estratégicas con
+      organizaciones nacionales e internacionales nos ayudan a innovar y acelerar mejoras en áreas claves, creando
+      soluciones que permitan capturar, administrar y evaluar la información de los conductores acercándonos cada vez
+      más a una profesionalización en el gremio vehicular.</p>
+  </div>
+  <div class="row mb-5">
+    <div class="col-md-12 mb-4 text-center">
+      <img src="{{ asset('img/smart.jpg') }}" alt="Smart" style="width:20%;">
+    </div>
+    {{-- <div class="col-md-4">
+      <img src="{{ asset('img/ridepro.png') }}" alt="Ride Pro" style="width:100%;">
+  </div>
+  <div class="col-md-4">
+    <img src="{{ asset('img/airbag.png') }}" alt="AirBag" style="width:100%;">
+  </div> --}}
+</div>
+<!-- Marketing Icons Section -->
+
+{{--<div class="row">
     <div class="col-lg-4 mb-4">
       <div class="card h-100">
         <h4 class="card-header">Gestión</h4>
@@ -217,10 +256,10 @@
       </div>
     </div>
   </div> --}}
-  <!-- /.row -->
+<!-- /.row -->
 
-  <!-- Portfolio Section -->
-  {{-- <h2>Portfolio Heading</h2>
+<!-- Portfolio Section -->
+{{-- <h2>Portfolio Heading</h2>
 
   <div class="row">
     <div class="col-lg-4 col-sm-6 portfolio-item">
@@ -299,10 +338,10 @@
       </div>
     </div>
   </div> --}}
-  <!-- /.row -->
+<!-- /.row -->
 
-  <!-- Features Section -->
-  {{-- <div class="row">
+<!-- Features Section -->
+{{-- <div class="row">
     <div class="col-lg-6">
       <h2>Modern Business Features</h2>
       <p>The Modern Business template by Start Bootstrap includes:</p>
@@ -322,12 +361,9 @@
       <img class="img-fluid rounded" src="http://placehold.it/700x450" alt="">
     </div>
   </div> --}}
-  <!-- /.row -->
-
-  <hr>
-
-  <!-- Call to Action Section -->
-  {{-- <div class="row mb-4">
+<!-- /.row -->
+<!-- Call to Action Section -->
+{{-- <div class="row mb-4">
     <div class="col-md-8">
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias, expedita, saepe, vero rerum deleniti
         beatae veniam harum neque nemo praesentium cum alias asperiores commodi.</p>
