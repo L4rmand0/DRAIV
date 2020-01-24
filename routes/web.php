@@ -110,7 +110,6 @@ Route::get('/plantilla', function () {
     return view('mails.mailcontactus');
 })->name('plantilla');
 
-
 Route::prefix('mail')->group(function () {
     Route::post('contact-us', 'EmailController@sendContactUS')->name('mail.contact-us');
 });
@@ -119,10 +118,10 @@ Route::prefix('driver')->group(function () {
     
 });
 
-
 Route::post('/saveimg', 'ImageController@saveImgS3')->name('saveimg');
 
 Auth::routes();
+Route::get('register-validate','Auth\RegisterController@formValidate')->name('register.validate');
 
 
 Route::get('/home', 'HomeController@index')->name('home');

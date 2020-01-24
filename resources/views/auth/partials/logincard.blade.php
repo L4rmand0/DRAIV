@@ -100,3 +100,19 @@
 
     </form>
 </div>
+
+<fieldset>
+    <div class="form-card">
+        <div class="row">
+            <div class="col-7">
+                <h2 class="fs-title">Image Upload:</h2>
+            </div>
+            <div class="col-5">
+                <h2 class="steps">Step 3 - 3</h2>
+            </div>
+        </div> <label class="fieldlabels">Upload Your Photo:</label> <input type="file" name="pic"
+            accept="image/*"> <label class="fieldlabels">Upload Signature
+            Photo:</label> <input type="file" name="pic" accept="image/*">
+    </div> <input type="button" name="next" class="next action-button" value="Submit" />
+    <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+</fieldset>

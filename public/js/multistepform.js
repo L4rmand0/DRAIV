@@ -14,31 +14,89 @@
 
         setProgressBar(current);
 
-        $(".next").click(function() {
+        $("#msform input[type=text], #msform input[type=email], #msform input[type=password], #msform input[type=number]").on("keypress", function() {
+            let $target = $(this);
+            $(this).cleanErrorElementForm($target);
+        });
 
+        $("#msform input[type=checkbox]").on("change", function() {
+            let $target = $(this);
+            $(this).cleanErrorElementForm($target);
+        });
+
+        $("#msform").submit(function(event) {
+            $target = $(this);
+            let datasend = $target.serialize();
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $target.attr("action"),
+                data: datasend,
+            }).done(function(response) {
+                if (Object.keys(response.errors).length > 0) {
+                    swal.fire(
+                        'Error!',
+                        response.error.response,
+                        'error'
+                    )
+                } else {
+                    $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+                    //show the next fieldset
+                    next_fs.show();
+                    //hide the current fieldset with style
+                    current_fs.animate({ opacity: 0 }, {
+                        step: function(now) {
+                            // for making fielset appear animation
+                            opacity = 1 - now;
+
+                            current_fs.css({
+                                'display': 'none',
+                                'position': 'relative'
+                            });
+                            next_fs.css({ 'opacity': opacity });
+                        },
+                        duration: 500
+                    });
+                    setProgressBar(++current);
+                }
+            });
+        });
+
+        $(".next").click(function() {
             current_fs = $(this).parent();
             next_fs = $(this).parent().next();
+            let data_form = $("#msform").serialize();
+            if (current_fs.attr("id") == "account_fieldset") {
+                $.ajax({
+                    type: 'GET',
+                    url: $("#register_validator").val(),
+                    data: data_form,
+                }).done(function(response) {
+                    if (!current_fs.hasErrorsForms(current_fs, response)) {
+                        //Add Class Active
+                        $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
 
-            //Add Class Active
-            $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+                        //show the next fieldset
+                        next_fs.show();
+                        //hide the current fieldset with style
+                        current_fs.animate({ opacity: 0 }, {
+                            step: function(now) {
+                                // for making fielset appear animation
+                                opacity = 1 - now;
 
-            //show the next fieldset
-            next_fs.show();
-            //hide the current fieldset with style
-            current_fs.animate({ opacity: 0 }, {
-                step: function(now) {
-                    // for making fielset appear animation
-                    opacity = 1 - now;
-
-                    current_fs.css({
-                        'display': 'none',
-                        'position': 'relative'
-                    });
-                    next_fs.css({ 'opacity': opacity });
-                },
-                duration: 500
-            });
-            setProgressBar(++current);
+                                current_fs.css({
+                                    'display': 'none',
+                                    'position': 'relative'
+                                });
+                                next_fs.css({ 'opacity': opacity });
+                            },
+                            duration: 500
+                        });
+                        setProgressBar(++current);
+                    }
+                });
+            }
         });
 
         $(".previous").click(function() {

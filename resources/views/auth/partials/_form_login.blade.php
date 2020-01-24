@@ -1,6 +1,6 @@
 @if ($company)
 <div class="container">
-    <div class="card-group col-lg-12" style="margin-top:90px;">
+    <div class="card-group col-lg-12" style="margin-top:40px;">
         <div class="card" id="card_login_register">
             <div id="login_card">
                 @include('auth.partials.login_card')

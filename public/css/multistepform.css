@@ -34,7 +34,7 @@
     padding: 8px 15px 8px 15px;
     border: 1px solid #ccc;
     border-radius: 0px;
-    margin-bottom: 25px;
+    margin-bottom: 0px;
     margin-top: 2px;
     width: 100%;
     box-sizing: border-box;
@@ -113,7 +113,8 @@
 
 .fieldlabels {
     color: gray;
-    text-align: left
+    text-align: left;
+    margin-top: 20px;
 }
 
 #progressbar {
@@ -136,22 +137,28 @@
 }
 
 #progressbar #account:before {
-    font-family: 'Font Awesome 5 Free';
+    font-family: 'Font Awesome 5 Free' !important;
+    font-weight: 900;
+    /* font-family: 'Font Awesome 5 Free'; */
     content: "\f13e"
 }
 
 #progressbar #personal:before {
-    font-family: 'Font Awesome 5 Free';
+    /* font-family: 'Font Awesome 5 Free'; */
+    font-family: 'Font Awesome\ 5 Free';
+    font-weight: 900;
     content: "\f007"
 }
 
 #progressbar #payment:before {
-    font-family: 'Font Awesome 5 Free';
+    font-family: 'Font Awesome 5 Free' !important;
+    font-weight: 900;
     content: "\f030"
 }
 
 #progressbar #confirm:before {
-    font-family: 'Font Awesome 5 Free';
+    font-family: 'Font Awesome 5 Free' !important;
+    font-weight: 900;
     content: "\f00c"
 }
 

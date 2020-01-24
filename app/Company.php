@@ -11,9 +11,13 @@ class Company extends Model
     public $timestamps = false;
     
     protected $fillable = [
-        'Name_company', 
-        'First_name', 
-        'Type_company', 
-        'user_id'
+        'company_id', 
+        'company_name', 
+        'main_company', 
+        'child_company', 
+        'type_company', 
+        'date_operation',
+        'user_id',
+        'operation', 
     ];
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Company;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -54,7 +55,18 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:5', 'confirmed'],
             'checkdata' => ['accepted'],
-            'Company_id' => ['required'],
+            'company_id' => ['required','unique:company'],
+            'company_name' => ['required'],
+        ],[
+            'name.required' => "El campo nombre es obligatorio",
+            'email.required' => "El correo electrónico es obligatorio",
+            'password.confirmed' => "Las contraseñas no coindicen",
+            'password.required' => "La contraseña es obligatoria",
+            'checkdata.required' => "Se deben aceptar los términos y condiciones",
+            'company_id.required' => "El campo compañía es obligatorio",
+            'company_name.required' => "El nombre de la compañía es obligatorio",
+            'email.unique' => "Este correo electrónico ya fue registrado",
+            'company_id.unique' => "Este nit o documento ya fue registrado",
         ]);
     }
 
@@ -73,4 +85,21 @@ class RegisterController extends Controller
             'Company_id' => $data['Company_id']
         ]);
     }
+
+    protected function createAccount(array $data)
+    {
+        Company::create([
+            'company_id'=> $data['company_id'],
+            'name_company'=> $data['company_name'],
+            'user_id'=> auth()->id(),
+        ]);
+        User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'company_id' => $data['company_id']
+        ]);
+        return response()->json(['response' => 'Usuario creado correctamente', 'errors' => []]);
+    }
+
 }

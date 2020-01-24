@@ -29,19 +29,18 @@ trait RegistersUsers
     public function register(Request $request)
     {
         if($request->ajax()){
-         echo ' petición ajax ';
-         die;    
+            //   echo 'ayax <pre>';
+            //   print_r($request->get('register'));
+            return $this->createAccount($request->get('register'));
+        }else{
+            $validation = $this->validator($request->all())->validate();
+            event(new Registered($user = $this->create($request->all())));
+    
+            $this->guard()->login($user);
+    
+            return $this->registered($request, $user)
+                            ?: redirect($this->redirectPath());
         }
-        $validation = $this->validator($request->all())->validate();
-        echo '<pre>';
-        print_r($validation);
-        die;
-        event(new Registered($user = $this->create($request->all())));
-
-        $this->guard()->login($user);
-
-        return $this->registered($request, $user)
-                        ?: redirect($this->redirectPath());
     }
 
     /**
@@ -64,5 +63,19 @@ trait RegistersUsers
     protected function registered(Request $request, $user)
     {
         //
+    }
+
+    public function formValidate(Request $request){
+        $data_register = $request->get('register');
+        // echo '<pre>';
+        // print_r($request->all());
+        $validator = $this->validator($data_register);
+        $errors = $validator->errors()->getMessages();
+        // print_r($errors);
+        if(!empty($errors)){
+            return response()->json(['errors' => $errors]);
+        }else{
+            return response()->json(['errors' => []]);
+        }
     }
 }
