@@ -1,4 +1,5 @@
 <input type="hidden" id="register_validator" value="{{ route('register.validate') }}">
+<input type="hidden" id="login_route" value="{{ route('login') }}">
 <div class="card-body">
     <form id="msform" action="{{ route('register') }}">
         @csrf

@@ -208,15 +208,18 @@
       más a una profesionalización en el gremio vehicular.</p>
   </div>
   <div class="row mb-5">
-    <div class="col-md-12 mb-4 text-center">
-      <img src="{{ asset('img/smart.jpg') }}" alt="Smart" style="width:20%;">
+    <div class="col-md-3 mb-4 text-center">
+      <img src="{{ asset('img/smart.jpg') }}" alt="Smart" style="width:100%; height: 80%;">
     </div>
-    {{-- <div class="col-md-4">
-      <img src="{{ asset('img/ridepro.png') }}" alt="Ride Pro" style="width:100%;">
+    <div class="col-md-3">
+      <img src="{{ asset('img/Airbag_escalada.jpg') }}" alt="Ride Pro" style="width:100%;">
   </div>
-  <div class="col-md-4">
-    <img src="{{ asset('img/airbag.png') }}" alt="AirBag" style="width:100%;">
-  </div> --}}
+  <div class="col-md-3">
+    <img src="{{ asset('img/Innovación_escalada.jpg') }}" alt="AirBag" style="width:100%;">
+  </div>
+  <div class="col-md-3">
+    <img src="{{ asset('img/Ride__escalada.jpg') }}" alt="AirBag" style="width:100%;">
+  </div>
 </div>
 <!-- Marketing Icons Section -->
 
