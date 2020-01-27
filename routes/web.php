@@ -11,12 +11,6 @@
 |
 */
 
-// DB::listen(function($query){
-//     //Imprimimos la consulta ejecutada
-//     echo "<pre> {$query->sql } </pre>";
-//   });
-
-
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');

@@ -2,7 +2,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
-    <input type="hidden" id="dashboard_company_id" value="{{ auth()->user()->company_id }}">
+    <input type="hidden" id="dashboard_company_id" value="{{ $company_id }}">
     <input type="hidden" id="function_barchart_education" value="{{ route('drivers-info.education-chart') }}">
     <input type="hidden" id="function_barchart_civil_state" value="{{ route('drivers-info.civil-state-chart') }}">
     <input type="hidden" id="function_barchart_category" value="{{ route('drivers-info.category-chart') }}">
@@ -38,12 +38,29 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1 ml-1">
-                                Cédula Conductor</div>
                             <form action="">
-                                <select name="" class="mt-3" id="select_cc_driver" style="width: 37%;"
-                                    data-url="{{ route('drivers-select-lists')}}" hidden>
-                                </select>
+                                <div class="row">
+                                    @if ($multiple_admin)
+                                    <div class="col-md-6">
+                                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1 ml-1">
+                                            Compañía</div>
+                                        <select class="ml-2" name="" class="mt-3" id="select_company_dash"
+                                            style="width: 37%;" data-url="{{ route('drivers-select-lists')}}">
+                                        <option value="{{ $company_id }}">{{ $company_name }}</option>
+                                            @foreach ($child_companies as $company)
+                                            <option value="{{ $company['id'] }}">{{ $company['name'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @endif
+                                    <div class="col-md-6">
+                                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1 ml-1">
+                                            Cédula Conductor</div>
+                                        <select name="" class="mt-3" id="select_cc_driver" style="width: 37%;"
+                                            data-url="{{ route('drivers-select-lists')}}" hidden>
+                                        </select>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>

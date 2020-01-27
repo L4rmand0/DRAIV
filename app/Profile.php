@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Profile extends Model
 {
     protected $table = 'profile_';
+    const MULTIPLEADMIN = 5;
 
     protected $guarded = [];
 

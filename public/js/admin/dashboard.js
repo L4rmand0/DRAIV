@@ -1,14 +1,15 @@
 // IIFE - Immediately Invoked Function Expression
-(function(runcode) {
+var $select2_drivers
+(function (runcode) {
 
     // The global jQuery object is passed as a parameter
     runcode(window.jQuery, window, document);
 
-}(function($, window, document) {
+}(function ($, window, document) {
 
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
-    $(function() {
+    $(function () {
 
         var ele_chart_education = $("#education_chart");
         var ele_chart_civil_state = $("#civil_state_chart");
@@ -32,26 +33,19 @@
         var chart_brand_v;
         var chart_model_v;
         var chart_drivers_v;
+        
 
         $.ajax({
             type: 'GET',
             url: $('#select_cc_driver').data('url'),
-            data: { 'type': 'select_admin2' },
-            success: function(data) {
+            data: { 'type': 'select_admin2', 'company_id': $("#dashboard_company_id").val() },
+            success: function (data) {
                 $("#select_cc_driver").show();
-                $('#select_cc_driver').select2({
+                $select2_drivers = $('#select_cc_driver').select2({
                     data: data
                 });
             }
         });
-
-        // $("#report_generate").on('click', function() {
-        // alert("hola")
-        // var labels = ["naruto", "goku", "picolo", "gohan"];
-        // var data_up = [20, 30, 50, 60];
-        // addData(chart_education, labels, data_up);
-
-        // });
 
         // function addData(chart, label, data) {
         //     chart.data.labels.push(label);
@@ -61,7 +55,29 @@
         //     chart.update();
         // }
 
-        $("#select_cc_driver").on('change', function() {
+        $("#select_company_dash").select2();
+
+        $("#select_company_dash").on("change", function () {
+            $target = $(this);
+            $("#dashboard_company_id").val($target.val());
+            $.ajax({
+                type: 'GET',
+                url: $('#select_cc_driver').data('url'),
+                data: { 'type': 'select_admin2', 'company_id': $("#dashboard_company_id").val() },
+            }).done(function (response) {
+                $("#select_cc_driver").html("");
+                response.forEach((dataset)=>{
+                    var newOption = new Option(dataset.text, dataset.id, false, false);
+                    if (dataset.id == ""){
+                        $('#select_cc_driver').append(newOption).trigger('change');
+                    }else{
+                        $('#select_cc_driver').append(newOption);
+                    }
+                });
+            });
+        });
+
+        $("#select_cc_driver").on('change', function () {
             $("#card_driver_number").text("cargando ...");
             $("#card_vehicle_number").text("cargando ...");
             $("#man_number").text("...");
@@ -74,7 +90,7 @@
             $("#card_technomecanical_expiration_number").text("cargando ...");
             $("#card_technomecanical_expirated_number").text("cargando ...");
 
-            makeBarChartEducationByDriver().done(function(response) {
+            makeBarChartEducationByDriver().done(function (response) {
                 chart_education.data.datasets.forEach((dataset) => {
                     let data_index = dataset.data.length;
                     for (let index = 0; index < data_index; index++) {
@@ -87,7 +103,7 @@
                 chart_education.update();
             });
 
-            makeBarChartCivilStateByDriver().done(function(response) {
+            makeBarChartCivilStateByDriver().done(function (response) {
                 chart_civil_state.data.datasets.forEach((dataset) => {
                     let data_index = dataset.data.length;
                     for (let index = 0; index < data_index; index++) {
@@ -101,7 +117,7 @@
             });
 
             // chart_licence_state.destroy();
-            makeBarChartLicenceStateByDriver().done(function(response) {
+            makeBarChartLicenceStateByDriver().done(function (response) {
                 chart_licence_state.data.datasets.forEach((dataset) => {
                     let data_index = dataset.data.length;
                     for (let index = 0; index < data_index; index++) {
@@ -114,7 +130,7 @@
                 chart_licence_state.update();
             });
             // chart_category.destroy();
-            makeBarChartCategoryByDriver().done(function(response) {
+            makeBarChartCategoryByDriver().done(function (response) {
                 chart_category.data.datasets.forEach((dataset) => {
                     let data_index = dataset.data.length;
                     for (let index = 0; index < data_index; index++) {
@@ -127,7 +143,7 @@
                 chart_category.update();
             });
             // chart_type_v.destroy();
-            makeBarChartTypeVByDriver().done(function(response) {
+            makeBarChartTypeVByDriver().done(function (response) {
                 chart_type_v.data.datasets.forEach((dataset) => {
                     let data_index = dataset.data.length;
                     for (let index = 0; index < data_index; index++) {
@@ -140,7 +156,7 @@
                 chart_type_v.update();
             });
             // chart_owner_v.destroy();
-            makePieChartOwnerVByDriver().done(function(response) {
+            makePieChartOwnerVByDriver().done(function (response) {
                 chart_owner_v.data.datasets.forEach((dataset) => {
                     let data_index = dataset.data.length;
                     for (let index = 0; index < data_index; index++) {
@@ -153,7 +169,7 @@
                 chart_owner_v.update();
             });
             // chart_line_v.destroy();
-            makePieChartLineVByDriver().done(function(response) {
+            makePieChartLineVByDriver().done(function (response) {
                 chart_line_v.data.datasets.forEach((dataset) => {
                     let data_index = dataset.data.length;
                     for (let index = 0; index < data_index; index++) {
@@ -166,7 +182,7 @@
                 chart_line_v.update();
             });
             // chart_brand_v.destroy();
-            makePieChartBrandByDriver().done(function(response) {
+            makePieChartBrandByDriver().done(function (response) {
                 chart_brand_v.data.datasets.forEach((dataset) => {
                     let data_index = dataset.data.length;
                     for (let index = 0; index < data_index; index++) {
@@ -179,7 +195,7 @@
                 chart_brand_v.update();
             });
             // chart_model_v.destroy();
-            makePieChartModeldByDriver().done(function(response) {
+            makePieChartModeldByDriver().done(function (response) {
                 chart_model_v.data.datasets.forEach((dataset) => {
                     let data_index = dataset.data.length;
                     for (let index = 0; index < data_index; index++) {
@@ -210,7 +226,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 
@@ -231,7 +247,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 
@@ -252,7 +268,7 @@
                                         weight: 'bold',
                                         size: 14,
                                     },
-                                    formatter: function(value, context) {
+                                    formatter: function (value, context) {
                                         return value + '%';
                                     }
                                 }
@@ -270,7 +286,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
 
                 if (Object.keys(datac.errors).length > 0) {
@@ -318,7 +334,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 
@@ -364,7 +380,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 
@@ -410,7 +426,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 
@@ -456,7 +472,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 
@@ -488,7 +504,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 
@@ -520,7 +536,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 
@@ -552,7 +568,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 
@@ -583,60 +599,60 @@
     function makeBarChartEducationByDriver(ele_chart_education, chart_education) {
         // var new_chart_education;
         return $.ajax({
-                // async: false,
-                // cache: false,
-                context: document.body,
-                type: 'POST',
-                url: $("#education_chart").data('url-driver'),
-                data: {
-                    'dni_id': $("#select_cc_driver").val(),
-                    'company_id': $("#dashboard_company_id").val(),
-                    "_token": $('#token').val()
-                },
-                success: function(datac) {
-                    // console.log(datac);
-                    // if (Object.keys(datac.errors).length > 0) {
+            // async: false,
+            // cache: false,
+            context: document.body,
+            type: 'POST',
+            url: $("#education_chart").data('url-driver'),
+            data: {
+                'dni_id': $("#select_cc_driver").val(),
+                'company_id': $("#dashboard_company_id").val(),
+                "_token": $('#token').val()
+            },
+            success: function (datac) {
+                // console.log(datac);
+                // if (Object.keys(datac.errors).length > 0) {
 
-                    // } else {
-                    //     new_chart_education = new Chart(ele_chart_education, {
-                    //         type: 'horizontalBar',
-                    //         data: datac.data,
-                    //         options: {
-                    //             display: true,
-                    //             scaleStartValue: 0,
-                    //             scales: {
-                    //                 yAxes: [{
-                    //                     ticks: {
-                    //                         beginAtZero: true,
-                    //                     }
-                    //                 }],
-                    //                 xAxes: [{
-                    //                     ticks: {
-                    //                         min: 0,
-                    //                         max: datac.max
-                    //                     }
-                    //                 }]
-                    //             },
-                    //             plugins: {
-                    //                 datalabels: {
-                    //                     render: 'label',
-                    //                     font: {
-                    //                         weight: 'bold',
-                    //                         size: 14,
-                    //                     }
-                    //                 }
-                    //             }
-                    //         }
-                    //     });
-                    // }
-                }
-            })
-            // .done(function() {
-            //     $(this)
-            //         // debugger
-            //     alert("done")
-            //     return new_chart_education;
-            // });;
+                // } else {
+                //     new_chart_education = new Chart(ele_chart_education, {
+                //         type: 'horizontalBar',
+                //         data: datac.data,
+                //         options: {
+                //             display: true,
+                //             scaleStartValue: 0,
+                //             scales: {
+                //                 yAxes: [{
+                //                     ticks: {
+                //                         beginAtZero: true,
+                //                     }
+                //                 }],
+                //                 xAxes: [{
+                //                     ticks: {
+                //                         min: 0,
+                //                         max: datac.max
+                //                     }
+                //                 }]
+                //             },
+                //             plugins: {
+                //                 datalabels: {
+                //                     render: 'label',
+                //                     font: {
+                //                         weight: 'bold',
+                //                         size: 14,
+                //                     }
+                //                 }
+                //             }
+                //         }
+                //     });
+                // }
+            }
+        })
+        // .done(function() {
+        //     $(this)
+        //         // debugger
+        //     alert("done")
+        //     return new_chart_education;
+        // });;
     }
 
 
@@ -866,7 +882,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 
@@ -886,7 +902,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 
@@ -906,7 +922,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 
@@ -927,7 +943,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 
@@ -947,7 +963,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 
@@ -967,7 +983,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 
@@ -987,7 +1003,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 
@@ -1007,7 +1023,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 
@@ -1027,7 +1043,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 
@@ -1047,7 +1063,7 @@
                 'company_id': $("#dashboard_company_id").val(),
                 "_token": $('#token').val()
             },
-            success: function(datac) {
+            success: function (datac) {
                 console.log(datac);
                 if (Object.keys(datac.errors).length > 0) {
 

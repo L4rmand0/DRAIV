@@ -7,6 +7,8 @@ use App\DrivingLicence;
 use App\Http\Controllers\Controller;
 use App\Imagenes;
 use App\Module;
+use App\Profile;
+use App\User;
 use App\Vehicle;
 use auth;
 use Illuminate\Http\Request;
@@ -27,23 +29,20 @@ class AdminController extends Controller
 
     public function index(Request $request, $module = null)
     {
-        $user_id = auth()->user()->id;
-        //Revisa si tiene permisos sonbre ese módulo y si no lo redirije a su módulo principal
-        $module = $this->checkModulePermission($module, $user_id);
+        $auth_user = auth()->user();
+        $module = $this->checkModulePermission($module, $auth_user->id);
         $this->module = $module;
         $profile = auth()->user()->user_profile;
-        $profile_id = auth()->user()->profile_id;
-        $company_id = auth()->user()->company_id;
-        $company_name = CompanyController::getCompanyByid($company_id)->company;
-        $this->permissions = $this->getPermissions($user_id);
-        if ($profile_id != 1) {
+        $company_name = CompanyController::getCompanyByid($auth_user->company_id)->company;
+        $this->permissions = $this->getPermissions($auth_user->id);
+        if ($auth_user->profile_id != 1) {
             switch ($module) {
                 case 'users':
                     $profile_list = $this->user_controller->MakeProfileList();
                     return view('admin.users.index', [
                         'company_name' => ucwords(strtolower($company_name)),
                         'permissions' => $this->permissions,
-                        'profile_list' => json_encode($profile_list)
+                        'profile_list' => json_encode($profile_list),
                     ]);
                     break;
                 case 'driver_information':
@@ -63,7 +62,14 @@ class AdminController extends Controller
                     return view('admin.images', $data_images);
                     break;
                 case 'dashboard':
-                    $data_dashboard = $this->showIndexDashboard($company_id);
+                    $data_dashboard = $this->showIndexDashboard($auth_user->company_id);
+                    // $data_dashboard['multiple_admin'] = $auth_user->profile_id == Profile::MULTIPLEADMIN ? true : false;
+                    $data_dashboard['multiple_admin'] = false;
+                    if ($auth_user->profile_id == Profile::MULTIPLEADMIN ? true : false) {
+                        $child_companies = json_decode($auth_user->company->child_company, true);
+                        $data_dashboard['child_companies'] = $child_companies;
+                        $data_dashboard['multiple_admin'] = true;
+                    }
                     return view('admin.dashboard', $data_dashboard);
                     break;
                 case 'doc_verification':
@@ -109,6 +115,7 @@ class AdminController extends Controller
             }
         }
         return [
+            'company_id' => $company_id,
             'company_name' => ucwords(strtolower($company->company)),
             'total_drivers' => $total_drivers,
             'total_vehicles' => $total_vehicles,
