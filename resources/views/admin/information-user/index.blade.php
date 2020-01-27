@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="drive_information_datatable" class="table table_dashboard table-striped" style="width:100%;">
+            <table id="drive_information_datatable" class="table table_dashboard table-striped nowrap" style="width:100%;">
             {{-- <table id="drive_information_datatable" class="table table-sm table-striped table-bordered table-hover nowrap"
                 style="width:100%"> --}}
                 <thead>

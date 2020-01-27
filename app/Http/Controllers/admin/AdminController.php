@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use DB;
 use App\DriverInformation;
 use App\DrivingLicence;
 use App\Http\Controllers\Controller;
@@ -215,5 +216,16 @@ class AdminController extends Controller
             'company_name' => ucwords(strtolower($company_name)),
             'permissions' => $this->permissions,
         ];
+    }
+
+    public function viewSumarizeTable(Request $request){
+        $company_id = $request->get('company_id');
+        $sumarize = DB::table('view_sumarize as vs')
+            ->where('vs.company_id', '=', $company_id)
+            ->get();
+        // echo '<pre>';
+        // print_r($sumarize);
+        // die;    
+        return datatables()->of($sumarize)->make(true);       
     }
 }

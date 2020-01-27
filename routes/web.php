@@ -86,6 +86,7 @@ Route::prefix('admin')->group(function () {
     Route::get('driver-info/admin1-select-lists', 'admin\Admin1Controller@getAdmin1toSelect2')->name('admin1-select-lists'); 
     Route::get('driver-info/admin2-select-lists', 'admin\Admin2Controller@getAdmin2toSelect2')->name('admin2-select-lists'); 
     Route::get('driver-info/admin3-select-lists', 'admin\Admin3Controller@getAdmin3toSelect2')->name('admin3-select-lists'); 
+    Route::get('driver-info/sumarize', 'admin\AdminController@viewSumarizeTable')->name('drivers-info.sumarize-view'); 
     Route::post('driver-vehicle-list', 'admin\DriverVehicleController@listDriverVehicle')->name('driver-vehicle-list');
     Route::post('driver-vehicle/destroy','admin\DriverVehicleController@destroy')->name('admin.driver-vehicle.destroy'); 
     Route::get('images/', 'admin\ImageController@index')->name('images.index');

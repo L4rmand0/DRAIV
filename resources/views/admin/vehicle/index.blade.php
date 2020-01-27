@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="vehicle_datatable" class="table table_dashboard table-striped"
+            <table id="vehicle_datatable" class="table table_dashboard table-striped nowrap"
                 style="width:100%;" data-url-list="{{ route ('vehicle-list') }}"
                 data-url-delete="{{ route ('vehicle-admin.destroy') }}">
                 <thead>

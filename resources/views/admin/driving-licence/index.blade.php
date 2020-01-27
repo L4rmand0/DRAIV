@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="driving_licence_datatable" class="table table_dashboard table-striped"
+            <table id="driving_licence_datatable" class="table table_dashboard table-striped nowrap"
                 style="width:100%;" data-url-list="{{ route ('driving-licence-list') }}"
                 data-url-delete="{{ route ('driving_licence.destroy') }}">
                 <thead>

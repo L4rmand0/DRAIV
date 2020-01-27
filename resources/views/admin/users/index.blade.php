@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="user_datatable" class="table table_dashboard table-striped">
+            <table id="user_datatable" class="table table_dashboard table-striped nowrap">
                 <thead>
                     <tr>
                         <th></th>

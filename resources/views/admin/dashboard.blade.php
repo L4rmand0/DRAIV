@@ -41,24 +41,29 @@
                             <form action="">
                                 <div class="row">
                                     @if ($multiple_admin)
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="text-xs font-weight-bold text-dark text-uppercase mb-1 ml-1">
                                             Compañía</div>
                                         <select class="ml-2" name="" class="mt-3" id="select_company_dash"
                                             style="width: 37%;" data-url="{{ route('drivers-select-lists')}}">
-                                        <option value="{{ $company_id }}">{{ $company_name }}</option>
+                                            <option value="{{ $company_id }}">{{ $company_name }}</option>
                                             @foreach ($child_companies as $company)
                                             <option value="{{ $company['id'] }}">{{ $company['name'] }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     @endif
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="text-xs font-weight-bold text-dark text-uppercase mb-1 ml-1">
                                             Cédula Conductor</div>
                                         <select name="" class="mt-3" id="select_cc_driver" style="width: 37%;"
                                             data-url="{{ route('drivers-select-lists')}}" hidden>
                                         </select>
+                                    </div>
+                                    <div class="col-md-4 text-right">
+                                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1 ml-1"></div>
+                                        <button type="reset" class="btn btn-secondary text-right" data-toggle="modal"
+                                            data-target=".sumarize">Exportar Datos</button>
                                     </div>
                                 </div>
                             </form>
@@ -348,6 +353,53 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade sumarize" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Resumen de Datos de Conductores</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped nowrap" id="table_sumarize"
+                        data-url="{{ route('drivers-info.sumarize-view') }}" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Primer Nombre</th>
+                                <th>Segundo Nombre</th>
+                                <th>Primer Apellido</th>
+                                <th>Segundo Apellido</th>
+                                <th>Licencia</th>
+                                <th>Categoría</th>
+                                <th>Fecha Exp. Licencia</th>
+                                <th>Fecha Vencimiento Licencia</th>
+                                <th>País Licencia</th>
+                                <th>Placa</th>
+                                <th>Tipo Vehículo</th>
+                                <th>Propietario</th>
+                                <th>Tipo Taxi</th>
+                                <th>Num. Conductores</th>
+                                <th>Fecha vencimiento soat</th>
+                                <th>Capacidad</th>
+                                <th>Servicio</th>
+                                <th>Cilindraje</th>
+                                <th>modelo</th>
+                                <th>Línea</th>
+                                <th>Marca</th>
+                                <th>Color</th>
+                                <th>Fecha de Tecnomecánica</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="{{ asset('js/admin/dashboard.js') }}" defer></script>
 
     <!-- /.container-fluid -->

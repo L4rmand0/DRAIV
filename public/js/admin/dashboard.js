@@ -33,7 +33,7 @@ var $select2_drivers
         var chart_brand_v;
         var chart_model_v;
         var chart_drivers_v;
-        
+
 
         $.ajax({
             type: 'GET',
@@ -66,11 +66,11 @@ var $select2_drivers
                 data: { 'type': 'select_admin2', 'company_id': $("#dashboard_company_id").val() },
             }).done(function (response) {
                 $("#select_cc_driver").html("");
-                response.forEach((dataset)=>{
+                response.forEach((dataset) => {
                     var newOption = new Option(dataset.text, dataset.id, false, false);
-                    if (dataset.id == ""){
+                    if (dataset.id == "") {
                         $('#select_cc_driver').append(newOption).trigger('change');
-                    }else{
+                    } else {
                         $('#select_cc_driver').append(newOption);
                     }
                 });
@@ -593,6 +593,43 @@ var $select2_drivers
             }
         });
 
+        $.ajax({
+            type: 'GET',
+            url: $('#table_sumarize').data('url'),
+            data: { 'type': 'select_admin2', 'company_id': $("#dashboard_company_id").val() },
+        }).done(function (response) {
+            var table_sumarize = $('#table_sumarize').DataTable({
+                destroy: true,
+                data: response.data,
+                scrollX: true,
+                columns: [
+                    { data: 'first_name', name: 'first_name'},
+                    { data: 'second_name', name: 'second_name'},
+                    { data: 's_last_name', name: 's_last_name'},
+                    { data: 'f_last_name', name: 'f_last_name'},
+                    { data: 'licencia', name: 'licencia'},
+                    { data: 'categoría', name: 'categoría'},
+                    { data: 'fecha_licencia_expedicion', name: 'fecha_licencia_expedicion'},
+                    { data: 'fecha_licencia_vencimiento', name: 'fecha_licencia_vencimiento'},
+                    { data: 'pais_licencia_expedicion', name: 'pais_licencia_expedicion'},
+                    { data: 'placa', name: 'placa'},
+                    { data: 'tipo_vehiculo', name: 'tipo_vehiculo'},
+                    { data: 'propietario', name: 'propietario'},
+                    { data: 'tipo_taxi', name: 'tipo_taxi'},
+                    { data: 'numero_conductores', name: 'numero_conductores'},
+                    { data: 'fecha_vencimiento_soat', name: 'fecha_vencimiento_soat'},
+                    { data: 'capacidad', name: 'capacidad'},
+                    { data: 'servicio', name: 'servicio'},
+                    { data: 'cilindraje', name: 'cilindraje'},
+                    { data: 'modelo', name: 'modelo'},
+                    { data: 'linea', name: 'linea'},
+                    { data: 'marca', name: 'marca'},
+                    { data: 'color', name: 'color'},
+                    { data: 'fecha_tecnomecanica', name: 'fecha_tecnomecanica'},
+                ],
+                language: language_dt,
+            });
+        });
 
     });
 

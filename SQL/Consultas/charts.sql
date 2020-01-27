@@ -172,6 +172,26 @@ where
 	and di.operation != 'D'
 GROUP BY validated_data;
 
+
+select
+	di.validated_data,
+	count(di.dni_id) as total
+from
+	`driver_information` as `di`
+inner join `user_vehicle` as `uv` on
+	`di`.`dni_id` = `uv`.`driver_information_dni_id`
+inner join `vehicle` as `v` on
+	`v`.`plate_id` = `uv`.`vehicle_plate_id`
+inner join `driving_licence` as `dl` on
+	`dl`.`driver_information_dni_id` = `di`.`dni_id`
+where
+	`di`.`company_id` = 9013380301
+	and `di`.`operation` != 'D'
+group by
+	`validated_data`;
+
+
+
 CREATE DATABASE larablog;
 
 
