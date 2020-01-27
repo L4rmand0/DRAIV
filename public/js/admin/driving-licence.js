@@ -192,6 +192,8 @@
             processing: true,
             serverSide: true,
             scrollX: true,
+            "scrollY":"400px",
+            "scrollCollapse": true,
             ajax: $('#driving_licence_datatable').data('url-list'),
             columns: [
                 { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_driving_licence"><i class="fas fa-trash"></i></button></center>' },

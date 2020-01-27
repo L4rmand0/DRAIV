@@ -220,6 +220,8 @@
             processing: true,
             serverSide: true,
             scrollX: true,
+            "scrollY":"400px",
+            "scrollCollapse": true,
             ajax: $('#driver-info-list-route').val(),
             columns: [
                 { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_drive_info"><i class="fas fa-trash"></i></button></center>' },

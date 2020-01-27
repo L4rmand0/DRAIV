@@ -5,14 +5,15 @@
     <input type="hidden" name="users-list-route" value="{{ route ('users-list') }}" id="users-list-route">
     <input type="hidden" name="update-users-route" value="{{ route ('users.update') }}" id="update-users-route">
     <!-- Page Heading -->
-    <div class="card mb-4">
+    <center>
+    <div class="card mb-4" style="width: 70%;">
         <div class="card-header">
             <div class="d-sm-flex align-items-center justify-content-between">
                 <h1 class="h5 mb-0 text-gray-800" style="color:#515151 !important;">Usuarios</h1>
             </div>
         </div>
         <div class="card-body">
-            <table id="user_datatable" class="table table-bordered table-striped table-hover nowrap" style="width:100%">
+            <table id="user_datatable" class="table table_dashboard table-striped">
                 <thead>
                     <tr>
                         <th></th>
@@ -31,6 +32,7 @@
             </div>
         </div>
     </div>
+</center>
     {{-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800" style="color:#333 !important;">Usuarios</h1>
     </div> --}}

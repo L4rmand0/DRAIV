@@ -1,7 +1,7 @@
 @extends('layouts-admin.app')
 @section('content')
 <!-- Begin Page Content -->
-<div class="container">
+<div class="container-fluid">
     <input type="hidden" name="driver-info-list-route" value="{{ route ('driver-info-list') }}"
         id="driver-info-list-route">
     <input type="hidden" name="update-driver-info-route" value="{{ route ('driver-info.update') }}"
@@ -14,8 +14,9 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="drive_information_datatable" class="table table-striped table-bordered table-hover nowrap"
-                style="width:100%">
+            <table id="drive_information_datatable" class="table table_dashboard table-striped" style="width:100%;">
+            {{-- <table id="drive_information_datatable" class="table table-sm table-striped table-bordered table-hover nowrap"
+                style="width:100%"> --}}
                 <thead>
                     <tr>
                         <th></th>

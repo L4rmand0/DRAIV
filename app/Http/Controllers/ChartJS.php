@@ -13,6 +13,9 @@ class ChartJS
 
     public function makeChart($data_query, $percentage = null)
     {
+        // echo '<pre>';
+        // print_r($data_query);
+        // die;
         if (!empty($data_query)) {
             $column_name = $this->getLabelQuery($data_query[0]);
             if ($percentage != null) {

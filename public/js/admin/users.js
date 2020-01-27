@@ -130,7 +130,8 @@
         var table = $('#user_datatable').DataTable({
             processing: true,
             serverSide: true,
-            pageLength: 10,
+            "scrollY":"400px",
+            "scrollCollapse": true,
             ajax: $('#users-list-route').val(),
             columns: [
                 { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_user"><i class="fas fa-trash"></i></button></center>' },

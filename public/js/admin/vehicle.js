@@ -417,7 +417,8 @@ var table_relation;
             processing: true,
             serverSide: true,
             scrollX: true,
-            pageLength: 7,
+            "scrollY":"400px",
+            "scrollCollapse": true,
             ajax: $('#vehicle_datatable').data('url-list'),
             columns: [
                 { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_vehicle"><i class="fas fa-trash"></i></button></center>' },

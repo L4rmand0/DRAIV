@@ -1,7 +1,7 @@
 @extends('layouts-admin.app')
 @section('content')
 <!-- Begin Page Content -->
-<div class="container">
+<div class="container-fluid">
     <input type="hidden" name="update-driving-licence-route" value="{{ route ('driving_licence.update') }}"
         id="update-driving-licence-route">
     <input type="hidden" name="company-select-list-route" value="{{ route('company-select-list') }}"
@@ -15,8 +15,8 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="driving_licence_datatable" class="table table-striped table-bordered table-hover nowrap"
-                style="width:100%" data-url-list="{{ route ('driving-licence-list') }}"
+            <table id="driving_licence_datatable" class="table table_dashboard table-striped"
+                style="width:100%;" data-url-list="{{ route ('driving-licence-list') }}"
                 data-url-delete="{{ route ('driving_licence.destroy') }}">
                 <thead>
                     <tr>
@@ -38,7 +38,7 @@
         <div class="card-footer">
             <div class="container text-center">
                 <button class="btn btn-primary" type="button" style="margin-top: 17px;" data-toggle="modal"
-                    data-target="#form_create_driving_licence" id="modal_form_create_driving_licence"><i class="fas fa-plus"></i> Agregar RAgregar Registro</button>
+                    data-target="#form_create_driving_licence" id="modal_form_create_driving_licence"><i class="fas fa-plus"></i> Agregar Registro</button>
             </div>
             <div class="container text-center">
                 <button class="btn btn-success" type="button" style="margin-top: 17px;" data-toggle="modal"

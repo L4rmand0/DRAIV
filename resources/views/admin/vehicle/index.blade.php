@@ -2,7 +2,7 @@
 @section('content')
 <!-- Begin Page Content -->
 
-<div class="container">
+<div class="container-fluid">
     <input type="hidden" name="update-vehicle-route" value="{{ route ('admin.vehicle.update') }}"
         id="update-vehicle-route">
     <input type="hidden" name="company-select-list-route" value="{{ route('company-select-list') }}"
@@ -17,8 +17,8 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="vehicle_datatable" class="table table-striped table-bordered table-hover nowrap"
-                style="width:100%" data-url-list="{{ route ('vehicle-list') }}"
+            <table id="vehicle_datatable" class="table table_dashboard table-striped"
+                style="width:100%;" data-url-list="{{ route ('vehicle-list') }}"
                 data-url-delete="{{ route ('vehicle-admin.destroy') }}">
                 <thead>
                     <tr>
