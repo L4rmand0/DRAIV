@@ -8,7 +8,7 @@ class DriverInformation extends Model
 {
 
     const enum_education = ['Ninguno','primaria','secundaria','pregrado','postgrado','sin información'];
-    const enum_country_born = ['colombia','Venezuela','peru','ecuador','bolivia','argentina','brasil','otro'];
+    const enum_country_born = ['colombia'];
     const enum_civil_state = ['soltero','casado','separado','divorciado','Viudo','Union libre','sin información'];
 
     protected $table = 'driver_information'; 

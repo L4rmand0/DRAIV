@@ -207,8 +207,8 @@
       soluciones que permitan capturar, administrar y evaluar la información de los conductores acercándonos cada vez
       más a una profesionalización en el gremio vehicular.</p>
   </div>
-  <div class="row mb-5">
-    <div class="col-md-3 mb-4 text-center">
+  <div class="row mb-5" style="background-color: #fff;">
+    <div class="col-md-3 text-center">
       <img src="{{ asset('img/smart.jpg') }}" alt="Smart" style="width:100%; height: 80%;">
     </div>
     <div class="col-md-3">
