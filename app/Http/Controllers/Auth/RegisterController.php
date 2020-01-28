@@ -90,16 +90,17 @@ class RegisterController extends Controller
 
     protected function createAccount(array $data)
     {
-        Company::create([
+        $company = Company::create([
             'company_id'=> $data['company_id'],
             'name_company'=> $data['company_name'],
-            'user_id'=> auth()->id(),
+            'type_company'=> "transporte",
         ]);
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'company_id' => $data['company_id'],
+            'company_active' => $data['company_id'],
             'profile_id' => User::USER_DEFAULT
         ]);
 
