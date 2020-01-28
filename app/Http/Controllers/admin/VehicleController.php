@@ -305,7 +305,7 @@ class VehicleController extends Controller
 
     public function vehicleList()
     {
-        $company_id = auth()->user()->company_id;
+        $company_id = auth()->user()->company_active;
         $vehicle = DB::table('vehicle')
             ->orderBy('vehicle.start_date', 'desc')
             ->where('vehicle.operation', '!=', 'D')
@@ -342,6 +342,7 @@ class VehicleController extends Controller
 
     public static function getSoatExpiDates($company_id)
     {
+        $company_id = Auth::user()->company_active;
         $fecha_actual = date("Y-m-d");
         $date_month = date("Y-m-d", strtotime($fecha_actual . "+ 2 month"));
         $soats_expiration = DB::table('vehicle as v')
@@ -396,6 +397,7 @@ class VehicleController extends Controller
 
     public static function getSoatsExpirated($company_id)
     {
+        $company_id = Auth::user()->company_active;
         $fecha_actual = date("Y-m-d");
         $soats_expiration = DB::table('vehicle as v')
             ->select(DB::raw(
@@ -443,6 +445,7 @@ class VehicleController extends Controller
 
     public static function getExpiTecnomecanicalDates($company_id)
     {
+        $company_id = Auth::user()->company_active;
         $fecha_actual = date("Y-m-d");
         $date_month = date("Y-m-d", strtotime($fecha_actual . "+ 2 month"));
         $tecnomecanical_expiration = DB::table('vehicle as v')
@@ -492,6 +495,7 @@ class VehicleController extends Controller
 
     public static function getExpiTecnomecanicalExpirated($company_id)
     {
+        $company_id = Auth::user()->company_active;
         $fecha_actual = date("Y-m-d");
         $tecnomecanical_expiration = DB::table('vehicle as v')
             ->select(DB::raw(

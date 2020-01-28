@@ -185,7 +185,9 @@ class UserController extends Controller
 
     public function usersList()
     {
-        $company_id = Auth::user()->company_id;
+        $company_id = Auth::user()->company_active;
+        // echo $company_id;
+        // die;
         $users = DB::table('users as u')
             ->select(DB::raw(
                 'u.id, u.name, u.email, u.company_id, u.profile_id, p.user_profile'
@@ -265,5 +267,13 @@ class UserController extends Controller
             ->where('p.operation', '!=', 'D')
             ->get()->toArray();
         return $this->ListDT()->query(self::sanitazeArr($profile_list))->make('profile_id', 'user_profile');
+    }
+
+    public function updateCompanyActive(Request $request)
+    {
+        $company_id = $request->get('company_id');
+        $id = Auth::user()->id;
+        $user = User::where('id', $id)->update(['company_active' => $company_id]);
+        return response()->json(['response' => 'Información actualizada', 'errors' => []]);
     }
 }

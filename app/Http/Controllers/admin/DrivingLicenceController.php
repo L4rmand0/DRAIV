@@ -219,7 +219,7 @@ class DrivingLicenceController extends Controller
 
     public function drivingLicenceList()
     {
-        $company_id = Auth::user()->company_id;
+        $company_id = Auth::user()->company_active;
         $driving_licence = DB::table('driving_licence')
             ->orderBy('driving_licence.start_date', 'desc')
             ->join('driver_information', 'driver_information.dni_id', '=', 'driving_licence.driver_information_dni_id')
@@ -306,6 +306,7 @@ class DrivingLicenceController extends Controller
 
     public static function getLicenceExpiDates($company_id)
     {
+        $company_id = Auth::user()->company_active;
         $fecha_actual = date("Y-m-d");
         $date_month = date("Y-m-d", strtotime($fecha_actual . "+ 3 month"));
         $licencias_expiration = DB::table('driving_licence')
@@ -365,6 +366,7 @@ class DrivingLicenceController extends Controller
 
     public static function getLicencesExpirated($company_id)
     {
+        $company_id = Auth::user()->company_active;
         $fecha_actual = date("Y-m-d");
         $licencias_expiration = DB::table('driving_licence')
             ->select(DB::raw(

@@ -108,7 +108,7 @@ class DocVerificationController extends Controller
 
     public function listVerifiedDrivers(Request $request)
     {
-        $company_id = auth()->user()->company_id;
+        $company_id = auth()->user()->company_active;
         $list_verifieds = DB::table('user_vehicle as uv')
             ->select(DB::raw(
                 'di.first_name,

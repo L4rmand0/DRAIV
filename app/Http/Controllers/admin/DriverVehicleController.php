@@ -7,6 +7,7 @@ use App\DriverVehicle;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Vehicle;
+use Illuminate\Support\Facades\Auth;
 
 class DriverVehicleController extends Controller
 {
@@ -309,6 +310,7 @@ class DriverVehicleController extends Controller
 
     public static function getTotalVehiclesByCompany($company_id)
     {
+        $company_id = Auth::user()->company_active;
         $vechicles = DB::table('vehicle')
             ->select(DB::raw('count(plate_id) as total_vehicles'))
             ->where('vehicle.company_id', '=', $company_id)

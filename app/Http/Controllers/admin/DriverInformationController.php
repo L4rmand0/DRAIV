@@ -345,7 +345,7 @@ class DriverInformationController extends Controller
 
     public function driveInformationList()
     {
-        $company_id = Auth::user()->company_id;
+        $company_id = Auth::user()->company_active;
         $drive_information = DB::table('driver_information')
             ->orderBy('driver_information.start_date', 'desc')
             ->join('users', 'driver_information.Db_user_id', '=', 'users.id')
@@ -381,7 +381,7 @@ class DriverInformationController extends Controller
 
     public static function getListDrivers()
     {
-        $company_id = Auth::user()->company_id;
+        $company_id = Auth::user()->company_active;
         return DB::table('driver_information')
             ->select(
                 'driver_information.dni_id'
@@ -393,7 +393,7 @@ class DriverInformationController extends Controller
 
     public function getDriveInformationtoSelect2(Request $request)
     {
-        $company_id = $request->get('company_id');
+        $company_id = Auth::user()->company_active;
         $admin2 = DB::table('driver_information')
             ->orderBy('driver_information.date_operation', 'desc')
             ->select(
@@ -417,7 +417,7 @@ class DriverInformationController extends Controller
 
     public function getNameDriver(Request $request)
     {
-        $company_id = Auth::user()->company_id;
+        $company_id = Auth::user()->company_active;
         $dni_id = $request->all()['user_info_id'];
         $name_driver = DB::table('driver_information')
             ->select(
@@ -459,6 +459,7 @@ class DriverInformationController extends Controller
 
     public static function getNumberDriversByCompany($company_id)
     {
+        $company_id = Auth::user()->company_active;
         $drivers = DB::table('driver_information')
             ->orderBy('driver_information.date_operation', 'desc')
             ->where('driver_information.company_id', '=', $company_id)
@@ -550,6 +551,7 @@ class DriverInformationController extends Controller
 
     public static function getGenderByCompany($company_id)
     {
+        $company_id = Auth::user()->company_active;
         return DB::table('driver_information')
             ->select(DB::raw(
                 'driver_information.gender,COUNT(*) AS total'
@@ -598,6 +600,7 @@ class DriverInformationController extends Controller
 
     public static function getAverageScoreByCompany($company_id)
     {
+        $company_id = Auth::user()->company_active;
         return DB::table('driver_information')
             ->select(DB::raw(
                 'avg(driver_information.score) as average'
