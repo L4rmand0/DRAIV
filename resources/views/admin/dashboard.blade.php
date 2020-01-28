@@ -359,7 +359,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Resumen de Datos de <span id="span_name_company"></span></h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Resumen de Datos de <span id="span_name_company">{{ $company_name }}</span></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
