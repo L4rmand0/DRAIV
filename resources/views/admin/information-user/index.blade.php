@@ -46,7 +46,7 @@
         <div class="card-footer">
             <div class="container text-center">
                 <button class="btn btn-primary" type="button" style="margin-top: 17px;" data-toggle="modal"
-                    data-target="#form_create_driver_information" id="modal_form_drive_info"><i class="fas fa-plus"></i> Agregar Registro</button>
+                    data-target="#form_create_driver_information" id="modal_form_drive_info"><i class="fas fa-plus"></i> Agregar Conductor</button>
             </div>
             <div class="container text-center">
                 <button class="btn btn-success" type="button" style="margin-top: 17px;" data-toggle="modal"

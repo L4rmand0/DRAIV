@@ -26,7 +26,7 @@
         </div>
         @foreach ($permission_item['childs'] as $key_childs => $item_childs)
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ route('admin',$item_childs->module_type) }}" aria-expanded="true"
+                <a class="nav-link collapsed" href="{{ route('admin',['module'=>$item_childs->module_type]) }}" aria-expanded="true"
                     aria-controls="collapseTwo">
                     <i class="{{ $item_childs->imagen }}"></i>
                     <span>{{ $item_childs->name }}</span>

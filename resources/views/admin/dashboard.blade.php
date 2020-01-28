@@ -2,7 +2,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
-    <input type="hidden" id="dashboard_company_id" value="{{ $company_id }}">
+    <input type="hidden" id="dashboard_company_id" value="{{ $company_active }}">
     <input type="hidden" id="function_barchart_education" value="{{ route('drivers-info.education-chart') }}">
     <input type="hidden" id="function_barchart_civil_state" value="{{ route('drivers-info.civil-state-chart') }}">
     <input type="hidden" id="function_barchart_category" value="{{ route('drivers-info.category-chart') }}">
@@ -46,9 +46,13 @@
                                             Compañía</div>
                                         <select class="ml-2" name="" class="mt-3" id="select_company_dash"
                                             style="width: 37%;" data-url="{{ route('drivers-select-lists')}}">
-                                            <option value="{{ $company_id }}">{{ $company_name }}</option>
                                             @foreach ($child_companies as $company)
+                                            @if ($company['id'] == $company_active)
+                                            <option value="{{ $company['id'] }}" selected>{{ $company['name'] }}
+                                            </option>
+                                            @else
                                             <option value="{{ $company['id'] }}">{{ $company['name'] }}</option>
+                                            @endif
                                             @endforeach
                                         </select>
                                     </div>
@@ -359,7 +363,8 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Resumen de Datos de <span id="span_name_company">{{ $company_name }}</span></h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Resumen de Datos de <span
+                            id="span_name_company">{{ $company_name }}</span></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

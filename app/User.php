@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use Notifiable;
+    const USER_DEFAULT = 2;
     public $timestamps = false;
     /**
      * The attributes that are mass assignable.

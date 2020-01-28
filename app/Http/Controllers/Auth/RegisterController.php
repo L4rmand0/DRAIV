@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Company;
-use App\Http\Controllers\Controller;
 use App\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Company;
+use App\Profile;
+use App\Permission;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -93,12 +95,22 @@ class RegisterController extends Controller
             'name_company'=> $data['company_name'],
             'user_id'=> auth()->id(),
         ]);
-        User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'company_id' => $data['company_id']
+            'company_id' => $data['company_id'],
+            'profile_id' => User::USER_DEFAULT
         ]);
+
+        $permission_profile = Profile::where('profile_id', User::USER_DEFAULT)->get()->toArray()[0]['permission'];
+        $permission_modules_arr = json_decode($permission_profile, true)['modules'];
+        foreach ($permission_modules_arr as $key => $value) {
+            $response = Permission::create([
+                'module_module_id' => $value,
+                'users_id' => $user->id,
+            ]);
+        }    
         return response()->json(['response' => 'Usuario creado correctamente', 'errors' => []]);
     }
 

@@ -116,7 +116,7 @@ class UserController extends Controller
         if (empty($permission_modules_arr)) {
             return response()->json(['errors' => ['modules empty', 'Este perfil no tiene permisos asociados. Por favor comuníquese con el soporte.']]);
         }
-        $response = User::where('id', $data_updated['id'])->update([$field => $value, 'Operation' => 'U', 'Date_operation' => $now]);
+        $response = User::where('id', $data_updated['id'])->update([$field => $value, 'operation' => 'U', 'date_operation' => $now]);
         $user_permission = $this->permission_controller->getArrUserPermissions($data_updated['id']);
         // print_r($user_permission);
         // die;
@@ -131,7 +131,7 @@ class UserController extends Controller
         } else {
             // print_r($user_permission);
             $response = Permission::where('users_id', $data_updated['id'])
-                ->update(['Operation' => 'D', 'Date_operation' => $now, 'user_id' => $id]);
+                ->update(['operation' => 'D', 'date_operation' => $now, 'user_id' => $id]);
             foreach ($permission_modules_arr as $key => $value) {
                 $coincidencia = 0;
                 // echo ' <pre> || '.$value.' ';
@@ -149,7 +149,7 @@ class UserController extends Controller
                 if ($coincidencia > 0) {
                     $response = Permission::where('module_module_id', $value)
                         ->where('users_id', $data_updated['id'])
-                        ->update(['Operation' => 'U', 'Date_operation' => $now, 'user_id' => $id]);
+                        ->update(['operation' => 'U', 'date_operation' => $now, 'user_id' => $id]);
                 } else {
                     $response = Permission::create([
                         'module_module_id' => $value,
@@ -185,7 +185,9 @@ class UserController extends Controller
 
     public function usersList()
     {
-        $company_id = Auth::user()->company_id;
+        $company_id = Auth::user()->company_active;
+        // echo $company_id;
+        // die;
         $users = DB::table('users as u')
             ->select(DB::raw(
                 'u.id, u.name, u.email, u.company_id, u.profile_id, p.user_profile'
@@ -265,5 +267,13 @@ class UserController extends Controller
             ->where('p.operation', '!=', 'D')
             ->get()->toArray();
         return $this->ListDT()->query(self::sanitazeArr($profile_list))->make('profile_id', 'user_profile');
+    }
+
+    public function updateCompanyActive(Request $request)
+    {
+        $company_id = $request->get('company_id');
+        $id = Auth::user()->id;
+        $user = User::where('id', $id)->update(['company_active' => $company_id]);
+        return response()->json(['response' => 'Información actualizada', 'errors' => []]);
     }
 }

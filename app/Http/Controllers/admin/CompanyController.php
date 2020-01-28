@@ -131,11 +131,21 @@ class CompanyController extends Controller
             )
             ->get()->toArray();
     }
+
     public static function getCompanyByid($id){
         return DB::table('company')
             ->select(
                 'company.company_id AS nit',
                 'company.name_company AS company'
+            )->where('company.company_id', '=', $id)
+            ->first();
+    }
+
+    public static function getCompanyByidOrigin($id){
+        return DB::table('company')
+            ->select(
+                'company.company_id',
+                'company.name_company'
             )->where('company.company_id', '=', $id)
             ->first();
     }

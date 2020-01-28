@@ -39,6 +39,7 @@ Route::prefix('admin')->group(function () {
     Route::get('users-list', 'admin\UserController@usersList')->name('users-list'); 
     Route::post('/register-user','admin\UserController@storeUserAdmin')->name('register-user');
     Route::post('/user-admin/destroy','admin\UserController@destroy')->name('user-admin.destroy');
+    Route::post('/user-admin/update-company','admin\UserController@updateCompanyActive')->name('user-admin.update-company');
     Route::get('user-admin/profile-select-lists','admin\ProfileController@profilesSelect2')->name('profile-select-list');
     Route::get('driver_info', 'admin\DriverInformationController@index')->name('admin.driver_info');
     Route::post('driver-info/update', 'admin\DriverInformationController@update')->name('driver-info.update'); 

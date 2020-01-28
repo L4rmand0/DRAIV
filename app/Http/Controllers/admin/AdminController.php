@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\admin;
 
-use DB;
 use App\DriverInformation;
 use App\DrivingLicence;
 use App\Http\Controllers\Controller;
@@ -12,6 +11,7 @@ use App\Profile;
 use App\User;
 use App\Vehicle;
 use auth;
+use DB;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -20,6 +20,8 @@ class AdminController extends Controller
     private $image_controller;
     private $user_controller;
     private $module;
+    private $company;
+    private $company_active;
 
     public function __construct()
     {
@@ -33,48 +35,58 @@ class AdminController extends Controller
         $auth_user = auth()->user();
         $module = $this->checkModulePermission($module, $auth_user->id);
         $this->module = $module;
-        $profile = auth()->user()->user_profile;
-        $company_name = CompanyController::getCompanyByid($auth_user->company_id)->company;
+        // dd($this->company_id);
+        $this->company_active =  auth()->user()->company_active;
+        $this->company = auth()->user()->company;
+        
+        $company_name = $this->company->name_company;
+        $child_companies = json_decode($auth_user->company->child_company, true);
+        $child_companies[]=['id'=>$auth_user->company_id,'name'=>$auth_user->company->name_company];
+        // dd($child_companies);
         $this->permissions = $this->getPermissions($auth_user->id);
         if ($auth_user->profile_id != 1) {
             switch ($module) {
                 case 'users':
                     $profile_list = $this->user_controller->MakeProfileList();
-                    return view('admin.users.index', [
+                    $data_users = [
                         'company_name' => ucwords(strtolower($company_name)),
                         'permissions' => $this->permissions,
                         'profile_list' => json_encode($profile_list),
-                    ]);
+                    ];
+                    $data_users = $this->checkMultipleAdmin($auth_user, $child_companies, $data_users);
+                    return view('admin.users.index', $data_users);
                     break;
                 case 'driver_information':
                     $data_driver_information = $this->showIndexDriverInformation($company_name);
+                    $data_driver_information = $this->checkMultipleAdmin($auth_user, $child_companies, $data_driver_information);
+                    // echo '<pre>';
+                    // print_r($data_driver_information);
+                    // die;
                     return view('admin.information-user.index', $data_driver_information);
                     break;
                 case 'driving_licence':
                     $data_driving_licence = $this->showIndexDrivingLicence($company_name);
+                    $data_driving_licence = $this->checkMultipleAdmin($auth_user, $child_companies, $data_driving_licence);
                     return view('admin.driving-licence.index', $data_driving_licence);
                     break;
                 case 'vehicle':
                     $data_vehicle = $this->showIndexVehicle($company_name);
+                    $data_vehicle = $this->checkMultipleAdmin($auth_user, $child_companies, $data_vehicle);
                     return view('admin.vehicle.index', $data_vehicle);
                     break;
                 case 'driver_images':
                     $data_images = $this->showIndexDriverImages($company_name);
+                    $data_images = $this->checkMultipleAdmin($auth_user, $child_companies, $data_images);
                     return view('admin.images', $data_images);
                     break;
                 case 'dashboard':
                     $data_dashboard = $this->showIndexDashboard($auth_user->company_id);
-                    // $data_dashboard['multiple_admin'] = $auth_user->profile_id == Profile::MULTIPLEADMIN ? true : false;
-                    $data_dashboard['multiple_admin'] = false;
-                    if ($auth_user->profile_id == Profile::MULTIPLEADMIN ? true : false) {
-                        $child_companies = json_decode($auth_user->company->child_company, true);
-                        $data_dashboard['child_companies'] = $child_companies;
-                        $data_dashboard['multiple_admin'] = true;
-                    }
+                    $data_dashboard = $this->checkMultipleAdmin($auth_user, $child_companies, $data_dashboard);
                     return view('admin.dashboard', $data_dashboard);
                     break;
                 case 'doc_verification':
                     $data_doc_verification = $this->showIndexDocVerification($company_name);
+                    $data_doc_verification = $this->checkMultipleAdmin($auth_user, $child_companies, $data_doc_verification);
                     return view('admin.doc-verification.index', $data_doc_verification);
                     break;
                 default:
@@ -218,14 +230,27 @@ class AdminController extends Controller
         ];
     }
 
-    public function viewSumarizeTable(Request $request){
+    public function viewSumarizeTable(Request $request)
+    {
         $company_id = $request->get('company_id');
         $sumarize = DB::table('view_sumarize as vs')
             ->where('vs.company_id', '=', $company_id)
             ->get();
         // echo '<pre>';
         // print_r($sumarize);
-        // die;    
-        return datatables()->of($sumarize)->make(true);       
+        // die;
+        return datatables()->of($sumarize)->make(true);
+    }
+
+    public function checkMultipleAdmin($auth_user, $child_companies, $data)
+    {
+        $data['multiple_admin'] = false;
+        $data['company_active'] = $this->company_active;
+        $data['company_id'] = $this->company->company_id;
+        if ($auth_user->profile_id == Profile::MULTIPLEADMIN ? true : false) {
+            $data['child_companies'] = $child_companies;
+            $data['multiple_admin'] = true;
+        }
+        return $data;
     }
 }
