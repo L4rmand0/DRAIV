@@ -116,7 +116,7 @@ class UserController extends Controller
         if (empty($permission_modules_arr)) {
             return response()->json(['errors' => ['modules empty', 'Este perfil no tiene permisos asociados. Por favor comuníquese con el soporte.']]);
         }
-        $response = User::where('id', $data_updated['id'])->update([$field => $value, 'Operation' => 'U', 'Date_operation' => $now]);
+        $response = User::where('id', $data_updated['id'])->update([$field => $value, 'operation' => 'U', 'date_operation' => $now]);
         $user_permission = $this->permission_controller->getArrUserPermissions($data_updated['id']);
         // print_r($user_permission);
         // die;
@@ -131,7 +131,7 @@ class UserController extends Controller
         } else {
             // print_r($user_permission);
             $response = Permission::where('users_id', $data_updated['id'])
-                ->update(['Operation' => 'D', 'Date_operation' => $now, 'user_id' => $id]);
+                ->update(['operation' => 'D', 'date_operation' => $now, 'user_id' => $id]);
             foreach ($permission_modules_arr as $key => $value) {
                 $coincidencia = 0;
                 // echo ' <pre> || '.$value.' ';
@@ -149,7 +149,7 @@ class UserController extends Controller
                 if ($coincidencia > 0) {
                     $response = Permission::where('module_module_id', $value)
                         ->where('users_id', $data_updated['id'])
-                        ->update(['Operation' => 'U', 'Date_operation' => $now, 'user_id' => $id]);
+                        ->update(['operation' => 'U', 'date_operation' => $now, 'user_id' => $id]);
                 } else {
                     $response = Permission::create([
                         'module_module_id' => $value,
