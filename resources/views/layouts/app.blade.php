@@ -16,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Fira+Sans&display=swap" rel="stylesheet">
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/modern-business.css') }}" rel="stylesheet">
 </head>
 

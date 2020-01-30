@@ -23,6 +23,7 @@ class DriverInformationController extends Controller
 {
     private $excel;
     private $chart_js;
+    private $user_controller;
 
     /**
      * Create a new controller instance.
@@ -33,6 +34,7 @@ class DriverInformationController extends Controller
     {
         $this->middleware('auth');
         $this->chart_js = new ChartJS();
+        $this->user_controller = new UserController();
     }
     
     /**
@@ -393,6 +395,7 @@ class DriverInformationController extends Controller
 
     public function getDriveInformationtoSelect2(Request $request)
     {
+        $this->user_controller->updateCompanyActive($request);
         $company_id = Auth::user()->company_active;
         $admin2 = DB::table('driver_information')
             ->orderBy('driver_information.date_operation', 'desc')

@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     use TListDataTable;
-
     private $permission_controller;
     /**
      * Create a new controller instance.

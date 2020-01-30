@@ -4,6 +4,13 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-logomodern-business-nav/blob/master/LICENSE)
  */
 
+ @font-face {
+	font-family: 'IBMPlexSans';
+	src: url('../fonts/draiv/IBMPlexSansText.otf'); 
+} 
+
+public/css/modern-business.css
+
 body {
     padding-top: 56px;
 }
@@ -29,4 +36,33 @@ body {
 
 .custom-control-label.error::before {
     border: 1px solid #e3342f;
+}
+
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+
+/* --------------------------------- EXTENSIÓN PARA EL DISEÑO RESPONSIVO DEL INDEX ---------------------------------- */
+
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+.container-draiv {
+    display: flex;
+}
+
+.col-6-draiv {
+    display: flex;
+    -webkit-box-flex: 0;
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+#icon-col-1{
+    width: 250px;
+    height: 252px;
+}
+
+#text-col-1{
+    flex-grow: 1;
 }

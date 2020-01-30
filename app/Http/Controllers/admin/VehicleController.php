@@ -79,7 +79,7 @@ class VehicleController extends Controller
      */
     public function store(Request $request)
     {
-        $company_id = auth()->user()->company_id;
+        $company_id = auth()->user()->company_active;
         // echo $company_id;
         // die;
         $data_input_drivers = $request->get('driver_vehicle');

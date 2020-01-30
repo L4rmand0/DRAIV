@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Company;
 use App\DriverInformation;
 use App\DrivingLicence;
 use App\Http\Controllers\Controller;
@@ -22,6 +23,7 @@ class AdminController extends Controller
     private $module;
     private $company;
     private $company_active;
+    private $company_active_name;
 
     public function __construct()
     {
@@ -37,6 +39,7 @@ class AdminController extends Controller
         $this->module = $module;
         // dd($this->company_id);
         $this->company_active =  auth()->user()->company_active;
+        $this->company_active_name = Company::where('company_id',$this->company_active)->first()->name_company;
         $this->company = auth()->user()->company;
         
         $company_name = $this->company->name_company;
@@ -142,6 +145,7 @@ class AdminController extends Controller
             'technomecanical_expiration' => $technomecanical_expiration,
             'technomecanical_expirated' => $technomecanical_expirated,
             'permissions' => $this->permissions,
+            'dashboard' => true,
         ];
     }
 
@@ -243,13 +247,18 @@ class AdminController extends Controller
     }
 
     public function checkMultipleAdmin($auth_user, $child_companies, $data)
-    {
+    {   
         $data['multiple_admin'] = false;
         $data['company_active'] = $this->company_active;
+        $data['company_active_name'] = $this->company_active_name;
         $data['company_id'] = $this->company->company_id;
         if ($auth_user->profile_id == Profile::MULTIPLEADMIN ? true : false) {
             $data['child_companies'] = $child_companies;
             $data['multiple_admin'] = true;
+        }
+        // Revisa si el llamado lo hizo la opción del dashboard
+        if(empty($data['dashboard'])){
+            $data['dashboard'] = false;
         }
         return $data;
     }
