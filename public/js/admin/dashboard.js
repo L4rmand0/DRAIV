@@ -62,6 +62,7 @@ var table_sumarize;
             $target = $(this);
             $("#dashboard_company_id").val($target.val());
             $("#span_name_company").text($("#select_company_dash option:selected").text());
+            $("#name_company_dashboard").text("Dashboard "+$("#select_company_dash option:selected").text());
             $.ajax({
                 type: 'GET',
                 url: $('#select_cc_driver').data('url'),

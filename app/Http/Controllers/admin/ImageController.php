@@ -127,9 +127,11 @@ class ImageController extends Controller
                     $delete_file = Storage::disk('s3')->delete($path_old);
                     $response = Imagenes::where('image_id', $image_id)->update([
                         'url' => $path,
+                        'size_image' => $size,
+                        'type_image' => $extension,
                         'operation' => 'U',
-                        'date_operation' => $now,
-                        'user_id' => auth()->id()
+                        'user_id' => auth()->id(),
+                        'date_operation' => $now
                     ]);
                     return response()->json(['response' => 'ok', 'errors' => []]);
                 } else {
@@ -149,7 +151,7 @@ class ImageController extends Controller
                     'tipo_doc' => $file_type,
                     'url' => $path,
                     'size_image' => $size,
-                    'type_image' => $file_type,
+                    'type_image' => $extension,
                     'user_id' => auth()->id(),
                     'driver_information_dni_id' => $cedula
                 ]);

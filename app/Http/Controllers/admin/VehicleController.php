@@ -79,7 +79,7 @@ class VehicleController extends Controller
      */
     public function store(Request $request)
     {
-        $company_id = auth()->user()->company_id;
+        $company_id = auth()->user()->company_active;
         // echo $company_id;
         // die;
         $data_input_drivers = $request->get('driver_vehicle');
@@ -278,6 +278,9 @@ class VehicleController extends Controller
      */
     public function destroy(Request $request)
     {
+        echo '<pre>';
+        print_r($request->all());
+        die;
         $data_delete = $request->all();
         $now = date("Y-m-d H:i:s");
         $plate_id = $data_delete['plate_id'];

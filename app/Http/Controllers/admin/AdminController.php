@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Company;
 use App\DriverInformation;
 use App\DrivingLicence;
 use App\Http\Controllers\Controller;
@@ -22,6 +23,7 @@ class AdminController extends Controller
     private $module;
     private $company;
     private $company_active;
+    private $company_active_name;
 
     public function __construct()
     {
@@ -36,14 +38,17 @@ class AdminController extends Controller
         $module = $this->checkModulePermission($module, $auth_user->id);
         $this->module = $module;
         // dd($this->company_id);
-        $this->company_active =  auth()->user()->company_active;
+        $this->company_active = auth()->user()->company_active;
+        // dd($this->company_active);
+        $this->company_active_name = Company::where('company_id', $this->company_active)->first()->name_company;
         $this->company = auth()->user()->company;
-        
+
         $company_name = $this->company->name_company;
         $child_companies = json_decode($auth_user->company->child_company, true);
-        $child_companies[]=['id'=>$auth_user->company_id,'name'=>$auth_user->company->name_company];
+        $child_companies[] = ['id' => $auth_user->company_id, 'name' => $auth_user->company->name_company];
         // dd($child_companies);
         $this->permissions = $this->getPermissions($auth_user->id);
+
         if ($auth_user->profile_id != 1) {
             switch ($module) {
                 case 'users':
@@ -72,6 +77,8 @@ class AdminController extends Controller
                 case 'vehicle':
                     $data_vehicle = $this->showIndexVehicle($company_name);
                     $data_vehicle = $this->checkMultipleAdmin($auth_user, $child_companies, $data_vehicle);
+                    // dd("Hola vehicle 2");
+                    // die;
                     return view('admin.vehicle.index', $data_vehicle);
                     break;
                 case 'driver_images':
@@ -142,6 +149,7 @@ class AdminController extends Controller
             'technomecanical_expiration' => $technomecanical_expiration,
             'technomecanical_expirated' => $technomecanical_expirated,
             'permissions' => $this->permissions,
+            'dashboard' => true,
         ];
     }
 
@@ -246,10 +254,15 @@ class AdminController extends Controller
     {
         $data['multiple_admin'] = false;
         $data['company_active'] = $this->company_active;
+        $data['company_active_name'] = $this->company_active_name;
         $data['company_id'] = $this->company->company_id;
         if ($auth_user->profile_id == Profile::MULTIPLEADMIN ? true : false) {
             $data['child_companies'] = $child_companies;
             $data['multiple_admin'] = true;
+        }
+        // Revisa si el llamado lo hizo la opción del dashboard
+        if (empty($data['dashboard'])) {
+            $data['dashboard'] = false;
         }
         return $data;
     }

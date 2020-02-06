@@ -101,6 +101,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/list-datatable', 'admin\UserController@MakeListProfile')->name('list-datatable');
 });
 
+Route::get('/api-text-extract', 'ApiController@index')->name('api-text-extract');
+
 // Probar plantillas
 Route::get('/plantilla', function () {
     return view('mails.mailcontactus');
@@ -118,6 +120,7 @@ Route::post('/saveimg', 'ImageController@saveImgS3')->name('saveimg');
 
 Auth::routes();
 Route::get('register-validate','Auth\RegisterController@formValidate')->name('register.validate');
+
 
 
 Route::get('/home', 'HomeController@index')->name('home');

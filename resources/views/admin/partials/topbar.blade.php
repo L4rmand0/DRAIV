@@ -44,7 +44,7 @@
             </div>
         </li>
         <li class="nav-item dropdown no-arrow mx-1 mr-4" style="width: 130%;">
-            @if ($multiple_admin)
+            @if ($multiple_admin && $dashboard == false)
             <a class="nav-link" style="width: 130%;">
                 <select class="" name="" class="" id="select_company_main" style="width: 100%;"
             data-url="{{ route('drivers-select-lists')}}" data-update="{{ route('user-admin.update-company') }}">

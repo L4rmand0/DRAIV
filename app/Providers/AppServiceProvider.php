@@ -4,6 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use GuzzleHttp\Client;
 
 class AppServiceProvider extends ServiceProvider
 {

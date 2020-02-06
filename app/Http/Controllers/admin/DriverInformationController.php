@@ -23,6 +23,7 @@ class DriverInformationController extends Controller
 {
     private $excel;
     private $chart_js;
+    private $user_controller;
 
     /**
      * Create a new controller instance.
@@ -33,6 +34,7 @@ class DriverInformationController extends Controller
     {
         $this->middleware('auth');
         $this->chart_js = new ChartJS();
+        $this->user_controller = new UserController();
     }
     
     /**
