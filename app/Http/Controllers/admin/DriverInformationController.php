@@ -395,7 +395,6 @@ class DriverInformationController extends Controller
 
     public function getDriveInformationtoSelect2(Request $request)
     {
-        $this->user_controller->updateCompanyActive($request);
         $company_id = Auth::user()->company_active;
         $admin2 = DB::table('driver_information')
             ->orderBy('driver_information.date_operation', 'desc')

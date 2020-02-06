@@ -278,6 +278,9 @@ class VehicleController extends Controller
      */
     public function destroy(Request $request)
     {
+        echo '<pre>';
+        print_r($request->all());
+        die;
         $data_delete = $request->all();
         $now = date("Y-m-d H:i:s");
         $plate_id = $data_delete['plate_id'];

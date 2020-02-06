@@ -4,13 +4,12 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-logomodern-business-nav/blob/master/LICENSE)
  */
 
- @font-face {
-	font-family: 'IBMPlexSans';
-	src: url('../fonts/draiv/IBMPlexSansText.otf'); 
-} 
+@font-face {
+    font-family: 'IBMPlexSans';
+    src: url('../fonts/draiv/IBMPlexSansText.otf');
+}
 
 public/css/modern-business.css
-
 body {
     padding-top: 56px;
 }
@@ -47,22 +46,205 @@ body {
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-.container-draiv {
+
     display: flex;
+    display: flex;
+    flex-direction: row;
+    -webkit-box-flex: 0;
+    flex: 0 0 100%;
+    max-width: 100%;
 }
 
-.col-6-draiv {
+
+.container-dr-col-1 {
+    display: flex;
     display: flex;
     -webkit-box-flex: 0;
-    flex: 0 0 50%;
-    max-width: 50%;
+    -webkit-box-flex: 0;
 }
 
-#icon-col-1{
+.container-dr-col-2 {
+    width: 16.66666666666%;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-flex: 0;
+}
+
+.container-dr-col-3 {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-flex: 0;
+}
+
+.container-dr-col-4 {
+    width: 33.33333333333%;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-flex: 0;
+}
+
+.container-dr-col-5 {
+    width: 41.66666666666%;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-flex: 0;
+}
+
+.container-dr-col-6 {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-flex: 0;
+}
+
+.container-dr-col-7 {
+    width: 58.33333333333%;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-flex: 0;
+}
+
+.container-dr-col-8 {
+    width: 66.66666666666%;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-flex: 0;
+}
+
+.container-dr-col-9 {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-flex: 0;
+}
+
+.container-dr-col-10 {
+    width: 83.33333333333%;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-flex: 0;
+}
+
+.container-dr-col-11 {
+    width: 91.666666666%;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-flex: 0;
+}
+
+.container-dr-col-12 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-flex: 0;
+}
+
+.row-1 {
+    border: 1px solid;
+    height: 8.33333333333%;
+    margin: 0.2em;
+    box-sizing: border-box;
+}
+
+.row-2 {
+    border: 1px solid;
+    height: 16.66666666666%;
+    margin: 0.2em;
+    box-sizing: border-box;
+}
+
+.row-3 {
+    border: 1px solid;
+    height: 25%;
+    margin: 0.2em;
+    box-sizing: border-box;
+}
+
+.row-4 {
+    border: 1px solid;
+    height: 33.33333333333%;
+    margin: 0.2em;
+    box-sizing: border-box;
+}
+
+.row-5 {
+    border: 1px solid;
+    height: 41.66666666666%;
+    margin: 0.2em;
+    box-sizing: border-box;
+}
+
+.row-6 {
+    border: 1px solid;
+    height: 50%;
+    margin: 0.2em;
+    box-sizing: border-box;
+}
+
+.row-7 {
+    border: 1px solid;
+    height: 58.33333333333%;
+    margin: 0.2em;
+    box-sizing: border-box;
+}
+
+.row-8 {
+    border: 1px solid;
+    height: 66.66666666666%;
+    margin: 0.2em;
+    box-sizing: border-box;
+}
+
+.row-9 {
+    border: 1px solid;
+    height: 75%;
+    margin: 0.2em;
+    box-sizing: border-box;
+}
+
+.row-10 {
+    border: 1px solid;
+    height: 83.33333333333%;
+    margin: 0.2em;
+    box-sizing: border-box;
+}
+
+.row-11 {
+    border: 1px solid;
+    height: 91.666666666%;
+    margin: 0.2em;
+    box-sizing: border-box;
+}
+
+.row-12 {
+    border: 1px solid;
+    height: 100%;
+    margin: 0.2em;
+}
+
+
     width: 250px;
     height: 252px;
+    height: 252px;
+    object-fit: contain;
 }
 
-#text-col-1{
-    flex-grow: 1;
+#text-col-1 {
+    font-weight: 600;
+    color: #3f5669;
+    position: relative;
+    font-size: 1.6em;
+}
+
+.vl {
+    border-left: 6px solid #f6af5d;
+}
+
+
+.hr-dr {
+    background-color: #f6af5d;
+    height: 5px;
+    width: 100%;
+    top: 100%;
 }
