@@ -53,7 +53,17 @@
                             //          '  window.location.href = $(this).data("url");'+
                             //          ' })'+
                             //         '</script>';
-                        $("#card_body_list_documents").html(table)
+                        $("#card_body_list_documents").html(table);
+                        $("#btn_text_extract").hide()
+                        if(data.documents_required == true){
+                            $("#btn_text_extract").attr("hidden", false);
+                            $("#btn_text_extract_validate").attr("hidden", false);
+                            $("#btn_text_extract").show();
+                            $("#btn_text_extract_validate").show();
+                        }else{
+                            $("#btn_text_extract").hide();
+                            $("#btn_text_extract_validate").hide();
+                        }
                             // swal.fire(
                             //     'Proceso Completado',
                             //     'Archivo subido correctamente.',
