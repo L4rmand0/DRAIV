@@ -277,12 +277,39 @@ class ImageController extends Controller
                     $checked_documents[$key_l]['check'] = 'N';
                 }
             }
+            $has_documents_required = false;
         } else {
             foreach ($list_documents as $key_l => $value_l) {
                 $checked_documents[$key_l]['check'] = 'N';
             }
+            $has_documents_required = false;
         }
-        return response()->json(['errors' => '', 'documents' => $checked_documents]);
+        // echo '<pre>';
+        // print_r($checked_documents);
+        // die;
+        $has_documents_required = $this->checkRequiredDocuments($documents);
+        return response()->json(['errors' => '', 'documents' => $checked_documents,'documents_required' => $has_documents_required]);
+    }
+
+    public function checkRequiredDocuments($documents){
+        $documents_required = Imagenes::REQUIRED_DOCUMENTS;
+        // echo '<pre> in';
+        // print_r($documents);
+        // print_r($documents_required);
+        $total_req = count($documents_required);
+        $total_docs = 0;
+        foreach ($documents as $key_doc => $value_doc) {
+            foreach ($documents_required as $key_req => $value_req) {
+                if($value_doc->tipo_doc == $value_req){
+                    $total_docs++;
+                }
+            }
+        }
+        if($total_docs == $total_req){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function checkIncompleteDocumentDrivers($company_id){

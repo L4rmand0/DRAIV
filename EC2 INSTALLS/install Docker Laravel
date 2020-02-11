@@ -1,0 +1,56 @@
+Comandos:
+
+Agregar los repositorios de docker:
+
+sudo apt-get update
+sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+Instalación de docker-ce:
+
+sudo apt-get update
+sudo apt-get install docker-ce
+
+Instalar Docker-Compose:
+
+sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+Descargar e instalar laradock:
+
+git clone https://github.com/Laradock/laradock.git
+cd laradock
+cp env-example .env
+sudo docker-compose up -d nginx
+
+Instalar el proyecto:
+
+sudo docker-compose exec workspace bash
+git clone https://github.com/L4rmand0/DRAIV.git
+exit
+
+Instalar el composer:
+
+
+Arreglar el composer update:
+
+sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
+sudo /sbin/mkswap /var/swap.1
+sudo /sbin/swapon /var/swap.1
+
+composer require aws/aws-sdk-php
+
+sudo chown -R $USER $HOME/.composer
+sudo apt install php-cli composer unzip
+
+sudo apt-get install -y php7.2-gd
+sudo apt-get install php7.2-intl
+sudo apt-get install php7.2-xsl
+sudo apt-get install php7.2-xml
+sudo apt-get install php7.2-mbstring
+composer require aws/aws-sdk-php
+composer update
+chmod 777 -R /home/ubuntu/DRAIV/
+
+
