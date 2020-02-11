@@ -50,7 +50,7 @@
                 </div>
                 <div class="card-body" id="card_body_list_documents">
                 </div>
-                <div class="card-footer text-left">
+                <div class="card-footer text-right">
                     <button class="btn btn-primary" id="btn_text_extract" hidden>Extraer Información</button>
                     <button class="btn btn-primary" id="btn_text_extract_validate" hidden>Validar Información</button>
                 </div>

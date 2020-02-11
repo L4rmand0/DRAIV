@@ -377,14 +377,14 @@
   </div> --}}
 
 </div>
-<div class="container-draiv">
+{{-- <div class="container-draiv">
   <div class="col-6-draiv" id="one-container">
     <p id="text-col-1">Almacenamiento de documentos digitales</p>
     <img src="{{ asset('img/icons/grupo483@3x.png') }}" alt="" id="icon-col-1">
     Columna 1
   </div>
   <div class="col-6-draiv" id="second-container">Columna 2</div>
-</div>
+</div> --}}
 
 @include('partials.footer')
 @endsection
