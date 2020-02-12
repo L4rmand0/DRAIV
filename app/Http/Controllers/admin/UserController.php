@@ -228,6 +228,7 @@ class UserController extends Controller
                 'email' => $data_input['email'],
                 'password' => Hash::make($data_input['password']),
                 'company_id' => $data_input['company_id'],
+                'company_active' => $data_input['company_id'],
                 'profile_id' => $data_input['profile_id'],
             ]);
             if ($user->id > 0) {
