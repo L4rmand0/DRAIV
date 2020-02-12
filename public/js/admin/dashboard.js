@@ -66,7 +66,7 @@ var table_sumarize;
             $.ajax({
                 type: 'GET',
                 url: $('#select_cc_driver').data('url'),
-                data: { 'type': 'select_admin2', 'company_id': $("#dashboard_company_id").val() },
+                data: { 'type': 'select_admin2', 'company_id': $("#dashboard_company_id").val(), 'dashboard':true },
             }).done(function (response) {
                 $("#select_cc_driver").html("");
                 response.forEach((dataset) => {
@@ -247,6 +247,20 @@ var table_sumarize;
                 chart_model_v.data = response.data;
                 chart_model_v.update();
             });
+
+            makePieChartVerifiedDrviersdByDriver().done(function (response) {
+                chart_drivers_v.data.datasets.forEach((dataset) => {
+                    let data_index = dataset.data.length;
+                    for (let index = 0; index < data_index; index++) {
+                        dataset.data.pop();
+                        chart_drivers_v.data.labels.pop();
+                    }
+                });
+                chart_drivers_v.options.scales = response.options.scales;
+                chart_drivers_v.data = response.data;
+                chart_drivers_v.update();
+            });
+
             getTotalDrivers();
             getTotalVehicles();
             getTotalGender();
@@ -976,6 +990,18 @@ var table_sumarize;
         return $.ajax({
             type: 'POST',
             url: $("#function_pie_model_v").val(),
+            data: {
+                'dni_id': $("#select_cc_driver").val(),
+                'company_id': $("#dashboard_company_id").val(),
+                "_token": $('#token').val()
+            },
+        });
+    }
+
+    function makePieChartVerifiedDrviersdByDriver() {
+        return $.ajax({
+            type: 'POST',
+            url: $("#function_drivers_verify").val(),
             data: {
                 'dni_id': $("#select_cc_driver").val(),
                 'company_id': $("#dashboard_company_id").val(),
