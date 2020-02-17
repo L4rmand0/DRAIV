@@ -16,6 +16,14 @@ class Module extends Model
         'users'=> 7,
         'dashboard'=> 8,
         'doc_verification'=> 9,
+        'autoevaluation_company'=> 10,
+        'evaluation'=> 11,
+        'human_component'=> 12,
+        'manual_doc_verification'=> 13,
+        'skills_m_t_m'=> 14,
+        'mt_mechanical_condition'=> 15,
+        'personal_ele_protection'=> 16,
+        'certification'=> 17,
     ];
 
     protected $table = 'module';

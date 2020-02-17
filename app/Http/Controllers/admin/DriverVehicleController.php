@@ -98,15 +98,17 @@ class DriverVehicleController extends Controller
         // die;
         $data_delete = $request->all();
         $plate_id = $data_delete['vehicle_plate_id'];
+        //Conultar para obtener el número de conductores que tiene ese vehículo
         $vehicle = DB::table('user_vehicle')
             ->where('user_vehicle.operation', '!=', 'D')
             ->where('user_vehicle.vehicle_plate_id', '=', $plate_id)
             ->select(DB::raw(
                 'user_vehicle.id'
             ))->get()->toArray();
-
+        // Actualiza el registro activo de ese conductor a operation D
+        $delete = DriverVehicle::where('id', $data_delete['id'])->where('operation', '!=', 'D')->update(['operation' => 'D', 'user_id' => auth()->id()]);
+        // Actualiza el número de conductores ese vehiculo en uno menos
         $new_numbers = count($vehicle) - 1;
-        $delete = DriverVehicle::where('id', $data_delete['id'])->update(['operation' => 'D', 'user_id' => auth()->id()]);
         $update_vehicles = Vehicle::where('plate_id', $plate_id)->update([
             'operation' => 'U',
             'user_id' => auth()->id(),
@@ -206,7 +208,17 @@ class DriverVehicleController extends Controller
         // print_r($data_input_drivers);
         // die;
         $now = date("Y-m-d H:i:s");
+        //Actualiza todos los conductores de ese vehículo y los pone en Delete
+        $update_drive_vechiculo = DriverVehicle::where('vehicle_plate_id', $plate_id)->update([
+            'operation' => 'D',
+            'date_operation' => $now,
+            'user_id' => auth()->id()
+        ]);
+
+
+
         foreach ($data_input_drivers as $key_in => $value_in) {
+            //Busca cada de los conductores a insertar en la tabla user_vehiculo sin importar la placa
             $driver_searched = DB::table('user_vehicle')
                 ->where('user_vehicle.driver_information_dni_id', '=', $value_in)
                 ->select(DB::raw(
@@ -215,11 +227,14 @@ class DriverVehicleController extends Controller
                              user_vehicle.driver_information_dni_id, 
                              user_vehicle.operation'
                 ))->first();
+
             foreach ($list_drivers as $key_l => $value_l) {
                 $coincidencia = 0;
+                // Revisa que en la lista de conductores a ingresar y los conductores insertados con esa placa ya exista ese dni_id
                 if ($value_in == $value_l->driver_information_dni_id) {
                     $coincidencia++;
                 }
+                //Si existe ese dni_id con esa placa, ahora lo revisa con otras placas
                 if ($coincidencia == 0) {
                     if (empty($driver_searched)) {
                         $insert_drive_vehicle = DriverVehicle::create([
@@ -228,10 +243,9 @@ class DriverVehicleController extends Controller
                             'user_id' => auth()->id()
                         ]);
                     } else {
-                        $update_drive_vechiculo = DriverVehicle::where('id', $driver_searched->id)->update([
-                            'operation' => 'U',
-                            'date_operation' => $now,
+                        $insert_drive_vehicle = DriverVehicle::create([
                             'vehicle_plate_id' => $plate_id,
+                            'driver_information_dni_id' => $value_in,
                             'user_id' => auth()->id()
                         ]);
                     }
@@ -244,7 +258,7 @@ class DriverVehicleController extends Controller
                 }
             }
         }
-        // Los conductores que no se encuentren dentro de la nueva lista de conductores los pone en 'D'
+        //Los conductores que no se encuentren dentro de la nueva lista de conductores los pone en 'D'
         foreach ($list_drivers as $key_l => $value_l) {
             $coincidencia = 0;
             foreach ($data_input_drivers as $key_in => $value_in) {
@@ -268,6 +282,7 @@ class DriverVehicleController extends Controller
         foreach ($list_drivers as $value) {
             $driver_vehicle = DB::table('user_vehicle')
                 ->where('user_vehicle.driver_information_dni_id', '=', $value)
+                ->where('user_vehicle.vehicle_plate_id', '!=', $plate_id)
                 ->select(DB::raw(
                     'user_vehicle.vehicle_plate_id, 
                      user_vehicle.driver_information_dni_id, 
@@ -316,17 +331,17 @@ class DriverVehicleController extends Controller
             ->where('vehicle.company_id', '=', $company_id)
             ->where('vehicle.operation', '!=', 'D')
             ->first();
-        if(!empty($vechicles)){
-            return $vechicles->total_vehicles; 
-        }else{
-            return 0; 
-        }   
+        if (!empty($vechicles)) {
+            return $vechicles->total_vehicles;
+        } else {
+            return 0;
+        }
     }
 
     public static function getTotalVehiclesByCompanyR(Request $request)
     {
         $company_id = $request->get('company_id');
-        if(!empty($request->get('dni_id'))){
+        if (!empty($request->get('dni_id'))) {
             $dni_id = $request->get('dni_id');
             $vechicles = DB::table('vehicle as v')
                 ->select(DB::raw('count(v.plate_id) as total_vehicles'))
@@ -336,7 +351,7 @@ class DriverVehicleController extends Controller
                 ->where('v.company_id', '=', $company_id)
                 ->where('v.operation', '!=', 'D')
                 ->first();
-        }else{
+        } else {
             $vechicles = DB::table('vehicle')
                 ->select(DB::raw('count(plate_id) as total_vehicles'))
                 ->where('vehicle.company_id', '=', $company_id)

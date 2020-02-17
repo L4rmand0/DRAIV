@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Imagenes;
 use App\Module;
 use App\Profile;
+use App\SkillMtM;
 use App\User;
 use App\Vehicle;
 use auth;
@@ -48,6 +49,8 @@ class AdminController extends Controller
         $child_companies[] = ['id' => $auth_user->company_id, 'name' => $auth_user->company->name_company];
         // dd($child_companies);
         $this->permissions = $this->getPermissions($auth_user->id);
+        // echo '<pre> holi m '.$module.' ';
+        // die;
 
         if ($auth_user->profile_id != 1) {
             switch ($module) {
@@ -95,6 +98,18 @@ class AdminController extends Controller
                     $data_doc_verification = $this->showIndexDocVerification($company_name);
                     $data_doc_verification = $this->checkMultipleAdmin($auth_user, $child_companies, $data_doc_verification);
                     return view('admin.doc-verification.index', $data_doc_verification);
+                    break;
+                case 'autoevaluation_company':
+                    // echo 'entra';
+                    // die;
+                    $data_doc_verification = $this->showIndexDocVerification($company_name);
+                    $data_doc_verification = $this->checkMultipleAdmin($auth_user, $child_companies, $data_doc_verification);
+                    return view('admin.autoevaluation.index', $data_doc_verification);
+                    break;
+                case 'skills_m_t_m':
+                    $data_skill_m_t_m = $this->showIndexSkillMtM($company_name);
+                    $data_skill_m_t_m = $this->checkMultipleAdmin($auth_user, $child_companies, $data_skill_m_t_m);
+                    return view('admin.skills.index', $data_skill_m_t_m);
                     break;
                 default:
                     return view('404_draiv');
@@ -158,6 +173,19 @@ class AdminController extends Controller
         return [
             'company_name' => ucwords(strtolower($company_name)),
             'permissions' => $this->permissions,
+        ];
+    }
+
+    private function showIndexSkillMtM($company_name)
+    {
+        return [
+            'company_name' => ucwords(strtolower($company_name)),
+            'permissions' => $this->permissions,
+            'values_slalom' => SkillMtM::VALUE_SLALOM,
+            'values_projection' => SkillMtM::VALUE_PROJECTION,
+            'values_braking' => SkillMtM::VALUE_BRAKING,
+            'values_evasion' => SkillMtM::VALUE_EVASION,
+            'values_mobility' => SkillMtM::VALUE_MOBILITY,
         ];
     }
 

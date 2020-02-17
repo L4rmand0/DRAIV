@@ -102,7 +102,6 @@ class DriverInformationController extends Controller
                 'first_name' => 'required|max:70',
                 'f_last_name' => 'required|max:20',
                 's_last_name' => 'max:20',
-                'e_mail_address' => ['required', 'max:35', 'unique:driver_information'],
                 'dni_id' => ['required', 'max:10', 'unique:driver_information'],
                 'gender' => 'required',
                 'education' => 'required',
@@ -116,7 +115,6 @@ class DriverInformationController extends Controller
             ],
             [
                 'dni_id.unique' => "Esta cédula ya está en uso.",
-                'e_mail_address.unique' => "Este email ya está en uso.",
             ]
         );
         // echo ' store ';
@@ -409,6 +407,23 @@ class DriverInformationController extends Controller
             ->where('driver_information.operation', '!=', 'D')
             ->get()->toArray();
         return response()->json($this->createSelect2($admin2));
+    }
+
+    public function getMotorCyclistDriveInformationtoSelect2(Request $request)
+    {
+        $company_id = Auth::user()->company_active;
+        $motor_cyclist = DB::table('user_vehicle as uv')
+            ->select(
+            'di.dni_id'
+            )
+            ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+            ->join('vehicle as v', 'v.plate_id', '=', 'uv.vehicle_plate_id')
+            ->where('di.company_id', '=', $company_id)
+            ->where('uv.operation', '!=', 'D')
+            ->where('v.type_v', '=', 'Motos')
+            ->orderBy('uv.start_date', 'desc')
+            ->get()->toArray();
+        return response()->json($this->createSelect2($motor_cyclist));
     }
 
     public function createSelect2($query_data)

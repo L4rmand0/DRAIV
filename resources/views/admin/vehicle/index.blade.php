@@ -26,13 +26,12 @@
                         <th>Placa</th>
                         <th>Tipo</th>
                         <th>Propietario</th>
-                        <th>Tipo de Taxi</th>
+                        <!-- <th>Tipo de Taxi</th> -->
                         <th>Número de Conductores</th>
                         <th>Fecha de Vencimiento Soat</th>
                         <th>Capacidad</th>
                         <th>Servicio</th>
                         <th>Cilindraje</th>
-                        <th>Clase Vehículo</th>
                         <th>modelo</th>
                         <th>Línea</th>
                         <th>Marca</th>

@@ -9,11 +9,11 @@
     <div class="card mb-4" style="width: 70%;">
         <div class="card-header">
             <div class="d-sm-flex align-items-center justify-content-between">
-                <h1 class="h5 mb-0 text-gray-800" style="color:#515151 !important;">Usuarios</h1>
+                <h1 class="h5 mb-0 text-gray-800" style="color:#515151 !important;">Revisión Documental</h1>
             </div>
         </div>
         <div class="card-body">
-            <table id="user_datatable" class="table table_dashboard table-striped nowrap">
+            <table id="manual_doc_v_datatable" class="table table_dashboard table-striped nowrap">
                 <thead>
                     <tr>
                         <th></th>
@@ -136,6 +136,7 @@
                         </div>
                     </div>
                     <!-- Button trigger modal -->
+
                 </form>
             </div>
             <div class="modal-footer">
@@ -146,8 +147,5 @@
 </div>
 <!-- /.container-fluid -->
 <script src="{{ asset('js/admin/users.js') }}" defer></script>
-<script> 
-    var profile_list = {!! $profile_list !!};
-</script>
 @endsection
 <!-- End of Main Content -->

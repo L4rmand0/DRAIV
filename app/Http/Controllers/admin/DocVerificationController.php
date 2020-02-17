@@ -187,6 +187,34 @@ class DocVerificationController extends Controller
         return $this->chart_js->makeChart($verify_drivers, true);
     }
 
+    public function dataTable(Request $request){
+        $company_id = Auth::user()->company_active;
+        $skill_m_t_m = DB::table('skill_m_t_m as smtm')
+            ->select(DB::raw(
+                'smtm.reg_id, 
+                smtm.date_evaluation,
+                smtm.slalom,
+                smtm.projection,
+                smtm.braking,
+                smtm.evasion,
+                smtm.mobility,
+                smtm.result,
+                di.first_name,
+                di.f_last_name,
+                di.dni_id,
+                v.plate_id'
+            ))
+            ->join('user_vehicle as uv', 'uv.id', '=', 'smtm.user_vehicle_id')
+            ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+            ->join('vehicle as v', 'v.plate_id', '=', 'uv.vehicle_plate_id')
+            ->where('di.company_id', '=', $company_id)
+            ->where('smtm.operation', '!=', 'D')
+            ->orderBy('smtm.start_date', 'desc')
+            ->get();
+        $drive_information = $this->addDeleteButtonDatatable($skill_m_t_m);
+        return datatables()->of($drive_information)->make(true);
+    }
+
 //     select
 // 	di.validated_data, count(di.dni_id) as total
 // from

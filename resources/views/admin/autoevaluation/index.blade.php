@@ -6,33 +6,33 @@
     <input type="hidden" name="update-users-route" value="{{ route ('users.update') }}" id="update-users-route">
     <!-- Page Heading -->
     <center>
-    <div class="card mb-4" style="width: 70%;">
-        <div class="card-header">
-            <div class="d-sm-flex align-items-center justify-content-between">
-                <h1 class="h5 mb-0 text-gray-800" style="color:#515151 !important;">Usuarios</h1>
+        <div class="card mb-4" style="width: 70%;">
+            <div class="card-header">
+                <div class="d-sm-flex align-items-center justify-content-between">
+                    <h1 class="h5 mb-0 text-gray-800" style="color:#515151 !important;">Usuarios</h1>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="user_datatable" class="table table_dashboard table-striped nowrap">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Id</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Perfil</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="card-footer">
+                <div class="container text-center">
+                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#form_create_user"><i
+                            class="fas fa-plus"></i> Agregar Usuario</button>
+                </div>
             </div>
         </div>
-        <div class="card-body">
-            <table id="user_datatable" class="table table_dashboard table-striped nowrap">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Id</th>
-                        <th>Nombre</th>
-                        <th>Correo</th>
-                        <th>Perfil</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-        <div class="card-footer">
-            <div class="container text-center">
-                <button class="btn btn-primary" type="button" data-toggle="modal"
-                    data-target="#form_create_user"><i class="fas fa-plus"></i> Agregar Usuario</button>
-            </div>
-        </div>
-    </div>
-</center>
+    </center>
     {{-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800" style="color:#333 !important;">Usuarios</h1>
     </div> --}}
@@ -136,6 +136,7 @@
                         </div>
                     </div>
                     <!-- Button trigger modal -->
+
                 </form>
             </div>
             <div class="modal-footer">
@@ -144,10 +145,6 @@
         </div>
     </div>
 </div>
-<!-- /.container-fluid -->
-<script src="{{ asset('js/admin/users.js') }}" defer></script>
-<script> 
-    var profile_list = {!! $profile_list !!};
-</script>
+<script src="{{ asset('js/admin/autoevaluation.js') }}" defer></script>
 @endsection
 <!-- End of Main Content -->

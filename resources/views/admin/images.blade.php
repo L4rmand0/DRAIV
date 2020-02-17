@@ -2,6 +2,8 @@
 @section('content')
 <!-- Begin Page Content -->
 <div class="container-fluid">
+    <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+    <input type="hidden" id="function_text_extract" value="{{ route('api-text-extract') }}">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Imágenes</h1>

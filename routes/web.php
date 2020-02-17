@@ -34,7 +34,6 @@ Route::prefix('news')->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::get('/i/{module?}', 'admin\AdminController@index')->name("admin");
-    // Route::get('usersi', 'admin\UserController@index')->name('admin.users');
     Route::post('users/update', 'admin\UserController@update')->name('users.update');
     Route::get('users-list', 'admin\UserController@usersList')->name('users-list'); 
     Route::post('/register-user','admin\UserController@storeUserAdmin')->name('register-user');
@@ -87,6 +86,7 @@ Route::prefix('admin')->group(function () {
     Route::get('driver-info/admin1-select-lists', 'admin\Admin1Controller@getAdmin1toSelect2')->name('admin1-select-lists'); 
     Route::get('driver-info/admin2-select-lists', 'admin\Admin2Controller@getAdmin2toSelect2')->name('admin2-select-lists'); 
     Route::get('driver-info/admin3-select-lists', 'admin\Admin3Controller@getAdmin3toSelect2')->name('admin3-select-lists'); 
+    Route::get('driver-info/motorcyclist-select-lists', 'admin\DriverInformationController@getMotorCyclistDriveInformationtoSelect2')->name('motorcyclist-select-lists'); 
     Route::get('driver-info/sumarize', 'admin\AdminController@viewSumarizeTable')->name('drivers-info.sumarize-view'); 
     Route::post('driver-vehicle-list', 'admin\DriverVehicleController@listDriverVehicle')->name('driver-vehicle-list');
     Route::post('driver-vehicle/destroy','admin\DriverVehicleController@destroy')->name('admin.driver-vehicle.destroy'); 
@@ -99,9 +99,11 @@ Route::prefix('admin')->group(function () {
     Route::post('/doc-verification/update', 'admin\DocVerificationController@update')->name('admin.doc-verification.update');
     Route::post('/doc-verification/drivers-verify-chart', 'admin\DocVerificationController@makeDonutChartDriversVerified')->name('admin.doc-verification.drivers-verify-chart'); 
     Route::get('/list-datatable', 'admin\UserController@MakeListProfile')->name('list-datatable');
+    Route::get('skills-m-t-m-list', 'admin\SkillMtMController@datatable')->name('skills-m-t-m-list');
 });
 
-Route::get('/api-text-extract', 'ApiController@index')->name('api-text-extract');
+// Route::get('/api-text-extract', 'ApiController@extractText')->name('api-text-extract');
+Route::post('/api-text-extract', 'ApiController@extractText')->name('api-text-extract');
 
 // Probar plantillas
 Route::get('/plantilla', function () {
@@ -120,8 +122,6 @@ Route::post('/saveimg', 'ImageController@saveImgS3')->name('saveimg');
 
 Auth::routes();
 Route::get('register-validate','Auth\RegisterController@formValidate')->name('register.validate');
-
-
 
 Route::get('/home', 'HomeController@index')->name('home');
 
