@@ -106,7 +106,7 @@ class DriverInformationController extends Controller
                 'gender' => 'required',
                 'education' => 'required',
                 'country_born' => 'required',
-                'city_born' => 'required|max:20',
+                // 'city_born' => 'required|max:20',
                 'city_residence_place' => 'required|max:20',
                 'department' => 'required|max:20',
                 'civil_state' => 'required',
@@ -142,7 +142,7 @@ class DriverInformationController extends Controller
                             'gender' => $data_input['gender'],
                             'education' => $data_input['education'],
                             'country_born' => $data_input['country_born'],
-                            'city_born' => $data_input['city_born'],
+                            // 'city_born' => $data_input['city_born'],
                             'city_residence_place' => $data_input['city_residence_place'],
                             'department' => $data_input['department'],
                             'civil_state' => $data_input['civil_state'],
@@ -181,7 +181,7 @@ class DriverInformationController extends Controller
                 'gender' => $data_input['gender'],
                 'education' => $data_input['education'],
                 'country_born' => $data_input['country_born'],
-                'city_born' => $data_input['city_born'],
+                // 'city_born' => $data_input['city_born'],
                 'city_residence_place' => $data_input['city_residence_place'],
                 'department' => $data_input['department'],
                 'civil_state' => $data_input['civil_state'],
@@ -348,10 +348,10 @@ class DriverInformationController extends Controller
         $company_id = Auth::user()->company_active;
         $drive_information = DB::table('driver_information')
             ->orderBy('driver_information.start_date', 'desc')
-            ->join('users', 'driver_information.Db_user_id', '=', 'users.id')
+            ->join('users', 'driver_information.db_user_id', '=', 'users.id')
             ->join('company', 'company.Company_id', '=', 'driver_information.company_id')
             ->join('admin2', 'admin2.adm2_id', '=', 'driver_information.department')
-            ->join('admin3', 'admin3.adm3_id', '=', 'driver_information.city_born')
+            ->join('admin3', 'admin3.adm3_id', '=', 'driver_information.city_residence_place')
             ->where('driver_information.company_id', '=', $company_id)
             ->where('driver_information.operation', '!=', 'D')
             ->select(DB::raw(
@@ -374,7 +374,12 @@ class DriverInformationController extends Controller
             driver_information.company_id,
             users.name as user,
             company.Name_company as company'
-            ))->get();
+            ))
+            // ->toSql();
+            ->get();
+        // echo '<pre>';
+        // print_r($drive_information);
+        // die;    
         $drive_information = $this->addDeleteButtonDatatable($drive_information);
         return datatables()->of($drive_information)->make(true);
     }

@@ -17,7 +17,6 @@ var new_element = new Array();
         // debugger
         if ($target.closest($selector_table + ' tr ' + $selector_cell).length) {
             console.log($selector_cell);
-
             if (typeof new_element['index'] === 'undefined') {
                 prev_element['index'] = $target.find("select").data("index");
                 prev_element['value'] = $target.find("select").children("option:selected").text();

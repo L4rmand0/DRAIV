@@ -2,9 +2,12 @@
 @section('content')
 <!-- Begin Page Content -->
 <div class="container-fluid">
-    <input type="hidden" name="users-list-route" value="{{ route ('admin.manual-doc-verification.list') }}"
+    <input type="hidden" name="data-table-route" value="{{ route ('admin.manual-doc-verification.list') }}"
         id="data-table-route">
+    <input type="hidden" name="register-route" value="{{ route ('admin.manual-doc-verification.store') }}"
+        id="register-route">
     <input type="hidden" name="update-users-route" value="{{ route ('users.update') }}" id="update-users-route">
+    <input type="hidden" name="route-driver-information" value="{{ route ('admin','driver_information') }}" id="route-driver-information">
     <!-- Page Heading -->
     <center>
         <div class="card mb-4">
@@ -78,6 +81,17 @@
                     <div class="form-card">
                         <div class="row">
                             <div class="col-md-6">
+                                <label for="code_penality_5_form">Conductor</label><br>
+                                <select class="form-control" name="user_vehicle_id" id="user_vehicle_id_form"
+                                    data-url="{{ route('motorcyclist-select-lists') }}" style="width:100%;" required>
+                                </select>
+                                <span class="error_admin" role="alert" id="user_vehicle_id_form-error">
+                                    <strong id="user_vehicle_id_form-error-strong" class="error-strong"></strong>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-6">
                                 <label for="valid_licence_form">Licencia Válida</label><br>
                                 <select name="valid_licence" id="valid_licence_form" class="form-control" required>
                                     <option value="">Seleccionar ...</option>
@@ -134,12 +148,13 @@
                         <div class="row mt-2">
                             <div class="col-md-6">
                                 <label for="accident_rate_form">Ratio de Accidente</label><br>
-                                <input type="number" name="accident_rate" id="accident_rate_form" class="form-control">
+                                <input type="number" name="accident_rate" id="accident_rate_form" class="form-control"
+                                    required>
                             </div>
                             <div class="col-md-6">
                                 <label for="penality_record_form">Número de Comparendos</label><br>
                                 <input type="number" name="penality_record" id="penality_record_form"
-                                    class="form-control">
+                                    class="form-control" required>
                             </div>
                         </div>
                         <div class="row mt-2">
@@ -200,17 +215,6 @@
                                 <label for="date_penality_5_form">Fecha Comparendo 5</label><br>
                                 <input type="text" class="form-control" name="date_penality_5" id="date_penality_5_form"
                                     readonly>
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-md-6">
-                                <label for="code_penality_5_form">Conductor</label><br>
-                                <select class="form-control" name="user_vehicle_id" id="user_vehicle_id_form"
-                                    data-url="{{ route('motorcyclist-select-lists') }}" style="width:100%;">
-                                </select>
-                                <span class="error_admin" role="alert" id="user_vehicle_id_form-error">
-                                    <strong id="user_vehicle_id_form-error-strong" class="error-strong"></strong>
-                                </span>
                             </div>
                         </div>
                         <div class="d-flex justify-content-center mt-4">

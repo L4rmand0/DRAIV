@@ -7,6 +7,7 @@ use App\DriverInformation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ChartJS;
 use App\Http\Controllers\Controller;
+use App\Rules\NotToday;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -51,28 +52,34 @@ class DocVerificationController extends Controller
      */
     public function store(Request $request)
     {
+        $now = date("Y-m-d");
         $data_input = $request->all();
+        $data_input['start_date'] = $now;
+        echo '<pre>';
+        print_r($data_input);
+
+        $user_vehicle = DB::table('user_vehicle as uv')
+            ->select(DB::raw(
+                'uv.id'
+            ))
+            ->where('uv.driver_information_dni_id', '=', $data_input['user_vehicle_id'])
+            ->where('uv.operation', '!=', 'D')
+            // ->toSql();
+            ->first();
+        // print_r($user_vehicle);
+        print_r($now);
+        echo ' -- ';
+
         $validator = Validator::make(
             $data_input,
             [
-                'first_name' => 'required|max:70',
-                'f_last_name' => 'required|max:20',
-                's_last_name' => 'max:20',
-                'dni_id' => ['required', 'max:10', 'unique:driver_information'],
-                'gender' => 'required',
-                'education' => 'required',
-                'country_born' => 'required',
-                'city_born' => 'required|max:20',
-                'city_residence_place' => 'required|max:20',
-                'department' => 'required|max:20',
-                'civil_state' => 'required',
-                'address' => 'required|max:50',
-                'phone' => 'required|max:30',
-            ],
-            [
-                'dni_id.unique' => "Esta cédula ya está en uso.",
+                'start_date' => [new NotToday(['user_vehicle_id',$data_input['user_vehicle_id']],'doc_verification')],
             ]
         );
+        $errors = $validator->errors()->getMessages();
+        print_r($errors);
+        echo 'finaliza';
+        die;
     }
 
     /**
@@ -154,7 +161,8 @@ class DocVerificationController extends Controller
         return datatables()->of($list_verifieds)->make(true);
     }
 
-    public static function getNumberValidatedDrivers($company_id){
+    public static function getNumberValidatedDrivers($company_id)
+    {
         $drivers_verifieds = DB::table('driver_information as di')
             ->select(DB::raw(
                 'di.validated_data, 
@@ -168,16 +176,17 @@ class DocVerificationController extends Controller
             ->groupBy('validated_data')
             ->get()->toArray();
         foreach ($drivers_verifieds as $key => $value) {
-            if($value->validated_data == 1){
+            if ($value->validated_data == 1) {
                 $drivers_verifieds[$key]->validated_data = "Verificado";
-            }else{
+            } else {
                 $drivers_verifieds[$key]->validated_data = "Sin Verificar";
             }
         }
         return $drivers_verifieds;
     }
 
-    public static function getNumberValidatedDriversADriver($company_id, $dni_id){
+    public static function getNumberValidatedDriversADriver($company_id, $dni_id)
+    {
         $drivers_verifieds = DB::table('driver_information as di')
             ->select(DB::raw(
                 'di.validated_data, 
@@ -189,9 +198,9 @@ class DocVerificationController extends Controller
             ->groupBy('validated_data')
             ->get()->toArray();
         foreach ($drivers_verifieds as $key => $value) {
-            if($value->validated_data == 1){
+            if ($value->validated_data == 1) {
                 $drivers_verifieds[$key]->validated_data = "Verificado";
-            }else{
+            } else {
                 $drivers_verifieds[$key]->validated_data = "Sin Verificar";
             }
         }
@@ -210,7 +219,8 @@ class DocVerificationController extends Controller
         return $this->chart_js->makeChart($verify_drivers, true);
     }
 
-    public function dataTable(Request $request){
+    public function dataTable(Request $request)
+    {
         $company_id = Auth::user()->company_active;
         $skill_m_t_m = DB::table('doc_verification as dv')
             ->select(DB::raw(
@@ -237,7 +247,7 @@ class DocVerificationController extends Controller
                  di.first_name,
                  di.f_last_name,
                  di.dni_id,
-                 v.plate_id' 
+                 v.plate_id'
             ))
             ->join('user_vehicle as uv', 'uv.id', '=', 'dv.user_vehicle_id')
             ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
@@ -250,13 +260,13 @@ class DocVerificationController extends Controller
         return datatables()->of($drive_information)->make(true);
     }
 
-//     select
-// 	di.validated_data, count(di.dni_id) as total
-// from
-// 	driver_information as di 
-// where
-// 	di.company_id = 9013380301
-// 	and di.operation != 'D'
-// GROUP BY validated_data;
+    //     select
+    // 	di.validated_data, count(di.dni_id) as total
+    // from
+    // 	driver_information as di 
+    // where
+    // 	di.company_id = 9013380301
+    // 	and di.operation != 'D'
+    // GROUP BY validated_data;
 
 }

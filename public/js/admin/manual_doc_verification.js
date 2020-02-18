@@ -18,6 +18,8 @@
             // $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#profile_id");
         });
 
+        
+
         $("#technom_expi_date_form").datepicker({ dateFormat: 'yy-mm-dd' });
         $("#date_penality_1_form").datepicker({ dateFormat: 'yy-mm-dd' });
         $("#date_penality_2_form").datepicker({ dateFormat: 'yy-mm-dd' });
@@ -33,15 +35,18 @@
                 $('#user_vehicle_id_form').select2({
                     data: data
                 });
+                if($("#user_vehicle_id_form option").length == 1){
+                    $("#user_vehicle_id_form-error-strong").html("<p>No se ha registrado ningún conductor.<a href='"+$("#route-driver-information").val()+"'> Registrar</a></p>");
+                }
             }
         });
 
-        $("#manual_doc_v_datatable").submit(function(event) {
+        $("#form_manual_doc_v_admin").submit(function(event) {
             event.preventDefault();
             let data_form = $(this).serialize();
             $.ajax({
                 type: 'POST',
-                url: $("#btn_admin_user").data('url'),
+                url: $("#register-route").val(),
                 data: data_form,
                 success: function(data) {
                     console.log(data);

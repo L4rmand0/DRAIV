@@ -152,6 +152,7 @@ class DriverVehicleController extends Controller
                driver_information.f_last_name,
                vehicle.type_v'
             ))->get();
+        // echo '<pre>';    
         // print_r($driver_vehicle);
         // die;
         $driver_vehicle = $this->addDeleteButtonDatatable($driver_vehicle);

@@ -180,12 +180,12 @@
                             </div>
                         </div>
                         <div class="row" style="margin-top: 18px;">
-                            <div class="col-md-6 form_select_conductores">
+                            <!-- <div class="col-md-6 form_select_conductores">
                                 <label for="city_born_form">Ciudad de Nacimiento:</label><br>
                                 <select name="driverInformation[city_born]" class="form-control" id="city_born_form"
                                     data-url="{{ route('admin3-select-lists') }}" style="width: 100%" required>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="col-md-6 form_select_conductores">
                                 <label for="city_residence_place_form">Ciudad de Residencia:</label><br>
                                 <select name="driverInformation[city_residence_place]" class="form-control"
