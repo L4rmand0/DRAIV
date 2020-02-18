@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\ChartJS;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class DocVerificationController extends Controller
 {
@@ -50,7 +51,28 @@ class DocVerificationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data_input = $request->all();
+        $validator = Validator::make(
+            $data_input,
+            [
+                'first_name' => 'required|max:70',
+                'f_last_name' => 'required|max:20',
+                's_last_name' => 'max:20',
+                'dni_id' => ['required', 'max:10', 'unique:driver_information'],
+                'gender' => 'required',
+                'education' => 'required',
+                'country_born' => 'required',
+                'city_born' => 'required|max:20',
+                'city_residence_place' => 'required|max:20',
+                'department' => 'required|max:20',
+                'civil_state' => 'required',
+                'address' => 'required|max:50',
+                'phone' => 'required|max:30',
+            ],
+            [
+                'dni_id.unique' => "Esta cédula ya está en uso.",
+            ]
+        );
     }
 
     /**

@@ -422,7 +422,8 @@ class DriverInformationController extends Controller
             ->where('uv.operation', '!=', 'D')
             ->where('v.type_v', '=', 'Motos')
             ->orderBy('uv.start_date', 'desc')
-            ->get()->toArray();
+            ->get()
+            ->toArray();
         return response()->json($this->createSelect2($motor_cyclist));
     }
 
