@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Company;
+use App\DocVerification;
 use App\DriverInformation;
 use App\DrivingLicence;
 use App\Http\Controllers\Controller;
@@ -106,6 +107,11 @@ class AdminController extends Controller
                     $data_doc_verification = $this->checkMultipleAdmin($auth_user, $child_companies, $data_doc_verification);
                     return view('admin.autoevaluation.index', $data_doc_verification);
                     break;
+                case 'manual_doc_verification':
+                    $data_skill_m_t_m = $this->showIndexMDocVerification($company_name);
+                    $data_skill_m_t_m = $this->checkMultipleAdmin($auth_user, $child_companies, $data_skill_m_t_m);
+                    return view('admin.manual-doc-verification.index', $data_skill_m_t_m);
+                    break;
                 case 'skills_m_t_m':
                     $data_skill_m_t_m = $this->showIndexSkillMtM($company_name);
                     $data_skill_m_t_m = $this->checkMultipleAdmin($auth_user, $child_companies, $data_skill_m_t_m);
@@ -179,6 +185,21 @@ class AdminController extends Controller
     private function showIndexSkillMtM($company_name)
     {
         return [
+            'company_name' => ucwords(strtolower($company_name)),
+            'permissions' => $this->permissions,
+            'values_slalom' => SkillMtM::VALUE_SLALOM,
+            'values_projection' => SkillMtM::VALUE_PROJECTION,
+            'values_braking' => SkillMtM::VALUE_BRAKING,
+            'values_evasion' => SkillMtM::VALUE_EVASION,
+            'values_mobility' => SkillMtM::VALUE_MOBILITY,
+        ];
+    }
+
+    private function showIndexMDocVerification($company_name)
+    {
+        return [
+            'category_list'=>DocVerification::CATEGORY,
+            'runstate_list'=>DocVerification::RUNSTATE,
             'company_name' => ucwords(strtolower($company_name)),
             'permissions' => $this->permissions,
             'values_slalom' => SkillMtM::VALUE_SLALOM,

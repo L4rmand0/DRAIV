@@ -194,10 +194,12 @@ group by
 
 CREATE DATABASE larablog;
 
+DELETE FROM imagenes;
+DELETE FROM user_vehicle;
+DELETE FROM driver_information;
 
-
-
-
+ 
+ 
 
 
 

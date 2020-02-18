@@ -7,6 +7,7 @@ use App\DriverInformation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ChartJS;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class DocVerificationController extends Controller
 {
@@ -189,27 +190,39 @@ class DocVerificationController extends Controller
 
     public function dataTable(Request $request){
         $company_id = Auth::user()->company_active;
-        $skill_m_t_m = DB::table('skill_m_t_m as smtm')
+        $skill_m_t_m = DB::table('doc_verification as dv')
             ->select(DB::raw(
-                'smtm.reg_id, 
-                smtm.date_evaluation,
-                smtm.slalom,
-                smtm.projection,
-                smtm.braking,
-                smtm.evasion,
-                smtm.mobility,
-                smtm.result,
-                di.first_name,
-                di.f_last_name,
-                di.dni_id,
-                v.plate_id'
+                'dv.doc_id,
+                 dv.valid_licence,
+                 dv.category,
+                 dv.soat_available,
+                 dv.technom_review,
+                 dv.technom_expi_date,
+                 dv.run_state,
+                 dv.accident_rate,
+                 dv.penality_record,
+                 dv.date_penality_1,
+                 dv.date_penality_2,
+                 dv.date_penality_3,
+                 dv.date_penality_4,
+                 dv.date_penality_5,
+                 dv.code_penality_1,
+                 dv.code_penality_2,
+                 dv.code_penality_3,
+                 dv.code_penality_4,
+                 dv.code_penality_5,
+                 dv.validated_data,
+                 di.first_name,
+                 di.f_last_name,
+                 di.dni_id,
+                 v.plate_id' 
             ))
-            ->join('user_vehicle as uv', 'uv.id', '=', 'smtm.user_vehicle_id')
+            ->join('user_vehicle as uv', 'uv.id', '=', 'dv.user_vehicle_id')
             ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
             ->join('vehicle as v', 'v.plate_id', '=', 'uv.vehicle_plate_id')
             ->where('di.company_id', '=', $company_id)
-            ->where('smtm.operation', '!=', 'D')
-            ->orderBy('smtm.start_date', 'desc')
+            ->where('dv.operation', '!=', 'D')
+            ->orderBy('dv.start_date', 'desc')
             ->get();
         $drive_information = $this->addDeleteButtonDatatable($skill_m_t_m);
         return datatables()->of($drive_information)->make(true);

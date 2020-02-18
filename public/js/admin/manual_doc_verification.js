@@ -15,73 +15,28 @@
     $(function() {
         $(document).click(function(event) {
             $target = $(event.target);
-            $(this).editBehaviourSelectFixedDT($target, "#user_datatable", "#profile_id");
-            // $(this).editBehaviourSelectFixedDT($target, "#user_datatable", "#id");
-            $(this).editBehaviourInputDT($target, "#user_datatable", "#name");
-            $(this).editBehaviourInputDT($target, "#user_datatable", "#email");
-            // if ($target.closest('#user_datatable tr #user_profile').length) {
-            //     if (typeof new_element['index'] === 'undefined') {
-            //         prev_element['index'] = $target.find("select").data("index");
-            //         prev_element['value'] = $target.find("select").val();
-            //         new_element['index'] = $target.find("select").data("index");
-            //         new_element['value'] = $target.find("select").val();
-            //     } else {
-            //         let old_new_element = new Array();
-            //         old_new_element['index'] = new_element['index'];
-            //         old_new_element['value'] = new_element['value'];
-            //         console.log("new class: " + $target.find("select").data("index"));
-            //         console.log("new class: " + $target.find("select").val());
-            //         if (typeof $target.find("select").data("index") === 'undefined') {} else {
-            //             new_element['index'] = $target.find("select").data("index");
-            //             new_element['value'] = $target.find("select").val();
-            //             prev_element = old_new_element;
-            //         }
-            //         if (new_element['index'] != prev_element['index']) {
-            //             let selector = "#user_datatable tr #user_profile ." + prev_element['index'];
-            //             $(selector).parent().html(prev_element['value']);
-            //         }
-            //     }
-            // } else {
-            //     if (!$target.closest('#user_datatable tr #user_profile').length &&
-            //         $('#user_datatable tr #user_profile select').is(":visible")) {
-            //         let element = $('#user_datatable tr #user_profile select');
-            //         let val_item = element.val();
-            //         element.parent().html(val_item)
-            //     }
-            // }
+            // $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#profile_id");
         });
 
-        var enums = {
-            'User_profile': {
-                'User': 'User',
-                'administrator': 'administrator',
-                'evaluator': 'evaluator'
-            }
-        }
+        $("#technom_expi_date_form").datepicker({ dateFormat: 'yy-mm-dd' });
+        $("#date_penality_1_form").datepicker({ dateFormat: 'yy-mm-dd' });
+        $("#date_penality_2_form").datepicker({ dateFormat: 'yy-mm-dd' });
+        $("#date_penality_3_form").datepicker({ dateFormat: 'yy-mm-dd' });
+        $("#date_penality_4_form").datepicker({ dateFormat: 'yy-mm-dd' });
+        $("#date_penality_5_form").datepicker({ dateFormat: 'yy-mm-dd' });
 
         $.ajax({
             type: 'GET',
-            url: $('#company_id_form').data('url'),
+            url: $('#user_vehicle_id_form').data('url'),
             data: { 'type': 'select_admin2' },
             success: function(data) {
-                $('#company_id_form').select2({
+                $('#user_vehicle_id_form').select2({
                     data: data
                 });
             }
         });
 
-        $.ajax({
-            type: 'GET',
-            url: $('#profile_id_form').data('url'),
-            data: { 'type': 'select_admin2' },
-            success: function(data) {
-                $('#profile_id_form').select2({
-                    data: data
-                });
-            }
-        });
-
-        $("#form_user_admin").submit(function(event) {
+        $("#manual_doc_v_datatable").submit(function(event) {
             event.preventDefault();
             let data_form = $(this).serialize();
             $.ajax({
@@ -101,12 +56,12 @@
                             $(selector_strong).text(value[0]);
                         });
                     } else {
-                        $("#form_user_admin input[type=text]").val("");
-                        $("#form_user_admin input[type=password]").val("");
-                        $("#form_user_admin select").val("");
-                        $("#form_user_admin input[type=email]").val("");
+                        $("#form_create_skills_mtm input[type=text]").val("");
+                        $("#form_create_skills_mtm input[type=password]").val("");
+                        $("#form_create_skills_mtm select").val("");
+                        $("#form_create_skills_mtm input[type=email]").val("");
                         $("#defaultChecked2").prop('checked', false);
-                        $('#form_create_user').modal('hide');
+                        $('#form_create_skills_mtm').modal('hide');
                         swal.fire(
                             'Proceso Completado!',
                             data.success,
@@ -118,7 +73,7 @@
             });
         });
 
-        //Arreglo que genera los id de cada celda del datatable
+        //Arreglo que genera el atributo id de cada elemento td celda del datatable
         var fields = [
             'delete_row',
             'id',
@@ -127,18 +82,39 @@
             'profile_id',
         ];
 
-        var table = $('#user_datatable').DataTable({
+        //Instancia del datatable
+        var table = $('#manual_doc_v_datatable').DataTable({
             processing: true,
             serverSide: true,
             "scrollY":"400px",
             "scrollCollapse": true,
-            ajax: $('#users-list-route').val(),
+            ajax: $('#data-table-route').val(),
             columns: [
                 { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_user"><i class="fas fa-trash"></i></button></center>' },
-                { data: 'id', name: 'id', "visible": false },
-                { data: 'name', name: 'name' },
-                { data: 'email', name: 'email' },
-                { data: 'user_profile', name: 'user_profile' }
+                { data: 'doc_id', name: 'doc_id', "visible": false },
+                { data: 'valid_licence', name: 'valid_licence' },
+                { data: 'category', name: 'category' },
+                { data: 'soat_avalaible', name: 'soat_avalaible' },
+                { data: 'technom_review', name: 'technom_review' },
+                { data: 'technom_expi_date', name: 'technom_expi_date' },
+                { data: 'run_state', name: 'run_state' },
+                { data: 'accident_rate', name: 'accident_rate' },
+                { data: 'penalty_record', name: 'penalty_record' },
+                { data: 'date_penalty_1', name: 'date_penalty_1' },
+                { data: 'date_penalty_2', name: 'date_penalty_2' },
+                { data: 'date_penalty_3', name: 'date_penalty_3' },
+                { data: 'date_penalty_4', name: 'date_penalty_4' },
+                { data: 'date_penalty_5', name: 'date_penalty_5' },
+                { data: 'code_penalty_1', name: 'code_penalty_1' },
+                { data: 'code_penalty_2', name: 'code_penalty_2' },
+                { data: 'code_penalty_3', name: 'code_penalty_3' },
+                { data: 'code_penalty_4', name: 'code_penalty_4' },
+                { data: 'code_penalty_5', name: 'code_penalty_5' },
+                { data: 'validated_data', name: 'validated_data' },
+                { data: 'first_name', name: 'first_name' },
+                { data: 'f_last_name', name: 'f_last_name' },
+                { data: 'dni_id', name: 'dni_id' },
+                { data: 'plate_id', name: 'plate_id' },
             ],
             language: language_dt,
             columnDefs: [{
@@ -148,26 +124,11 @@
                         $(td).attr("id", fields[col])
                     }
                 },
-                {
-                    "targets": [0],
-                    "data": null,
-                    "defaultContent": '<input id="check" type="checkbox">'
-                }
             ],
-            // columnDefs: [{
-            //     targets: '_all',
-            //     createdCell: createdCell
-            // }],
-            // createdRow: function (row, data, dataIndex) {
-            // if( data.hasOwnProperty("id") ) {
-            //     row.id = "row-" + data.id;
-            // } 
-            //     $(row).attr({ 'data-id': data.id, id: 'idUser' });
-            // }
         });
 
-
-        $('#user_datatable').on('click', 'tr td #btn_delete_user', function() {
+        // Función para borrar registro de la tabla
+        $('#manual_doc_v_datatable').on('click', 'tr td #btn_delete_user', function() {
             let row = $(this).parents('tr')
             let data_delete = table.row(row).data();
             swal.fire({
@@ -185,7 +146,7 @@
                 if (result.value) {
                     $.ajax({
                         type: 'POST',
-                        url: $("#form_user_admin").data("url-delete"),
+                        url: $("#form_manual_doc_v_admin").data("url-delete"),
                         data: data_delete,
                         success: function(data) {
                             if (data.error == "") {
@@ -241,16 +202,11 @@
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            "inputTypes": [{
-                "column": 4,
-                "type": "list-fixed",
-                "options": profile_list
-                    // [
-                    //     { "value": enums.User_profile['User'], "display": enums.User_profile['User'] },
-                    //     { "value": enums.User_profile['administrator'], "display": enums.User_profile['administrator'] },
-                    //     { "value": enums.User_profile['evaluator'], "display": enums.User_profile['evaluator'] }
-                    // ]
-            }]
+            // "inputTypes": [{
+            //     "column": 4,
+            //     "type": "list-fixed",
+            //     "options": profile_list
+            // }]
         });
 
     });
