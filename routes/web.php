@@ -97,6 +97,7 @@ Route::prefix('admin')->group(function () {
     Route::post('images/update', 'admin\ImageController@update')->name('images.update');
     Route::get('/manual-doc-verification/list', 'admin\DocVerificationController@dataTable')->name('admin.manual-doc-verification.list');
     Route::post('/manual-doc-verification/store', 'admin\DocVerificationController@store')->name('admin.manual-doc-verification.store');
+    Route::post('/manual-doc-verification/update', 'admin\DocVerificationController@updateDocVerification')->name('admin.manual-doc-verification.update');
     Route::get('/doc-verification/list', 'admin\DocVerificationController@listVerifiedDrivers')->name('admin.doc-verification.list');
     Route::post('/doc-verification/update', 'admin\DocVerificationController@update')->name('admin.doc-verification.update');
     Route::post('/doc-verification/drivers-verify-chart', 'admin\DocVerificationController@makeDonutChartDriversVerified')->name('admin.doc-verification.drivers-verify-chart'); 

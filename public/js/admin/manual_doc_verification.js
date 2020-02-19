@@ -16,7 +16,7 @@
         $(document).click(function (event) {
             $target = $(event.target);
             $(this).editBehaviourInputDT($target, "#drive_information_datatable", "#valid_licence");
-            $(this).editBehaviourInputDT($target, "#manual_doc_v_datatable", "#category");
+            $(this).editBehaviourSelectFixedDT($target, "#manual_doc_v_datatable", "#category");
             $(this).editBehaviourInputDT($target, "#manual_doc_v_datatable", "#technom_review");
             $(this).editBehaviourInputDT($target, "#manual_doc_v_datatable", "#technom_expi_date");
             $(this).editBehaviourInputDT($target, "#manual_doc_v_datatable", "#run_state");
@@ -86,7 +86,7 @@
                             });
                         }
                     } else {
-                        $target.cleanForm($target);
+                        $target.cleanForm("#form_manual_doc_v_admin");
                         // $("#form_create_skills_mtm input[type=text]").val("");
                         // $("#form_create_skills_mtm input[type=password]").val("");
                         // $("#form_create_skills_mtm select").val("");
@@ -223,7 +223,6 @@
 
         function myCallbackFunction(updatedCell, updatedRow, oldValue, id = false) {
             console.log("The new value for the cell is: " + updatedCell.data());
-            // debugger
             if (oldValue != updatedCell.data()) {
                 dataSend = updatedRow.data();
                 if (id == false) {
@@ -234,7 +233,7 @@
                 dataSend.fieldch = updatedCell.nodes()[0].id;
                 $.ajax({
                     type: 'POST',
-                    url: $("#update-users-route").val(),
+                    url: $("#update-route").val(),
                     data: dataSend,
                     async: false,
                     success: function (data) {
@@ -254,12 +253,12 @@
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            "columns":[2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
-            // "inputTypes": [{
-            //     "column": 4,
-            //     "type": "list-fixed",
-            //     "options": profile_list
-            // }]
+            "columns":[2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+            "inputTypes": [{
+                "column": 3,
+                "type": "list-fixed",
+                "options": category_t_list
+            }]
         });
 
     });

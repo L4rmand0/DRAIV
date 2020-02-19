@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\DocVerification;
 use DB;
+use App\Rules\NotToday;
+use App\DocVerification;
 use App\DriverInformation;
 use Illuminate\Http\Request;
+use App\Traits\TListDataTable;
 use App\Http\Controllers\ChartJS;
 use App\Http\Controllers\Controller;
-use App\Rules\NotToday;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class DocVerificationController extends Controller
 {
+    use TListDataTable;
     private $chart_js;
     /**
      * Create a new controller instance.
@@ -56,6 +58,9 @@ class DocVerificationController extends Controller
         $now = date("Y-m-d");
         $data_input = $request->all();
         $data_input['start_date'] = $now;
+        // echo '<pre>';
+        // print_r($data_input);
+        // die;
         // Trae el id de la tabla user_vehicle para insertarlo después
         $user_vehicle = DB::table('user_vehicle as uv')
             ->select(DB::raw(
@@ -65,7 +70,7 @@ class DocVerificationController extends Controller
             ->where('uv.operation', '!=', 'D')
             ->first();
         if (empty($user_vehicle)) {
-            return response()->json(['response' => 'error_swal', 'message' => 'Este conductor ha sido elminado.']);
+            return response()->json(['response' => 'error_swal','errors'=>['message' => 'Este conductor ha sido elminado.']]);
         }
         $uv_id = !empty($user_vehicle) ? $user_vehicle->id : "";
         $validator = Validator::make(
@@ -76,7 +81,7 @@ class DocVerificationController extends Controller
         );
         $errors = $validator->errors()->getMessages();
         if(!empty($errors)){
-            return response()->json(['response' => 'error_swal', 'message' => 'Este conductor ya registró una evalución hoy, solo se permite una por día.']);
+            return response()->json(['response' => 'error_swal','errors'=>['message' => 'Este conductor ya registró una evalución hoy, solo se permite una por día.']]);
         }
         // echo '<pre>';
         // print_r($errors);
@@ -91,18 +96,20 @@ class DocVerificationController extends Controller
             'run_state' => $data_input['run_state'],
             'accident_rate' => $data_input['accident_rate'],
             'penality_record' => $data_input['penality_record'],
-            'code_penality_1' => $data_input['code_penality_1'],
-            'date_penality_1' => $data_input['date_penality_1'],
-            'code_penality_2' => $data_input['code_penality_2'],
-            'date_penality_2' => $data_input['date_penality_2'],
-            'code_penality_3' => $data_input['code_penality_3'],
-            'date_penality_4' => $data_input['date_penality_3'],
-            'code_penality_4' => $data_input['code_penality_4'],
-            'date_penality_4' => $data_input['date_penality_4'],
-            'code_penality_5' => $data_input['code_penality_5'],
-            'date_penality_5' => $data_input['date_penality_5'],
+            'code_penality_1' => $data_input['code_penality_1'] != "" ? $data_input['code_penality_1'] : "",
+            'date_penality_1' => $data_input['date_penality_1'] != "" ? $data_input['code_penality_1'] : "",
+            'code_penality_2' => $data_input['code_penality_2'] != "" ? $data_input['code_penality_2'] : "",
+            'date_penality_2' => $data_input['date_penality_2'] != "" ? $data_input['date_penality_2'] : "",
+            'code_penality_3' => $data_input['code_penality_3'] != "" ? $data_input['code_penality_3'] : "",
+            'date_penality_4' => $data_input['date_penality_3'] != "" ? $data_input['date_penality_3'] : "",
+            'code_penality_4' => $data_input['code_penality_4'] != "" ? $data_input['code_penality_4'] : "",
+            'date_penality_4' => $data_input['date_penality_4'] != "" ? $data_input['date_penality_4'] : "",
+            'code_penality_5' => $data_input['code_penality_5'] != "" ? $data_input['code_penality_5'] : "",
+            'date_penality_5' => $data_input['date_penality_5'] != "" ? $data_input['date_penality_5'] : "",
             'start_date' => $data_input['start_date'],
+            'validated_data' => 0,
             'user_vehicle_id' => $user_vehicle->id,
+            'user_id' => auth()->id(),
         ]);
         if ($doc_verification->doc_id > 0) {
             return response()->json(['response' => 'error_swal', 'message' => 'Ocurrió un error en el proceso']);
@@ -121,6 +128,17 @@ class DocVerificationController extends Controller
     {
         //
     }
+
+    public function MakeCategoryList()
+    {
+        $profile_list = DB::table('profile_ as p')
+            ->orderBy('p.date_operation', 'asc')
+            ->select('p.profile_id', 'p.user_profile')
+            ->where('p.operation', '!=', 'D')
+            ->get()->toArray();
+        return $this->ListDT()->query(self::sanitazeArr($profile_list))->make('profile_id', 'user_profile');
+    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -154,6 +172,33 @@ class DocVerificationController extends Controller
         return response()->json(['response' => 'Registro actualizado', 'errors' => [], 'updates' => $update]);
     }
 
+    public function updateDocVerification(Request $request){
+        $now = date("Y-m-d H:i:s");
+        $data_updated = $request->all();
+        $field = $data_updated['fieldch'];
+        $value = $data_updated['valuech'];
+        // if ($field == "gender") {
+        //     $value = $value == "Masculino" ? 0 : 1;
+        // }
+        // if(!is_numeric($value) && $field == "score"){
+        //     return response()->json(['error' => ['response' => 'Formato incorrecto, el número no puede llevar comas ni texto. Ejemplo Correcto: 4.00']]);
+        // }
+        // if ($field == "score" && ($value > 5 || $value < 0)) {
+        //     return response()->json(['error' => ['response' => 'El score no puede ser mayor a 5 ni menor a 0. Ejemplo: 5.00']]);
+        // }
+        $response = DocVerification::where('doc_id', $data_updated['doc_id'])->update([
+            $field => $value,
+            'operation' => 'U',
+            'date_operation' => $now,
+            'user_id' => auth()->id(),
+        ]);
+        if ($response) {
+            return response()->json(['response' => 'Información actualizada', 'error' => []]);
+        } else {
+            return response()->json(['error' => ['response' => 'No se pudo actualizar la información']]);
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -162,7 +207,7 @@ class DocVerificationController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
     }
 
     public function listVerifiedDrivers(Request $request)

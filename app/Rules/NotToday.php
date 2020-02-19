@@ -33,12 +33,9 @@ class NotToday implements Rule
     {
         $result = $this->getLastDate();
         // echo '<pre> last_date';
-        // print_r($result);
-        $date = date_create($result->start_date);
         $now = date("Y-m-d");
         // echo ' start_date '.$date_validate = date_format($date, 'Y-m-d');
         // echo ' now '.$now;
-        // die;
         if (!empty($result)) {
             $date = date_create($result->start_date);
             $date_validate = date_format($date, 'Y-m-d');

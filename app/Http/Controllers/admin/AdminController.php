@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers\admin;
 
+use DB;
+use auth;
+use App\User;
+use App\Module;
 use App\Company;
+use App\Profile;
+use App\Vehicle;
+use App\Imagenes;
+use App\SkillMtM;
+use App\DrivingLicence;
 use App\DocVerification;
 use App\DriverInformation;
-use App\DrivingLicence;
-use App\Http\Controllers\Controller;
-use App\Imagenes;
-use App\Module;
-use App\Profile;
-use App\SkillMtM;
-use App\User;
-use App\Vehicle;
-use auth;
-use DB;
 use Illuminate\Http\Request;
+use App\Traits\TListDataTable;
+use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
 {
+    use TListDataTable;
     private $permissions;
     private $image_controller;
     private $user_controller;
@@ -207,6 +209,7 @@ class AdminController extends Controller
             'values_braking' => SkillMtM::VALUE_BRAKING,
             'values_evasion' => SkillMtM::VALUE_EVASION,
             'values_mobility' => SkillMtM::VALUE_MOBILITY,
+            'category_t_list'=> json_encode($this->ListDT()->query(DocVerification::CATEGORY)->make())
         ];
     }
 

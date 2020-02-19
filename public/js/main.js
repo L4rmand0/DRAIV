@@ -131,11 +131,13 @@ function setInputFilter(textbox, inputFilter) {
 
 
     jQuery.fn.cleanForm = function (selector_form) {
+        debugger
         $(selector_form+" input[type=text]").val("");
         $(selector_form+" input[type=password]").val("");
+        $(selector_form+" input[type=number]").val("");
         $(selector_form+" select").val("");
         $(selector_form+" input[type=email]").val("");
-        $(selector_form).modal('hide');
+        $(selector_form+"_modal").modal('hide');
     }
 
     jQuery.fn.cleanErrorElementForm = function ($target) {

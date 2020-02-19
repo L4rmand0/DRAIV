@@ -6,7 +6,7 @@
         id="data-table-route">
     <input type="hidden" name="register-route" value="{{ route ('admin.manual-doc-verification.store') }}"
         id="register-route">
-    <input type="hidden" name="update-users-route" value="{{ route ('users.update') }}" id="update-users-route">
+    <input type="hidden" name="update-route" value="{{ route ('admin.manual-doc-verification.update') }}" id="update-route">
     <input type="hidden" name="route-driver-information" value="{{ route ('admin','driver_information') }}" id="route-driver-information">
     <!-- Page Heading -->
     <center>
@@ -52,7 +52,7 @@
             <div class="card-footer">
                 <div class="container text-center">
                     <button class="btn btn-primary" type="button" data-toggle="modal"
-                        data-target="#form_create_manual_doc_v"><i class="fas fa-plus"></i> Agregar Verificación
+                        data-target="#form_manual_doc_v_admin_modal"><i class="fas fa-plus"></i> Agregar Verificación
                         Documental</button>
                 </div>
             </div>
@@ -63,7 +63,7 @@
     </div> --}}
 </div>
 
-<div class="modal fade" id="form_create_manual_doc_v" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="form_manual_doc_v_admin_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -230,5 +230,8 @@
 </div>
 <!-- /.container-fluid -->
 <script src="{{ asset('js/admin/manual_doc_verification.js') }}" defer></script>
+<script> 
+    var category_t_list = {!! $category_t_list !!};
+</script>
 @endsection
 <!-- End of Main Content -->
