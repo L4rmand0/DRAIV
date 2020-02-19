@@ -144,7 +144,7 @@
             "bScrollCollapse": true,
             ajax: $('#data-table-route').val(),
             columns: [
-                { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_user"><i class="fas fa-trash"></i></button></center>' },
+                { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_m_doc_v"><i class="fas fa-trash"></i></button></center>' },
                 { data: 'doc_id', name: 'doc_id', "visible": false },
                 { data: 'valid_licence', name: 'valid_licence' },
                 { data: 'category', name: 'category' },
@@ -182,7 +182,7 @@
         }).columns.adjust().draw();
 
         // Función para borrar registro de la tabla
-        $('#manual_doc_v_datatable').on('click', 'tr td #btn_delete_user', function () {
+        $('#manual_doc_v_datatable').on('click', 'tr td #btn_delete_m_doc_v', function () {
             let row = $(this).parents('tr')
             let data_delete = table.row(row).data();
             swal.fire({
@@ -200,7 +200,7 @@
                 if (result.value) {
                     $.ajax({
                         type: 'POST',
-                        url: $("#form_manual_doc_v_admin").data("url-delete"),
+                        url: $("#delete-route").val(),
                         data: data_delete,
                         success: function (data) {
                             if (data.error == "") {
@@ -209,7 +209,7 @@
                                     'El usuario ha sido eliminado.',
                                     'success'
                                 );
-                                $('#user_datatable').DataTable().ajax.reload();
+                                $('#manual_doc_v_datatable').DataTable().ajax.reload();
                             } else {
                                 swal.fire(
                                     'Ocurrió un error',

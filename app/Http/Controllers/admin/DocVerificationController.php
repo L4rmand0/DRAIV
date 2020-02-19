@@ -205,9 +205,18 @@ class DocVerificationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        
+        // echo '<pre>';
+        // print_r($request->all());
+        $data_delete = $request->all();
+        // die;
+        $delete = DocVerification::where('doc_id', $data_delete['doc_id'])->update(['Operation' => 'D']);
+        if ($delete) {
+            return response()->json(['response' => 'Usuario eliminado', 'error' => '']);
+        } else {
+            return response()->json(['error' => 'No se pudo eliminar el usuario']);
+        }
     }
 
     public function listVerifiedDrivers(Request $request)

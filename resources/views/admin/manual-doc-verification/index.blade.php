@@ -7,7 +7,7 @@
     <input type="hidden" name="register-route" value="{{ route ('admin.manual-doc-verification.store') }}"
         id="register-route">
     <input type="hidden" name="update-route" value="{{ route ('admin.manual-doc-verification.update') }}" id="update-route">
-    <input type="hidden" name="route-driver-information" value="{{ route ('admin','driver_information') }}" id="route-driver-information">
+    <input type="hidden" name="delete-route" value="{{ route ('admin.manual-doc-verification.destroy') }}" id="delete-route">
     <!-- Page Heading -->
     <center>
         <div class="card mb-4">
@@ -22,13 +22,13 @@
                         <tr>
                             <th></th>
                             <th>doc_id</th>
-                            <th>Licencia Válida</th>
-                            <th>Categoría</th>
-                            <th>Soat Disponible</th>
+                            <th>Licencia Vigente</th>
+                            <th>Categoría Licencia</th>
+                            <th>Soat</th>
                             <th>Revión Tecnomecánica</th>
                             <th>Fecha Tecnomecánica</th>
-                            <th>Estado Licencia</th>
-                            <th>Ratio Accidente</th>
+                            <th>Estado RUN</th>
+                            <th>Accidentes Reportados</th>
                             <th>Número Comparendos</th>
                             <th>Fecha Comp. 1</th>
                             <th>Fecha Comp. 2</th>
@@ -92,7 +92,7 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-6">
-                                <label for="valid_licence_form">Licencia Válida</label><br>
+                                <label for="valid_licence_form">Licencia Vigente</label><br>
                                 <select name="valid_licence" id="valid_licence_form" class="form-control" required>
                                     <option value="">Seleccionar ...</option>
                                     <option value="Y">Sí</option>
@@ -100,7 +100,7 @@
                                 </select>
                             </div>
                             <div class="col-md-6 form_select_conductores">
-                                <label for="category_form">Categoría</label><br>
+                                <label for="category_form">Categoría de Licencia</label><br>
                                 <select name="category" class="form-control" style="width: 100%" id="category_form"
                                     required>
                                     <option value="">Seleccionar ...</option>
@@ -112,7 +112,7 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-6">
-                                <label for="soat_available_form">Soat Disponible</label><br>
+                                <label for="soat_available_form">Soat</label><br>
                                 <select name="soat_available" id="soat_available_form" class="form-control" required>
                                     <option value="">Seleccionar ...</option>
                                     <option value="Y">Sí</option>
@@ -135,7 +135,7 @@
                                     class="form-control" readonly>
                             </div>
                             <div class="col-md-6 form_select_conductores">
-                                <label for="run_state_form">Estado Licencia</label><br>
+                                <label for="run_state_form">Estado RUN</label><br>
                                 <select name="run_state" class="form-control" style="width: 100%" id="run_state_form"
                                     required>
                                     <option value="">Seleccionar ...</option>
@@ -147,7 +147,7 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-6">
-                                <label for="accident_rate_form">Ratio de Accidente</label><br>
+                                <label for="accident_rate_form">Accidentes Reportados</label><br>
                                 <input type="number" name="accident_rate" id="accident_rate_form" class="form-control"
                                     required>
                             </div>
