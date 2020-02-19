@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\DocVerification;
 use DB;
 use App\DriverInformation;
 use Illuminate\Http\Request;
@@ -55,31 +56,59 @@ class DocVerificationController extends Controller
         $now = date("Y-m-d");
         $data_input = $request->all();
         $data_input['start_date'] = $now;
-        echo '<pre>';
-        print_r($data_input);
-
+        // Trae el id de la tabla user_vehicle para insertarlo después
         $user_vehicle = DB::table('user_vehicle as uv')
             ->select(DB::raw(
                 'uv.id'
             ))
             ->where('uv.driver_information_dni_id', '=', $data_input['user_vehicle_id'])
             ->where('uv.operation', '!=', 'D')
-            // ->toSql();
             ->first();
-        // print_r($user_vehicle);
-        print_r($now);
-        echo ' -- ';
-
+        if (empty($user_vehicle)) {
+            return response()->json(['response' => 'error_swal', 'message' => 'Este conductor ha sido elminado.']);
+        }
+        $uv_id = !empty($user_vehicle) ? $user_vehicle->id : "";
         $validator = Validator::make(
             $data_input,
             [
-                'start_date' => [new NotToday(['user_vehicle_id',$data_input['user_vehicle_id']],'doc_verification')],
+                'start_date' => [new NotToday(['user_vehicle_id', $user_vehicle->id], 'doc_verification')],
             ]
         );
         $errors = $validator->errors()->getMessages();
-        print_r($errors);
-        echo 'finaliza';
-        die;
+        if(!empty($errors)){
+            return response()->json(['response' => 'error_swal', 'message' => 'Este conductor ya registró una evalución hoy, solo se permite una por día.']);
+        }
+        // echo '<pre>';
+        // print_r($errors);
+        // echo 'finaliza';
+        // die;
+        $doc_verification = DocVerification::create([
+            'valid_licence' => $data_input['valid_licence'],
+            'category' => $data_input['category'],
+            'soat_available' => $data_input['soat_available'],
+            'technom_review' => $data_input['technom_review'],
+            'technom_expi_date' => $data_input['technom_expi_date'],
+            'run_state' => $data_input['run_state'],
+            'accident_rate' => $data_input['accident_rate'],
+            'penality_record' => $data_input['penality_record'],
+            'code_penality_1' => $data_input['code_penality_1'],
+            'date_penality_1' => $data_input['date_penality_1'],
+            'code_penality_2' => $data_input['code_penality_2'],
+            'date_penality_2' => $data_input['date_penality_2'],
+            'code_penality_3' => $data_input['code_penality_3'],
+            'date_penality_4' => $data_input['date_penality_3'],
+            'code_penality_4' => $data_input['code_penality_4'],
+            'date_penality_4' => $data_input['date_penality_4'],
+            'code_penality_5' => $data_input['code_penality_5'],
+            'date_penality_5' => $data_input['date_penality_5'],
+            'start_date' => $data_input['start_date'],
+            'user_vehicle_id' => $user_vehicle->id,
+        ]);
+        if ($doc_verification->doc_id > 0) {
+            return response()->json(['response' => 'error_swal', 'message' => 'Ocurrió un error en el proceso']);
+        } else {
+            return response()->json(['response' => 'Información insertada correctamente', 'errors' => []]);
+        }
     }
 
     /**

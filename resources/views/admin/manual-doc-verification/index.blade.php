@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <table id="manual_doc_v_datatable" class="table table_dashboard table-striped nowrap">
+                <table id="manual_doc_v_datatable" class="table table_dashboard table-striped nowrap" style="width:100%;">
                     <thead>
                         <tr>
                             <th></th>

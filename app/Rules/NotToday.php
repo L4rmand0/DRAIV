@@ -32,11 +32,17 @@ class NotToday implements Rule
     public function passes($attribute, $value)
     {
         $result = $this->getLastDate();
-        echo '<pre> last_date';
-        print_r($result);
-        die;
+        // echo '<pre> last_date';
+        // print_r($result);
+        $date = date_create($result->start_date);
+        $now = date("Y-m-d");
+        // echo ' start_date '.$date_validate = date_format($date, 'Y-m-d');
+        // echo ' now '.$now;
+        // die;
         if (!empty($result)) {
-            return $result->operation == 'D';
+            $date = date_create($result->start_date);
+            $date_validate = date_format($date, 'Y-m-d');
+            return strtotime($now) < strtotime($date_validate);
         } else {
             return TRUE;
         }
@@ -49,23 +55,23 @@ class NotToday implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'Ya se hizo un registro el día de de hoy.';
     }
 
     private function getLastDate()
     {
         $operator = $this->deleted == false ? '!=' : '=';
-        print_r($this->key_value);
+        // print_r($this->key_value);
         // $r = DB::table($this->table)
         return DB::table($this->table)
             ->select(DB::raw(
-                $this->table.'.start_date'
+                $this->table . '.start_date'
             ))
-            ->where($this->key_value[0], '=',$this->key_value[1])
-            ->where($this->table.'.operation',$operator,'D')
-            ->orderBy($this->table.'.start_date','desc')
-            // ->first();
-            ->toSql();
-            
+            ->where($this->key_value[0], '=', $this->key_value[1])
+            ->where($this->table . '.operation', $operator, 'D')
+            ->orderBy($this->table . '.start_date', 'desc')
+            ->first();
+        // ->toSql();
+
     }
 }

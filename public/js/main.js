@@ -1,7 +1,7 @@
 // Función para que solo permita digitar número en los inputs
 function setInputFilter(textbox, inputFilter) {
-    ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
-        textbox.addEventListener(event, function() {
+    ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
+        textbox.addEventListener(event, function () {
             if (inputFilter(this.value)) {
                 this.oldValue = this.value;
                 this.oldSelectionStart = this.selectionStart;
@@ -17,14 +17,14 @@ function setInputFilter(textbox, inputFilter) {
 }
 
 // IIFE - Immediately Invoked Function Expression
-(function(runcode) {
+(function (runcode) {
     // The global jQuery object is passed as a parameter
     runcode(window.jQuery, window, document);
 
-}(function($, window, document) {
+}(function ($, window, document) {
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
-    $(function() {
+    $(function () {
         if ($("#pageactive").length > 0) {
             let selector = $("#pageactive").data('page');
             $(selector).addClass('active')
@@ -37,17 +37,17 @@ function setInputFilter(textbox, inputFilter) {
         }
 
         // Escape regex chars with \
-        var escape = function(text) {
+        var escape = function (text) {
             return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
         };
 
         // For those who need them (< IE 9), add support for CSS functions
         var isStyleFuncSupported = !!CSSStyleDeclaration.prototype.getPropertyValue;
         if (!isStyleFuncSupported) {
-            CSSStyleDeclaration.prototype.getPropertyValue = function(a) {
+            CSSStyleDeclaration.prototype.getPropertyValue = function (a) {
                 return this.getAttribute(a);
             };
-            CSSStyleDeclaration.prototype.setProperty = function(styleName, value, priority) {
+            CSSStyleDeclaration.prototype.setProperty = function (styleName, value, priority) {
                 this.setAttribute(styleName, value);
                 var priority = typeof priority != 'undefined' ? priority : '';
                 if (priority != '') {
@@ -58,10 +58,10 @@ function setInputFilter(textbox, inputFilter) {
                         this.cssText.replace(rule, styleName + ': ' + value + ' !' + priority + ';');
                 }
             };
-            CSSStyleDeclaration.prototype.removeProperty = function(a) {
+            CSSStyleDeclaration.prototype.removeProperty = function (a) {
                 return this.removeAttribute(a);
             };
-            CSSStyleDeclaration.prototype.getPropertyPriority = function(styleName) {
+            CSSStyleDeclaration.prototype.getPropertyPriority = function (styleName) {
                 var rule = new RegExp(escape(styleName) + '\\s*:\\s*[^\\s]*\\s*!important(\\s*;)?',
                     'gmi');
                 return rule.test(this.cssText) ? 'important' : '';
@@ -69,7 +69,7 @@ function setInputFilter(textbox, inputFilter) {
         }
 
         // The style function
-        $.fn.style = function(styleName, value, priority) {
+        $.fn.style = function (styleName, value, priority) {
             // DOM node
             var node = this.get(0);
             // Ensure we have a DOM node
@@ -101,12 +101,12 @@ function setInputFilter(textbox, inputFilter) {
 
     });
 
-    jQuery.fn.hasErrorsForms = function(callingElement, data) {
+    jQuery.fn.hasErrorsForms = function (callingElement, data) {
         $(".error-strong").text("");
         //Revisa si la petición tiene errores y los muestra
         if (Object.keys(data.errors).length > 0) {
             let arr_errores = data.errors;
-            $.each(arr_errores, function(index, value) {
+            $.each(arr_errores, function (index, value) {
                 let html_content = "" +
                     "<div class='row mt-0'>" +
                     "   <div class='col-md-12'>" +
@@ -130,11 +130,15 @@ function setInputFilter(textbox, inputFilter) {
     };
 
 
-    jQuery.fn.cleanErrorForm = function() {
-
+    jQuery.fn.cleanForm = function (selector_form) {
+        $(selector_form+" input[type=text]").val("");
+        $(selector_form+" input[type=password]").val("");
+        $(selector_form+" select").val("");
+        $(selector_form+" input[type=email]").val("");
+        $(selector_form).modal('hide');
     }
 
-    jQuery.fn.cleanErrorElementForm = function($target) {
+    jQuery.fn.cleanErrorElementForm = function ($target) {
         $target.css("border-color", "");
         $("#label-" + $target.attr("id")).css("color", "")
         $("#" + $target.attr("id") + "-error-strong").text("")
