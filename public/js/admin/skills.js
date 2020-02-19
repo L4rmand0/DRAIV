@@ -144,16 +144,16 @@
                 if (result.value) {
                     $.ajax({
                         type: 'POST',
-                        url: $("#form_user_admin").data("url-delete"),
+                        url: $("#delete-route").val(),
                         data: data_delete,
                         success: function(data) {
                             if (data.error == "") {
                                 swal.fire(
                                     'Proceso Completado',
-                                    'El usuario ha sido eliminado.',
+                                     data.response,
                                     'success'
                                 );
-                                $('#user_datatable').DataTable().ajax.reload();
+                                $('#skills_m_t_m_datatable').DataTable().ajax.reload();
                             } else {
                                 swal.fire(
                                     'Ocurrió un error',

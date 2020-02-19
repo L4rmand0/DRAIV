@@ -139,12 +139,14 @@ class SkillMtMController extends Controller
     public function destroy(Request $request)
     {
         $data_delete = $request->all();
+        // echo '<pre>';
+        // print_r($data_delete);
         // die;
-        $delete = SkillMtM::where('doc_id', $data_delete['doc_id'])->update(['Operation' => 'D']);
+        $delete = SkillMtM::where('reg_id', $data_delete['reg_id'])->update(['operation' => 'D']);
         if ($delete) {
-            return response()->json(['response' => 'Usuario eliminado', 'error' => '']);
+            return response()->json(['response' => 'El registro ha sido eliminado.', 'error' => '']);
         } else {
-            return response()->json(['error' => 'No se pudo eliminar el usuario']);
+            return response()->json(['error' => 'No se pudo eliminar el registro']);
         }
     }
 
