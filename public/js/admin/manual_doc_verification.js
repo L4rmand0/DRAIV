@@ -17,9 +17,10 @@
             $target = $(event.target);
             $(this).editBehaviourInputDT($target, "#drive_information_datatable", "#valid_licence");
             $(this).editBehaviourSelectFixedDT($target, "#manual_doc_v_datatable", "#category");
-            $(this).editBehaviourInputDT($target, "#manual_doc_v_datatable", "#technom_review");
+            $(this).editBehaviourSelectFixedDT($target, "#manual_doc_v_datatable", "#soat_available");
+            $(this).editBehaviourSelectFixedDT($target, "#manual_doc_v_datatable", "#technom_review");
             $(this).editBehaviourInputDT($target, "#manual_doc_v_datatable", "#technom_expi_date");
-            $(this).editBehaviourInputDT($target, "#manual_doc_v_datatable", "#run_state");
+            $(this).editBehaviourSelectFixedDT($target, "#manual_doc_v_datatable", "#run_state");
             $(this).editBehaviourInputDT($target, "#manual_doc_v_datatable", "#accident_rate");
             $(this).editBehaviourInputDT($target, "#manual_doc_v_datatable", "#penality_record");
             $(this).editBehaviourInputDT($target, "#manual_doc_v_datatable", "#date_penality_1");
@@ -109,6 +110,7 @@
             'doc_id',
             'valid_licence',
             'category',
+            'soat_available',
             'technom_review',
             'technom_expi_date',
             'run_state',
@@ -258,6 +260,21 @@
                 "column": 3,
                 "type": "list-fixed",
                 "options": category_t_list
+            },
+            {
+                "column": 7,
+                "type": "list-fixed",
+                "options": runstate_t_list
+            },
+            {
+                "column": 4,
+                "type": "list-fixed",
+                "options": soat_available_t_list
+            },
+            {
+                "column": 5,
+                "type": "list-fixed",
+                "options": technom_review_t_list
             }]
         });
 

@@ -209,7 +209,10 @@ class AdminController extends Controller
             'values_braking' => SkillMtM::VALUE_BRAKING,
             'values_evasion' => SkillMtM::VALUE_EVASION,
             'values_mobility' => SkillMtM::VALUE_MOBILITY,
-            'category_t_list'=> json_encode($this->ListDT()->query(DocVerification::CATEGORY)->make())
+            'category_t_list'=> json_encode($this->ListDT()->query(DocVerification::CATEGORY)->make()),
+            'runstate_t_list'=> json_encode($this->ListDT()->query(DocVerification::RUNSTATE)->make()),
+            'soat_available_t_list'=> json_encode($this->ListDT()->query(DocVerification::SOAT_AVAILABLE)->make()),
+            'technom_review_t_list'=> json_encode($this->ListDT()->query(DocVerification::TECHNOM_REVIEW)->make()),
         ];
     }
 

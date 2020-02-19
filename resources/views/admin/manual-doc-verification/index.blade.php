@@ -232,6 +232,9 @@
 <script src="{{ asset('js/admin/manual_doc_verification.js') }}" defer></script>
 <script> 
     var category_t_list = {!! $category_t_list !!};
+    var runstate_t_list = {!! $runstate_t_list !!};
+    var soat_available_t_list = {!! $soat_available_t_list !!};
+    var technom_review_t_list = {!! $technom_review_t_list !!};
 </script>
 @endsection
 <!-- End of Main Content -->
