@@ -83,7 +83,6 @@ class AdminController extends Controller
                 case 'vehicle':
                     $data_vehicle = $this->showIndexVehicle($company_name);
                     $data_vehicle = $this->checkMultipleAdmin($auth_user, $child_companies, $data_vehicle);
-                    // dd("Hola vehicle 2");
                     // die;
                     return view('admin.vehicle.index', $data_vehicle);
                     break;
@@ -103,8 +102,6 @@ class AdminController extends Controller
                     return view('admin.doc-verification.index', $data_doc_verification);
                     break;
                 case 'autoevaluation_company':
-                    // echo 'entra';
-                    // die;
                     $data_doc_verification = $this->showIndexDocVerification($company_name);
                     $data_doc_verification = $this->checkMultipleAdmin($auth_user, $child_companies, $data_doc_verification);
                     return view('admin.autoevaluation.index', $data_doc_verification);
@@ -194,6 +191,10 @@ class AdminController extends Controller
             'values_braking' => SkillMtM::VALUE_BRAKING,
             'values_evasion' => SkillMtM::VALUE_EVASION,
             'values_mobility' => SkillMtM::VALUE_MOBILITY,
+            'slalom_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_SLALOM)->make()),
+            'projection_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_SLALOM)->make()),
+            'slalom_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_SLALOM)->make()),
+            'slalom_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_SLALOM)->make()),
         ];
     }
 

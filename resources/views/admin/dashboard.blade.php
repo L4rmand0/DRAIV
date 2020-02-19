@@ -255,7 +255,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">Marcas Vehículo</h6>
                 </div>
                 <div class="card-body">
-                    <canvas id="brand_v_chart" width="400" height="300"></canvas>
+                    <canvas id="brand_v_chart" width="400" height="500"></canvas>
                 </div>
             </div>
         </div>
@@ -265,7 +265,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">Línea de Vehículo</h6>
                 </div>
                 <div class="card-body">
-                    <canvas id="line_v_chart" width="400" height="300"></canvas>
+                    <canvas id="line_v_chart" width="400" height="500"></canvas>
                 </div>
             </div>
         </div>
@@ -282,8 +282,20 @@
             </div>
         </div>
         <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Conductores Verificados {{ $company_name }}</h6>
+                </div>
+                <div class="card-body">
+                    <canvas id="drivers_v_chart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="display: flex; justify-content: center;">
+        <div class="col-lg-12 mb-4">
             <div class="row">
-                <div class="col-lg-6 mb-4">
+                <div class="col-lg-2 mb-4">
                     <div class="card bg-primary text-white shadow">
                         <div class="card-body">
                             Licencias Próximas a Vencer
@@ -292,7 +304,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 mb-4">
+                <div class="col-lg-2 mb-4">
                     <div class="card bg-primary text-white shadow">
                         <div class="card-body">
                             Licencias Vencidas
@@ -301,9 +313,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6 mb-4">
+
+                <div class="col-lg-2 mb-4">
                     <div class="card bg-success text-white shadow">
                         <div class="card-body">
                             Soats Próximos a Vencer
@@ -312,7 +323,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 mb-4">
+                <div class="col-lg-2 mb-4">
                     <div class="card bg-success text-white shadow">
                         <div class="card-body">
                             Soats Vencidos
@@ -321,38 +332,23 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6 mb-4">
+                <div class="col-lg-2 mb-4">
                     <div class="card bg-danger text-white shadow">
                         <div class="card-body">
-                            Tecnomecánicas Próximos a Vencer
+                            Tec. Próximos a Vencer
                             <div class="text-white-50 small" id="card_technomecanical_expiration_number">
                                 {{ $technomecanical_expiration }}</div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 mb-4">
+                <div class="col-lg-2 mb-4">
                     <div class="card bg-danger text-white shadow">
                         <div class="card-body">
                             Tecnomecánicas Vencidas
-                            <p></p>
                             <div class="text-white-50 small" id="card_technomecanical_expirated_number">
                                 {{ $technomecanical_expirated }}</div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row" style="display: flex; justify-content: center;">
-        <div class="col-lg-7 mb-4">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Conductores Verificados {{ $company_name }}</h6>
-                </div>
-                <div class="card-body">
-                    <canvas id="drivers_v_chart" width="400" height="300"></canvas>
                 </div>
             </div>
         </div>

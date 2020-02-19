@@ -53,7 +53,7 @@ class ChartJS
         } else {
             $options = $this->createOptions($maximo);
         }
-        $datasets['label'] = "Frecuencia Educación";
+        $datasets['label'] = "Frecuencia";
         $datasets['data'] = $data_data;
         $datasets['backgroundColor'] = $arr_colors['backgroundColor'];
         $datasets['borderColor'] = $arr_colors['borderColor'];
@@ -161,13 +161,13 @@ class ChartJS
     public function fillColorsBarChartVerifiedsDrivers($number)
     {
         $colors = [
-            'rgba(87, 213, 100)',
             'rgba(213, 87, 87)',
+            'rgba(87, 213, 100)',
         ];
 
         $borders_colors = [
-            'rgba(87, 213, 100)',
             'rgba(213, 87, 87)',
+            'rgba(87, 213, 100)',
         ];
         $borders = [];
         $bg_colors = [];

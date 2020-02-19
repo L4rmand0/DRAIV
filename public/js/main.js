@@ -131,7 +131,6 @@ function setInputFilter(textbox, inputFilter) {
 
 
     jQuery.fn.cleanForm = function (selector_form) {
-        debugger
         $(selector_form+" input[type=text]").val("");
         $(selector_form+" input[type=password]").val("");
         $(selector_form+" input[type=number]").val("");

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use DB;
+use App\SkillMtM;
+use App\Rules\NotToday;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class SkillMtMController extends Controller
 {
@@ -37,12 +40,51 @@ class SkillMtMController extends Controller
      */
     public function store(Request $request)
     {
-        
-    }
-
-    public function getLastRegister(Request $request)
-    {
-        
+        $now = date("Y-m-d");
+        $data_input = $request->all();
+        $data_input['start_date'] = $now;
+        // echo '<pre>';
+        // print_r($data_input);
+        // die;
+        // Trae el id de la tabla user_vehicle para insertarlo después
+        $user_vehicle = DB::table('user_vehicle as uv')
+            ->select(DB::raw(
+                'uv.id'
+            ))
+            ->where('uv.driver_information_dni_id', '=', $data_input['user_vehicle_id'])
+            ->where('uv.operation', '!=', 'D')
+            ->first();
+        if (empty($user_vehicle)) {
+            return response()->json(['response' => 'error_swal','errors'=>['message' => 'Este conductor ha sido elminado.']]);
+        }
+        $uv_id = !empty($user_vehicle) ? $user_vehicle->id : "";
+        $validator = Validator::make(
+            $data_input,
+            [
+                'start_date' => [new NotToday(['user_vehicle_id', $user_vehicle->id], 'skill_m_t_m')],
+            ]
+        );
+        $errors = $validator->errors()->getMessages();
+        if(!empty($errors)){
+            return response()->json(['response' => 'error_swal','errors'=>['message' => 'Este conductor ya registró una evalución hoy, solo se permite una por día.']]);
+        }
+        // echo '<pre>';
+        // print_r($errors);
+        // echo 'finaliza';
+        // die;
+        $skill_m_t_m = SkillMtM::create([
+            'slalom' => $data_input['slalom'],
+            'projection' => $data_input['projection'],
+            'braking' => $data_input['braking'],
+            'evasion' => $data_input['evasion'],
+            'user_vehicle_id' => $user_vehicle->id,
+            'user_id' => auth()->id(),
+        ]);
+        if ($skill_m_t_m->reg_id > 0) {
+            return response()->json(['response' => 'error_swal', 'message' => 'Ocurrió un error en el proceso']);
+        } else {
+            return response()->json(['response' => 'Información insertada correctamente', 'errors' => []]);
+        }
     }
 
     /**
@@ -76,7 +118,16 @@ class SkillMtMController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $now = date("Y-m-d H:i:s");
+        $reg_id = $request->get('reg_id');
+        $validated_data = $request->get('validated_data');
+        $update = SkillMtM::where('reg_id', $reg_id)->update([
+            'validated_data' => $validated_data,
+            'operation' => 'U',
+            'user_id' => auth()->id(),
+            'date_operation' => $now,
+        ]);
+        return response()->json(['response' => 'Registro actualizado', 'errors' => [], 'updates' => $update]);
     }
 
     /**
@@ -85,9 +136,16 @@ class SkillMtMController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $data_delete = $request->all();
+        // die;
+        $delete = SkillMtM::where('doc_id', $data_delete['doc_id'])->update(['Operation' => 'D']);
+        if ($delete) {
+            return response()->json(['response' => 'Usuario eliminado', 'error' => '']);
+        } else {
+            return response()->json(['error' => 'No se pudo eliminar el usuario']);
+        }
     }
 
     public function dataTable(Request $request){

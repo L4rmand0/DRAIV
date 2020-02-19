@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class SkillMtM extends Model
 {
-    const VALUE_SLALOM = [0,1]; 
-    const VALUE_PROJECTION = [0,1,2,3]; 
-    const VALUE_BRAKING = [0,1,2,3]; 
-    const VALUE_EVASION = [0,1,2,3]; 
-    const VALUE_MOBILITY = [0,1,2,3]; 
+    const VALUE_SLALOM = [0 => 'regular', 1 => 'bueno']; 
+    const VALUE_PROJECTION = [0=>'Muy malo',1=>'Malo',2=>'Regular',3=>'Bueno']; 
+    const VALUE_BRAKING = [0=>'Muy malo',1=>'Malo',2=>'Regular',3=>'Bueno']; 
+    const VALUE_EVASION = [0=>'Muy malo',1=>'Malo',2=>'Regular',3=>'Bueno']; 
+    const VALUE_MOBILITY = [0=>'Muy malo',1=>'Malo',2=>'Regular',3=>'Bueno']; 
     
     const enum_type_v = [
         'Motos',

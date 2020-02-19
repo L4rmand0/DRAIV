@@ -258,7 +258,7 @@ var new_element = new Array();
 
             $(document).keyup(function(event){
                 if(event.keyCode===27){
-                    alert("Escape")    
+                    console.log("Escape")    
                 }
             })
 

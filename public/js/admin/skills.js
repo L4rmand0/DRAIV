@@ -15,65 +15,61 @@
     $(function() {
         $(document).click(function(event) {
             $target = $(event.target);
-            // $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#profile_id");
+            $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#profile_id");
             // $(this).editBehaviourInputDT($target, "#skills_m_t_m_datatable", "#name");
             // $(this).editBehaviourInputDT($target, "#skills_m_t_m_datatable", "#email");
         });
-
-        // $.ajax({
-        //     type: 'GET',
-        //     url: $('#company_id_form').data('url'),
-        //     data: { 'type': 'select_admin2' },
-        //     success: function(data) {
-        //         $('#company_id_form').select2({
-        //             data: data
-        //         });
-        //     }
-        // });
 
         $.ajax({
             type: 'GET',
             url: $('#user_vehicle_id_form').data('url'),
             data: { 'type': 'select_admin2' },
-            success: function(data) {
+            success: function (data) {
                 $('#user_vehicle_id_form').select2({
                     data: data
                 });
+                if ($("#user_vehicle_id_form option").length == 1) {
+                    $("#user_vehicle_id_form-error-strong").html("<p>No se ha registrado ningún conductor.<a href='" + $("#route-driver-information").val() + "'> Registrar</a></p>");
+                }
             }
         });
 
         $("#form_create_skills_mtm").submit(function(event) {
             event.preventDefault();
+            $target = $(this);
             let data_form = $(this).serialize();
             $.ajax({
                 type: 'POST',
-                url: $("#btn_admin_user").data('url'),
+                url: $("#register-route").val(),
                 data: data_form,
                 success: function(data) {
                     console.log(data);
                     $(".error-strong").text("");
                     if (Object.keys(data.errors).length > 0) {
-                        let arr_errores = data.errors;
-                        console.log(arr_errores);
-                        $.each(arr_errores, function(index, value) {
-                            let selector = "#" + index + "-error";
-                            let selector_strong = "#" + index + "-error-strong";
-                            $(selector).show();
-                            $(selector_strong).text(value[0]);
-                        });
+                        if (data.response == "error_swal") {
+                            swal.fire(
+                                'Error en el proceso!',
+                                data.message,
+                                'error'
+                            )
+                        } else {
+                            let arr_errores = data.errors;
+                            console.log(arr_errores);
+                            $.each(arr_errores, function (index, value) {
+                                let selector = "#" + index + "-error";
+                                let selector_strong = "#" + index + "-error-strong";
+                                $(selector).show();
+                                $(selector_strong).text(value[0]);
+                            });
+                        }
                     } else {
-                        $("#form_create_skills_mtm input[type=text]").val("");
-                        $("#form_create_skills_mtm input[type=password]").val("");
-                        $("#form_create_skills_mtm select").val("");
-                        $("#form_create_skills_mtm input[type=email]").val("");
-                        $("#defaultChecked2").prop('checked', false);
-                        $('#form_create_skills_mtm').modal('hide');
+                        $target.cleanForm("#form_create_skills_mtm");
                         swal.fire(
                             'Proceso Completado!',
                             data.success,
                             'success'
                         )
-                        $('#user_datatable').DataTable().ajax.reload();
+                        $('#skills_m_t_m_datatable').DataTable().ajax.reload();
                     }
                 }
             });
@@ -82,10 +78,18 @@
         //Arreglo que genera el atributo id de cada elemento td celda del datatable
         var fields = [
             'delete_row',
-            'id',
-            'name',
-            'email',
-            'profile_id',
+            'reg_id',
+            // 'date_evaluation',
+            'slalom',
+            'projection',
+            'braking',
+            'evasion',
+            // 'mobility',
+            // 'result',
+            'first_name',
+            'f_last_name',
+            'dni_id',
+            'plate_id',
         ];
 
         //Instancia del datatable
@@ -98,13 +102,13 @@
             columns: [
                 { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_user"><i class="fas fa-trash"></i></button></center>' },
                 { data: 'reg_id', name: 'reg_id', "visible": false },
-                { data: 'date_evaluation', name: 'date_evaluation' },
+                // { data: 'date_evaluation', name: 'date_evaluation' },
                 { data: 'slalom', name: 'slalom' },
                 { data: 'projection', name: 'projection' },
                 { data: 'braking', name: 'braking' },
                 { data: 'evasion', name: 'evasion' },
-                { data: 'mobility', name: 'mobility' },
-                { data: 'result', name: 'result' },
+                // { data: 'mobility', name: 'mobility' },
+                // { data: 'result', name: 'result' },
                 { data: 'first_name', name: 'first_name' },
                 { data: 'f_last_name', name: 'f_last_name' },
                 { data: 'dni_id', name: 'dni_id' },
@@ -196,11 +200,27 @@
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            // "inputTypes": [{
-            //     "column": 4,
-            //     "type": "list-fixed",
-            //     "options": profile_list
-            // }]
+            "columns":[2,3,4,5],
+            "inputTypes": [{
+                "column": 2,
+                "type": "list-fixed",
+                "options": category_t_list
+            },
+            {
+                "column": 3,
+                "type": "list-fixed",
+                "options": runstate_t_list
+            },
+            {
+                "column": 4,
+                "type": "list-fixed",
+                "options": soat_available_t_list
+            },
+            {
+                "column": 5,
+                "type": "list-fixed",
+                "options": technom_review_t_list
+            }]
         });
 
     });

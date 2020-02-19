@@ -2,6 +2,7 @@
 @section('content')
 <!-- Begin Page Content -->
 <div class="container-fluid">
+    <input type="hidden" name="route-driver-information" value="{{ route ('admin','driver_information') }}" id="route-driver-information">
     <input type="hidden" name="data-table-route" value="{{ route ('admin.manual-doc-verification.list') }}"
         id="data-table-route">
     <input type="hidden" name="register-route" value="{{ route ('admin.manual-doc-verification.store') }}"

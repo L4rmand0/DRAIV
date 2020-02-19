@@ -258,6 +258,9 @@ class DocVerificationController extends Controller
             ->where('di.operation', '!=', 'D')
             ->groupBy('validated_data')
             ->get()->toArray();
+            // echo '<pre>';
+            // print_r($drivers_verifieds);
+            // die;
         foreach ($drivers_verifieds as $key => $value) {
             if ($value->validated_data == 1) {
                 $drivers_verifieds[$key]->validated_data = "Verificado";
@@ -342,14 +345,4 @@ class DocVerificationController extends Controller
         $drive_information = $this->addDeleteButtonDatatable($skill_m_t_m);
         return datatables()->of($drive_information)->make(true);
     }
-
-    //     select
-    // 	di.validated_data, count(di.dni_id) as total
-    // from
-    // 	driver_information as di 
-    // where
-    // 	di.company_id = 9013380301
-    // 	and di.operation != 'D'
-    // GROUP BY validated_data;
-
 }

@@ -103,7 +103,10 @@ Route::prefix('admin')->group(function () {
     Route::post('/doc-verification/update', 'admin\DocVerificationController@update')->name('admin.doc-verification.update');
     Route::post('/doc-verification/drivers-verify-chart', 'admin\DocVerificationController@makeDonutChartDriversVerified')->name('admin.doc-verification.drivers-verify-chart'); 
     Route::get('/list-datatable', 'admin\UserController@MakeListProfile')->name('list-datatable');
-    Route::get('skills-m-t-m-list', 'admin\SkillMtMController@datatable')->name('skills-m-t-m-list');
+    Route::get('skills-m-t-m/list', 'admin\SkillMtMController@datatable')->name('admin.skills-m-t-m.list');
+    Route::post('skills-m-t-m/create', 'admin\SkillMtMController@store')->name('admin.skills-m-t-m.store');
+    Route::post('skills-m-t-m/update', 'admin\SkillMtMController@update')->name('admin.skills-m-t-m.update');
+    Route::post('skills-m-t-m/destroy', 'admin\SkillMtMController@destroy')->name('admin.skills-m-t-m.destroy');
 });
 
 // Route::get('/api-text-extract', 'ApiController@extractText')->name('api-text-extract');
