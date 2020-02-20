@@ -335,7 +335,7 @@
                 <div class="col-lg-2 mb-4">
                     <div class="card bg-danger text-white shadow">
                         <div class="card-body">
-                            Tec. Próximos a Vencer
+                            Tec. Próximas a Vencer
                             <div class="text-white-50 small" id="card_technomecanical_expiration_number">
                                 {{ $technomecanical_expiration }}</div>
                         </div>
