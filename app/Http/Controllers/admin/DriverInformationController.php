@@ -92,6 +92,7 @@ class DriverInformationController extends Controller
      */
     public function store(Request $request)
     {
+        $company_id_active = Auth::user()->company_active;
         // echo '<pre>';
         $data_input = $request->all()['driverInformation'];
         // print_r($data_input);

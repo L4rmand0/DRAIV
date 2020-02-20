@@ -15,9 +15,10 @@
     $(function() {
         $(document).click(function(event) {
             $target = $(event.target);
-            $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#profile_id");
-            // $(this).editBehaviourInputDT($target, "#skills_m_t_m_datatable", "#name");
-            // $(this).editBehaviourInputDT($target, "#skills_m_t_m_datatable", "#email");
+            $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#slalom");
+            $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#projection");
+            $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#braking");
+            $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#evasion");
         });
 
         $.ajax({
@@ -96,8 +97,9 @@
         var table = $('#skills_m_t_m_datatable').DataTable({
             processing: true,
             serverSide: true,
-            "scrollY":"400px",
-            "scrollCollapse": true,
+            "sScrollY": "600",
+            "sScrollX": "100%",
+            "bScrollCollapse": true,
             ajax: $('#data-table-route').val(),
             columns: [
                 { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_user"><i class="fas fa-trash"></i></button></center>' },
@@ -204,22 +206,22 @@
             "inputTypes": [{
                 "column": 2,
                 "type": "list-fixed",
-                "options": category_t_list
+                "options": slalom_t_list
             },
             {
                 "column": 3,
                 "type": "list-fixed",
-                "options": runstate_t_list
+                "options": projection_t_list
             },
             {
                 "column": 4,
                 "type": "list-fixed",
-                "options": soat_available_t_list
+                "options": braking_t_list
             },
             {
                 "column": 5,
                 "type": "list-fixed",
-                "options": technom_review_t_list
+                "options": evasion_t_list
             }]
         });
 

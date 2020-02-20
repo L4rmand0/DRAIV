@@ -29,7 +29,6 @@ class IsNotDelete implements Rule
      */
     public function passes($attribute, $value)
     {
-        echo ' entra ';
         $result = $this->getOperation();
         if(!empty($result)){
             return $result->operation == 'D';

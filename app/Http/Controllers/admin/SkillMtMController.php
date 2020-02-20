@@ -174,6 +174,13 @@ class SkillMtMController extends Controller
             ->where('smtm.operation', '!=', 'D')
             ->orderBy('smtm.start_date', 'desc')
             ->get();
+
+        $skill_m_t_m = $this->dataQuery($skill_m_t_m)->make([
+            'slalom'=>SkillMtM::VALUE_SLALOM,
+            'projection'=>SkillMtM::VALUE_PROJECTION,
+            'braking'=>SkillMtM::VALUE_BRAKING,
+            'evasion'=>SkillMtM::VALUE_EVASION,
+        ]);    
         $drive_information = $this->addDeleteButtonDatatable($skill_m_t_m);
         return datatables()->of($drive_information)->make(true);
     }

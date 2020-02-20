@@ -54,30 +54,30 @@ var table_relation;
                 });
             }
         });
-
-        $('#driver_information_dni_id_form').on('change', function() {
-            let user_info_id = $(this).val();
-            $("#name_driver").text("");
-            $.ajax({
-                type: 'GET',
-                url: $('#driver_information_dni_id_form').data('url-name'),
-                data: { 'type': 'select_admin2', 'user_info_id': user_info_id },
-                success: function(data) {
-                    if (Object.keys(data.errors).length > 0) {
-                        let arr_errores = data.errors;
-                        console.log(arr_errores);
-                        $.each(arr_errores, function(index, value) {
-                            let selector = "#" + index + "-error";
-                            let selector_strong = "#" + index + "-error-strong";
-                            $(selector).show();
-                            $(selector_strong).text(value[0]);
-                        });
-                    }
-                    $("#name_driver").text(data.name);
-                }
-            });
-            $(".error-strong").text("");
-        });
+        // VALIDACION PARA MIRAR SI CONDUCTOR YA TENÍA ASOCIADO UN VEHÍCULO
+        // $('#driver_information_dni_id_form').on('change', function() {
+        //     let user_info_id = $(this).val();
+        //     $("#name_driver").text("");
+        //     $.ajax({
+        //         type: 'GET',
+        //         url: $('#driver_information_dni_id_form').data('url-name'),
+        //         data: { 'type': 'select_admin2', 'user_info_id': user_info_id },
+        //         success: function(data) {
+        //             if (Object.keys(data.errors).length > 0) {
+        //                 let arr_errores = data.errors;
+        //                 console.log(arr_errores);
+        //                 $.each(arr_errores, function(index, value) {
+        //                     let selector = "#" + index + "-error";
+        //                     let selector_strong = "#" + index + "-error-strong";
+        //                     $(selector).show();
+        //                     $(selector_strong).text(value[0]);
+        //                 });
+        //             }
+        //             $("#name_driver").text(data.name);
+        //         }
+        //     });
+        //     $(".error-strong").text("");
+        // });
 
         $("#form_add_vehicle_driver").submit(function(event) {
             event.preventDefault();
@@ -93,7 +93,6 @@ var table_relation;
                         let arr_errores = data.errors;
                         console.log(arr_errores);
                         $.each(arr_errores, function(index, value) {
-                            debugger
                             let selector = "#" + index + "-error";
                             let selector_strong = "#" + index + "-error-strong";
                             $(selector).show();
@@ -599,7 +598,7 @@ var table_relation;
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            columns: [2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+            columns: [2, 3,5,6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
             "inputTypes": [{
                     "column": 2,
                     "type": "list",

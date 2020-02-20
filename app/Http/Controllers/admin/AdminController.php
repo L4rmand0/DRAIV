@@ -192,9 +192,9 @@ class AdminController extends Controller
             'values_evasion' => SkillMtM::VALUE_EVASION,
             'values_mobility' => SkillMtM::VALUE_MOBILITY,
             'slalom_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_SLALOM)->make()),
-            'projection_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_SLALOM)->make()),
-            'slalom_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_SLALOM)->make()),
-            'slalom_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_SLALOM)->make()),
+            'projection_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_PROJECTION)->make()),
+            'braking_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_BRAKING)->make()),
+            'evasion_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_EVASION)->make()),
         ];
     }
 

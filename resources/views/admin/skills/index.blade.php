@@ -2,10 +2,10 @@
 @section('content')
 <!-- Begin Page Content -->
 <div class="container-fluid">
-    <input type="hidden" name="route-driver-information" value="{{ route ('admin','driver_information') }}" id="route-driver-information">
+    <input type="hidden" name="route-driver-information" value="{{ route ('admin','driver_information') }}"
+        id="route-driver-information">
     <input type="hidden" name="data-table-route" value="{{ route ('admin.skills-m-t-m.list') }}" id="data-table-route">
-    <input type="hidden" name="register-route" value="{{ route ('admin.skills-m-t-m.store') }}"
-        id="register-route">
+    <input type="hidden" name="register-route" value="{{ route ('admin.skills-m-t-m.store') }}" id="register-route">
     <input type="hidden" name="update-route" value="{{ route ('admin.skills-m-t-m.update') }}" id="update-route">
     <input type="hidden" name="delete-route" value="{{ route ('admin.skills-m-t-m.destroy') }}" id="delete-route">
     <!-- Page Heading -->
@@ -17,7 +17,8 @@
                 </div>
             </div>
             <div class="card-body">
-                <table id="skills_m_t_m_datatable" class="table table_dashboard table-striped nowrap" style="width:100%;">
+                <table id="skills_m_t_m_datatable" class="table table_dashboard table-striped nowrap"
+                    style="width:100%;">
                     <thead>
                         <tr>
                             <th></th>
@@ -38,17 +39,31 @@
                 </table>
             </div>
             <div class="card-footer">
-                <div class="container text-center">
-                    <button class="btn btn-primary" type="button" data-toggle="modal"
-                        data-target="#form_create_skills_mtm_modal"><i class="fas fa-plus"></i> Registrar Habilidades</button>
+                <div class="row">
+                    <div class="col-md-2" style="display: flex;align-items: center;justify-content: center;">
+                        <a href="{{ route('admin','skills_m_t_m') }}"><img src="{{ asset('img/back.png') }}"
+                                alt=""></a>
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <div class="container text-center">
+                            <button class="btn btn-primary" type="button" data-toggle="modal"
+                                data-target="#form_create_skills_mtm_modal"><i class="fas fa-plus"></i> Registrar
+                                Habilidades</button>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2 text-right" style="display: flex;align-items: center;justify-content: center;">
+                        <a href="{{ route('admin','motorcycle_tecnology') }}"><img src="{{ asset('img/next.png') }}" alt=""></a>
+                    </div>
                 </div>
             </div>
         </div>
     </center>
 </div>
 
-<div class="modal fade" id="form_create_skills_mtm_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="form_create_skills_mtm_modal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -79,7 +94,7 @@
                         <div class="col-md-6">
                             <select class="form-control" name="slalom" id="slalom_form" style="width:100%;" required>
                                 <option value="">Seleccionar ...</option>
-                                @foreach ($values_slalom as $key_val_slalom  => $val_slalom)
+                                @foreach ($values_slalom as $key_val_slalom => $val_slalom)
                                 <option value="{{ $key_val_slalom }}">{{ $val_slalom }}</option>
                                 @endforeach
                             </select>
@@ -92,7 +107,8 @@
                         <label for="projection_form" style="padding-top: calc(0.135rem + 1px);"
                             class="col-md-4 col-form-label text-md-right">{{ __('Proyección') }}</label>
                         <div class="col-md-6">
-                            <select class="form-control" name="projection" id="projection_form" style="width:100%;" required>
+                            <select class="form-control" name="projection" id="projection_form" style="width:100%;"
+                                required>
                                 <option value="">Seleccionar ...</option>
                                 @foreach ($values_projection as $key_val_projection => $val_projection)
                                 <option value="{{ $key_val_projection }}">{{ $val_projection }}</option>
@@ -109,7 +125,7 @@
                         <div class="col-md-6">
                             <select class="form-control" name="braking" id="braking_form" style="width:100%;" required>
                                 <option value="">Seleccionar ...</option>
-                                @foreach ($values_braking as $key_val_braking => $val_braking) 
+                                @foreach ($values_braking as $key_val_braking => $val_braking)
                                 <option value="{{ $key_val_braking }}">{{ $val_braking }}</option>
                                 @endforeach
                             </select>
@@ -135,7 +151,8 @@
                     </div>
                     <div class="form-group row mb-0">
                         <div class="col-md-6 offset-md-4">
-                            <button type="submit" class="btn btn-primary" data-url="{{ route('register-user') }}" id="btn_admin_user">
+                            <button type="submit" class="btn btn-primary" data-url="{{ route('register-user') }}"
+                                id="btn_admin_user">
                                 Registrar
                             </button>
                         </div>
@@ -151,5 +168,11 @@
 </div>
 <!-- /.container-fluid -->
 <script src="{{ asset('js/admin/skills.js') }}" defer></script>
+<script>
+    var slalom_t_list = {!! $slalom_t_list !!};
+    var projection_t_list = {!! $projection_t_list !!};
+    var evasion_t_list = {!! $evasion_t_list !!};
+    var braking_t_list = {!! $braking_t_list !!};
+</script>
 @endsection
 <!-- End of Main Content -->

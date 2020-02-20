@@ -13,7 +13,7 @@ class ListDatatableUser
         return $this;
     }
 
-    public function make($column_value = null, $column_display = null)
+    public function make($column_value = null, $column_display = null,$type = null)
     {
         if ($column_value != null) {
             foreach ($this->data_query as $key => $value) {
@@ -23,6 +23,13 @@ class ListDatatableUser
                 ];
                 // $options['value'][] = $value[$column_value];
                 // $options['display'][] = $value[$column_display];
+            }
+        } else if($column_value == null && $column_display == null){
+            foreach ($this->data_query as $key => $value) {
+                $options[] = [
+                    'value' => $value,
+                    'display' => $value,
+                ];
             }
         } else if($column_value == null && $column_display == null){
             foreach ($this->data_query as $key => $value) {

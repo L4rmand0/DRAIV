@@ -2,13 +2,16 @@
 @section('content')
 <!-- Begin Page Content -->
 <div class="container-fluid">
-    <input type="hidden" name="route-driver-information" value="{{ route ('admin','driver_information') }}" id="route-driver-information">
+    <input type="hidden" name="route-driver-information" value="{{ route ('admin','driver_information') }}"
+        id="route-driver-information">
     <input type="hidden" name="data-table-route" value="{{ route ('admin.manual-doc-verification.list') }}"
         id="data-table-route">
     <input type="hidden" name="register-route" value="{{ route ('admin.manual-doc-verification.store') }}"
         id="register-route">
-    <input type="hidden" name="update-route" value="{{ route ('admin.manual-doc-verification.update') }}" id="update-route">
-    <input type="hidden" name="delete-route" value="{{ route ('admin.manual-doc-verification.destroy') }}" id="delete-route">
+    <input type="hidden" name="update-route" value="{{ route ('admin.manual-doc-verification.update') }}"
+        id="update-route">
+    <input type="hidden" name="delete-route" value="{{ route ('admin.manual-doc-verification.destroy') }}"
+        id="delete-route">
     <!-- Page Heading -->
     <center>
         <div class="card mb-4">
@@ -18,7 +21,8 @@
                 </div>
             </div>
             <div class="card-body">
-                <table id="manual_doc_v_datatable" class="table table_dashboard table-striped nowrap" style="width:100%;">
+                <table id="manual_doc_v_datatable" class="table table_dashboard table-striped nowrap"
+                    style="width:100%;">
                     <thead>
                         <tr>
                             <th></th>
@@ -51,10 +55,24 @@
                 </table>
             </div>
             <div class="card-footer">
-                <div class="container text-center">
-                    <button class="btn btn-primary" type="button" data-toggle="modal"
-                        data-target="#form_manual_doc_v_admin_modal"><i class="fas fa-plus"></i> Agregar Verificación
-                        Documental</button>
+                <div class="row">
+                    <div class="col-md-2" style="display: flex;align-items: center;justify-content: center;">
+                        <a href="{{ route('admin','driver_images') }}"><img src="{{ asset('img/back.png') }}"
+                                alt=""></a>
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <div class="container text-center">
+                            <button class="btn btn-primary" type="button" data-toggle="modal"
+                                data-target="#form_manual_doc_v_admin_modal"><i class="fas fa-plus"></i> Agregar
+                                Verificación
+                                Documental</button>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2 text-right" style="display: flex;align-items: center;justify-content: center;">
+                        <a href="{{ route('admin','skills_m_t_m') }}"><img src="{{ asset('img/next.png') }}" alt=""></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -64,8 +82,8 @@
     </div> --}}
 </div>
 
-<div class="modal fade" id="form_manual_doc_v_admin_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="form_manual_doc_v_admin_modal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -231,7 +249,7 @@
 </div>
 <!-- /.container-fluid -->
 <script src="{{ asset('js/admin/manual_doc_verification.js') }}" defer></script>
-<script> 
+<script>
     var category_t_list = {!! $category_t_list !!};
     var runstate_t_list = {!! $runstate_t_list !!};
     var soat_available_t_list = {!! $soat_available_t_list !!};
