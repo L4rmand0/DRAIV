@@ -24,6 +24,7 @@
             $(this).editBehaviourInputDT($target, "#drive_information_datatable", "#address");
             $(this).editBehaviourInputDT($target, "#drive_information_datatable", "#phone");
             $(this).editBehaviourInputDT($target, "#drive_information_datatable", "#score");
+            $(this).editBehaviourInputDT($target, "#drive_information_datatable", "#number_of_vehicles");
         });
 
         $("#department_form").on('change', function() {
@@ -202,6 +203,7 @@
             'second_name',
             'f_last_name',
             's_last_name',
+            'number_of_vehicles',
             'gender',
             'education',
             'e_mail_address',
@@ -230,6 +232,7 @@
                 { data: 'second_name', name: 'second_name' },
                 { data: 'f_last_name', name: 'f_last_name' },
                 { data: 's_last_name', name: 's_last_name' },
+                { data: 'number_of_vehicles', name: 'number_of_vehicles' },
                 { data: 'gender', name: 'gender' },
                 { data: 'education', name: 'education' },
                 { data: 'e_mail_address', name: 'e_mail_address' },
@@ -325,9 +328,11 @@
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 13, 14, 15, 16, 17],
+            columns: [
+                2 /* Nombre */, 3 /*S Nombre */, 4/*P apellido */, 5/*S apellido */, 7/*Género*/, 8/*Educación*/, 
+                9 /*Email*/, 10/*Dirección*/, 14/*Número de celular*/, 15/*Estado Civil*/, 16/*Puntaje*/],
             "inputTypes": [{
-                    "column": 6,
+                    "column": 7/*Género*/,
                     "type": "list",
                     "options": [
                         { "value": "Masculino", "display": "Masculino" },
@@ -335,20 +340,20 @@
                     ]
                 },
                 {
-                    "column": 7,
+                    "column": 8/*Educación*/,
                     "type": "list",
                     "options": enum_education
                 },
                 {
-                    "column": 14,
+                    "column": 15/*Estado Civil*/,
                     "type": "list",
                     "options": enum_civil_state
                 },
-                {
-                    "column": 10,
-                    "type": "list",
-                    "options": enum_country_born
-                }
+                // {
+                //     "column": 11,
+                //     "type": "list",
+                //     "options": enum_country_born
+                // }
             ]
         });
 

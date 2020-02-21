@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\DriverInformation;
 use DB;
 use App\Vehicle;
 use App\DriverVehicle;
@@ -84,14 +85,13 @@ class VehicleController extends Controller
     public function store(Request $request)
     {
         $company_id = auth()->user()->company_active;
-        // echo $company_id;
-        // die;
         // Información para ser insertada en la tabla user_vehicle
         $data_input_drivers = $request->get('driver_vehicle');
         // Información para ser insertada en la tabla vehicle
         $data_input = $request->get('vehicle');
         $data_input['operation'] = 'A';
         $plate_id = $data_input['plate_id'];
+        // echo '<pre>';
         // print_r($data_input_drivers);
         // print_r($data_input);
         // die;
@@ -216,6 +216,7 @@ class VehicleController extends Controller
                         'company_id' => $company_id,
                     ]);
                     $this->insertDriversVehicle($plate_id, $data_input_drivers);
+                    $this->updateNumsVehiclesOfListDrivers($data_input_drivers);
                     return response()->json(['response' => 'Información actualizada', 'errors' => []]);
                 }
                 return response()->json(['errors' => $errors]);
@@ -244,6 +245,7 @@ class VehicleController extends Controller
             ]);
             //Inserta todos los conductores elegidos y con la placa enviada en la tabla user_vehicle
             $this->insertDriversVehicle($plate_id, $data_input_drivers);
+            $this->updateNumsVehiclesOfListDrivers($data_input_drivers);
             return response()->json([
                 'success' => 'Información registrada.',
                 'errors' => [],
@@ -265,6 +267,13 @@ class VehicleController extends Controller
                 'driver_information_dni_id' => $value_dni,
                 'user_id' => auth()->id()
             ]);
+        }
+    }
+
+    private function updateNumsVehiclesOfListDrivers($list_drivers){
+        $now = date("Y-m-d H:i:s");
+        foreach ($list_drivers as $key => $value) {
+            DriverInformationController::incresases1NumberOfVehiclesByDriver($value);
         }
     }
 
@@ -344,12 +353,28 @@ class VehicleController extends Controller
             'date_operation' => $now,
         ]);
         if ($delete) {
-            //Elminina o pone en D el campo operation que pertenezcan a esa placa en user_vehicle
+            //Consulta todos los conductores de ese vehículo en user_vehiculo y que no estén en D
+            $vehicles_driver = DB::table('user_vehicle as uv')
+            ->select(DB::raw('
+                di.dni_id
+            '))
+            ->join('driver_information as di','di.dni_id','=','uv.driver_information_dni_id')
+            ->where('uv.vehicle_plate_id','=',$plate_id)
+            ->where('uv.operation','!=','D')
+            ->get()->toArray();
+            //Eliminina o pone en D el campo operation que pertenezcan a esa placa en user_vehicle
             $response = DriverVehicle::where('vehicle_plate_id', $plate_id)->update([
                 'operation' => 'D',
                 'date_operation' => $now,
                 'user_id' => auth()->id(),
             ]);
+            
+            // echo '<pre>';
+            // print_r($vehicles_driver);
+            // die;
+            foreach ($vehicles_driver as $key => $value) {
+                DriverInformationController::decresases1NumberOfVehiclesByDriver($value->dni_id);
+            }
             return response()->json(['response' => 'Usuario eliminado', 'error' => '']);
         } else {
             return response()->json(['error' => 'No se pudo eliminar el usuario']);
@@ -823,55 +848,17 @@ class VehicleController extends Controller
         // print_r($check_vehicles);
         // die;
         if (empty($check_vehicles)) {
-            DriverVehicle::create([
-                'user_id' => auth()->id(),
-                'vehicle_plate_id' => $vehicle_plate_id,
-                'driver_information_dni_id' => $driver_information_dni_id,
-            ]);
-            $check_vehicles_dni_id = DB::table('user_vehicle')
-                ->where('user_vehicle.vehicle_plate_id', '=', $vehicle_plate_id)
-                ->where('user_vehicle.operation', '!=', 'D')
-                ->select(DB::raw(
-                    'user_vehicle.vehicle_plate_id,
-                         user_vehicle.driver_information_dni_id,
-                         user_vehicle.operation'
-                ))->get();
-            $num_vehicles = count($check_vehicles_dni_id);
-            $response = Vehicle::where('plate_id', $vehicle_plate_id)->update([
-                'number_of_drivers' => $num_vehicles,
-                'operation' => 'U',
-                'date_operation' => $now,
-                'user_id' => auth()->id(),
-            ]);
+            //Le asigna a ese vehículo ese nuevo conductor
+            self::updateDriversByVehicle($vehicle_plate_id, $driver_information_dni_id);
+            DriverInformationController::incresases1NumberOfVehiclesByDriver($driver_information_dni_id);
             return response()->json(['response' => 'El conductor ha sido asignado al vehículo.', 'errors' => []]);
         } else {
             // print_r($check_vehicles);
             if ($check_vehicles->operation == "D") {
                 // echo ' tiene D';
                 // die;
-                $response = DriverVehicle::create([
-                    'driver_information_dni_id' => $driver_information_dni_id,
-                    'vehicle_plate_id' => $vehicle_plate_id,
-                    'operation' => 'U',
-                    'date_operation' => $now,
-                    'user_id' => auth()->id(),
-                ]);
-                $check_vehicles_dni_id = DB::table('user_vehicle')
-                    ->where('user_vehicle.vehicle_plate_id', '=', $vehicle_plate_id)
-                    ->where('user_vehicle.operation', '!=', 'D')
-                    ->select(DB::raw(
-                        'user_vehicle.vehicle_plate_id,
-                         user_vehicle.driver_information_dni_id,
-                         user_vehicle.operation'
-                    ))->get();
-                $num_vehicles = count($check_vehicles_dni_id);
-                //actualiza el número de conductores en vehículo
-                $response = Vehicle::where('plate_id', $vehicle_plate_id)->update([
-                    'number_of_drivers' => $num_vehicles,
-                    'operation' => 'U',
-                    'date_operation' => $now,
-                    'user_id' => auth()->id(),
-                ]);
+                self::updateDriversByVehicle($vehicle_plate_id, $driver_information_dni_id);
+                DriverInformationController::incresases1NumberOfVehiclesByDriver($driver_information_dni_id);
                 return response()->json(['response' => 'El conductor ha sido asignado al vehículo.', 'errors' => []]);
             } else {
                 // echo '<pre>';
@@ -879,29 +866,8 @@ class VehicleController extends Controller
                 if($this->ifExistDriverVehicle($vehicle_plate_id,$driver_information_dni_id)){
                     return response()->json(['response' => 'Conductor Ya asociado', 'errors' => ['driver_information_dni_id' => ['Este conductor ya tiene asociado este vehículo.']]]);
                 }else{
-                    $response = DriverVehicle::create([
-                        'driver_information_dni_id' => $driver_information_dni_id,
-                        'vehicle_plate_id' => $vehicle_plate_id,
-                        'operation' => 'U',
-                        'date_operation' => $now,
-                        'user_id' => auth()->id(),
-                    ]);
-                    $check_vehicles_dni_id = DB::table('user_vehicle')
-                        ->where('user_vehicle.vehicle_plate_id', '=', $vehicle_plate_id)
-                        ->where('user_vehicle.operation', '!=', 'D')
-                        ->select(DB::raw(
-                            'user_vehicle.vehicle_plate_id,
-                             user_vehicle.driver_information_dni_id,
-                             user_vehicle.operation'
-                        ))->get();
-                    $num_vehicles = count($check_vehicles_dni_id);
-                    //actualiza el número de conductores en vehículo
-                    $response = Vehicle::where('plate_id', $vehicle_plate_id)->update([
-                        'number_of_drivers' => $num_vehicles,
-                        'operation' => 'U',
-                        'date_operation' => $now,
-                        'user_id' => auth()->id(),
-                    ]);
+                    self::updateDriversByVehicle($vehicle_plate_id, $driver_information_dni_id);
+                    DriverInformationController::incresases1NumberOfVehiclesByDriver($driver_information_dni_id);
                     return response()->json(['response' => 'El conductor ha sido asignado al vehículo.', 'errors' => []]);
                 }
             }
@@ -955,6 +921,34 @@ class VehicleController extends Controller
             }
         }
         return $exist;
+    }
+
+    public static function updateDriversByVehicle($vehicle_plate_id, $driver_information_dni_id){
+        $now = date("Y-m-d H:i:s");
+        //Inserta en la tabla relación user_vehicle
+        DriverVehicle::create([
+            'user_id' => auth()->id(),
+            'vehicle_plate_id' => $vehicle_plate_id,
+            'driver_information_dni_id' => $driver_information_dni_id,
+        ]);
+        //Consulta cuántos conductores tienen ese vehículo
+        $check_vehicles_dni_id = DB::table('user_vehicle')
+            ->where('user_vehicle.vehicle_plate_id', '=', $vehicle_plate_id)
+            ->where('user_vehicle.operation', '!=', 'D')
+            ->select(DB::raw(
+                'user_vehicle.vehicle_plate_id,
+                     user_vehicle.driver_information_dni_id,
+                     user_vehicle.operation'
+            ))->get();
+        //cuenta la cantidad de vehículos
+        $num_vehicles = count($check_vehicles_dni_id);
+        //Actualiza la cantidad de conductores en la tabla vehicle
+        $response = Vehicle::where('plate_id', $vehicle_plate_id)->update([
+            'number_of_drivers' => $num_vehicles,
+            'operation' => 'U',
+            'date_operation' => $now,
+            'user_id' => auth()->id(),
+        ]);
     }
 
     public function makePolarChartBrandV(Request $request)

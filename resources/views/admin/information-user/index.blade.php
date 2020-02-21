@@ -26,6 +26,7 @@
                         <th>Segundo Nombre</th>
                         <th>Primer Apellido</th>
                         <th>Segundo Apellido</th>
+                        <th>Número Vehículos</th>
                         <th>Género</th>
                         <th>Educación</th>
                         <th>Email</th>

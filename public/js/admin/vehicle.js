@@ -249,6 +249,7 @@ var table_relation;
 
         $('#drive_information_dni_id').on('change', function() {
             let user_info_id = $(this).val();
+            $(".error-strong").text("")
             $.ajax({
                 type: 'GET',
                 url: $('#driver_information_dni_id').data('url-name'),
@@ -473,7 +474,7 @@ var table_relation;
                         ],
                         language: language_dt,
                     });
-
+                    $("#add_driver_vehicle").focus();
                 }
             });
 

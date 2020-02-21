@@ -33,8 +33,11 @@ class DriverInformation extends Model
         'department',
         'phone',
         'civil_state',
+        'number_of_vehicles',
         'score',
+        'user_id',
         'operation',
+        'date_operation',
         'db_user_id',
         'company_id'
     ];

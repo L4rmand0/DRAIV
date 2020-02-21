@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\admin;
 
 use DB;
+use App\Vehicle;
 use App\DriverVehicle;
+use App\DriverInformation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Vehicle;
 use Illuminate\Support\Facades\Auth;
 
 class DriverVehicleController extends Controller
@@ -93,18 +94,21 @@ class DriverVehicleController extends Controller
      */
     public function destroy(Request $request)
     {
+        $now = date("Y-m-d H:i:s");
         // echo '<pre>';
         // print_r($request->all());
         // die;
         $data_delete = $request->all();
         $plate_id = $data_delete['vehicle_plate_id'];
-        //Conultar para obtener el número de conductores que tiene ese vehículo
+        //Consultar para obtener el número de conductores que tiene ese vehículo
         $vehicle = DB::table('user_vehicle')
             ->where('user_vehicle.operation', '!=', 'D')
             ->where('user_vehicle.vehicle_plate_id', '=', $plate_id)
             ->select(DB::raw(
                 'user_vehicle.id'
             ))->get()->toArray();
+        //Consulta el número de vehículos de ese conductor   
+        DriverInformationController::decresases1NumberOfVehiclesByDriver($data_delete['driver_information_dni_id']);
         // Actualiza el registro activo de ese conductor a operation D
         $delete = DriverVehicle::where('id', $data_delete['id'])->where('operation', '!=', 'D')->update(['operation' => 'D', 'user_id' => auth()->id()]);
         // Actualiza el número de conductores ese vehiculo en uno menos
@@ -351,7 +355,12 @@ class DriverVehicleController extends Controller
                 ->where('di.dni_id', '=', $dni_id)
                 ->where('v.company_id', '=', $company_id)
                 ->where('v.operation', '!=', 'D')
+                ->where('uv.operation', '!=', 'D')
                 ->first();
+                // ->toSql();
+                // echo '<pre>';
+                // print_r($vechicles);
+                // die;
         } else {
             $vechicles = DB::table('vehicle')
                 ->select(DB::raw('count(plate_id) as total_vehicles'))

@@ -361,6 +361,7 @@ class DriverInformationController extends Controller
             driver_information.second_name,
             driver_information.f_last_name,
             driver_information.s_last_name,
+            driver_information.number_of_vehicles,
             IF(driver_information.gender=0,"Masculino","Femenino") as gender,
             driver_information.education,
             driver_information.e_mail_address,
@@ -498,6 +499,46 @@ class DriverInformationController extends Controller
             ))->get()->toArray();
         return count($drivers);
     }
+
+    public static function incresases1NumberOfVehiclesByDriver($dni_id){
+        $now = date("Y-m-d H:i:s");
+        $drivers = DB::table('driver_information as di')
+                ->select(DB::raw('
+                    di.number_of_vehicles
+                '))
+                ->where('di.dni_id','=',$dni_id)->first();
+                // print_r($drivers);
+                // die;
+                $old_number = (int) $drivers->number_of_vehicles;
+                // var_dump($old_number);
+                // die;
+                $update = DriverInformation::where('dni_id', $dni_id)->update([
+                    'number_of_vehicles' => ($old_number+1),
+                    'operation' => 'A',
+                    'date_operation' => $now,
+                    'user_id' => auth()->id(),
+                ]);
+    }
+
+    public static function decresases1NumberOfVehiclesByDriver($dni_id){
+        $now = date("Y-m-d H:i:s");
+        $drivers = DB::table('driver_information as di')
+                ->select(DB::raw('
+                    di.number_of_vehicles
+                '))
+                ->where('di.dni_id','=',$dni_id)->first();
+                // print_r($drivers);
+                // die;
+                $old_number = (int) $drivers->number_of_vehicles;
+                // var_dump($old_number);
+                // die;
+                $update = DriverInformation::where('dni_id', $dni_id)->update([
+                    'number_of_vehicles' => ($old_number-1),
+                    'operation' => 'A',
+                    'date_operation' => $now,
+                    'user_id' => auth()->id(),
+                ]);
+    } 
 
     public static function getNumberDriversByCompanyR(Request $request)
     {
