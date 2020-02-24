@@ -15,10 +15,15 @@
     $(function() {
         $(document).click(function(event) {
             $target = $(event.target);
-            $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#slalom");
-            $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#projection");
-            $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#braking");
-            $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#evasion");
+            $(this).editBehaviourSelectFixedDT($target, "#motorcycle_mechanical_condition_datatable", "#tires");
+            $(this).editBehaviourSelectFixedDT($target, "#motorcycle_mechanical_condition_datatable", "#braking_system");
+            $(this).editBehaviourSelectFixedDT($target, "#motorcycle_mechanical_condition_datatable", "#manigueta_guaya");
+            $(this).editBehaviourSelectFixedDT($target, "#motorcycle_mechanical_condition_datatable", "#kit");
+            $(this).editBehaviourSelectFixedDT($target, "#motorcycle_mechanical_condition_datatable", "#stee_susp");
+            $(this).editBehaviourSelectFixedDT($target, "#motorcycle_mechanical_condition_datatable", "#oil_leak");
+            $(this).editBehaviourSelectFixedDT($target, "#motorcycle_mechanical_condition_datatable", "#other_components");
+            $(this).editBehaviourSelectFixedDT($target, "#motorcycle_mechanical_condition_datatable", "#horn");
+            $(this).editBehaviourSelectFixedDT($target, "#motorcycle_mechanical_condition_datatable", "#lights");
         });
 
         $.ajax({
@@ -35,7 +40,7 @@
             }
         });
 
-        $("#form_create_skills_mtm").submit(function(event) {
+        $("#form_create_mt_mechanical_condition").submit(function(event) {
             event.preventDefault();
             $target = $(this);
             let data_form = $(this).serialize();
@@ -64,13 +69,13 @@
                             });
                         }
                     } else {
-                        $target.cleanForm("#form_create_skills_mtm");
+                        $target.cleanForm("#form_create_mt_mechanical_condition");
                         swal.fire(
                             'Proceso Completado!',
                             data.success,
                             'success'
                         )
-                        $('#skills_m_t_m_datatable').DataTable().ajax.reload();
+                        $('#motorcycle_mechanical_condition_datatable').DataTable().ajax.reload();
                     }
                 }
             });
@@ -79,14 +84,17 @@
         //Arreglo que genera el atributo id de cada elemento td celda del datatable
         var fields = [
             'delete_row',
-            'reg_id',
-            // 'date_evaluation',
-            'slalom',
-            'projection',
-            'braking',
-            'evasion',
-            // 'mobility',
-            // 'result',
+            'evaluation_id',
+            'tires',
+            'braking_system',
+            'manigueta_guaya',
+            'braking_system',
+            'kit',
+            'stee_susp',
+            'oil_leak',
+            'other_components',
+            'horn',
+            'lights',
             'first_name',
             'f_last_name',
             'dni_id',
@@ -94,7 +102,7 @@
         ];
 
         //Instancia del datatable
-        var table = $('#skills_m_t_m_datatable').DataTable({
+        var table = $('#motorcycle_mechanical_condition_datatable').DataTable({
             processing: true,
             serverSide: true,
             "sScrollY": "600",
@@ -103,14 +111,16 @@
             ajax: $('#data-table-route').val(),
             columns: [
                 { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_user"><i class="fas fa-trash"></i></button></center>' },
-                { data: 'reg_id', name: 'reg_id', "visible": false },
-                // { data: 'date_evaluation', name: 'date_evaluation' },
-                { data: 'slalom', name: 'slalom' },
-                { data: 'projection', name: 'projection' },
-                { data: 'braking', name: 'braking' },
-                { data: 'evasion', name: 'evasion' },
-                // { data: 'mobility', name: 'mobility' },
-                // { data: 'result', name: 'result' },
+                { data: 'evaluation_id', name: 'evaluation_id', "visible": false },
+                { data: 'tires', name: 'tires' },
+                { data: 'manigueta_guaya', name: 'manigueta_guaya' },
+                { data: 'braking_system', name: 'braking_system' },
+                { data: 'kit', name: 'kit' },
+                { data: 'stee_susp', name: 'stee_susp' },
+                { data: 'oil_leak', name: 'oil_leak' },
+                { data: 'other_components', name: 'other_components' },
+                { data: 'horn', name: 'horn' },
+                { data: 'lights', name: 'lights' },
                 { data: 'first_name', name: 'first_name' },
                 { data: 'f_last_name', name: 'f_last_name' },
                 { data: 'dni_id', name: 'dni_id' },
@@ -128,7 +138,7 @@
         });
 
         // Función para borrar registro de la tabla
-        $('#skills_m_t_m_datatable').on('click', 'tr td #btn_delete_user', function() {
+        $('#motorcycle_mechanical_condition_datatable').on('click', 'tr td #btn_delete_user', function() {
             let row = $(this).parents('tr')
             let data_delete = table.row(row).data();
             swal.fire({
@@ -155,7 +165,7 @@
                                      data.response,
                                     'success'
                                 );
-                                $('#skills_m_t_m_datatable').DataTable().ajax.reload();
+                                $('#motorcycle_mechanical_condition_datatable').DataTable().ajax.reload();
                             } else {
                                 swal.fire(
                                     'Ocurrió un error',
@@ -197,31 +207,57 @@
                     }
                 });
             }
-            console.log("The values for each cell in that row are: " + updatedRow.data());
+            console.log("Log: The values for each cell in that row are: " + updatedRow.data());
         }
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            "columns":[2,3,4,5],
-            "inputTypes": [{
+            "columns":[2,3,4,5,6,7,8,9,10],
+            "inputTypes": [
+            {
                 "column": 2,
                 "type": "list-fixed",
-                "options": slalom_t_list
+                "options": tires_list
             },
             {
                 "column": 3,
                 "type": "list-fixed",
-                "options": projection_t_list
+                "options": automatic_lights_list
             },
             {
                 "column": 4,
                 "type": "list-fixed",
-                "options": braking_t_list
+                "options": braking_system_list
             },
             {
                 "column": 5,
                 "type": "list-fixed",
-                "options": evasion_t_list
+                "options": kit_list
+            },
+            {
+                "column": 6,
+                "type": "list-fixed",
+                "options": stee_susp_list
+            },
+            {
+                "column": 7,
+                "type": "list-fixed",
+                "options": oil_leak_list
+            },
+            {
+                "column": 8,
+                "type": "list-fixed",
+                "options": other_components_list
+            },
+            {
+                "column": 9,
+                "type": "list-fixed",
+                "options": horn_list
+            },
+            {
+                "column": 10,
+                "type": "list-fixed",
+                "options": lights_list
             }]
         });
 

@@ -266,7 +266,7 @@ class UserController extends Controller
             ->select('p.profile_id', 'p.user_profile')
             ->where('p.operation', '!=', 'D')
             ->get()->toArray();
-        return $this->ListDT()->query(self::sanitazeArr($profile_list))->make('profile_id', 'user_profile');
+        return $this->ListDT()->query(self::sanitazeArr($profile_list))->make('sql','profile_id','user_profile');
     }
 
     public function updateCompanyActive(Request $request)

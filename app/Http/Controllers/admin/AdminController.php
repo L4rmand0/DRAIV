@@ -14,9 +14,12 @@ use App\SkillMtM;
 use App\DrivingLicence;
 use App\DocVerification;
 use App\DriverInformation;
+use App\Epp;
 use Illuminate\Http\Request;
 use App\Traits\TListDataTable;
 use App\Http\Controllers\Controller;
+use App\MotorcycleMechanicalConditions;
+use App\MotorcycleTechnology;
 
 class AdminController extends Controller
 {
@@ -116,6 +119,21 @@ class AdminController extends Controller
                     $data_skill_m_t_m = $this->checkMultipleAdmin($auth_user, $child_companies, $data_skill_m_t_m);
                     return view('admin.skills.index', $data_skill_m_t_m);
                     break;
+                case 'motorcycle_technology':
+                    $data_motorcycle_technology = $this->showIndexMotorcycleTecnology($company_name);
+                    $data_motorcycle_technology = $this->checkMultipleAdmin($auth_user, $child_companies, $data_motorcycle_technology);
+                    return view('admin.motorcycle-technology.index', $data_motorcycle_technology);
+                    break;
+                case 'mt_mechanical_condition':
+                    $data_motorcycle_technology = $this->showIndexMtMechanicalCondition($company_name);
+                    $data_motorcycle_technology = $this->checkMultipleAdmin($auth_user, $child_companies, $data_motorcycle_technology);
+                    return view('admin.mt-mechanical-condition.index', $data_motorcycle_technology);
+                    break;
+                case 'personal_ele_protection':
+                    $data_motorcycle_technology = $this->showIndexPersonalElementProtection($company_name);
+                    $data_motorcycle_technology = $this->checkMultipleAdmin($auth_user, $child_companies, $data_motorcycle_technology);
+                    return view('admin.personal-ele-protection.index', $data_motorcycle_technology);
+                    break;
                 default:
                     return view('404_draiv');
                     break;
@@ -181,6 +199,71 @@ class AdminController extends Controller
         ];
     }
 
+    private function showIndexMotorcycleTecnology($company_name)
+    {
+        return [
+            'company_name' => ucwords(strtolower($company_name)),
+            'permissions' => $this->permissions,
+            'values_type_brake' => MotorcycleTechnology::VALUE_TYPE_BRAKE,
+            'values_assistence_brake' => MotorcycleTechnology::VALUE_ASSISTENCE_BRAKE,
+            'values_automatic_lights' => MotorcycleTechnology::VALUE_AUTOMATIC_LIGHTS,
+            'assistence_type_brake_list'=> json_encode($this->ListDT()->query(MotorcycleTechnology::VALUE_TYPE_BRAKE)->make("array_assoc")),
+            'assistence_brake_list'=> json_encode($this->ListDT()->query(MotorcycleTechnology::VALUE_ASSISTENCE_BRAKE)->make("array_assoc")),
+            'automatic_lights_list'=> json_encode($this->ListDT()->query(MotorcycleTechnology::VALUE_AUTOMATIC_LIGHTS)->make("array_assoc")),
+        ];
+    }
+
+    private function showIndexPersonalElementProtection($company_name)
+    {
+        return [
+            'company_name' => ucwords(strtolower($company_name)),
+            'permissions' => $this->permissions,
+            'values_casco' => Epp::VALUE_CASCO,
+            'values_airbag' => Epp::VALUE_AIRBAG,
+            'values_rodilleras' => Epp::VALUE_RODILLERAS,
+            'values_coderas' => Epp::VALUE_CODERAS,
+            'values_hombreras' => Epp::VALUE_HOMBRERAS,
+            'values_espalda' => Epp::VALUE_ESPALDA,
+            'values_botas' => Epp::VALUE_BOTAS,
+            'values_guantes' => Epp::VALUE_GUANTES,
+            'casco_list'=> json_encode($this->ListDT()->query(Epp::VALUE_CASCO)->make("array_assoc")),
+            'airbag_list'=> json_encode($this->ListDT()->query(Epp::VALUE_AIRBAG)->make("array_assoc")),
+            'rodilleras_list'=> json_encode($this->ListDT()->query(Epp::VALUE_RODILLERAS)->make("array_assoc")),
+            'coderas_list'=> json_encode($this->ListDT()->query(Epp::VALUE_CODERAS)->make("array_assoc")),
+            'hombreras_list'=> json_encode($this->ListDT()->query(Epp::VALUE_HOMBRERAS)->make("array_assoc")),
+            'espalda_list'=> json_encode($this->ListDT()->query(Epp::VALUE_ESPALDA)->make("array_assoc")),
+            'botas_list'=> json_encode($this->ListDT()->query(Epp::VALUE_BOTAS)->make("array_assoc")),
+            'guantes_list'=> json_encode($this->ListDT()->query(Epp::VALUE_GUANTES)->make("array_assoc")),
+        ];
+
+    }
+
+    private function showIndexMtMechanicalCondition($company_name)
+    {
+        return [
+            'company_name' => ucwords(strtolower($company_name)),
+            'permissions' => $this->permissions,
+            'values_tires' => MotorcycleMechanicalConditions::VALUE_TIRES,
+            'values_manigueta_guaya' => MotorcycleMechanicalConditions::VALUE_MANIGUETA_GUAYA,
+            'values_braking_system' => MotorcycleMechanicalConditions::VALUE_BRAKING_SYSTEM,
+            'values_kit' => MotorcycleMechanicalConditions::VALUE_KIT,
+            'values_stee_susp' => MotorcycleMechanicalConditions::VALUE_STEE_SUSP,
+            'values_oil_leak' => MotorcycleMechanicalConditions::VALUE_OIL_LEAK,
+            'values_other_components' => MotorcycleMechanicalConditions::VALUE_OTHER_COMPONENTS,
+            'values_horn' => MotorcycleMechanicalConditions::VALUE_HORN,
+            'values_lights' => MotorcycleMechanicalConditions::VALUE_LIGHTS,
+            'tires_list'=> json_encode($this->ListDT()->query(MotorcycleMechanicalConditions::VALUE_TIRES)->make("array_assoc")),
+            'automatic_lights_list'=> json_encode($this->ListDT()->query(MotorcycleMechanicalConditions::VALUE_MANIGUETA_GUAYA)->make("array_assoc")),
+            'braking_system_list'=> json_encode($this->ListDT()->query(MotorcycleMechanicalConditions::VALUE_BRAKING_SYSTEM)->make("array_assoc")),
+            'kit_list'=> json_encode($this->ListDT()->query(MotorcycleMechanicalConditions::VALUE_KIT)->make("array_assoc")),
+            'stee_susp_list'=> json_encode($this->ListDT()->query(MotorcycleMechanicalConditions::VALUE_STEE_SUSP)->make("array_assoc")),
+            'oil_leak_list'=> json_encode($this->ListDT()->query(MotorcycleMechanicalConditions::VALUE_OIL_LEAK)->make("array_assoc")),
+            'other_components_list'=> json_encode($this->ListDT()->query(MotorcycleMechanicalConditions::VALUE_OTHER_COMPONENTS)->make("array_assoc")),
+            'horn_list'=> json_encode($this->ListDT()->query(MotorcycleMechanicalConditions::VALUE_HORN)->make("array_assoc")),
+            'lights_list'=> json_encode($this->ListDT()->query(MotorcycleMechanicalConditions::VALUE_LIGHTS)->make("array_assoc")),
+        ];
+    }
+
     private function showIndexSkillMtM($company_name)
     {
         return [
@@ -191,10 +274,10 @@ class AdminController extends Controller
             'values_braking' => SkillMtM::VALUE_BRAKING,
             'values_evasion' => SkillMtM::VALUE_EVASION,
             'values_mobility' => SkillMtM::VALUE_MOBILITY,
-            'slalom_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_SLALOM)->make()),
-            'projection_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_PROJECTION)->make()),
-            'braking_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_BRAKING)->make()),
-            'evasion_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_EVASION)->make()),
+            'slalom_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_SLALOM)->make("array_assoc")),
+            'projection_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_PROJECTION)->make("array_assoc")),
+            'braking_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_BRAKING)->make("array_assoc")),
+            'evasion_t_list'=> json_encode($this->ListDT()->query(SkillMtM::VALUE_EVASION)->make("array_assoc")),
         ];
     }
 
@@ -210,10 +293,10 @@ class AdminController extends Controller
             'values_braking' => SkillMtM::VALUE_BRAKING,
             'values_evasion' => SkillMtM::VALUE_EVASION,
             'values_mobility' => SkillMtM::VALUE_MOBILITY,
-            'category_t_list'=> json_encode($this->ListDT()->query(DocVerification::CATEGORY)->make()),
-            'runstate_t_list'=> json_encode($this->ListDT()->query(DocVerification::RUNSTATE)->make()),
-            'soat_available_t_list'=> json_encode($this->ListDT()->query(DocVerification::SOAT_AVAILABLE)->make()),
-            'technom_review_t_list'=> json_encode($this->ListDT()->query(DocVerification::TECHNOM_REVIEW)->make()),
+            'category_t_list'=> json_encode($this->ListDT()->query(DocVerification::CATEGORY)->make('array')),
+            'runstate_t_list'=> json_encode($this->ListDT()->query(DocVerification::RUNSTATE)->make('array')),
+            'soat_available_t_list'=> json_encode($this->ListDT()->query(DocVerification::SOAT_AVAILABLE)->make('array')),
+            'technom_review_t_list'=> json_encode($this->ListDT()->query(DocVerification::TECHNOM_REVIEW)->make('array')),
         ];
     }
 

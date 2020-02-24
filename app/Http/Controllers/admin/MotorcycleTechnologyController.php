@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\admin;
 
 use DB;
-use App\SkillMtM;
 use App\Rules\NotToday;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\MotorcycleTechnology;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class SkillMtMController extends Controller
+
+class MotorcycleTechnologyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -55,13 +56,13 @@ class SkillMtMController extends Controller
             ->where('uv.operation', '!=', 'D')
             ->first();
         if (empty($user_vehicle)) {
-            return response()->json(['response' => 'error_swal','errors'=>['message' => 'Este conductor ha sido elminado.']]);
+            return response()->json(['response' => 'error_swal','errors'=>['message' => 'Este conductor ha sido eliminado.']]);
         }
         $uv_id = !empty($user_vehicle) ? $user_vehicle->id : "";
         $validator = Validator::make(
             $data_input,
             [
-                'start_date' => [new NotToday(['user_vehicle_id', $user_vehicle->id], 'skill_m_t_m')],
+                'start_date' => [new NotToday(['user_vehicle_id', $user_vehicle->id], 'motorcycle_technology')],
             ]
         );
         $errors = $validator->errors()->getMessages();
@@ -72,15 +73,14 @@ class SkillMtMController extends Controller
         // print_r($errors);
         // echo 'finaliza';
         // die;
-        $skill_m_t_m = SkillMtM::create([
-            'slalom' => $data_input['slalom'],
-            'projection' => $data_input['projection'],
-            'braking' => $data_input['braking'],
-            'evasion' => $data_input['evasion'],
+        $motorcycle_technology = MotorcycleTechnology::create([
+            'brake_type' => $data_input['brake_type'],
+            'assistence_brake' => $data_input['assistence_brake'],
+            'automatic_lights' => $data_input['automatic_lights'],
             'user_vehicle_id' => $user_vehicle->id,
             'user_id' => auth()->id(),
         ]);
-        if ($skill_m_t_m->reg_id > 0) {
+        if ($motorcycle_technology->m_t_id > 0) {
             return response()->json(['response' => 'error_swal', 'message' => 'Ocurrió un error en el proceso']);
         } else {
             return response()->json(['response' => 'Información insertada correctamente', 'errors' => []]);
@@ -122,7 +122,7 @@ class SkillMtMController extends Controller
         $data_updated = $request->all();
         $field = $data_updated['fieldch'];
         $value = $data_updated['valuech'];
-        $response = SkillMtM::where('reg_id', $data_updated['reg_id'])->update([
+        $response = MotorcycleTechnology::where('m_t_id', $data_updated['m_t_id'])->update([
             $field => $value,
             'operation' => 'U',
             'date_operation' => $now,
@@ -147,7 +147,7 @@ class SkillMtMController extends Controller
         // echo '<pre>';
         // print_r($data_delete);
         // die;
-        $delete = SkillMtM::where('reg_id', $data_delete['reg_id'])->update(['operation' => 'D']);
+        $delete = MotorcycleTechnology::where('m_t_id', $data_delete['m_t_id'])->update(['operation' => 'D']);
         if ($delete) {
             return response()->json(['response' => 'El registro ha sido eliminado.', 'error' => '']);
         } else {
@@ -156,37 +156,35 @@ class SkillMtMController extends Controller
     }
 
     public function dataTable(Request $request){
+        // echo '<pre> hola';
+        // print_r($request->all());
+        // die;
         $company_id = Auth::user()->company_active;
-        $skill_m_t_m = DB::table('skill_m_t_m as smtm')
+        $motorcycle_technology = DB::table('motorcycle_technology as mt')
             ->select(DB::raw(
-                'smtm.reg_id, 
-                smtm.date_evaluation,
-                smtm.slalom,
-                smtm.projection,
-                smtm.braking,
-                smtm.evasion,
-                smtm.mobility,
-                smtm.result,
+                'mt.m_t_id, 
+                mt.brake_type, 
+                mt.assistence_brake,
+                mt.automatic_lights,
                 di.first_name,
                 di.f_last_name,
                 di.dni_id,
                 v.plate_id'
             ))
-            ->join('user_vehicle as uv', 'uv.id', '=', 'smtm.user_vehicle_id')
+            ->join('user_vehicle as uv', 'uv.id', '=', 'mt.user_vehicle_id')
             ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
             ->join('vehicle as v', 'v.plate_id', '=', 'uv.vehicle_plate_id')
             ->where('di.company_id', '=', $company_id)
-            ->where('smtm.operation', '!=', 'D')
-            ->orderBy('smtm.start_date', 'desc')
+            ->where('mt.operation', '!=', 'D')
+            ->orderBy('mt.start_date', 'desc')
             ->get();
 
-        $skill_m_t_m = $this->dataQuery($skill_m_t_m)->make([
-            'slalom'=>SkillMtM::VALUE_SLALOM,
-            'projection'=>SkillMtM::VALUE_PROJECTION,
-            'braking'=>SkillMtM::VALUE_BRAKING,
-            'evasion'=>SkillMtM::VALUE_EVASION,
+        $motorcycle_technology = $this->dataQuery($motorcycle_technology)->make([
+            'brake_type'=>MotorcycleTechnology::VALUE_TYPE_BRAKE,
+            'assistence_brake'=>MotorcycleTechnology::VALUE_ASSISTENCE_BRAKE,
+            'automatic_lights'=>MotorcycleTechnology::VALUE_AUTOMATIC_LIGHTS,
         ]);    
-        $drive_information = $this->addDeleteButtonDatatable($skill_m_t_m);
-        return datatables()->of($drive_information)->make(true);
+        $motorcycle_technology = $this->addDeleteButtonDatatable($motorcycle_technology);
+        return datatables()->of($motorcycle_technology)->make(true);
     }
 }

@@ -136,7 +136,7 @@ class DocVerificationController extends Controller
             ->select('p.profile_id', 'p.user_profile')
             ->where('p.operation', '!=', 'D')
             ->get()->toArray();
-        return $this->ListDT()->query(self::sanitazeArr($profile_list))->make('profile_id', 'user_profile');
+        return $this->ListDT()->query(self::sanitazeArr($profile_list))->make('sql','profile_id','user_profile');
     }
 
 
@@ -177,15 +177,6 @@ class DocVerificationController extends Controller
         $data_updated = $request->all();
         $field = $data_updated['fieldch'];
         $value = $data_updated['valuech'];
-        // if ($field == "gender") {
-        //     $value = $value == "Masculino" ? 0 : 1;
-        // }
-        // if(!is_numeric($value) && $field == "score"){
-        //     return response()->json(['error' => ['response' => 'Formato incorrecto, el número no puede llevar comas ni texto. Ejemplo Correcto: 4.00']]);
-        // }
-        // if ($field == "score" && ($value > 5 || $value < 0)) {
-        //     return response()->json(['error' => ['response' => 'El score no puede ser mayor a 5 ni menor a 0. Ejemplo: 5.00']]);
-        // }
         $response = DocVerification::where('doc_id', $data_updated['doc_id'])->update([
             $field => $value,
             'operation' => 'U',

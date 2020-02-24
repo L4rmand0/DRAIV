@@ -15,10 +15,7 @@
     $(function() {
         $(document).click(function(event) {
             $target = $(event.target);
-            $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#slalom");
-            $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#projection");
-            $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#braking");
-            $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#evasion");
+            // $(this).editBehaviourSelectFixedDT($target, "#personal_ele_protection_datatable", "#slalom");
         });
 
         $.ajax({
@@ -35,7 +32,7 @@
             }
         });
 
-        $("#form_create_skills_mtm").submit(function(event) {
+        $("#form_create_mt_ele_protection").submit(function(event) {
             event.preventDefault();
             $target = $(this);
             let data_form = $(this).serialize();
@@ -64,13 +61,13 @@
                             });
                         }
                     } else {
-                        $target.cleanForm("#form_create_skills_mtm");
+                        $target.cleanForm("#form_create_mt_ele_protection");
                         swal.fire(
                             'Proceso Completado!',
                             data.success,
                             'success'
                         )
-                        $('#skills_m_t_m_datatable').DataTable().ajax.reload();
+                        $('#personal_ele_protection_datatable').DataTable().ajax.reload();
                     }
                 }
             });
@@ -79,14 +76,18 @@
         //Arreglo que genera el atributo id de cada elemento td celda del datatable
         var fields = [
             'delete_row',
-            'reg_id',
-            // 'date_evaluation',
-            'slalom',
-            'projection',
-            'braking',
-            'evasion',
-            // 'mobility',
-            // 'result',
+            'epp_id',
+            'name_evaluator',
+            'empresa',
+            'casco',
+            'airbag',
+            'rodilleras',
+            'coderas',
+            'hombreras',
+            'espalda',
+            'botas',
+            'guantes',
+            'risk',
             'first_name',
             'f_last_name',
             'dni_id',
@@ -94,7 +95,7 @@
         ];
 
         //Instancia del datatable
-        var table = $('#skills_m_t_m_datatable').DataTable({
+        var table = $('#personal_ele_protection_datatable').DataTable({
             processing: true,
             serverSide: true,
             "sScrollY": "600",
@@ -103,14 +104,17 @@
             ajax: $('#data-table-route').val(),
             columns: [
                 { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_user"><i class="fas fa-trash"></i></button></center>' },
-                { data: 'reg_id', name: 'reg_id', "visible": false },
-                // { data: 'date_evaluation', name: 'date_evaluation' },
-                { data: 'slalom', name: 'slalom' },
-                { data: 'projection', name: 'projection' },
-                { data: 'braking', name: 'braking' },
-                { data: 'evasion', name: 'evasion' },
-                // { data: 'mobility', name: 'mobility' },
-                // { data: 'result', name: 'result' },
+                { data: 'epp_id', name: 'epp_id', "visible": false },
+                { data: 'name_evaluator', name: 'name_evaluator' },
+                { data: 'empresa', name: 'empresa' },
+                { data: 'casco', name: 'casco' },
+                { data: 'airbag', name: 'airbag' },
+                { data: 'rodilleras', name: 'rodilleras' },
+                { data: 'coderas', name: 'coderas' },
+                { data: 'hombreras', name: 'hombreras' },
+                { data: 'espalda', name: 'espalda' },
+                { data: 'botas', name: 'botas' },
+                { data: 'guantes', name: 'guantes' },
                 { data: 'first_name', name: 'first_name' },
                 { data: 'f_last_name', name: 'f_last_name' },
                 { data: 'dni_id', name: 'dni_id' },
@@ -128,7 +132,7 @@
         });
 
         // Función para borrar registro de la tabla
-        $('#skills_m_t_m_datatable').on('click', 'tr td #btn_delete_user', function() {
+        $('#personal_ele_protection_datatable').on('click', 'tr td #btn_delete_user', function() {
             let row = $(this).parents('tr')
             let data_delete = table.row(row).data();
             swal.fire({
@@ -155,7 +159,7 @@
                                      data.response,
                                     'success'
                                 );
-                                $('#skills_m_t_m_datatable').DataTable().ajax.reload();
+                                $('#personal_ele_protection_datatable').DataTable().ajax.reload();
                             } else {
                                 swal.fire(
                                     'Ocurrió un error',
@@ -197,32 +201,18 @@
                     }
                 });
             }
-            console.log("The values for each cell in that row are: " + updatedRow.data());
+            console.log("Log: The values for each cell in that row are: " + updatedRow.data());
         }
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
             "columns":[2,3,4,5],
-            "inputTypes": [{
-                "column": 2,
-                "type": "list-fixed",
-                "options": slalom_t_list
-            },
-            {
-                "column": 3,
-                "type": "list-fixed",
-                "options": projection_t_list
-            },
-            {
-                "column": 4,
-                "type": "list-fixed",
-                "options": braking_t_list
-            },
-            {
-                "column": 5,
-                "type": "list-fixed",
-                "options": evasion_t_list
-            }]
+            // "inputTypes": [
+            // {
+            //     "column": 5,
+            //     "type": "list-fixed",
+            //     "options": evasion_t_list
+            // }]
         });
 
     });

@@ -107,6 +107,18 @@ Route::prefix('admin')->group(function () {
     Route::post('skills-m-t-m/create', 'admin\SkillMtMController@store')->name('admin.skills-m-t-m.store');
     Route::post('skills-m-t-m/update', 'admin\SkillMtMController@update')->name('admin.skills-m-t-m.update');
     Route::post('skills-m-t-m/destroy', 'admin\SkillMtMController@destroy')->name('admin.skills-m-t-m.destroy');
+    Route::get('motorcycle-technology/list', 'admin\MotorcycleTechnologyController@datatable')->name('admin.motorcycle-technology.list');
+    Route::post('motorcycle-technology/create', 'admin\MotorcycleTechnologyController@store')->name('admin.motorcycle-technology.store');
+    Route::post('motorcycle-technology/update', 'admin\MotorcycleTechnologyController@update')->name('admin.motorcycle-technology.update');
+    Route::post('motorcycle-technology/destroy', 'admin\MotorcycleTechnologyController@destroy')->name('admin.motorcycle-technology.destroy');
+    Route::get('motorcycle-mechanical-conditions/list', 'admin\MotorcycleMechanicalConditionsController@datatable')->name('admin.motorcycle-mechanical-conditions.list');
+    Route::post('motorcycle-mechanical-conditions/create', 'admin\MotorcycleMechanicalConditionsController@store')->name('admin.motorcycle-mechanical-conditions.store');
+    Route::post('motorcycle-mechanical-conditions/update', 'admin\MotorcycleMechanicalConditionsController@update')->name('admin.motorcycle-mechanical-conditions.update');
+    Route::post('motorcycle-mechanical-conditions/destroy', 'admin\MotorcycleMechanicalConditionsController@destroy')->name('admin.motorcycle-mechanical-conditions.destroy');
+    Route::get('personal-ele-protection/list', 'admin\EppController@datatable')->name('admin.personal-ele-protection.list');
+    Route::post('personal-ele-protection/create', 'admin\EppController@store')->name('admin.personal-ele-protection.store');
+    Route::post('personal-ele-protection/update', 'admin\EppController@update')->name('admin.personal-ele-protection.update');
+    Route::post('personal-ele-protection/destroy', 'admin\EppController@destroy')->name('admin.personal-ele-protection.destroy');
 });
 
 // Route::get('/api-text-extract', 'ApiController@extractText')->name('api-text-extract');

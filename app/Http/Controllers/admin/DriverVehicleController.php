@@ -107,7 +107,7 @@ class DriverVehicleController extends Controller
             ->select(DB::raw(
                 'user_vehicle.id'
             ))->get()->toArray();
-        //Consulta el número de vehículos de ese conductor   
+        //Actualiza en el número de vehículos del conductor en -1  
         DriverInformationController::decresases1NumberOfVehiclesByDriver($data_delete['driver_information_dni_id']);
         // Actualiza el registro activo de ese conductor a operation D
         $delete = DriverVehicle::where('id', $data_delete['id'])->where('operation', '!=', 'D')->update(['operation' => 'D', 'user_id' => auth()->id()]);

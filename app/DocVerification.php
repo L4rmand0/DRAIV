@@ -35,6 +35,9 @@ class DocVerification extends Model
         'code_penality_4',
         'code_penality_5',
         'validated_data',
+        'user_id',
+        'date_operation',
+        'operation',
         'user_vehicle_id',
     ];
 }

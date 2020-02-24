@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\admin;
 
 use DB;
-use App\SkillMtM;
 use App\Rules\NotToday;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\MotorcycleMechanicalConditions;
 use Illuminate\Support\Facades\Validator;
 
-class SkillMtMController extends Controller
+class MotorcycleMechanicalConditionsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -72,15 +72,20 @@ class SkillMtMController extends Controller
         // print_r($errors);
         // echo 'finaliza';
         // die;
-        $skill_m_t_m = SkillMtM::create([
-            'slalom' => $data_input['slalom'],
-            'projection' => $data_input['projection'],
-            'braking' => $data_input['braking'],
-            'evasion' => $data_input['evasion'],
+        $mt_mechanical_conditions = MotorcycleMechanicalConditions::create([
+            'tires' => $data_input['tires'],
+            'manigueta_guaya' => $data_input['manigueta_guaya'],
+            'braking_system' => $data_input['braking_system'],
+            'kit' => $data_input['kit'],
+            'stee_susp' => $data_input['stee_susp'],
+            'oil_leak' => $data_input['oil_leak'],
+            'other_components' => $data_input['other_components'],
+            'horn' => $data_input['horn'],
+            'lights' => $data_input['lights'],
             'user_vehicle_id' => $user_vehicle->id,
             'user_id' => auth()->id(),
         ]);
-        if ($skill_m_t_m->reg_id > 0) {
+        if ($mt_mechanical_conditions->evaluation_id > 0) {
             return response()->json(['response' => 'error_swal', 'message' => 'Ocurrió un error en el proceso']);
         } else {
             return response()->json(['response' => 'Información insertada correctamente', 'errors' => []]);
@@ -122,7 +127,7 @@ class SkillMtMController extends Controller
         $data_updated = $request->all();
         $field = $data_updated['fieldch'];
         $value = $data_updated['valuech'];
-        $response = SkillMtM::where('reg_id', $data_updated['reg_id'])->update([
+        $response = MotorcycleMechanicalConditions::where('evaluation_id', $data_updated['evaluation_id'])->update([
             $field => $value,
             'operation' => 'U',
             'date_operation' => $now,
@@ -147,7 +152,7 @@ class SkillMtMController extends Controller
         // echo '<pre>';
         // print_r($data_delete);
         // die;
-        $delete = SkillMtM::where('reg_id', $data_delete['reg_id'])->update(['operation' => 'D']);
+        $delete = MotorcycleMechanicalConditions::where('evaluation_id', $data_delete['evaluation_id'])->update(['operation' => 'D']);
         if ($delete) {
             return response()->json(['response' => 'El registro ha sido eliminado.', 'error' => '']);
         } else {
@@ -156,37 +161,48 @@ class SkillMtMController extends Controller
     }
 
     public function dataTable(Request $request){
+        // echo '<pre> hola';
+        // print_r($request->all());
+        // die;
         $company_id = Auth::user()->company_active;
-        $skill_m_t_m = DB::table('skill_m_t_m as smtm')
+        $mt_mechanical_conditions = DB::table('motorcycle_mechanical_conditions as mmc')
             ->select(DB::raw(
-                'smtm.reg_id, 
-                smtm.date_evaluation,
-                smtm.slalom,
-                smtm.projection,
-                smtm.braking,
-                smtm.evasion,
-                smtm.mobility,
-                smtm.result,
+                'mmc.evaluation_id,
+                mmc.name_evaluator, 
+                mmc.tires, 
+                mmc.manigueta_guaya,
+                mmc.braking_system,
+                mmc.kit,
+                mmc.stee_susp,
+                mmc.oil_leak,
+                mmc.other_components,
+                mmc.horn,
+                mmc.lights,
                 di.first_name,
                 di.f_last_name,
                 di.dni_id,
                 v.plate_id'
             ))
-            ->join('user_vehicle as uv', 'uv.id', '=', 'smtm.user_vehicle_id')
+            ->join('user_vehicle as uv', 'uv.id', '=', 'mmc.user_vehicle_id')
             ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
             ->join('vehicle as v', 'v.plate_id', '=', 'uv.vehicle_plate_id')
             ->where('di.company_id', '=', $company_id)
-            ->where('smtm.operation', '!=', 'D')
-            ->orderBy('smtm.start_date', 'desc')
+            ->where('mmc.operation', '!=', 'D')
+            ->orderBy('mmc.start_date', 'desc')
             ->get();
 
-        $skill_m_t_m = $this->dataQuery($skill_m_t_m)->make([
-            'slalom'=>SkillMtM::VALUE_SLALOM,
-            'projection'=>SkillMtM::VALUE_PROJECTION,
-            'braking'=>SkillMtM::VALUE_BRAKING,
-            'evasion'=>SkillMtM::VALUE_EVASION,
+        $mt_mechanical_conditions = $this->dataQuery($mt_mechanical_conditions)->make([
+            'tires'=>MotorcycleMechanicalConditions::VALUE_TIRES,
+            'manigueta_guaya'=>MotorcycleMechanicalConditions::VALUE_MANIGUETA_GUAYA,
+            'braking_system'=>MotorcycleMechanicalConditions::VALUE_BRAKING_SYSTEM,
+            'kit'=>MotorcycleMechanicalConditions::VALUE_KIT,
+            'stee_susp'=>MotorcycleMechanicalConditions::VALUE_STEE_SUSP,
+            'oil_leak'=>MotorcycleMechanicalConditions::VALUE_OIL_LEAK,
+            'other_components'=>MotorcycleMechanicalConditions::VALUE_OTHER_COMPONENTS,
+            'horn'=>MotorcycleMechanicalConditions::VALUE_HORN,
+            'lights'=>MotorcycleMechanicalConditions::VALUE_LIGHTS,
         ]);    
-        $drive_information = $this->addDeleteButtonDatatable($skill_m_t_m);
-        return datatables()->of($drive_information)->make(true);
+        $mt_mechanical_conditions = $this->addDeleteButtonDatatable($mt_mechanical_conditions);
+        return datatables()->of($mt_mechanical_conditions)->make(true);
     }
 }

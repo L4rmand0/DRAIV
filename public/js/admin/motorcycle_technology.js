@@ -15,10 +15,9 @@
     $(function() {
         $(document).click(function(event) {
             $target = $(event.target);
-            $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#slalom");
-            $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#projection");
-            $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#braking");
-            $(this).editBehaviourSelectFixedDT($target, "#skills_m_t_m_datatable", "#evasion");
+            $(this).editBehaviourSelectFixedDT($target, "#motorcycle_technology_datatable", "#brake_type");
+            $(this).editBehaviourSelectFixedDT($target, "#motorcycle_technology_datatable", "#assistence_brake");
+            $(this).editBehaviourSelectFixedDT($target, "#motorcycle_technology_datatable", "#automatic_lights");
         });
 
         $.ajax({
@@ -70,7 +69,7 @@
                             data.success,
                             'success'
                         )
-                        $('#skills_m_t_m_datatable').DataTable().ajax.reload();
+                        $('#motorcycle_technology_datatable').DataTable().ajax.reload();
                     }
                 }
             });
@@ -79,14 +78,10 @@
         //Arreglo que genera el atributo id de cada elemento td celda del datatable
         var fields = [
             'delete_row',
-            'reg_id',
-            // 'date_evaluation',
-            'slalom',
-            'projection',
-            'braking',
-            'evasion',
-            // 'mobility',
-            // 'result',
+            'm_t_id',
+            'brake_type',
+            'assistence_brake',
+            'automatic_lights',
             'first_name',
             'f_last_name',
             'dni_id',
@@ -94,7 +89,7 @@
         ];
 
         //Instancia del datatable
-        var table = $('#skills_m_t_m_datatable').DataTable({
+        var table = $('#motorcycle_technology_datatable').DataTable({
             processing: true,
             serverSide: true,
             "sScrollY": "600",
@@ -103,14 +98,10 @@
             ajax: $('#data-table-route').val(),
             columns: [
                 { data: 'delete_row', name: 'delete_row', "data": null, "defaultContent": '<center><button class="btn btn-sm btn-danger" id="btn_delete_user"><i class="fas fa-trash"></i></button></center>' },
-                { data: 'reg_id', name: 'reg_id', "visible": false },
-                // { data: 'date_evaluation', name: 'date_evaluation' },
-                { data: 'slalom', name: 'slalom' },
-                { data: 'projection', name: 'projection' },
-                { data: 'braking', name: 'braking' },
-                { data: 'evasion', name: 'evasion' },
-                // { data: 'mobility', name: 'mobility' },
-                // { data: 'result', name: 'result' },
+                { data: 'm_t_id', name: 'm_t_id', "visible": false },
+                { data: 'brake_type', name: 'brake_type' },
+                { data: 'assistence_brake', name: 'assistence_brake' },
+                { data: 'automatic_lights', name: 'automatic_lights' },
                 { data: 'first_name', name: 'first_name' },
                 { data: 'f_last_name', name: 'f_last_name' },
                 { data: 'dni_id', name: 'dni_id' },
@@ -128,7 +119,7 @@
         });
 
         // Función para borrar registro de la tabla
-        $('#skills_m_t_m_datatable').on('click', 'tr td #btn_delete_user', function() {
+        $('#motorcycle_technology_datatable').on('click', 'tr td #btn_delete_user', function() {
             let row = $(this).parents('tr')
             let data_delete = table.row(row).data();
             swal.fire({
@@ -155,7 +146,7 @@
                                      data.response,
                                     'success'
                                 );
-                                $('#skills_m_t_m_datatable').DataTable().ajax.reload();
+                                $('#motorcycle_technology_datatable').DataTable().ajax.reload();
                             } else {
                                 swal.fire(
                                     'Ocurrió un error',
@@ -197,31 +188,26 @@
                     }
                 });
             }
-            console.log("The values for each cell in that row are: " + updatedRow.data());
+            console.log("Log: The values for each cell in that row are: " + updatedRow.data());
         }
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            "columns":[2,3,4,5],
-            "inputTypes": [{
+            "columns":[2,3,4],
+            "inputTypes": [
+            {
                 "column": 2,
                 "type": "list-fixed",
-                "options": slalom_t_list
+                "options": assistence_type_brake_list
             },
             {
                 "column": 3,
                 "type": "list-fixed",
-                "options": projection_t_list
-            },
-            {
+                "options": assistence_brake_list
+            },{
                 "column": 4,
                 "type": "list-fixed",
-                "options": braking_t_list
-            },
-            {
-                "column": 5,
-                "type": "list-fixed",
-                "options": evasion_t_list
+                "options": automatic_lights_list
             }]
         });
 
