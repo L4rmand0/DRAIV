@@ -49,7 +49,7 @@
                     </div>
                     <div class="col-md-2"></div>
                     <div class="col-md-2 text-right" style="display: flex;align-items: center;justify-content: center;">
-                        <a href="{{ route('admin','motorcycle_tecnology') }}"><img src="{{ asset('img/next.png') }}" alt=""></a>
+                        <a href="{{ route('admin','mt_mechanical_condition') }}"><img src="{{ asset('img/next.png') }}" alt=""></a>
                     </div>
                 </div>
             </div>

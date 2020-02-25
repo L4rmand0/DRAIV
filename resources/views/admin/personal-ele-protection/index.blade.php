@@ -44,7 +44,7 @@
             <div class="card-footer">
                 <div class="row">
                     <div class="col-md-2" style="display: flex;align-items: center;justify-content: center;">
-                        <a href="{{ route('admin','skills_m_t_m') }}"><img src="{{ asset('img/back.png') }}"
+                        <a href="{{ route('admin','mt_mechanical_condition') }}"><img src="{{ asset('img/back.png') }}"
                                 alt=""></a>
                     </div>
                     <div class="col-md-2"></div>
@@ -57,7 +57,7 @@
                     </div>
                     <div class="col-md-2"></div>
                     <div class="col-md-2 text-right" style="display: flex;align-items: center;justify-content: center;">
-                        <a href="{{ route('admin','motorcycle_tecnology') }}"><img src="{{ asset('img/next.png') }}" alt=""></a>
+                        <a href="{{ route('admin','doc_verification') }}"><img src="{{ asset('img/next.png') }}" alt=""></a>
                     </div>
                 </div>
             </div>
