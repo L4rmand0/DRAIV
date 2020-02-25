@@ -57,7 +57,7 @@
                                         </select>
                                     </div>
                                     @endif
-                                    <div class="col-md-4">
+                                    <div @if ($multiple_admin) class="col-md-4" @else class="col-md-8" @endif>
                                         <div class="text-xs font-weight-bold text-dark text-uppercase mb-1 ml-1">
                                             Cédula Conductor</div>
                                         <select name="" class="mt-3" id="select_cc_driver" style="width: 37%;"
