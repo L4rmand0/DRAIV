@@ -70,7 +70,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Registrar una nueva habilidad</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Registrar una nueva evaluación de elementos de protección <a href="http://revista.dgt.es/es/multimedia/infografia-animada/2019/0702equipamiento-del-motorista.shtml#.XlRKtS3SE_X" target="_blank"><img src="{{ asset('img/help.png') }}" alt="" srcset="" style="width: 17px;"></a></h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -93,7 +93,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="casco_form" style="padding-top: calc(0.135rem + 1px);"
-                            class="col-md-4 col-form-label text-md-right">{{ __('Casco') }}</label>
+                            class="col-md-4 col-form-label text-md-right">{{ __('Casco') }} <a href="https://sharp.dft.gov.uk" target="_blank"><img src="{{ asset('img/help.png') }}" alt="" srcset="" style="width: 17px;"></a></label>
                         <div class="col-md-6">
                             <select class="form-control" name="casco" id="casco_form" style="width:100%;" required>
                                 <option value="">Seleccionar ...</option>
@@ -136,6 +136,81 @@
                             </span>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="coderas_form" style="padding-top: calc(0.135rem + 1px);"
+                            class="col-md-4 col-form-label text-md-right">{{ __('Coderas') }}</label>
+                        <div class="col-md-6">
+                            <select class="form-control" name="coderas" id="coderas_form" style="width:100%;" required>
+                                <option value="">Seleccionar ...</option>
+                                @foreach ($values_coderas as $key_val_coderas => $val_coderas)
+                                <option value="{{ $key_val_coderas }}">{{ $val_coderas }}</option>
+                                @endforeach
+                            </select>
+                            <span class="error_admin" role="alert" id="coderas_form-error">
+                                <strong id="coderas_form-error-strong" class="error-strong"></strong>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="hombreras_form" style="padding-top: calc(0.135rem + 1px);"
+                            class="col-md-4 col-form-label text-md-right">{{ __('Hombreras') }}</label>
+                        <div class="col-md-6">
+                            <select class="form-control" name="hombreras" id="hombreras_form" style="width:100%;" required>
+                                <option value="">Seleccionar ...</option>
+                                @foreach ($values_hombreras as $key_val_hombreras => $val_hombreras)
+                                <option value="{{ $key_val_hombreras }}">{{ $val_hombreras }}</option>
+                                @endforeach
+                            </select>
+                            <span class="error_admin" role="alert" id="rodilleras_form-error">
+                                <strong id="hombreras_form-error-strong" class="error-strong"></strong>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="espalda_form" style="padding-top: calc(0.135rem + 1px);"
+                            class="col-md-4 col-form-label text-md-right">{{ __('Protector de espalda') }}</label>
+                        <div class="col-md-6">
+                            <select class="form-control" name="espalda" id="espalda_form" style="width:100%;" required>
+                                <option value="">Seleccionar ...</option>
+                                @foreach ($values_espalda as $key_val_espalda => $val_espalda)
+                                <option value="{{ $key_val_espalda }}">{{ $val_espalda }}</option>
+                                @endforeach
+                            </select>
+                            <span class="error_admin" role="alert" id="espalda_form-error">
+                                <strong id="espalda_form-error-strong" class="error-strong"></strong>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="botas_form" style="padding-top: calc(0.135rem + 1px);"
+                            class="col-md-4 col-form-label text-md-right">{{ __('Botas') }}</label>
+                        <div class="col-md-6">
+                            <select class="form-control" name="botas" id="botas_form" style="width:100%;" required>
+                                <option value="">Seleccionar ...</option>
+                                @foreach ($values_botas as $key_val_botas => $val_botas)
+                                <option value="{{ $key_val_botas }}">{{ $val_botas }}</option>
+                                @endforeach
+                            </select>
+                            <span class="error_admin" role="alert" id="botas_form-error">
+                                <strong id="botas_form-error-strong" class="error-strong"></strong>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="guantes_form" style="padding-top: calc(0.135rem + 1px);"
+                            class="col-md-4 col-form-label text-md-right">{{ __('Guantes') }}</label>
+                        <div class="col-md-6">
+                            <select class="form-control" name="guantes" id="guantes_form" style="width:100%;" required>
+                                <option value="">Seleccionar ...</option>
+                                @foreach ($values_guantes as $key_val_guantes => $val_guantes)
+                                <option value="{{ $key_val_guantes }}">{{ $val_guantes }}</option>
+                                @endforeach
+                            </select>
+                            <span class="error_admin" role="alert" id="guantes_form-error">
+                                <strong id="guantes_form-error-strong" class="error-strong"></strong>
+                            </span>
+                        </div>
+                    </div>
                     <div class="form-group row mb-0">
                         <div class="col-md-6 offset-md-4">
                             <button type="submit" class="btn btn-primary" data-url="{{ route('register-user') }}"
@@ -156,6 +231,14 @@
 <!-- /.container-fluid -->
 <script src="{{ asset('js/admin/personal_ele_protection.js') }}" defer></script>
 <script>
+    var casco_list = {!! $casco_list !!};
+    var airbag_list = {!! $airbag_list !!};
+    var rodilleras_list = {!! $rodilleras_list !!};
+    var coderas_list = {!! $coderas_list !!};
+    var hombreras_list = {!! $hombreras_list !!};
+    var espalda_list = {!! $espalda_list !!};
+    var botas_list = {!! $botas_list !!};
+    var guantes_list = {!! $guantes_list !!};
 </script>
 @endsection
 <!-- End of Main Content -->

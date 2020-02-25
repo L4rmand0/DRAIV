@@ -111,7 +111,7 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-6">
-                                <label for="valid_licence_form">Licencia Vigente</label><br>
+                                <label for="valid_licence_form">Licencia Vigente <a href="https://www.runt.com.co/consultaCiudadana/#/consultaPersona" target="_blank"><img src="{{ asset('img/help.png') }}" alt="" srcset="" style="width: 17px;"></a></label><br>
                                 <select name="valid_licence" id="valid_licence_form" class="form-control" required>
                                     <option value="">Seleccionar ...</option>
                                     <option value="Y">Sí</option>
@@ -131,7 +131,7 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-6">
-                                <label for="soat_available_form">Soat</label><br>
+                                <label for="soat_available_form">Soat <a href="https://www.runt.com.co/consultaCiudadana/#/consultaVehiculo" target="_blank"><img src="{{ asset('img/help.png') }}" alt="" srcset="" style="width: 17px;"></a></label><br>
                                 <select name="soat_available" id="soat_available_form" class="form-control" required>
                                     <option value="">Seleccionar ...</option>
                                     <option value="Y">Sí</option>
@@ -154,7 +154,7 @@
                                     class="form-control" readonly>
                             </div>
                             <div class="col-md-6 form_select_conductores">
-                                <label for="run_state_form">Estado RUN</label><br>
+                                <label for="run_state_form">Estado RUNT <a href="https://www.runt.com.co/consultaCiudadana/#/consultaPersona" target="_blank"><img src="{{ asset('img/help.png') }}" alt="" srcset="" style="width: 17px;"></a></label><br>
                                 <select name="run_state" class="form-control" style="width: 100%" id="run_state_form"
                                     required>
                                     <option value="">Seleccionar ...</option>
@@ -166,12 +166,12 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-6">
-                                <label for="accident_rate_form">Accidentes Reportados</label><br>
+                                <label for="accident_rate_form">Accidentes Reportados <a href="https://fasecolda.com/ramos/automoviles/historial-de-accidentes-de-vehiculos-asegurados/ " target="_blank"><img src="{{ asset('img/help.png') }}" alt="" srcset="" style="width: 17px;"></a></label><br>
                                 <input type="number" name="accident_rate" id="accident_rate_form" class="form-control"
                                     required>
                             </div>
                             <div class="col-md-6">
-                                <label for="penality_record_form">Número de Comparendos</label><br>
+                                <label for="penality_record_form">Número de Comparendos <a href="https://consulta.simit.org.co/Simit/indexA.jsp" target="_blank"><img src="{{ asset('img/help.png') }}" alt="" srcset="" style="width: 17px;"></a></label><br>
                                 <input type="number" name="penality_record" id="penality_record_form"
                                     class="form-control" required>
                             </div>

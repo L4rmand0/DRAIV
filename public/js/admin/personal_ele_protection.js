@@ -15,7 +15,14 @@
     $(function() {
         $(document).click(function(event) {
             $target = $(event.target);
-            // $(this).editBehaviourSelectFixedDT($target, "#personal_ele_protection_datatable", "#slalom");
+            $(this).editBehaviourSelectFixedDT($target, "#personal_ele_protection_datatable", "#casco");
+            $(this).editBehaviourSelectFixedDT($target, "#personal_ele_protection_datatable", "#airbag");
+            $(this).editBehaviourSelectFixedDT($target, "#personal_ele_protection_datatable", "#rodilleras");
+            $(this).editBehaviourSelectFixedDT($target, "#personal_ele_protection_datatable", "#coderas");
+            $(this).editBehaviourSelectFixedDT($target, "#personal_ele_protection_datatable", "#hombreras");
+            $(this).editBehaviourSelectFixedDT($target, "#personal_ele_protection_datatable", "#espalda");
+            $(this).editBehaviourSelectFixedDT($target, "#personal_ele_protection_datatable", "#botas");
+            $(this).editBehaviourSelectFixedDT($target, "#personal_ele_protection_datatable", "#guantes");
         });
 
         $.ajax({
@@ -206,13 +213,48 @@
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            "columns":[2,3,4,5],
-            // "inputTypes": [
-            // {
-            //     "column": 5,
-            //     "type": "list-fixed",
-            //     "options": evasion_t_list
-            // }]
+            "columns":[4,5,6,7,8,9,10,11],
+            "inputTypes": [
+            {
+                "column": 4,
+                "type": "list-fixed",
+                "options": casco_list
+            },
+            {
+                "column": 5,
+                "type": "list-fixed",
+                "options": airbag_list
+            },
+            {
+                "column": 6,
+                "type": "list-fixed",
+                "options": rodilleras_list
+            },
+            {
+                "column": 7,
+                "type": "list-fixed",
+                "options": coderas_list
+            },
+            {
+                "column": 8,
+                "type": "list-fixed",
+                "options": hombreras_list
+            },
+            {
+                "column": 9,
+                "type": "list-fixed",
+                "options": espalda_list
+            },
+            {
+                "column": 10,
+                "type": "list-fixed",
+                "options": botas_list
+            },
+            {
+                "column": 11,
+                "type": "list-fixed",
+                "options": guantes_list
+            }]
         });
 
     });

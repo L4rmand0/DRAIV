@@ -62,7 +62,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Registrar una nueva Tecnología de Moto</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Registrar una nueva Tecnología de Moto <a href="https://www.seguridadviallaboral.co/ranking" target="_blank"><img src="{{ asset('img/help.png') }}" alt="" srcset="" style="width: 17px;"></a></h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>

@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\admin;
 
 use DB;
-use App\Http\Controllers\Controller;
+use App\Epp;
+use App\Company;
+use App\Rules\NotToday;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\MotorcycleTechnology;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class EppController extends Controller
 {
@@ -37,7 +42,60 @@ class EppController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $now = date("Y-m-d");
+        $data_input = $request->all();
+        $data_input['start_date'] = $now;
+        $company_active = Auth::user()->company_active;
+        $company_name = Company::where('company_id', $company_active)->first()->name_company;
+        $name_evaluator = Auth::user()->name;
+        // echo '<pre>';
+        // print_r($data_input);
+        // die;
+        // Trae el id de la tabla user_vehicle para insertarlo después
+        $user_vehicle = DB::table('user_vehicle as uv')
+            ->select(DB::raw(
+                'uv.id'
+            ))
+            ->where('uv.driver_information_dni_id', '=', $data_input['user_vehicle_id'])
+            ->where('uv.operation', '!=', 'D')
+            ->first();
+        if (empty($user_vehicle)) {
+            return response()->json(['response' => 'error_swal', 'errors' => ['message' => 'Este conductor ha sido elminado.']]);
+        }
+        $uv_id = !empty($user_vehicle) ? $user_vehicle->id : "";
+        $validator = Validator::make(
+            $data_input,
+            [
+                'start_date' => [new NotToday(['user_vehicle_id', $user_vehicle->id], 'epp')],
+            ]
+        );
+        $errors = $validator->errors()->getMessages();
+        if (!empty($errors)) {
+            return response()->json(['response' => 'error_swal', 'errors' => ['message' => 'Este conductor ya registró una evalución hoy, solo se permite una por día.']]);
+        }
+        // echo '<pre>';
+        // print_r($errors);
+        // echo 'finaliza';
+        // die;
+        $epp = Epp::create([
+            'name_evaluator' => $name_evaluator,
+            'empresa' => $company_name,
+            'casco' => $data_input['casco'],
+            'airbag' => $data_input['airbag'],
+            'rodilleras' => $data_input['rodilleras'],
+            'coderas' => $data_input['coderas'],
+            'hombreras' => $data_input['hombreras'],
+            'espalda' => $data_input['espalda'],
+            'botas' => $data_input['botas'],
+            'guantes' => $data_input['guantes'],
+            'user_vehicle_id' => $user_vehicle->id,
+            'user_id' => auth()->id(),
+        ]);
+        if ($epp->epp_id > 0) {
+            return response()->json(['response' => 'error_swal', 'message' => 'Ocurrió un error en el proceso']);
+        } else {
+            return response()->json(['response' => 'Información insertada correctamente', 'errors' => []]);
+        }
     }
 
     /**
@@ -71,7 +129,21 @@ class EppController extends Controller
      */
     public function update(Request $request)
     {
-        //
+        $now = date("Y-m-d H:i:s");
+        $data_updated = $request->all();
+        $field = $data_updated['fieldch'];
+        $value = $data_updated['valuech'];
+        $response = Epp::where('epp_id', $data_updated['epp_id'])->update([
+            $field => $value,
+            'operation' => 'U',
+            'date_operation' => $now,
+            'user_id' => auth()->id(),
+        ]);
+        if ($response) {
+            return response()->json(['response' => 'Información actualizada', 'error' => []]);
+        } else {
+            return response()->json(['error' => ['response' => 'No se pudo actualizar la información']]);
+        }
     }
 
     /**
@@ -80,17 +152,27 @@ class EppController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $data_delete = $request->all();
+        // echo '<pre>';
+        // print_r($data_delete);
+        // die;
+        $delete = Epp::where('epp_id', $data_delete['epp_id'])->update(['operation' => 'D']);
+        if ($delete) {
+            return response()->json(['response' => 'El registro ha sido eliminado.', 'error' => '']);
+        } else {
+            return response()->json(['error' => 'No se pudo eliminar el registro']);
+        }
     }
 
-    public function dataTable(Request $request){
+    public function dataTable(Request $request)
+    {
         // echo '<pre> hola';
         // print_r($request->all());
         // die;
         $company_id = Auth::user()->company_active;
-        $motorcycle_technology = DB::table('epp as e')
+        $personal_element_protection = DB::table('epp as e')
             ->select(DB::raw(
                 'e.epp_id, 
                 e.name_evaluator, 
@@ -118,14 +200,17 @@ class EppController extends Controller
             ->orderBy('e.start_date', 'desc')
             ->get();
 
-        // $skill_m_t_m = $this->dataQuery($skill_m_t_m)->make([
-        //     'slalom'=>SkilleM::VALUE_SLALOM,
-        //     'projection'=>SkilleM::VALUE_PROJECTION,
-        //     'braking'=>SkilleM::VALUE_BRAKING,
-        //     'evasion'=>SkilleM::VALUE_EVASION,
-        // ]);    
-        $motorcycle_technology = $this->addDeleteButtonDatatable($motorcycle_technology);
-        return datatables()->of($motorcycle_technology)->make(true);
+        $personal_element_protection = $this->dataQuery($personal_element_protection)->make([
+            'casco' => Epp::VALUE_CASCO,
+            'airbag' => Epp::VALUE_AIRBAG,
+            'rodilleras' => Epp::VALUE_RODILLERAS,
+            'coderas' => Epp::VALUE_CODERAS,
+            'hombreras' => Epp::VALUE_HOMBRERAS,
+            'espalda' => Epp::VALUE_ESPALDA,
+            'botas' => Epp::VALUE_BOTAS,
+            'guantes' => Epp::VALUE_GUANTES,
+        ]);
+        $personal_element_protection = $this->addDeleteButtonDatatable($personal_element_protection);
+        return datatables()->of($personal_element_protection)->make(true);
     }
-
 }
