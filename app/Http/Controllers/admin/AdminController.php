@@ -134,6 +134,16 @@ class AdminController extends Controller
                     $data_motorcycle_technology = $this->checkMultipleAdmin($auth_user, $child_companies, $data_motorcycle_technology);
                     return view('admin.personal-ele-protection.index', $data_motorcycle_technology);
                     break;
+                case 'register_driver':
+                    $data_register_driver = $this->showRegisterDriver($company_name);
+                    $data_register_driver = $this->checkMultipleAdmin($auth_user, $child_companies, $data_register_driver);
+                    return view('admin.register-information.register', $data_register_driver);
+                    break;
+                case 'edit_driver':
+                    $data_motorcycle_technology = $this->showRegisterDriver($company_name);
+                    $data_motorcycle_technology = $this->checkMultipleAdmin($auth_user, $child_companies, $data_motorcycle_technology);
+                    return view('admin.register-information.edit', $data_motorcycle_technology);
+                    break;
                 default:
                     return view('404_draiv');
                     break;
@@ -194,6 +204,29 @@ class AdminController extends Controller
     private function showIndexDocVerification($company_name)
     {
         return [
+            'company_name' => ucwords(strtolower($company_name)),
+            'permissions' => $this->permissions,
+        ];
+    }
+
+    private function showRegisterDriver($company_name)
+    {
+        $list_admin3 = Admin3Controller::listAdmin3();
+        $enum_education = $this->generateOptionsEnumDt(DriverInformation::enum_education);
+        $list_education = DriverInformation::enum_education;
+        $enum_civil_state = $this->generateOptionsEnumDt(DriverInformation::enum_civil_state);
+        $list_civil_state = DriverInformation::enum_civil_state;
+        $enum_country_born = $this->generateOptionsEnumDt(DriverInformation::enum_country_born);
+        $list_country_born = DriverInformation::enum_country_born;
+
+        return [
+            'enum_education' => $enum_education,
+            'enum_civil_state' => $enum_civil_state,
+            'enum_country_born' => $enum_country_born,
+            'list_education' => $list_education,
+            'list_civil_state' => $list_civil_state,
+            'list_country_born' => $list_country_born,
+            'list_admin3' => $list_admin3,
             'company_name' => ucwords(strtolower($company_name)),
             'permissions' => $this->permissions,
         ];

@@ -24,6 +24,7 @@ class DriverInformation extends Model
         'f_last_name',
         's_last_name',
         'gender',
+        'born_day',
         'education',
         'e_mail_address',
         'address',

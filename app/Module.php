@@ -24,6 +24,9 @@ class Module extends Model
         'mt_mechanical_condition'=> 15,
         'personal_ele_protection'=> 16,
         'certification'=> 17,
+        'information_register'=> 18,
+        'register_driver'=> 19,
+        'edit_driver'=> 20,
     ];
 
     protected $table = 'module';

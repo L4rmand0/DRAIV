@@ -157,22 +157,32 @@ select.list-dt:focus {
 }
 
 #progressbar #Licence:before {
-    font-family: FontAwesome;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     content: "\f2c2"
 }
 
 #progressbar #personal:before {
-    font-family: FontAwesome;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     content: "\f007"
 }
 
 #progressbar #vehicle:before {
-    font-family: FontAwesome;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     content: "\f1b9"
 }
 
+#progressbar #tech_component:before {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    content: "\f0ad"
+}
+
 #progressbar #confirm:before {
-    font-family: FontAwesome;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     content: "\f00c"
 }
 
@@ -261,3 +271,10 @@ select.list-dt:focus {
     margin-top: 8px;
 }
 
+.el-red{
+    color: var(--red);
+}
+
+.error-strong{
+    font-size: 0.8em;
+}

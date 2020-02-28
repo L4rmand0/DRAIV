@@ -731,4 +731,46 @@ class DriverInformationController extends Controller
         }
         return $this->chart_js->makeChart($civil_state);
     }
+
+    // --- FUNCIONES DEL NUEVO FORMULARIOS --- //
+    public function validateInformation(Request $request){
+        // echo '<pre>';
+        // print_r($request->all());
+        // die;
+        $data_input = $request->all()['driverInformation'];
+        $validator = Validator::make(
+            $data_input,
+            [
+                'first_name' => 'required|max:70',
+                'f_last_name' => 'required|max:20',
+                's_last_name' => 'required|max:20',
+                'dni_id' => ['required', 'max:10', 'unique:driver_information'],
+                'gender' => 'required',
+                'born_day' => 'required',
+                'education' => 'required',
+                'country_born' => 'required',
+                'e_mail_address' => 'required|max:35',
+                'city_residence_place' => 'required|max:20',
+                'department' => 'required|max:20',
+                'civil_state' => 'required',
+                'address' => 'required|max:50',
+                'phone' => 'required|max:30',
+            ],
+            [
+                'first_name.required' => "El primer nombre es obligatorio.",
+                'f_last_name.required' => "El primer apellido es obligatorio.",
+                'dni_id.required' => "La cédula es obligatoria.",
+                'dni_id.unique' => "Esta cédula ya está en uso.",
+                'gender.required' => "El género es obligatorio.",
+                'born_day.required' => "La edad es obligatoria",
+                'e_mail_address.required' => "El email es obligatorio.",
+            ]
+        );
+        $errors = $validator->errors()->getMessages();
+        if (!empty($errors)) {
+            return response()->json(['errors' => $errors]);
+        }else{
+            return response()->json(['response'=>'','errors' => []]);
+        }
+    }
 }

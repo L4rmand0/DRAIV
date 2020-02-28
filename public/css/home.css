@@ -1,0 +1,384 @@
+@font-face {
+    font-family: 'IBMPlexSans';
+    src: url('../fonts/draiv/IBMPlexSansText.otf');
+}
+
+@font-face {
+    font-family: 'IBMPlexSansLight';
+    src: url('../fonts/draiv/IBMPlexMono-ExtraLight.otf');
+}
+
+@font-face {
+    font-family: 'IBMPlexSansRegular';
+    src: url('../fonts/draiv/IBMPlexSans-Regular.otf');
+}
+
+@font-face {
+    font-family: 'IBMPlexSansThin';
+    src: url('../fonts/draiv/IBMPlexMono-Thin.otf');
+}
+
+
+/* RESET RULES & HELPER CLASSES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+:root {
+    --lightblue: #f6f9fc;
+    --red: #d64041;
+    --darkblue: #343a40;
+    --lightgrey: #EBEBEB;
+}
+
+a,
+a:hover {
+    color: inherit;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.bg-lightblue {
+    background: var(--lightblue);
+}
+
+.bg-red {
+    background: var(--red);
+}
+
+.bg-lightgrey {
+    background: var(--lightgrey);
+}
+
+.text-red {
+    color: var(--red);
+}
+
+.text-darkblue {
+    color: var(--darkblue);
+}
+
+.container-fluid-max {
+    max-width: 1440px;
+}
+
+.center-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cover {
+    background: no-repeat center/cover;
+}
+
+.p-15 {
+    padding: 15px;
+}
+
+.ft-s-1 {
+    font-size: 1.1em;
+}
+
+.ft-s-2 {
+    font-size: 1.2em;
+}
+
+.fira-s-regular {
+    font-family: "IBMPlexSansRegular";
+}
+
+
+/* SCROLL ANIMATIONS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.scroll .page-header {
+    background: var(--darkblue);
+}
+
+.scroll .hero {
+    transform: scale(0.98);
+}
+
+
+/* HEADER
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.page-header {
+    transition: background 0.5s ease-in-out;
+}
+
+.page-header .navbar {
+    padding: 1rem 0;
+}
+
+.page-header .navbar-toggler {
+    /* the variable is inherited from BS4 built-in variables */
+    border-color: var(--white);
+}
+
+
+/* BANNER SECTION
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.hero {
+    background-attachment: fixed;
+    transition: transform 0.5s ease-in-out;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient( rgba(0, 0, 0, 0.5) 0, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.1) 100%);
+}
+
+.hero .container-fluid {
+    z-index: 10;
+}
+
+
+/* POPULAR DESTINATIONS SECTION
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.popular-destinations figure {
+    margin-bottom: 30px;
+}
+
+.popular-destinations figcaption {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.popular-destinations img {
+    filter: grayscale(100%) blur(3px);
+    transition: transform 0.5s, filter 0.75s;
+}
+
+.popular-destinations a:hover img {
+    transform: scale(1.25);
+    filter: none;
+}
+
+
+/* PAGE FOOTER
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+.page-footer .footer-links {
+    text-align: right;
+}
+
+
+/* MEDIA QUERIES
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+
+/* MEDIUM SCREENS */
+
+@media screen and (max-width: 991px) {
+    .page-header {
+        background: var(--darkblue);
+    }
+}
+
+
+/* SMALL SCREENS */
+
+@media screen and (max-width: 767px) {
+    .page-footer .footer-child {
+        text-align: center;
+    }
+}
+
+
+/*  TABLA DE PRECIOS */
+
+#price_table {
+    width: 100%;
+    text-align: left;
+    border-spacing: 0;
+    border-collapse: collapse;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#price_table th,
+#price_table td {
+    font-family: inherit;
+    font-size: .875em;
+    line-height: 1.45;
+    color: #444;
+    vertical-align: middle;
+    padding: 1em;
+}
+
+#price_table th {
+    font-weight: 600;
+}
+
+#price_table colgroup:nth-child(1) {
+    width: 31%;
+    border: 0 none;
+}
+
+#price_table colgroup:nth-child(2) {
+    width: 22%;
+    border: 1px solid #ccc;
+}
+
+#price_table colgroup:nth-child(3) {
+    width: 25%;
+    border: 10px solid #59c7fb;
+}
+
+#price_table colgroup:nth-child(4) {
+    width: 22%;
+    border: 1px solid #ccc;
+}
+
+#price_table thead th {
+    background: #def4fe;
+    background: -moz-linear-gradient(top, #ffffff 0%, #f5f5f5 100%);
+    background: -webkit-linear-gradient(top, #ffffff 0%, #f5f5f5 100%);
+    background: -o-linear-gradient(top, #ffffff 0%, #f5f5f5 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%, #f5f5f5 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #f5f5f5 100%);
+    text-align: center;
+    position: relative;
+    border-bottom: 1px solid #ccc;
+    padding: 3em 0 2em;
+    font-weight: 400;
+    color: #999;
+}
+
+#price_table thead th:nth-child(1) {
+    background: transparent;
+}
+
+#price_table thead th:nth-child(3) {
+    padding: 2em 0 5em;
+}
+
+#price_table thead th h2 {
+    font-weight: 300;
+    font-size: 2.4em;
+    line-height: 1.2;
+    color: #59c7fb;
+}
+
+#price_table thead th h2+p {
+    font-size: 1.25em;
+    line-height: 1.4;
+}
+
+#price_table thead th:nth-child(3) h2 {
+    font-size: 3.6em;
+}
+
+#price_table thead th:nth-child(3) h2+p {
+    font-size: 1.5em;
+}
+
+#price_table thead th p.promo {
+    font-size: 1em;
+    color: #fff;
+    position: absolute;
+    top: 9em;
+    left: -17px;
+    z-index: 1000;
+    width: 110%;
+    margin: 0;
+    padding: .625em 17px .75em;
+    background: #c00;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
+    border-bottom: 1px solid #900;
+}
+
+#price_table thead th p.promo:before {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 0 7px 7px 0;
+    border-color: transparent #900 transparent transparent;
+    bottom: -7px;
+    left: 0;
+}
+
+#price_table thead th p.promo:after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 7px 7px 0 0;
+    border-color: #900 transparent transparent transparent;
+    bottom: -7px;
+    right: 0;
+}
+
+
+/* Tablebody */
+
+#price_table tbody th {
+    background: #fff;
+    border-left: 1px solid #ccc;
+}
+
+#price_table tbody th span {
+    font-weight: normal;
+    font-size: 87.5%;
+    color: #999;
+    display: block;
+}
+
+#price_tabletbody td {
+    background: #fff;
+    text-align: center;
+}
+
+#price_table tbody tr:nth-child(even) th,
+#price_table tbody tr:nth-child(even) td {
+    background: #f5f5f5;
+    border: 1px solid #ccc;
+    border-width: 1px 0 1px 1px;
+}
+
+#price_table tbody tr:last-child td {
+    border-bottom: 0 none;
+}
+
+
+/* Tablefooter */
+
+#price_table tfoot th {
+    padding: 2em 1em;
+    border-top: 1px solid #ccc;
+}
+
+#price_table tfoot td {
+    text-align: center;
+    padding: 2em 1em;
+    border-top: 1px solid #ccc;
+}
+
+#price_table tfoot a {
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    display: block;
+    padding: 1.125em 2em;
+    background: #59c7fb;
+    border-radius: .5em;
+}

@@ -1,142 +1,27 @@
-@extends('layouts.app')
+@extends('layouts-admin.app')
 @section('content')
-<small id="pageactive" data-page="#drivers"></small>
+<!-- Begin Page Content -->
+<input type="hidden" name="url-validate-driver-information" id="url-validate-driver-information" value="">
+<input type="hidden" name="url-validate-driver-information" id="url-validate-driver-information" value="">
 <div class="container-fluid" id="grad1">
     <div class="row justify-content-center mt-0">
         <div class="col-11 col-sm-9 col-md-7 col-lg-6 text-center p-0 mt-3 mb-2">
             <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                <h2><strong id="section_title">Información Personal</strong></h2>
-                <p>Llene toda la información de esta sección y pase a la siguiente sección</p>
+                <h2><strong>Información Personal</strong></h2>
+                <p>Llene todo los campos del formulario y vaya al siguiente paso</p>
                 <div class="row">
                     <div class="col-md-12 mx-0">
                         <form action="" method="POST" id="msform" accept-charset="UTF-8" enctype="multipart/form-data">
                             @csrf
                             <!-- progressbar -->
                             <ul id="progressbar">
-                                <li id="personal" class="active"><strong>Personal</strong></li>
-                                <li id="Licence"><strong>Licencia</strong></li>
+                                <li id="personal" class="active"><strong>Datos Personales</strong></li>
                                 <li id="vehicle"><strong>Vehículo</strong></li>
-                                <li id="confirm"><strong>Finish</strong></li>
+                                <li id="Licence"><strong>Componente Humano</strong></li>
+                                <li id="tech_component"><strong>Componente Técnico</strong></li>
                             </ul> <!-- fieldsets -->
                             <fieldset>
-                                <div class="form-card">
-                                    <h2 class="fs-title" style="margin-bottom: 20px">Información de Usuario</h2>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <input type="text" name="userInformation[First_name]" id="First_name"
-                                                class="form-control form-dataconductores" placeholder="Primer Nombre">
-                                            <small class="text-danger small_forms" id="small_f_name"></small>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text" name="userInformation[Second_name]" id="Second_name"
-                                                class="form-control form-dataconductores" placeholder="Segundo Nombre">
-                                            <small class="text-danger small_forms" id="small_s_name"></small>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <input type="text" name="userInformation[F_last_name]" id="F_last_name"
-                                                class="form-control form-dataconductores" placeholder="Primer Apellido">
-                                            <small class="text-danger small_forms" id="small_f_lastname"></small>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text" name="userInformation[S_last_name]" id="S_last_name"
-                                                class="form-control form-dataconductores"
-                                                placeholder="Segundo Apellido">
-                                            <small class="text-danger small_forms" id="small_s_lastname"></small>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <input type="text" name="userInformation[DNI_id]" id="DNI_id"
-                                                class="form-control form-dataconductores" placeholder="Cédula">
-                                            <small class="text-danger small_forms" id="small_dni_id"></small>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="email" name="userInformation[E_mail_address]"
-                                                id="E_mail_address" class="form-control form-dataconductores"
-                                                placeholder="Correo Electrónico">
-                                            <small class="text-danger small_forms" id="small_email"></small>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6 form_select_conductores">
-                                            <label for="Gender">Género</label>
-                                            <select name="userInformation[Gender]"
-                                                class="form-control form-dataconductores" id="Gender">
-                                                <option value="">Seleccionar</option>
-                                                <option value="0">Masculino</option>
-                                                <option value="1">Femenino</option>
-                                            </select>
-                                            <small class="text-danger small_forms" id="small_gender"></small>
-                                        </div>
-                                        <div class="col-md-6 form_select_conductores">
-                                            <label for="Education">Educación</label>
-                                            <select name="userInformation[Education]"
-                                                class="form-control form-dataconductores" id="Education">
-                                                <option value="">Seleccionar</option>
-                                                <option value="Ninguno">Ninguno</option>
-                                                <option value="Primaria">Primaria</option>
-                                                <option value="Secundaria">Secundaria</option>
-                                                <option value="Pregrado">Pregrado</option>
-                                                <option value="Postgrado">Postgrado</option>
-                                            </select>
-                                            <small class="text-danger small_forms" id="small_education"></small>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6 form_select_conductores">
-                                            <label for="Country_born">País</label>
-                                            <select name="userInformation[Country_born]"
-                                                class="form-control form-dataconductores" id="Country_born">
-                                                <option value="">Seleccionar</option>
-                                                <option value="Colombia">Colombia</option>
-                                                <option value="Venezuela">Venezuela</option>
-                                                <option value="Peru">Peru</option>
-                                                <option value="Ecuador">Ecuador</option>
-                                                <option value="Bolivia">Bolivia</option>
-                                                <option value="Argentina">Argentina</option>
-                                                <option value="Brasil">Brasil</option>
-                                                <option value="Otro">Otro</option>
-                                            </select>
-                                            <small class="text-danger small_forms" id="small_country"></small>
-                                        </div>
-                                        <div class="col-md-6 form_select_conductores">
-                                            <label for="Civil_state">Estado Civil</label>
-                                            <select name="userInformation[Civil_state]"
-                                                class="form-control form-dataconductores" id="Civil_state">
-                                                <option value="">Seleccionar</option>
-                                                <option value="Soltero">Soltero</option>
-                                                <option value="Casado">Casado</option>
-                                                <option value="Separado">Separado</option>
-                                                <option value="Divorciado">Divorciado</option>
-                                                <option value="Viudo">Viudo</option>
-                                                <option value="Union libre">Union libre</option>
-                                                <option value="Sin información">Sin información</option>
-                                            </select>
-                                            <small class="text-danger small_forms" id="small_civil_state"></small>
-                                        </div>
-                                    </div>
-                                    <div class="row row_form_input_conductores">
-                                        <div class="col-md-6">
-                                            <input type="text" name="userInformation[address]"
-                                                class="form-control form-dataconductores" id="address"
-                                                placeholder="Dirección" />
-                                            <small class="text-danger small_forms" id="small_address"></small>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="tel" name="userInformation[phone]"
-                                                class="form-control form-dataconductores" id="phone"
-                                                placeholder="Teléfono" />
-                                            <small class="text-danger small_forms" id="small_phone"></small>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" name="userInformation[Db_user_id]" id="Db_user_id"
-                                        value="{{auth()->id()}}">
-                                </div>
-                                <input type="button" name="next" class="next action-button form-dataconductores"
-                                    value="Next Step" id="fieldset_infouser"
-                                    data-url="{{ route('user-information.validate') }}" data-error="info_user" />
+                                @include('admin.partials.register.driver_information')
                             </fieldset>
 
                             <fieldset>
@@ -375,8 +260,13 @@
         </div>
     </div>
 </div>
+
+<!-- /.container-fluid -->
 <link href="{{ asset('css/upload-form.css') }}" rel="stylesheet">
 <link href="{{ asset('css/styleinfouser.css') }}" rel="stylesheet">
 <script src="{{ asset('js/styleinfouser.js') }}" defer></script>
 <script src="{{ asset('js/dataconductores.js') }}" defer></script>
+<script>
+</script>
 @endsection
+<!-- End of Main Content -->
