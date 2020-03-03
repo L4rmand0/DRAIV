@@ -82,8 +82,8 @@
             <select name="driverInformation[country_born]" class="form-control" style="width: 100%" id="country_born"
                 required>
                 <option value="">Seleccionar</option>
-                @foreach ($list_country_born as $country_item)
-                <option value="{{ $country_item }}">{{ $country_item }}</option>
+                @foreach ($list_admin1 as $country_item)
+                <option value="{{ $country_item['adm1_id'] }}">{{ $country_item['name'] }}</option>
                 @endforeach
             </select>
         </div>
@@ -133,7 +133,7 @@
         </div>
     </div>
 </div>
-<input type="button" name="next" class="next action-button form-dataconductores" value="Next Step"
+<input type="button" name="next" class="next action-button form-dataconductores" value="Siguiente"
     id="fieldset_infouser" data-validate="{{ route('drivers-info.validate-register') }}" data-error="info_user" />
 <script>
     var enum_education = @json($enum_education);

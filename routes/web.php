@@ -71,6 +71,7 @@ Route::prefix('admin')->group(function () {
     Route::post('driving_licence/store','admin\DrivingLicenceController@store')->name('driving_licence.store');
     Route::post('driving_licence/update', 'admin\DrivingLicenceController@update')->name('driving_licence.update'); 
     Route::post('driving_licence/import','admin\DrivingLicenceController@import')->name('driving_licence.import');
+    Route::post('driving_licence/validate-register','admin\DrivingLicenceController@validateInformation')->name('driving_licence.validate');
     Route::get('vehicle', 'admin\VehicleController@index')->name('admin.vehicle');
     Route::get('vehicle-list', 'admin\VehicleController@vehicleList')->name('vehicle-list'); 
     Route::post('vehicle/store','admin\VehicleController@store')->name('admin.vehicle.store');
@@ -84,6 +85,7 @@ Route::prefix('admin')->group(function () {
     Route::post('vehicle/brand-v-chart','admin\VehicleController@makePolarChartBrandV')->name('admin.vehicle.brand-v-chart');
     Route::post('vehicle/model-v-chart','admin\VehicleController@makePolarChartModelV')->name('admin.vehicle.model-v-chart');
     Route::post('vehicle/add-driver-vehicle','admin\VehicleController@addVehicleDriver')->name('admin.vehicle.add-driver-vehicle');
+    Route::post('vehicle/validate-register','admin\VehicleController@validateInformation')->name('vehicle.validate-register');
     Route::get('driver-info/admin1-select-lists', 'admin\Admin1Controller@getAdmin1toSelect2')->name('admin1-select-lists'); 
     Route::get('driver-info/admin2-select-lists', 'admin\Admin2Controller@getAdmin2toSelect2')->name('admin2-select-lists'); 
     Route::get('driver-info/admin3-select-lists', 'admin\Admin3Controller@getAdmin3toSelect2')->name('admin3-select-lists'); 
@@ -93,6 +95,7 @@ Route::prefix('admin')->group(function () {
     Route::post('driver-vehicle/destroy','admin\DriverVehicleController@destroy')->name('admin.driver-vehicle.destroy'); 
     Route::get('images/', 'admin\ImageController@index')->name('images.index');
     Route::post('images/store', 'admin\ImageController@store')->name('images.store');
+    Route::post('images/validate-register','admin\ImageController@validateInformation')->name('images.validate');
     Route::get('downloads3/{path}', 'admin\ImageController@downloadFile')->name('images.downloadfiles3');
     Route::post('images/get-documents-driver', 'admin\ImageController@getDocumentsDriver')->name('images.get-documents-driver');
     Route::post('images/update', 'admin\ImageController@update')->name('images.update');

@@ -97,7 +97,7 @@
         });
 
 
-
+        //Lógica de la función de subir imágenes
         $(".form_upload_image").submit(function (event) {
             event.preventDefault();
             let driver_information_dni_id = $("#driver_information_dni_id_images").val();

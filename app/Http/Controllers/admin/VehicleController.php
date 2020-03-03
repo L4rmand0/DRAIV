@@ -15,11 +15,13 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\admin\DriverVehicleController;
 use App\Rules\IsNotDelete;
+use App\Traits\ArrayFunctions;
 
 use function Aws\flatmap;
 
 class VehicleController extends Controller
 {
+    use ArrayFunctions;
     private $chart_js;
 
     /**
@@ -1030,6 +1032,41 @@ class VehicleController extends Controller
             return response()->json(['response' => 'error', 'errors' => ['plate_id' => ['Esta placa se encuentra reigstrada en otra empresa.']]]);
         } else {
             return response()->json(['response' => 'ok', 'errors' => []]);
+        }
+    }
+
+    protected function validateInformation(Request $request){
+        $data_input = $request->get('vehicle');
+        $index = $request->get('index');
+        // print_r($data_input);
+        // die;
+        $data_input = $this->toArrayColumn($data_input, ($index-1));
+        // die;
+        $plate_id = $data_input['plate_id'];
+        $validator = Validator::make(
+            $data_input,
+            [
+                'plate_id' => ['required', 'max:15', 'unique:vehicle'],
+                'type_v' => 'required|max:255',
+                'owner_v' => 'required|max:255',
+                'soat_expi_date' => 'required|max:255',
+                'capacity' => 'required|max:11',
+                'operation' => [new IsNotDelete(['plate_id', $plate_id], 'vehicle')],
+            ],
+            [
+                'plate_id.required' => "La placa no puede ser vacía",
+                'type_v.required' => "Se debe elegir el tipo de vehiculo",
+                'owner_v.required' => "Se debe elegir una opción",
+                'soat_expi_date.required' => "Se debe seleccionar una fecha",
+                'capacity.required' => "Se debe seleccionar la capacidad",
+                'plate_id.unique' => "Esta placa ya está en uso. Para actualizarla hágalo en la tabla.",
+            ]
+        );
+        $errors = $validator->errors()->getMessages();
+        if (!empty($errors)) {
+            return response()->json(['errors' => $errors]);
+        }else{
+            return response()->json(['response'=>'','errors' => []]);
         }
     }
 }

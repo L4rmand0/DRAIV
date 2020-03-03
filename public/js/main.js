@@ -142,6 +142,7 @@ function setInputFilter(textbox, inputFilter) {
 
     jQuery.fn.cleanErrorElementForm = function ($target) {
         $target.css("border-color", "");
+        $target.css("color", "");
         $("#label-" + $target.attr("id")).css("color", "")
         $("#" + $target.attr("id") + "-error-strong").text("")
         if ($target.is("input[type=checkbox]")) {

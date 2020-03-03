@@ -108,4 +108,11 @@ class Controller extends BaseController
         }
         return $exist;
     }
+
+    protected function getLastElementArrayAssoc($array){
+        foreach ($array as $key => $value) {
+            $element = $key;
+        }
+        return $element;
+    }
 }

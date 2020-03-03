@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Admin1;
 use DB;
 use auth;
 use App\User;
@@ -211,6 +212,7 @@ class AdminController extends Controller
 
     private function showRegisterDriver($company_name)
     {
+        //Información de Conductores
         $list_admin3 = Admin3Controller::listAdmin3();
         $enum_education = $this->generateOptionsEnumDt(DriverInformation::enum_education);
         $list_education = DriverInformation::enum_education;
@@ -218,6 +220,25 @@ class AdminController extends Controller
         $list_civil_state = DriverInformation::enum_civil_state;
         $enum_country_born = $this->generateOptionsEnumDt(DriverInformation::enum_country_born);
         $list_country_born = DriverInformation::enum_country_born;
+        $list_admin1 = Admin1::all()->toArray();
+        //Información de Licencia
+        $enum_category = $this->generateOptionsEnumDt(DrivingLicence::enum_category);
+        $list_category = DrivingLicence::enum_category;
+        $enum_country_expedition = $this->generateOptionsEnumDt(DrivingLicence::enum_country_expedition);
+        $list_country_expedition = DrivingLicence::enum_country_expedition;
+        $enum_state = $this->generateOptionsEnumDt(DrivingLicence::enum_state);
+        $list_state = DrivingLicence::enum_state;
+        //Imágenes
+        $drivers = DriverInformationController::getListDrivers();
+        $type_images = Imagenes::enum_assoc_tipo_doc;
+        $last_element_type_images = $this->getLastElementArrayAssoc($type_images);
+        //Vehículos
+        $enum_type_v = $this->generateOptionsEnumDt(Vehicle::enum_type_v);
+        $list_type_v = Vehicle::enum_type_v;
+        $enum_service = $this->generateOptionsEnumDt(Vehicle::enum_service);
+        $list_service = Vehicle::enum_service;
+        $enum_taxi_type = $this->generateOptionsEnumDt(Vehicle::enum_taxi_type);
+        $list_taxi_type = Vehicle::enum_taxi_type;
 
         return [
             'enum_education' => $enum_education,
@@ -227,6 +248,22 @@ class AdminController extends Controller
             'list_civil_state' => $list_civil_state,
             'list_country_born' => $list_country_born,
             'list_admin3' => $list_admin3,
+            'list_admin1' => $list_admin1,
+            'enum_category' => $enum_category,
+            'enum_country_expedition' => $enum_country_expedition,
+            'enum_state' => $enum_state,
+            'list_country_expedition' => $list_country_expedition,
+            'list_category' => $list_category,
+            'list_state' => $list_state,
+            'list_drivers' => $drivers,
+            'type_images' => $type_images,
+            'last_element_type_images' => $last_element_type_images,
+            'enum_type_v' => $enum_type_v,
+            'enum_service' => $enum_service,
+            'enum_taxi_type' => $enum_taxi_type,
+            'list_type_v' => $list_type_v,
+            'list_service' => $list_service,
+            'list_taxi_type' => $list_taxi_type,
             'company_name' => ucwords(strtolower($company_name)),
             'permissions' => $this->permissions,
         ];
@@ -397,7 +434,6 @@ class AdminController extends Controller
         $list_service = Vehicle::enum_service;
         $enum_taxi_type = $this->generateOptionsEnumDt(Vehicle::enum_taxi_type);
         $list_taxi_type = Vehicle::enum_taxi_type;
-        $company_id = auth()->user()->company_id;
         return [
             'enum_type_v' => $enum_type_v,
             'enum_service' => $enum_service,

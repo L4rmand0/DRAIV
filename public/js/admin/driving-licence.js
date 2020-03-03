@@ -24,7 +24,6 @@
 
         //Datepickers del formulario de licencia
         $("#expi_date_form").datepicker({ dateFormat: 'yy-mm-dd' });
-
         $("#expedition_day_form").datepicker({ dateFormat: 'yy-mm-dd' });
 
         $.ajax({

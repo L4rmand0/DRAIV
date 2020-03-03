@@ -278,3 +278,9 @@ select.list-dt:focus {
 .error-strong{
     font-size: 0.8em;
 }
+
+#forms_vehicles section:not(:first-of-type) {
+    display: none
+}
+
+

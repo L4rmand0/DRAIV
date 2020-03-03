@@ -737,7 +737,7 @@ class DriverInformationController extends Controller
         // echo '<pre>';
         // print_r($request->all());
         // die;
-        $data_input = $request->all()['driverInformation'];
+        $data_input = $request->get('driverInformation');
         $validator = Validator::make(
             $data_input,
             [
@@ -759,6 +759,7 @@ class DriverInformationController extends Controller
             [
                 'first_name.required' => "El primer nombre es obligatorio.",
                 'f_last_name.required' => "El primer apellido es obligatorio.",
+                's_last_name.required' => "El segundo apellido es obligatorio.",
                 'dni_id.required' => "La cédula es obligatoria.",
                 'dni_id.unique' => "Esta cédula ya está en uso.",
                 'gender.required' => "El género es obligatorio.",

@@ -67,12 +67,13 @@ class ImageController extends Controller
         $now = date("Y-m-d H-i-s");
         $now_new = str_replace(" ", "-", $now);
         $now_new = str_replace("-", "", $now_new);
-        // echo '<pre>';
+        // echo '<pre> acá';
+        // print_r($request->file('file'));
         // print_r($request->all());
-        // die;
         $file_type = request()->get('key');
-        $cedula = request()->get('driver_information_dni_id');
-        $file = $request->file('file');
+        $cedula = "123456";
+        // $cedula = request()->get('driver_information_dni_id');
+        $file = $request->file('file')[$file_type];
         $size = $file->getSize()/1024;
         $extension = $file->getClientOriginalExtension();
         $extensions_permited = ['jpg'];
@@ -82,28 +83,8 @@ class ImageController extends Controller
         if($size > 5120){
             return response()->json(['response' => 'validator errors', 'errors' => ['file'=>['El archivo supera el máximo peso permitido (5MB).']]]); 
         }
-        // $validator = Validator::make(
-        //     $request->all(),
-        //     [
-        //         'file' => ['required','mimes:jpeg', 'max:2000' ]
-        //     ],
-        //     [
-        //         'file.required' => "Se debe seleccionar un archivo.",
-        //         'file.max' => "El archivo supera el máximo peso permitido (2MB).",
-        //         'file.mimes' => "Los formatos permitidos son: jpg.",
-        //     ]
-        // );
-
-        // $errors = $validator->errors()->getMessages();
-        // echo '<pre>';
-        // print_r($errors);
-        // die;
-        // if (!empty($errors)) {
-        //     return response()->json(['response' => 'validator errors', 'errors' => $errors]);
-        // }
-
         $check_document = DB::table('imagenes')
-            ->where('imagenes.type_image', '=', $file_type)
+            ->where('imagenes.tipo_doc', '=', $file_type)
             ->where('imagenes.driver_information_dni_id', '=', $cedula)
             ->select(DB::raw(
                 'imagenes.image_id, 
@@ -111,14 +92,14 @@ class ImageController extends Controller
                  imagenes.url,
                  imagenes.operation'
             ))->first();
-        // echo '<pre>';
-        // print_r($check_document);
-        // die;
-
+        // El nombre del archivo es el tipo de imagemn + la cédula + la fecha del momento horas, minutos y segundos
         $filename = $file_type . '_' . $cedula . '_' . $now_new . '.jpg';
+        //el path almacena las imágenes en una carpeta con la cédula del conductor y el nombre del archivo
         $path = $cedula . '/' . $filename;
 
         if (!empty($check_document)) {
+            // Si el registro del documento existe y está delete, entonces actualiza el registro y 
+            //lo pone en el s3 y también borra el anterior documento del s3
             if ($check_document->operation == 'D') {
                 $image_id = $check_document->image_id;
                 $path_old = $check_document->url;
@@ -207,20 +188,22 @@ class ImageController extends Controller
         // echo '<pre>';
         // print_r($request->all());
         // die;
+
+        //Se arma el nuevo path del archivo
         $file_type = request()->get('key');
         $image_id = request()->get('id');
-        $cedula = request()->get('driver_information_dni_id');
+        // $cedula = request()->get('driver_information_dni_id');
+        $cedula = "123456";
         $path_old = request()->get('url');
-        $file = $request->file('file');
+        $file = $request->file('file')[$file_type];
         $filename = $file_type . '_' . $cedula . '_' . $now_new . '.jpg';
         $path = $cedula . '/' . $filename;
-        // var_dump($file);
-        // die;
 
         $response = 0;
-
+        //Se sube el archivo al S3
         $upload = Storage::disk('s3')->put($path, file_get_contents($file));
         if ($upload) {
+            //Si, sube el archivo entonces se actualiza el registro con el nuevo path y la fecha de operación
             $delete_file = Storage::disk('s3')->delete($path_old);
             $response = Imagenes::where('image_id', $image_id)->update([
                 'url' => $path,
@@ -314,7 +297,7 @@ class ImageController extends Controller
 
     public function checkIncompleteDocumentDrivers($company_id){
         $images = $this->getAllImages($company_id);
-        $required_documents = Imagenes::required_documents;
+        $required_documents = Imagenes::REQUIRED_DOCUMENTS;
         $number_documents = count($required_documents);
         $last_documwent = end($required_documents);
         foreach ($required_documents as $key => $value) {
@@ -342,5 +325,9 @@ class ImageController extends Controller
             ->where('di.company_id', '=', $company_id)
             ->orderBy('driver_information_dni_id', 'desc')
             ->get()->toArray();
+    }
+
+    public function validateInformation(){
+        return response()->json(['response'=>'ok','errors' => []]);
     }
 }
