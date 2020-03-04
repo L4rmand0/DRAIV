@@ -63,10 +63,8 @@
             if ($(".date_vehicle").hasClass("hasDatepicker")) {
                 // $(".date_vehicle").datepicker( "destroy" );
                 $(".date_vehicle").removeClass("hasDatepicker");
-                console.log("entra");
                 $(".date_vehicle").datepicker({ dateFormat: 'yy-mm-dd' });
             } else {
-                console.log("entra else");
                 $(".date_vehicle").datepicker({ dateFormat: 'yy-mm-dd' });
             }
             // $("#technomechanical_date").datepicker({ dateFormat: 'yy-mm-dd' });
@@ -143,45 +141,6 @@
                     duration: 600
                 });
                 index_section--;
-            });
-
-            $(".next").click(function () {
-                let element_button = $(this);
-                var $url_action = element_button.data('validate');
-                let $form_data_arr = $("#msform").serializeArray();
-                $form_data_arr.push({ name: 'index', value: index_section });
-                current_fs = element_button.parent();
-                next_fs = element_button.parent().next();
-
-                $.ajax({
-                    type: 'POST',
-                    url: $url_action,
-                    data: $form_data_arr,
-                }).done(function (response) {
-                    if (!current_fs.hasErrorsForms(container_validate, response)) {
-                        //Add Class Active
-                        if (typeof current_fs.data('endsection') !== "undefined") {
-                            index_fieldset++;
-                            $("#progressbar li").eq(index_fieldset).addClass("active");
-                        }
-                        //show the next fieldset
-                        next_fs.show();
-                        //hide the current fieldset with style
-                        current_fs.animate({ opacity: 0 }, {
-                            step: function (now) {
-                                // for making fielset appear animation
-                                opacity = 1 - now;
-
-                                current_fs.css({
-                                    'display': 'none',
-                                    'position': 'relative'
-                                });
-                                next_fs.css({ 'opacity': opacity });
-                            },
-                            duration: 600
-                        });
-                    }
-                });
             });
         });
 
