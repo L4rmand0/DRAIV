@@ -30,7 +30,7 @@
                             <fieldset data-endsection="true">
                                 @include('admin.partials.register.images')
                             </fieldset> --}}
-                            <fieldset>
+                            <fieldset data-vehicle="true">
                                 @include('admin.partials.register.vehicle')
                             </fieldset>
                             <fieldset>

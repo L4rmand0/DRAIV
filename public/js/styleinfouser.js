@@ -23,16 +23,20 @@ function clickcito() {
             let data_error = element_button.data("error");
             let $form_data = $("#msform").serialize();
 
-
             current_fs = element_button.parent();
             next_fs = element_button.parent().next();
-
+        
             $.ajax({
                 type: 'POST',
                 url: $url_action,
                 data: $form_data,
             }).done(function(response) {
-                if (!current_fs.hasErrorsForms(current_fs, response)) {
+                if(typeof(current_fs.attr('data-vehicle') !== "undefined")){
+                    container_validate = current_fs.find("section:last-child");
+                }else{
+                    container_validate = current_fs;
+                }
+                if (!current_fs.hasErrorsForms(container_validate, response)) {
                     // if (true) {
                     //Add Class Active
                     if (typeof current_fs.data('endsection') !== "undefined") {

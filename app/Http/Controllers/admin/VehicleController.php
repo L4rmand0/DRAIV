@@ -1040,16 +1040,19 @@ class VehicleController extends Controller
         $index = $request->get('index');
         // print_r($data_input);
         // die;
-        $data_input = $this->toArrayColumn($data_input, ($index-1));
+        $data_input = $this->toArrayColumn($data_input, $index);
+        // echo '<pre>';
+        // print($index);
+        // print_r($data_input);
         // die;
-        $plate_id = $data_input['plate_id'];
+        $plate_id = !empty($data_input['plate_id'])?$data_input['plate_id']:"";
         $validator = Validator::make(
             $data_input,
             [
                 'plate_id' => ['required', 'max:15', 'unique:vehicle'],
                 'type_v' => 'required|max:255',
                 'owner_v' => 'required|max:255',
-                'soat_expi_date' => 'required|max:255',
+                'soat_expi_date'.($index+1) => 'required|max:255',
                 'capacity' => 'required|max:11',
                 'operation' => [new IsNotDelete(['plate_id', $plate_id], 'vehicle')],
             ],
@@ -1057,7 +1060,7 @@ class VehicleController extends Controller
                 'plate_id.required' => "La placa no puede ser vacía",
                 'type_v.required' => "Se debe elegir el tipo de vehiculo",
                 'owner_v.required' => "Se debe elegir una opción",
-                'soat_expi_date.required' => "Se debe seleccionar una fecha",
+                'soat_expi_date'.($index+1).'.required' => "Se debe seleccionar una fecha",
                 'capacity.required' => "Se debe seleccionar la capacidad",
                 'plate_id.unique' => "Esta placa ya está en uso. Para actualizarla hágalo en la tabla.",
             ]

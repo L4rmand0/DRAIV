@@ -169,7 +169,6 @@ function setInputFilter(textbox, inputFilter) {
             $target.style('color', 'var(--red)', 'important');
             $target.style('border-color', 'var(--red)', 'important');
         }else if ($target.is("span") ) {
-            debugger
             $target.style('color', 'var(--red)', 'important');
             $target.style('border-color', 'var(--red)', 'important');
         }

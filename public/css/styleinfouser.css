@@ -254,6 +254,10 @@ select.list-dt:focus {
     font-size: 0.9rem !important;
 }
 
+.text-datadrivers{
+    font-family: "Nunito", sans-serif !important;
+}
+
 .small_forms{
     font-weight: 700;
     font-size: 0.89em;

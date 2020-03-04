@@ -17,18 +17,60 @@
         $country_born_select2 = $('#country_born').select2();
         $civil_state_select2 = $('#civil_state').select2();
         $company_select2 = $('#company_id').select2();
-        var index_section = 1;
+        var index_section = 0;
 
         //Adiciona un nuevo formulario de vehículos según escoja
         $("#number_of_vehicles_form").on('change', function () {
+            index_section = 0;
             let number_of_vehicles = parseInt($(this).val());
             cadena_form = "";
             for (let i = 0; i < number_of_vehicles; i++) {
                 let item = String($("#form_vehicle_driver").html()).replace("&amp;num_vehicle", "" + (i + 1))
+                item = item.replace('id="soat_expi_date"', 'id="soat_expi_date' + (i + 1) + '"')
+                item = item.replace('name="vehicle[soat_expi_date][]"', 'name="vehicle[soat_expi_date' + (i + 1) + ']"')
                 // let item =  String($("#form_vehicle_driver").html())
                 cadena_form = cadena_form + item;
             }
-            $("#forms_vehicles").html(cadena_form)
+
+            $("#forms_vehicles").html(cadena_form);
+            //esconde el botón de regresa en caso sea que el primer formulario de vehículos
+            $($("#msform [class=previous_vehicle]")[0]).hide();
+            //esconde el botón de siguiente en  el último formulario de vehículos
+            $($("#msform [class=next_vehicle]")[parseInt($("#number_of_vehicles_form").val()) - 1]).hide();
+            //Le agrega la clase next al último botón de vehículos
+            //Limpia los estilos de error en los formularios
+            $("#msform input[type=text], #msform input[type=email], #msform input[type=password], #msform input[type=number], #msform input[type=tel]").on("keypress", function () {
+                let $target = $(this);
+                $(this).cleanErrorElementForm($target);
+            });
+            //revisa si es el último formulario de vehículos para mostrar el botón de siguiente
+            if (index_section == parseInt($("#number_of_vehicles_form").val()) - 1) {
+                $(".next").attr('hidden', false)
+                $(".next").show()
+            }else {
+                $(".next").hide()
+            }
+
+            $("#msform input[type=text], #msform input[type=email], #msform input[type=password], #msform input[type=number], #msform input[type=tel], #msform input[type=date]").on("change", function () {
+                let $target = $(this);
+                $(this).cleanErrorElementForm($target);
+            });
+
+            $("#msform input[type=checkbox], #msform select").on("change", function () {
+                let $target = $(this);
+                $(this).cleanErrorElementForm($target);
+            });
+            if ($(".date_vehicle").hasClass("hasDatepicker")) {
+                // $(".date_vehicle").datepicker( "destroy" );
+                $(".date_vehicle").removeClass("hasDatepicker");
+                console.log("entra");
+                $(".date_vehicle").datepicker({ dateFormat: 'yy-mm-dd' });
+            } else {
+                console.log("entra else");
+                $(".date_vehicle").datepicker({ dateFormat: 'yy-mm-dd' });
+            }
+            // $("#technomechanical_date").datepicker({ dateFormat: 'yy-mm-dd' });
+
             // FUNCIÓN DE PASO SIGUIENTE EN EL FORMULARIO DE VEHÍCULOS
             $(".next_vehicle").on('click', function () {
                 let element_button = $(this);
@@ -37,7 +79,7 @@
                 // let $form_data = $("#msform").serialize();
                 let $form_data_arr = $("#msform").serializeArray();
                 // let data_fr = new FormData($("#msform")[0]);
-                $form_data_arr.push({name: 'index', value: index_section});
+                $form_data_arr.push({ name: 'index', value: index_section });
                 // datafr.append('index', index_section);
                 current_sec = element_button.parent();
                 next_sec = element_button.parent().next();
@@ -65,6 +107,76 @@
                                     'position': 'relative'
                                 });
                                 next_sec.css({ 'opacity': opacity_sec });
+                            },
+                            duration: 600
+                        });
+                        index_section++;
+                        if (index_section == parseInt($("#number_of_vehicles_form").val()) - 1) {
+                            $(".next").attr('hidden', false)
+                            $(".next").show()
+                        } else {
+                            $(".next").hide()
+                        }
+                    }
+                });
+            });
+
+            $(".previous_vehicle").click(function () {
+                current_sec = $(this).parent();
+                previous_sec = $(this).parent().prev();
+                //Remove class active
+                $("#progressbar li").eq($("fieldset").index(current_sec)).removeClass("active");
+                //show the previous fieldset
+                previous_sec.show();
+                //hide the current fieldset with style
+                current_sec.animate({ opacity_sec: 0 }, {
+                    step: function (now) {
+                        // for making fielset appear animation
+                        opacity_sec = 1 - now;
+
+                        current_sec.css({
+                            'display': 'none',
+                            'position': 'relative'
+                        });
+                        previous_sec.css({ 'opacity': opacity_sec });
+                    },
+                    duration: 600
+                });
+                index_section--;
+            });
+
+            $(".next").click(function () {
+                let element_button = $(this);
+                var $url_action = element_button.data('validate');
+                let $form_data_arr = $("#msform").serializeArray();
+                $form_data_arr.push({ name: 'index', value: index_section });
+                current_fs = element_button.parent();
+                next_fs = element_button.parent().next();
+
+                $.ajax({
+                    type: 'POST',
+                    url: $url_action,
+                    data: $form_data_arr,
+                }).done(function (response) {
+                    if (!current_fs.hasErrorsForms(container_validate, response)) {
+                        //Add Class Active
+                        if (typeof current_fs.data('endsection') !== "undefined") {
+                            index_fieldset++;
+                            $("#progressbar li").eq(index_fieldset).addClass("active");
+                        }
+                        //show the next fieldset
+                        next_fs.show();
+                        //hide the current fieldset with style
+                        current_fs.animate({ opacity: 0 }, {
+                            step: function (now) {
+                                // for making fielset appear animation
+                                opacity = 1 - now;
+
+                                current_fs.css({
+                                    'display': 'none',
+                                    'position': 'relative'
+                                });
+                                next_fs.css({ 'opacity': opacity });
                             },
                             duration: 600
                         });
@@ -160,7 +272,6 @@
             var element = $("#msform");
             var datafr = new FormData(element[0]);
             var val_file = $input.val();
-            // debugger
             if (val_file == "") {
                 swal.fire(
                     'Archivo vacío!',
