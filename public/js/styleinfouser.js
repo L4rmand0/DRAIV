@@ -21,7 +21,10 @@ function clickcito() {
             let element_button = $(this);
             var $url_action = element_button.data('validate');
             let data_error = element_button.data("error");
-            let $form_data = $("#msform").serialize();
+            // let $form_data = $("#msform").serialize();
+            let $form_data_arr = $("#msform").serializeArray();
+            let index = $("#index_section").val();
+            $form_data_arr.push({ name: 'index', value: parseInt(index) });
 
             current_fs = element_button.parent();
             next_fs = element_button.parent().next();
@@ -29,7 +32,7 @@ function clickcito() {
             $.ajax({
                 type: 'POST',
                 url: $url_action,
-                data: $form_data,
+                data: $form_data_arr,
             }).done(function(response) {
                 if(typeof(current_fs.attr('data-vehicle') !== "undefined")){
                     container_validate = current_fs.find("section:last-child");

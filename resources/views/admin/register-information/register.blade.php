@@ -3,6 +3,7 @@
 <!-- Begin Page Content -->
 <input type="hidden" name="url-validate-driver-information" id="url-validate-driver-information" value="">
 <input type="hidden" name="url-validate-driver-information" id="url-validate-driver-information" value="">
+<input type="hidden" name="index_section" id="index_section">
 <div class="container-fluid" id="grad1">
     <div class="row justify-content-center mt-0">
         <div class="col-11 col-sm-9 col-md-7 col-lg-6 text-center p-0 mt-3 mb-2">
@@ -48,7 +49,7 @@
                                     </div>
                                 </div>
                                 <input type="button" name="previous" class="previous action-button-previous"
-                                    value="Previous" />
+                                    value="Anterior" />
                             </fieldset>
                         </form>
                     </div>

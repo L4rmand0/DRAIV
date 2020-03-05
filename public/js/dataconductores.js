@@ -17,17 +17,23 @@
         $country_born_select2 = $('#country_born').select2();
         $civil_state_select2 = $('#civil_state').select2();
         $company_select2 = $('#company_id').select2();
-        var index_section = 0;
+        // var index_section = 0;
+        $("#index_section").val("0")
 
         //Adiciona un nuevo formulario de vehículos según escoja
         $("#number_of_vehicles_form").on('change', function () {
-            index_section = 0;
+            // index_section = 0;
+            $("#index_section").val("0")
             let number_of_vehicles = parseInt($(this).val());
             cadena_form = "";
             for (let i = 0; i < number_of_vehicles; i++) {
                 let item = String($("#form_vehicle_driver").html()).replace("&amp;num_vehicle", "" + (i + 1))
+                //le pone el número a expi_date para que se pueda poner el datepicker
                 item = item.replace('id="soat_expi_date"', 'id="soat_expi_date' + (i + 1) + '"')
                 item = item.replace('name="vehicle[soat_expi_date][]"', 'name="vehicle[soat_expi_date' + (i + 1) + ']"')
+                //le pone el número a technomechanical_date para que se pueda poner el datepicker
+                item = item.replace('id="technomechanical_date"', 'id="technomechanical_date' + (i + 1) + '"')
+                item = item.replace('name="vehicle[technomechanical_date][]"', 'name="vehicle[technomechanical_date' + (i + 1) + ']"')
                 // let item =  String($("#form_vehicle_driver").html())
                 cadena_form = cadena_form + item;
             }
@@ -41,10 +47,12 @@
             //Limpia los estilos de error en los formularios
             $("#msform input[type=text], #msform input[type=email], #msform input[type=password], #msform input[type=number], #msform input[type=tel]").on("keypress", function () {
                 let $target = $(this);
+                console.log("Holi 1");
                 $(this).cleanErrorElementForm($target);
             });
             //revisa si es el último formulario de vehículos para mostrar el botón de siguiente
-            if (index_section == parseInt($("#number_of_vehicles_form").val()) - 1) {
+            // debugger
+            if (parseInt($("#index_section").val()) == parseInt($("#number_of_vehicles_form").val()) - 1) {
                 $(".next").attr('hidden', false)
                 $(".next").show()
             }else {
@@ -77,7 +85,8 @@
                 // let $form_data = $("#msform").serialize();
                 let $form_data_arr = $("#msform").serializeArray();
                 // let data_fr = new FormData($("#msform")[0]);
-                $form_data_arr.push({ name: 'index', value: index_section });
+                let index = $("#index_section").val();
+                $form_data_arr.push({ name: 'index', value: parseInt(index) });
                 // datafr.append('index', index_section);
                 current_sec = element_button.parent();
                 next_sec = element_button.parent().next();
@@ -108,8 +117,9 @@
                             },
                             duration: 600
                         });
-                        index_section++;
-                        if (index_section == parseInt($("#number_of_vehicles_form").val()) - 1) {
+                        $("#index_section").val(parseInt($("#index_section").val()+1))
+                        // index_section++;
+                        if (parseInt($("#index_section").val()) == parseInt($("#number_of_vehicles_form").val()) - 1) {
                             $(".next").attr('hidden', false)
                             $(".next").show()
                         } else {
@@ -140,7 +150,8 @@
                     },
                     duration: 600
                 });
-                index_section--;
+                $("#index_section").val(parseInt($("#index_section").val())-1)
+                // index_section--;
             });
         });
 
@@ -161,6 +172,7 @@
         });
 
         $("#msform input[type=checkbox], #msform select").on("change", function () {
+            console.log("Holi afuera");
             let $target = $(this);
             $(this).cleanErrorElementForm($target);
         });

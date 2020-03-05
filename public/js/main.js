@@ -96,11 +96,15 @@ function setInputFilter(textbox, inputFilter) {
     });
 
     jQuery.fn.hasErrorsForms = function (callingElement, data) {
-        $(".error-strong").text("");
+        // $(".error-strong").text("");
         //Revisa si la petición tiene errores y los muestra
         if (Object.keys(data.errors).length > 0) {
             let arr_errores = data.errors;
             $.each(arr_errores, function (index, value) {
+                $row = callingElement.find("#" + index).next();
+                if($row.hasClass("row")){
+                    $row.remove();
+                }
                 let html_content = "" +
                     "<div class='row mt-0'>" +
                     "   <div class='col-md-12'>" +
@@ -118,8 +122,8 @@ function setInputFilter(textbox, inputFilter) {
                     changeColorInputError(callingElement.find("#" + index));
                 }
                 changeColorLabelError(callingElement.find("#" + index));
-                let selector = "#" + index + "-error";
-                let selector_strong = "#" + index + "-error-strong";
+                let selector = callingElement.find(" #" + index + "-error");
+                let selector_strong = callingElement.find(" #" + index + "-error-strong");
                 $(selector).show();
                 //inserta el texto del error
                 $(selector_strong).text(value[0]);
@@ -143,8 +147,8 @@ function setInputFilter(textbox, inputFilter) {
     jQuery.fn.cleanErrorElementForm = function ($target) {
         $target.css("border-color", "");
         $target.css("color", "");
-        $("#label-" + $target.attr("id")).css("color", "")
-        $("#" + $target.attr("id") + "-error-strong").text("")
+        $target.next().find("#label-" + $target.attr("id")).css("color", "");
+        $target.next().find("#" +$target.attr("id")+ "-error-strong").text("");
         if ($target.is("input[type=checkbox]")) {
             $("#label-" + $target.attr("id")).toggleClass('error');
         }
@@ -175,7 +179,7 @@ function setInputFilter(textbox, inputFilter) {
     }
 
     function changeColorLabelError($target) {
-        $("#label-" + $target.attr("id")).style('color', 'var(--red)');
+        $target.find("#label-" + $target.attr("id")).style('color', 'var(--red)');
     }
 
 }));

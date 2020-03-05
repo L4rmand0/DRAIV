@@ -67,7 +67,7 @@
                         id="soat_expi_date" readonly/>
                 </div>
                 <div class="col-md-6">
-                    <label for="technomechanical_date_form">Fecha de Tecnomecánica</label>
+                    <label for="technomechanical_date">Fecha de Tecnomecánica</label>
                     <input type="date" class="form-control form-vehicles text-datadrivers date_vehicle" name="vehicle[technomechanical_date][]"
                         id="technomechanical_date" readonly />
                 </div>
