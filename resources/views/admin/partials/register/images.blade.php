@@ -83,8 +83,8 @@
     @endif
     @endforeach
 </div>
-<input type="button" name="previous" class="previous action-button-previous"
-    value="Previous" />
-<input type="button" name="next" class="next action-button" value="Next Step"
+<input type="button" name="previous" class="previous action-button-previous form-dataconductores"
+    value="Anterior" />
+<input type="button" name="next" class="next action-button form-dataconductores" value="Siguiente"
     data-validate="{{ route('images.validate') }}"
     data-error="driving_licence" />

@@ -6,7 +6,7 @@
             <select class="form-control form-vehicles"
                 id="number_of_vehicles_form" style="width: 100%">
                 <option value="">Seleccionar...</option>
-                @for ($i = 0; $i <= 10; $i++)
+                @for ($i = 1; $i <= 10; $i++)
                 <option value="{{$i}}">{{$i}}</option>
                 @endfor
             </select>
@@ -16,6 +16,6 @@
     </div>
 </div>
 <input type="button" name="previous" class="previous action-button-previous form-dataconductores"
-value="Previous" />
+value="Anterior" />
 <input type="button" name="next" class="next action-button form-dataconductores" value="Siguiente"
     id="fieldset_infouser" data-validate="{{ route('vehicle.validate-register') }}" data-error="info_user" hidden/>

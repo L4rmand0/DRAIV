@@ -24,16 +24,10 @@
         <div class="col-md-6">
             <input type="text" name="driverInformation[dni_id]" id="dni_id" class="form-control form-dataconductores"
                 placeholder="Cédula" required>
-            <span class="error_admin input_user_admin" role="alert" id="dni_id-error">
-                <strong id="dni_id-error-strong" class="error-strong"> </strong>
-            </span>
         </div>
         <div class="col-md-6">
             <input type="email" name="driverInformation[e_mail_address]" id="e_mail_address"
                 class="form-control form-dataconductores" placeholder="Correo Electrónico" required>
-            <span class="error_admin input_user_admin" role="alert" id="e_mail_address-error">
-                <strong id="e_mail_address-error-strong" class="error-strong"> </strong>
-            </span>
         </div>
     </div>
     <div class="row row_form_input_conductores" style="margin-top: 15px;">

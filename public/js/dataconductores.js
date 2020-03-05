@@ -26,6 +26,7 @@
             $("#index_section").val("0")
             let number_of_vehicles = parseInt($(this).val());
             cadena_form = "";
+            //Se agregan la cantidad de formularios de vehículos elegida por el usuario
             for (let i = 0; i < number_of_vehicles; i++) {
                 let item = String($("#form_vehicle_driver").html()).replace("&amp;num_vehicle", "" + (i + 1))
                 //le pone el número a expi_date para que se pueda poner el datepicker

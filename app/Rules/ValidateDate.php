@@ -43,7 +43,7 @@ class ValidateDate implements Rule
     public function message()
     {
         if($this->message != null){
-            return 'La fecha de vencimiento no puede ser menor a la fech de expedición.';
+            return 'La fecha de vencimiento no puede ser menor a la fecha de expedición.';
         }
         return 'La fecha no puede ser mayor';
     }

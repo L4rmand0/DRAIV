@@ -21,18 +21,20 @@
                                 <li id="Licence"><strong>Componente Humano</strong></li>
                                 <li id="tech_component"><strong>Componente Técnico</strong></li>
                             </ul> <!-- fieldsets -->
-                            {{-- <fieldset>
+                            <fieldset>
                                 @include('admin.partials.register.driver_information')
                             </fieldset>
-
                             <fieldset>
                                 @include('admin.partials.register.driving_licence')
                             </fieldset>
                             <fieldset data-endsection="true">
                                 @include('admin.partials.register.images')
-                            </fieldset> --}}
+                            </fieldset>
                             <fieldset data-vehicle="true">
                                 @include('admin.partials.register.vehicle')
+                            </fieldset>
+                            <fieldset data-doc="true">
+                                @include('admin.partials.register.doc_verification')
                             </fieldset>
                             <fieldset>
                                 <div class="form-card">

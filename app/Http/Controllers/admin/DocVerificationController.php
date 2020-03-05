@@ -336,4 +336,21 @@ class DocVerificationController extends Controller
         $drive_information = $this->addDeleteButtonDatatable($skill_m_t_m);
         return datatables()->of($drive_information)->make(true);
     }
+
+    public function validateInformation(Request $request){
+        $data_input = $request->get('doc_verification');
+        $user_vehicle_id = $request->get('doc_verification');
+        $validator = Validator::make(
+            $data_input,
+            [
+                'start_date' => [new NotToday(['user_vehicle_id', $user_vehicle_id], 'doc_verification')],
+            ]
+        );
+        $errors = $validator->errors()->getMessages();
+        if (!empty($errors)) {
+            return response()->json(['errors' => $errors]);
+        }else{
+            return response()->json(['response'=>'','errors' => []]);
+        }
+    }
 }

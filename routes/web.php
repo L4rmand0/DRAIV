@@ -103,6 +103,7 @@ Route::prefix('admin')->group(function () {
     Route::post('/manual-doc-verification/store', 'admin\DocVerificationController@store')->name('admin.manual-doc-verification.store');
     Route::post('/manual-doc-verification/update', 'admin\DocVerificationController@updateDocVerification')->name('admin.manual-doc-verification.update');
     Route::post('/manual-doc-verification/destroy', 'admin\DocVerificationController@destroy')->name('admin.manual-doc-verification.destroy');
+    Route::post('/manual-doc-verification/validate-register', 'admin\DocVerificationController@validateInformation')->name('admin.manual-doc-verification.validate-register');
     Route::get('/doc-verification/list', 'admin\DocVerificationController@listVerifiedDrivers')->name('admin.doc-verification.list');
     Route::post('/doc-verification/update', 'admin\DocVerificationController@update')->name('admin.doc-verification.update');
     Route::post('/doc-verification/drivers-verify-chart', 'admin\DocVerificationController@makeDonutChartDriversVerified')->name('admin.doc-verification.drivers-verify-chart'); 

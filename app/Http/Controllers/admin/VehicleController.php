@@ -1038,9 +1038,9 @@ class VehicleController extends Controller
     protected function validateInformation(Request $request){
         $data_input = $request->get('vehicle');
         $index = $request->get('index');
-        echo '<pre>';
-        print_r($data_input);
-        die;
+        // echo '<pre>';
+        // print_r($data_input);
+        // die;
         $data_input = $this->toArrayColumn($data_input, $index, ['soat_expi_date','technomechanical_date']);
         // echo '<pre> index:';
         // print($index);

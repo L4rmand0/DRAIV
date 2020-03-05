@@ -58,8 +58,7 @@ class NotToday implements Rule
     private function getLastDate()
     {
         $operator = $this->deleted == false ? '!=' : '=';
-        // print_r($this->key_value);
-        // $r = DB::table($this->table)
+        //
         return DB::table($this->table)
             ->select(DB::raw(
                 $this->table . '.start_date'
@@ -68,7 +67,5 @@ class NotToday implements Rule
             ->where($this->table . '.operation', $operator, 'D')
             ->orderBy($this->table . '.start_date', 'desc')
             ->first();
-        // ->toSql();
-
     }
 }
