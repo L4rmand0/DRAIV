@@ -124,10 +124,12 @@ Route::prefix('admin')->group(function () {
     Route::post('personal-ele-protection/create', 'admin\EppController@store')->name('admin.personal-ele-protection.store');
     Route::post('personal-ele-protection/update', 'admin\EppController@update')->name('admin.personal-ele-protection.update');
     Route::post('personal-ele-protection/destroy', 'admin\EppController@destroy')->name('admin.personal-ele-protection.destroy');
+    // RUTAS PARA EL MÓDULO DE EDITAR INFORMACIPON DE CONDUCTOR
+    Route::post('edit-driver/search', 'admin\EditDriverController@getInformationDriver')->name('edit-driver.search');
 });
 
 // Route::get('/api-text-extract', 'ApiController@extractText')->name('api-text-extract');
-Route::post('/api-text-extract', 'ApiController@extractText')->name('api-text-extract');
+Route::get('/api-text-extract', 'ApiController@extractText')->name('api-text-extract');
 
 // Probar plantillas
 Route::get('/plantilla', function () {

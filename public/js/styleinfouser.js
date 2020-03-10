@@ -18,6 +18,7 @@ function clickcito() {
         var error_founds = 0;
         var index_fieldset = 0;
         $(".next").click(function () {
+            // debugger
             let element_button = $(this);
             var $url_action = element_button.data('validate');
             let data_error = element_button.data("error");
@@ -45,10 +46,8 @@ function clickcito() {
             }).done(function (response) {
                 // debugger
                 if (typeof (current_fs.attr('data-vehicle')) !== "undefined") {
-                    console.log("vehiculo");
                     container_validate = current_fs.find("section:last-child");
                 } else {
-                    console.log("otro");
                     container_validate = current_fs;
                 }
                 if (!current_fs.hasErrorsForms(container_validate, response)) {
@@ -79,10 +78,13 @@ function clickcito() {
         });
 
         $(".previous").click(function () {
-
+        
             current_fs = $(this).parent();
             previous_fs = $(this).parent().prev();
 
+            if (current_fs.find(".next").is(":hidden")==true){
+                current_fs.find(".next").show()
+            }
             //Remove class active
             $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
 

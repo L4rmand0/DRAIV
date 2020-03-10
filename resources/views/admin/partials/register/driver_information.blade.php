@@ -72,7 +72,7 @@
             </select>
         </div>
         <div class="col-md-6 form_select_conductores">
-            <label for="country_born" id="label-country_born">País</label><br>
+            <label for="country_born" id="label-country_born">País de nacimiento</label><br>
             <select name="driverInformation[country_born]" class="form-control" style="width: 100%" id="country_born"
                 required>
                 <option value="">Seleccionar</option>

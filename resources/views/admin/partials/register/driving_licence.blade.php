@@ -54,6 +54,6 @@
         </div>
     </div>
 </div>
-<input type="button" name="previous" class="previous action-button-previous form-dataconductores" value="Previous" />
-<input type="button" name="next" class="next action-button form-dataconductores" value="Next Step"
+<input type="button" name="Anterior" class="previous action-button-previous form-dataconductores" value="Anterior" />
+<input type="button" name="Siguiente" class="next action-button form-dataconductores" value="Siguiente"
     data-validate="{{ route('driving_licence.validate') }}" data-error="driving_licence" />

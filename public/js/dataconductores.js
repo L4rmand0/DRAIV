@@ -23,10 +23,11 @@
         //Adiciona un nuevo formulario de vehículos según escoja
         $("#number_of_vehicles_form").on('change', function () {
             // index_section = 0;
+            //------------------ LÓGICA DEL FORMULARIO DE VEHÍCULOS ----------------
+            //Se agregan la cantidad de formularios de vehículos elegida por el usuario
             $("#index_section").val("0")
             let number_of_vehicles = parseInt($(this).val());
             cadena_form = "";
-            //Se agregan la cantidad de formularios de vehículos elegida por el usuario
             for (let i = 0; i < number_of_vehicles; i++) {
                 let item = String($("#form_vehicle_driver").html()).replace("&amp;num_vehicle", "" + (i + 1))
                 //le pone el número a expi_date para que se pueda poner el datepicker
@@ -38,45 +39,21 @@
                 // let item =  String($("#form_vehicle_driver").html())
                 cadena_form = cadena_form + item;
             }
-
             $("#forms_vehicles").html(cadena_form);
             //esconde el botón de regresa en caso sea que el primer formulario de vehículos
             $($("#msform [class=previous_vehicle]")[0]).hide();
             //esconde el botón de siguiente en  el último formulario de vehículos
             $($("#msform [class=next_vehicle]")[parseInt($("#number_of_vehicles_form").val()) - 1]).hide();
             //Le agrega la clase next al último botón de vehículos
-            //Limpia los estilos de error en los formularios
-            $("#msform input[type=text], #msform input[type=email], #msform input[type=password], #msform input[type=number], #msform input[type=tel]").on("keypress", function () {
-                let $target = $(this);
-                console.log("Holi 1");
-                $(this).cleanErrorElementForm($target);
-            });
+
             //revisa si es el último formulario de vehículos para mostrar el botón de siguiente
             // debugger
             if (parseInt($("#index_section").val()) == parseInt($("#number_of_vehicles_form").val()) - 1) {
                 $(".next").attr('hidden', false)
                 $(".next").show()
-            }else {
+            } else {
                 $(".next").hide()
             }
-
-            $("#msform input[type=text], #msform input[type=email], #msform input[type=password], #msform input[type=number], #msform input[type=tel], #msform input[type=date]").on("change", function () {
-                let $target = $(this);
-                $(this).cleanErrorElementForm($target);
-            });
-
-            $("#msform input[type=checkbox], #msform select").on("change", function () {
-                let $target = $(this);
-                $(this).cleanErrorElementForm($target);
-            });
-            if ($(".date_vehicle").hasClass("hasDatepicker")) {
-                // $(".date_vehicle").datepicker( "destroy" );
-                $(".date_vehicle").removeClass("hasDatepicker");
-                $(".date_vehicle").datepicker({ dateFormat: 'yy-mm-dd' });
-            } else {
-                $(".date_vehicle").datepicker({ dateFormat: 'yy-mm-dd' });
-            }
-            // $("#technomechanical_date").datepicker({ dateFormat: 'yy-mm-dd' });
 
             // FUNCIÓN DE PASO SIGUIENTE EN EL FORMULARIO DE VEHÍCULOS
             $(".next_vehicle").on('click', function () {
@@ -118,7 +95,7 @@
                             },
                             duration: 600
                         });
-                        $("#index_section").val(parseInt($("#index_section").val()+1))
+                        $("#index_section").val(parseInt($("#index_section").val() + 1))
                         // index_section++;
                         if (parseInt($("#index_section").val()) == parseInt($("#number_of_vehicles_form").val()) - 1) {
                             $(".next").attr('hidden', false)
@@ -151,9 +128,35 @@
                     },
                     duration: 600
                 });
-                $("#index_section").val(parseInt($("#index_section").val())-1)
+                $("#index_section").val(parseInt($("#index_section").val()) - 1)
                 // index_section--;
             });
+            if ($(".date_vehicle").hasClass("hasDatepicker")) {
+                // $(".date_vehicle").datepicker( "destroy" );
+                $(".date_vehicle").removeClass("hasDatepicker");
+                $(".date_vehicle").datepicker({ dateFormat: 'yy-mm-dd' });
+            } else {
+                $(".date_vehicle").datepicker({ dateFormat: 'yy-mm-dd' });
+            }
+            //-------------- TERMINA LA LÓGICA DEL FORMULARIO DE VEHÍCULOS --------------------
+
+
+            // ----- Limpia los estilos de error en los formularios -----
+            $("#msform input[type=text], #msform input[type=email], #msform input[type=password], #msform input[type=number], #msform input[type=tel]").on("keypress", function () {
+                let $target = $(this);
+                $(this).cleanErrorElementForm($target);
+            });
+            $("#msform input[type=text], #msform input[type=email], #msform input[type=password], #msform input[type=number], #msform input[type=tel], #msform input[type=date]").on("change", function () {
+                let $target = $(this);
+                $(this).cleanErrorElementForm($target);
+            });
+            $("#msform input[type=checkbox], #msform select").on("change", function () {
+                let $target = $(this);
+                $(this).cleanErrorElementForm($target);
+            });
+            // ------- Termina limpiar el formulario -------
+
+
         });
 
         //Datepickers del formulario de licencia
@@ -340,6 +343,5 @@
         });
 
     });
-
-    // The rest of the code goes here!
+   // The rest of the code goes here!
 }));

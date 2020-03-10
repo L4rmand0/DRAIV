@@ -765,6 +765,10 @@ class DriverInformationController extends Controller
                 'gender.required' => "El género es obligatorio.",
                 'born_day.required' => "La edad es obligatoria",
                 'e_mail_address.required' => "El email es obligatorio.",
+                'civil_state.required' => "El estado civil es obligatorio.",
+                'city_residence_place.required' => "La ciudad de residencia es obligatoria.",
+                'country_born.required' => "El país de nacimiento es obligatorio.",
+                'department.required' => "El departamento es obligatorio.",
             ]
         );
         $errors = $validator->errors()->getMessages();
