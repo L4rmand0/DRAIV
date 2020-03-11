@@ -14,8 +14,12 @@
     // Listen for the jQuery ready event on the document
     $(function() {
         $("#form_search_information").submit(function(event){
-            $form = $(this);
             event.preventDefault();
+            $form = $(this);
+            //Revisa si el contenedor de información de conductor está oculto
+            if($("#container_card_driver").is(":visible")){
+                $("#container_card_driver").hide();
+            }
             $.post( $("#route-search-information").val(),$form.serialize())
             .done(function(response){
                 target_element = "nav-driver-information";
@@ -26,9 +30,13 @@
                         'warning'
                     )
                 }else{
-                    fillTitles(response.data, titles);
-                    fillInformation(target_element,response.data)
+                    $("#container_card_driver").attr('hidden', false);
+                    $("#container_card_driver").show('hidden', false);
                     console.log(response);
+                    fillTitles(response.data, titles);
+                    fillInformation(target_element,response.data);
+                    fillNameDriver(response.data);
+                    fillExpiredSoat(response);
                 }
             });
         })
@@ -48,6 +56,19 @@
                 $("#title_"+key).text(value);
             }
         })
+    }
+
+    function fillNameDriver(data){
+        let name = data.first_name+" "+data.f_last_name;
+        $("#title_name_driver").text(name);
+    }
+
+    function fillExpiredSoat(response){
+        if (Object.keys(response.soats_vencidos).length > 0) {
+            $("#title_expired_soat").text("Soats vencidos: "+response.soats_vencidos.length);
+        }else{
+            $("#title_expired_soat").text("Soat al día");
+        }
     }
     // The rest of the code goes here!
 }));
