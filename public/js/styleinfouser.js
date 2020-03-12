@@ -29,16 +29,17 @@ function clickcito() {
 
             current_fs = element_button.parent();
             next_fs = element_button.parent().next();
-            if (typeof (next_fs.attr('data-doc')) !== "undefined") {
-                $(".select_user_vehicle").html("")
-                let dataArray = $("#msform").serializeArray();
-                $(".select_user_vehicle").append("<option value=''>Seleccionar ...</option>");
-                $(dataArray).each(function (i, field) {
-                    if (field.name == "vehicle[plate_id][]") {
-                        $(".select_user_vehicle").append("<option value='" + field.value + "'>" + field.value + "</option>");
-                    }
-                });
-            }
+
+            // if (typeof (next_fs.attr('data-doc')) !== "undefined") {
+            //     $(".select_user_vehicle").html("")
+            //     let dataArray = $("#msform").serializeArray();
+            //     $(".select_user_vehicle").append("<option value=''>Seleccionar ...</option>");
+            //     $(dataArray).each(function (i, field) {
+            //         if (field.name == "vehicle[plate_id][]") {
+            //             $(".select_user_vehicle").append("<option value='" + field.value + "'>" + field.value + "</option>");
+            //         }
+            //     });
+            // }
             $.ajax({
                 type: 'POST',
                 url: $url_action,
@@ -53,6 +54,10 @@ function clickcito() {
                 if (!current_fs.hasErrorsForms(container_validate, response)) {
                     // if (true) {
                     //Add Class Active
+                    //Revisa si el section es de vehiculos}
+                    if (typeof (current_fs.attr('data-vehicle')) !== "undefined") {
+                        generateFormImageVehicle(next_fs);
+                    }
                     if (typeof current_fs.data('endsection') !== "undefined") {
                         index_fieldset++;
                         $("#progressbar li").eq(index_fieldset).addClass("active");
@@ -78,11 +83,11 @@ function clickcito() {
         });
 
         $(".previous").click(function () {
-        
+
             current_fs = $(this).parent();
             previous_fs = $(this).parent().prev();
 
-            if (current_fs.find(".next").is(":hidden")==true){
+            if (current_fs.find(".next").is(":hidden") == true) {
                 current_fs.find(".next").show()
             }
             //Remove class active
@@ -117,6 +122,18 @@ function clickcito() {
         });
     });
 
+    function generateFormImageVehicle(next_fs) {
+        let number_forms = $("#number_of_vehicles_form").val();
+        let dataArray = $("#msform").serializeArray();
+        let content = "";
+        $(dataArray).each(function (i, field) {
+            if (field.name == "vehicle[plate_id][]") {
+                content += String($("#card-form-vehicles").html()).replace("&amp;PLACA", "" +"Vehículo con placa: "+field.value);
+                // $(".select_user_vehicle").append("<option value='" + field.value + "'>" + field.value + "</option>");
+            }
+        });
+        $("#forms_images_vehicle").html(content)
+    }
 
     // The rest of the code goes here!
 }));

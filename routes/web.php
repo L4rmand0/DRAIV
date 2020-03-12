@@ -140,10 +140,6 @@ Route::prefix('mail')->group(function () {
     Route::post('contact-us', 'EmailController@sendContactUS')->name('mail.contact-us');
 });
 
-Route::prefix('driver')->group(function () {
-    
-});
-
 Route::post('/saveimg', 'ImageController@saveImgS3')->name('saveimg');
 
 Auth::routes();

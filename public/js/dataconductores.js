@@ -176,7 +176,6 @@
         });
 
         $("#msform input[type=checkbox], #msform select").on("change", function () {
-            console.log("Holi afuera");
             let $target = $(this);
             $(this).cleanErrorElementForm($target);
         });
@@ -212,6 +211,7 @@
         });
 
         $('#msform').submit(function (e) {
+            debugger
             e.preventDefault();
             let url_action = $(this).attr('action');
             let form_data = $("#msform").serialize();
@@ -230,17 +230,121 @@
         });
 
 
-        $("#btn_upload_img").on("click", function () {
-            let element_button = $(this);
-            let form_data = $("#msform").serialize();
-            let url_action = element_button.data('url');
-            $.post(url_action, form_data, function (result) {
-                console.log(result);
-            });
-        });
+        // $("#btn_upload_img").on("click", function () {
+        //     let element_button = $(this);
+        //     let form_data = $("#msform").serialize();
+        //     let url_action = element_button.data('url');
+        //     $.post(url_action, form_data, function (result) {
+        //         console.log(result);
+        //     });
+        // });
 
         //Lógica de la función de subir imágenes
         $(".btn_images_drivers").on('click', function (event) {
+            debugger
+            event.preventDefault();
+            $key = $(this).data('key');
+            $input = $("#file" + $(this).data('key'));
+            var element = $("#msform");
+            var datafr = new FormData(element[0]);
+            var val_file = $input.val();
+            if (val_file == "") {
+                swal.fire(
+                    'Archivo vacío!',
+                    'No se ha elegido ningún archivo.',
+                    //     'Archivo Duplicado',
+                    //     data.errors.message,
+                    //     'error'
+                    // );
+                    'error'
+                );
+            } else {
+                datafr.append('driver_information_dni_id', $("#dni_id").val());
+                datafr.append('key', $key);
+                $.ajax({
+                    type: 'POST',
+                    url: $('#function_store_image').val(),
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: datafr,
+                    success: function (data) {
+                        console.log(data);
+                        if (Object.keys(data.errors).length > 0) {
+                            if (data.response == "Carga fallida") {
+                                swal.fire(
+                                    'Proceso Incompleto',
+                                    data.errors.message,
+                                    'error'
+                                );
+                            } else if (data.response == "validator errors") {
+                                let cadena = "";
+                                $.each(data.errors, function (index, value) {
+                                    cadena = cadena + "<strong id='file-error-strong' class='error-strong'>" + value[0] + "</strong>";
+                                });
+                                element.find(".error_file" + $key).html(cadena);
+                            } else if (data.response == "file exists") {
+                                let id_image = data.errors.id;
+                                let url = data.errors.path;
+                                datafr.append('id', id_image);
+                                datafr.append('url', url);
+                                swal.fire({
+                                    title: '<strong>Archivo Encontrado</strong>',
+                                    icon: 'warning',
+                                    html: data.errors.message,
+                                    showCloseButton: true,
+                                    showCancelButton: true,
+                                    focusConfirm: false,
+                                    confirmButtonText: 'Confirmar',
+                                    confirmButtonAriaLabel: 'Sí, reemplazarlo!',
+                                    cancelButtonText: 'Cancelar',
+                                    cancelButtonAriaLabel: 'Thumbs down'
+                                }).then((result) => {
+                                    if (result.value) {
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: $("#function_update_images").val(),
+                                            cache: false,
+                                            contentType: false,
+                                            processData: false,
+                                            data: datafr,
+                                            success: function (data) {
+                                                if (Object.keys(data.errors).length > 0) {
+                                                    swal.fire(
+                                                        'Error en el proceso',
+                                                        data.errors.response,
+                                                        'error'
+                                                    );
+                                                } else {
+                                                    swal.fire(
+                                                        'Proceso Completado',
+                                                        data.messagge,
+                                                        'success'
+                                                    );
+                                                    $input.next().text("Seleccionar ...");
+                                                    $input.val("");
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        } else {
+                            swal.fire(
+                                'Proceso Completado',
+                                'Archivo subido correctamente.',
+                                'success'
+                            );
+                            $input.next().text("Seleccionar ...");
+                            $input.val("");
+                        }
+                    }
+                });
+            }
+        });
+
+        //Lógica para subir las imágenes del formulario de vehiculos
+        $(".btn_images_vehicle").on('click', function (event) {
             event.preventDefault();
             $key = $(this).data('key');
             $input = $("#file" + $(this).data('key'));

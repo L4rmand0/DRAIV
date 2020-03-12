@@ -19,6 +19,7 @@ use App\Epp;
 use Illuminate\Http\Request;
 use App\Traits\TListDataTable;
 use App\Http\Controllers\Controller;
+use App\ImagenesVehiculo;
 use App\MotorcycleMechanicalConditions;
 use App\MotorcycleTechnology;
 
@@ -232,6 +233,9 @@ class AdminController extends Controller
         $drivers = DriverInformationController::getListDrivers();
         $type_images = Imagenes::enum_assoc_tipo_doc;
         $last_element_type_images = $this->getLastElementArrayAssoc($type_images);
+        //Imágenes Vehículos
+        $type_images_vehicle = ImagenesVehiculo::enum_assoc_tipo_doc;
+        $last_element_type_images_v = $this->getLastElementArrayAssoc($type_images_vehicle);
         //Vehículos
         $enum_type_v = $this->generateOptionsEnumDt(Vehicle::enum_type_v);
         $list_type_v = Vehicle::enum_type_v;
@@ -258,6 +262,9 @@ class AdminController extends Controller
             'list_drivers' => $drivers,
             'type_images' => $type_images,
             'last_element_type_images' => $last_element_type_images,
+            //variable de Imágenes de vehículos
+            'type_images_vehicle' => $type_images_vehicle,
+            'last_element_type_images_v' => $last_element_type_images_v,
             'enum_type_v' => $enum_type_v,
             'enum_service' => $enum_service,
             'enum_taxi_type' => $enum_taxi_type,

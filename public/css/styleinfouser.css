@@ -15,7 +15,8 @@ body {
 #msform {
     text-align: center;
     position: relative;
-    margin-top: 20px
+    margin-top: 20px;
+    font-size: 0.9rem;
 }
 
 #msform fieldset .form-card {
@@ -287,4 +288,11 @@ select.list-dt:focus {
     display: none
 }
 
+
+#msform input[type=submit]{
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 1em;
+    border-radius: 0.5em;
+}
 

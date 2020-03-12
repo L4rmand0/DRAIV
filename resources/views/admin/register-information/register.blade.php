@@ -24,14 +24,17 @@
                             <fieldset data-endsection="true">
                                 @include('admin.partials.register.driver_information')
                             </fieldset>
-                            <fieldset data-endsection="true">
+                            {{-- <fieldset data-endsection="true">
                                 @include('admin.partials.register.driving_licence')
-                            </fieldset>
+                            </fieldset> --}}
                             <fieldset data-endsection="true">
                                 @include('admin.partials.register.images')
                             </fieldset>
                             <fieldset data-vehicle="true" data-endsection="true">
                                 @include('admin.partials.register.vehicle')
+                            </fieldset> 
+                            <fieldset data-endsection="true">
+                                @include('admin.partials.register.images_vehicle')
                             </fieldset>
                             {{-- <fieldset data-doc="true">
                                 @include('admin.partials.register.doc_verification')
@@ -65,6 +68,9 @@
 </div>
 <div hidden>
     @include('admin.partials.register.doc_verification')
+</div>
+<div hidden>
+    @include('admin.partials.register.form_images_vehicle')
 </div>
 
 <!-- /.container-fluid -->

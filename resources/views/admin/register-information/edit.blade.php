@@ -28,7 +28,7 @@
                                 <div class="col-md-6">
                                     <label for="">&nbsp;</label>
                                     <input class="form-control" type="text" placeholder="Valor de búqueda ..."
-                                    aria-label="Search" name="value_param">
+                                        aria-label="Search" name="value_param">
                                 </div>
                                 <div class="col-md-12 mt-3">
                                     <input type="submit" class="btn btn-primary" value="Buscar">
@@ -90,7 +90,7 @@
                                 aria-selected="true"><i class="fas fa-user-circle"></i>
                                 Datos personales</a>
                             <a class="nav-item nav-link a-profile" id="nav-profile-tab" data-toggle="tab"
-                                href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"><i
+                                href="#nav-vehicle" role="tab" aria-controls="nav-profile" aria-selected="false"><i
                                     class="fas fa-car"></i>
                                 Vehículo</a>
                             <a class="nav-item nav-link a-profile" id="nav-contact-tab" data-toggle="tab"
@@ -103,104 +103,8 @@
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-driver-information" role="tabpanel"
-                            aria-labelledby="nav-home-tab" style="padding: 2em; border: solid 1px #dddfeb;">
-                            <div class="card text-left">
-                                <h5 class="card-header">Información personal</h5>
-                                <div class="card-body">
-                                    <div class="row mb-3 mt-3">
-                                        <div class="col-md-3"
-                                            style="display: flex;align-items: center;justify-content: center;">Nombre:
-                                        </div>
-                                        <div class="col-md-3"> <input type="text" class="form-control" name=""
-                                                id="first_name" value="" readonly> </div>
-                                        <div class="col-md-3"
-                                            style="display: flex;align-items: center;justify-content: center;">Segundo
-                                            Nombre:</div>
-                                        <div class="col-md-3"><input type="text" class="form-control" name=""
-                                                id="second_name" value="" readonly></div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-3"
-                                            style="display: flex;align-items: center;justify-content: center;">Apellido:
-                                        </div>
-                                        <div class="col-md-3"> <input type="text" class="form-control" name=""
-                                                id="f_last_name" value="" readonly> </div>
-                                        <div class="col-md-3"
-                                            style="display: flex;align-items: center;justify-content: center;">Segundo
-                                            Apellido:</div>
-                                        <div class="col-md-3"><input type="text" class="form-control" name=""
-                                                id="s_last_name" value="" readonly></div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-3"
-                                            style="display: flex;align-items: center;justify-content: center;">Género:
-                                        </div>
-                                        <div class="col-md-3"> <input type="text" class="form-control" name=""
-                                                id="gender" value="" readonly> </div>
-                                        <div class="col-md-3"
-                                            style="display: flex;align-items: center;justify-content: center;">Dia de
-                                            nacimiento:</div>
-                                        <div class="col-md-3"><input type="text" class="form-control" name=""
-                                                id="born_day" value="" readonly></div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-3"
-                                            style="display: flex;align-items: center;justify-content: center;">
-                                            Educación:</div>
-                                        <div class="col-md-3"> <input type="text" class="form-control" name=""
-                                                id="education" value="" readonly> </div>
-                                        <div class="col-md-3"
-                                            style="display: flex;align-items: center;justify-content: center;">Correo
-                                            Electrónico:</div>
-                                        <div class="col-md-3"><input type="text" class="form-control" name=""
-                                                id="e_mail_address" value="" readonly></div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-3"
-                                            style="display: flex;align-items: center;justify-content: center;">
-                                            Dirección:</div>
-                                        <div class="col-md-3"> <input type="text" class="form-control" name=""
-                                                id="address" value="" readonly> </div>
-                                        <div class="col-md-3"
-                                            style="display: flex;align-items: center;justify-content: center;">País de
-                                            nacimiento:</div>
-                                        <div class="col-md-3"><input type="text" class="form-control" name=""
-                                                id="country_born" value="" readonly></div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-3"
-                                            style="display: flex;align-items: center;justify-content: center;">Ciudad de
-                                            Nacimiento:</div>
-                                        <div class="col-md-3"> <input type="text" class="form-control" name=""
-                                                id="city_born" value="" readonly> </div>
-                                        <div class="col-md-3"
-                                            style="display: flex;align-items: center;justify-content: center;">
-                                            Departamento:</div>
-                                        <div class="col-md-3"><input type="text" class="form-control" name=""
-                                                id="department" value="" readonly></div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-3"
-                                            style="display: flex;align-items: center;justify-content: center;">Teléfono:
-                                        </div>
-                                        <div class="col-md-3"> <input type="text" class="form-control" name=""
-                                                id="phone" value="" readonly> </div>
-                                        <div class="col-md-3"
-                                            style="display: flex;align-items: center;justify-content: center;">Estado
-                                            Civil:</div>
-                                        <div class="col-md-3"><input type="text" class="form-control" name=""
-                                                id="civil_state" value="" readonly></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                            ...
-                        </div>
-                        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                            ...
-                        </div>
+                        @include('admin.register-information.partials.edit_form_driver_information')
+                        @include('admin.register-information.partials.edit_form_vehicle')
                     </div>
                 </div>
             </div>

@@ -1,0 +1,21 @@
+CREATE TABLE `imagenes_vehiculo` (
+  `image_id` bigint(12) unsigned NOT NULL AUTO_INCREMENT,
+  `tipo_doc` enum('SOAT_frente','Tecnomecanica_frente','Tecnomecanica_reverso','Seguro','Tarjeton_taxi') NOT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `size_image` double DEFAULT NULL,
+  `type_image` varchar(255) DEFAULT NULL,
+  `user_id` bigint(10) unsigned DEFAULT NULL,
+  `ws_name` varchar(20) NOT NULL DEFAULT 'pro_sam_bw19',
+  `start_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_operation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `operation` enum('A','U','D') NOT NULL DEFAULT 'A',
+  `version` double NOT NULL DEFAULT '1',
+  `user_vehicle_id` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`image_id`),
+  KEY `fkImage_user_vehicle` (`user_vehicle_id`),
+  KEY `ssss` (`start_date`,`tipo_doc`),
+  CONSTRAINT `fkImage_user_vehicle` FOREIGN KEY (`user_vehicle_id`) REFERENCES `user_vehicle` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=189 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
+ALTER TABLE sam.imagenes MODIFY COLUMN tipo_doc enum('Fotografía_rostro','Cedula_frente','Cedula_reverso','Eps_frente','Eps_reverso','Licencia_transito_frente','Licencia_transito_reverso','Licencia_conducción_frente','Licencia_conducción_reverso','Fondo_pension','ARL','Casco','Foto_usuario_moto') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL;

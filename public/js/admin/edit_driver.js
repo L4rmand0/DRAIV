@@ -39,7 +39,7 @@
                     fillExpiredSoat(response);
                 }
             });
-        })
+        });
     });
 
 

@@ -10,17 +10,14 @@ class Imagenes extends Model
         'Fotografía_rostro',
         'Cedula_frente',
         'Cedula_reverso',
-        'Eps_frente','Eps_reverso',
+        'Eps_frente',
+        'Eps_reverso',
         'Licencia_transito_frente',
         'Licencia_transito_reverso',
         'Licencia_conducción_frente',
         'Licencia_conducción_reverso',
         'Fondo_pension',
-        'ARL','SOAT_frente',
-        'Tecnomecanica_frente',
-        'Tecnomecanica_reverso',
-        'Seguro',
-        'Tarjeton_taxi',
+        'ARL',
         'Casco',
         'Foto_usuario_moto'
     ];
@@ -33,9 +30,6 @@ class Imagenes extends Model
         'Licencia Tránsito Reverso'=>'Licencia_transito_reverso',
         'Licencia Conducción Frente'=>'Licencia_conducción_frente',
         'Licencia Conducción Reverso'=>'Licencia_conducción_reverso',
-        'SOAT Frente'=>'SOAT_frente',
-        'Tecnomecánica Frente'=>'Tecnomecanica_frente',
-        'Tecnomecánica Reverso'=>'Tecnomecanica_reverso',
     ];
 
     const enum_assoc_tipo_doc = [
@@ -50,11 +44,6 @@ class Imagenes extends Model
         'Licencia Conducción Reverso'=>'Licencia_conducción_reverso',
         'Fondo Pension'=>'Fondo_pension',
         'ARL'=>'ARL',
-        'SOAT Frente'=>'SOAT_frente',
-        'Tecnomecánica Frente'=>'Tecnomecanica_frente',
-        'Tecnomecánica Reverso'=>'Tecnomecanica_reverso',
-        'Seguro'=>'Seguro',
-        'Tarjetón Taxi'=>'Tarjeton_taxi',
         'Casco'=>'Casco',
         'Foto Usuario Moto'=>'Foto_usuario_moto',
     ];
@@ -71,11 +60,6 @@ class Imagenes extends Model
         'Licencia Conducción Reverso'=>'Licencia_conducción_reverso',
         'Fondo Pension'=>'Fondo_pension',
         'ARL'=>'ARL',
-        'SOAT Frente'=>'SOAT_frente',
-        'Tecnomecánica Frente'=>'Tecnomecanica_frente',
-        'Tecnomecánica Reverso'=>'Tecnomecanica_reverso',
-        'Seguro'=>'Seguro',
-        'Tarjetón Taxi'=>'Tarjeton_taxi',
         'Casco'=>'Casco',
         'Foto Usuario Moto'=>'Foto_usuario_moto',
     ];

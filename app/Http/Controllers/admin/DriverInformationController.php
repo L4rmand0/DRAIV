@@ -744,7 +744,7 @@ class DriverInformationController extends Controller
                 'first_name' => 'required|max:70',
                 'f_last_name' => 'required|max:20',
                 's_last_name' => 'required|max:20',
-                'dni_id' => ['required', 'max:10', 'unique:driver_information'],
+                'dni_id' => ['required', 'max:20', 'unique:driver_information'],
                 'gender' => 'required',
                 'born_day' => 'required',
                 'education' => 'required',
