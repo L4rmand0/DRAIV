@@ -22,7 +22,7 @@
                         ...</label>
                 </div>
                 <div class="d-flex justify-content-center mt-1">
-                    <input type="button" value="Cargar" class="btn btn-primary btn_images_drivers" data-key="{{ $item_type_images }}">
+                    <input type="button" value="Cargar" class="btn btn-primary btn_images_drivers form-dataconductores text-white" data-key="{{ $item_type_images }}">
                 </div>
                 <span class="error_file{{ $item_type_images }} ml-2" role="alert" id="file-error"
                     style="color:#B62A2A;">
@@ -47,7 +47,7 @@
                     ...</label>
             </div>
             <div class="d-flex justify-content-center mt-1">
-                <input type="button" value="Cargar" class="btn btn-primary btn_images_drivers" data-key="{{ $item_type_images }}">
+                <input type="button" value="Cargar" class="btn btn-primary btn_images_drivers form-dataconductores text-white" data-key="{{ $item_type_images }}">
             </div>
             <span class="error_file{{ $item_type_images }} ml-2" role="alert" id="file-error"
                 style="color:#B62A2A;">
@@ -72,7 +72,7 @@
                         ...</label>
                 </div>
                 <div class="d-flex justify-content-center mt-1">
-                    <input type="button" value="Cargar" class="btn btn-primary btn_images_drivers" data-key="{{ $item_type_images }}">
+                    <input type="button" value="Cargar" class="btn btn-primary btn_images_drivers form-dataconductores text-white" data-key="{{ $item_type_images }}">
                 </div>
                 <span class="error_file{{ $item_type_images }} ml-2" role="alert" id="file-error"
                     style="color:#B62A2A;">
@@ -83,8 +83,6 @@
     @endif
     @endforeach
 </div>
-<input type="button" name="previous" class="previous action-button-previous form-dataconductores"
-    value="Anterior" />
 <input type="button" name="next" class="next action-button form-dataconductores" value="Siguiente"
     data-validate="{{ route('images.validate') }}"
     data-error="driving_licence" />

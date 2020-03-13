@@ -44,12 +44,12 @@
     <div class="row mt-2">
         <div class="col-6 form_select_conductores">
             <label for="Expedition_day_form" id="label-expedition_day">Fecha de expedición</label>
-            <input type="text" class="form-control" name="drivingLicence[expedition_day]" id="expedition_day"
+            <input type="text" class="form-control form-dataconductores" name="drivingLicence[expedition_day]" id="expedition_day"
                 readonly required />
         </div>
         <div class="col-6 form_select_conductores">
             <label for="expi_date_form" id="label-expi_date">Fecha de vencimiento</label>
-            <input type="text" class="form-control" name="drivingLicence[expi_date]" id="expi_date" readonly
+            <input type="text" class="form-control form-dataconductores" name="drivingLicence[expi_date]" id="expi_date" readonly
                 required />
         </div>
     </div>

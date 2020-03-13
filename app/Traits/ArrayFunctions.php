@@ -27,6 +27,17 @@ trait ArrayFunctions {
         }
         return $flag;
     }
+
+    protected function toArrayByNumber($array){
+        $new = [];
+        foreach ($array as $key_main => $value_main) {
+            foreach ($value_main as $key_child => $value_child) {
+                $new[$key_child][$key_main]=$value_child;
+            }
+            
+        }
+        return $new;
+    }
     
 }
 

@@ -1,7 +1,3 @@
-function clickcito() {
-    alert("todo nice")
-}
-
 (function (runcode) {
 
     // The global jQuery object is passed as a parameter
@@ -30,16 +26,6 @@ function clickcito() {
             current_fs = element_button.parent();
             next_fs = element_button.parent().next();
 
-            // if (typeof (next_fs.attr('data-doc')) !== "undefined") {
-            //     $(".select_user_vehicle").html("")
-            //     let dataArray = $("#msform").serializeArray();
-            //     $(".select_user_vehicle").append("<option value=''>Seleccionar ...</option>");
-            //     $(dataArray).each(function (i, field) {
-            //         if (field.name == "vehicle[plate_id][]") {
-            //             $(".select_user_vehicle").append("<option value='" + field.value + "'>" + field.value + "</option>");
-            //         }
-            //     });
-            // }
             $.ajax({
                 type: 'POST',
                 url: $url_action,
@@ -54,9 +40,52 @@ function clickcito() {
                 if (!current_fs.hasErrorsForms(container_validate, response)) {
                     // if (true) {
                     //Add Class Active
-                    //Revisa si el section es de vehiculos}
+                    //Revisa si el section es de vehiculos
                     if (typeof (current_fs.attr('data-vehicle')) !== "undefined") {
                         generateFormImageVehicle(next_fs);
+                    }
+
+                    //revisar si el section es de Licencia e inserta la información recogida
+                    if (typeof (current_fs.attr('data-licence')) !== "undefined") {
+                        $.post($("#route-register-primary-information").val(), $("#msform").serialize())
+                            .done(function (response) {
+                                if (Object.keys(response.errors).length > 0) {
+                                    swal.fire({
+                                        title:'Proceso Incompleto!',
+                                        text:response.errors.response,
+                                        timer: 1500,
+                                        icon:'error'
+                                    });
+                                }else{
+                                    swal.fire({
+                                        title:'Proceso Completo!',
+                                        text:response.response,
+                                        timer: 1500,
+                                        icon:'success'
+                                    });
+                                }
+                            });
+                    }
+                    //revisar si el section es de vehículo e inserta la información recogida
+                    if (typeof (current_fs.attr('data-vehicle')) !== "undefined") {
+                        $.post($("#route-register-secondary-information").val(), $("#msform").serialize())
+                            .done(function (response) {
+                                if (Object.keys(response.errors).length > 0) {
+                                    swal.fire({
+                                        title:'Proceso Incompleto!',
+                                        text:response.errors.response,
+                                        timer: 1500,
+                                        icon:'error'
+                                    });
+                                }else{
+                                    swal.fire({
+                                        title:'Proceso Completo!',
+                                        text:response.response,
+                                        timer: 1500,
+                                        icon:'success'
+                                    });
+                                }
+                            });
                     }
                     if (typeof current_fs.data('endsection') !== "undefined") {
                         index_fieldset++;
@@ -110,6 +139,7 @@ function clickcito() {
                 },
                 duration: 600
             });
+            index_fieldset--;
         });
 
         $('.radio-group .radio').click(function () {
@@ -128,11 +158,11 @@ function clickcito() {
         let content = "";
         $(dataArray).each(function (i, field) {
             if (field.name == "vehicle[plate_id][]") {
-                content += String($("#card-form-vehicles").html()).replace("&amp;PLACA", "" +"Vehículo con placa: "+field.value);
+                content += String($("#card-form-vehicles").html()).replace("&amp;PLACA", "" + "Vehículo con placa: " + field.value);
                 // $(".select_user_vehicle").append("<option value='" + field.value + "'>" + field.value + "</option>");
             }
         });
-        $("#forms_images_vehicle").html(content)
+        $("#forms_images_vehicle").html(content);
     }
 
     // The rest of the code goes here!

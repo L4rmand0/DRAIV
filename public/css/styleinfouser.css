@@ -181,6 +181,12 @@ select.list-dt:focus {
     content: "\f0ad"
 }
 
+#progressbar #photos:before {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    content: "\f302"
+}
+
 #progressbar #confirm:before {
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;

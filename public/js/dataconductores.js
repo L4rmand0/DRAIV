@@ -241,7 +241,6 @@
 
         //Lógica de la función de subir imágenes
         $(".btn_images_drivers").on('click', function (event) {
-            debugger
             event.preventDefault();
             $key = $(this).data('key');
             $input = $("#file" + $(this).data('key'));

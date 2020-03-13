@@ -133,7 +133,17 @@ class EditDriverController extends Controller
                     ->select(DB::raw('
                     v.plate_id,
                     v.type_v,
+                    v.owner_v,
+                    v.taxi_type,
+                    v.number_of_drivers,
                     v.soat_expi_date,
+                    v.capacity,
+                    v.service,
+                    v.cylindrical_cc,
+                    v.model,
+                    v.line,
+                    v.brand,
+                    v.color,
                     v.technomechanical_date
                 '))
                     ->join('vehicle as v', 'v.plate_id', '=', 'uv.vehicle_plate_id')
@@ -146,8 +156,8 @@ class EditDriverController extends Controller
                 foreach ($vehicles as $key_v => $value_v) {
                     $fecha_actual = strtotime(date("Y-m-d"));
                     $fecha_vencimiento = strtotime("2020-02-02");
-                    if($fecha_actual > $fecha_vencimiento){
-                        $soats_vencidos[]=$value_v->plate_id;
+                    if ($fecha_actual > $fecha_vencimiento) {
+                        $soats_vencidos[] = $value_v->plate_id;
                     }
                 }
                 // echo '<pre>';
@@ -156,12 +166,18 @@ class EditDriverController extends Controller
                 // die;
             }
             if (!empty($driver_information)) {
-                return response()->json(['response' => 'data found', 'errors' => [], 'data' => $driver_information,'soats_vencidos' => $soats_vencidos]);
+                return response()->json([
+                    'response' => 'data found',
+                    'errors' => [], 'data' => $driver_information,
+                    'soats_vencidos' => $soats_vencidos,
+                    'vehicles' => $vehicles
+                ]);
             } else {
                 return response()->json([
-                    'response' => 'no data', 
-                    'errors' => [], 
-                    'message' => 'No se encontró información de conductores por ese valor de búsqueda.']);
+                    'response' => 'no data',
+                    'errors' => [],
+                    'message' => 'No se encontró información de conductores por ese valor de búsqueda.'
+                ]);
             }
         }
     }
