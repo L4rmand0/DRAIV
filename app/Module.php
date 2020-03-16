@@ -27,6 +27,8 @@ class Module extends Model
         'information_register'=> 18,
         'register_driver'=> 19,
         'edit_driver'=> 20,
+        'info_evaluation'=> 21,
+        'register_evaluation'=> 22,
     ];
 
     protected $table = 'module';

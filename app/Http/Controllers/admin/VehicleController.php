@@ -1080,50 +1080,44 @@ class VehicleController extends Controller
 
     public function registerSecondaryInformation(Request $request)
     {
-        echo '<pre>';
-        print_r($request->all());
-        $v = $request->get('vehicle');
-        $clean = $this->cleanArray($v);
+        $company_id = auth()->user()->company_active;
+        // echo '<pre>';
+        // print_r($request->all());
+        $vechicles = $request->get('vehicle');
+        $data_clean_vehicles = $this->cleanArray($vechicles);
         // $v = $this->toArrayByNumber($request->get('vehicle'));
-        print_r($clean);
-        die;
+        // die;
         $driver_information = $request->get('driverInformation');
-        $driving_licence = $request->get('drivingLicence');
-
-        $insert_di = DriverInformation::create([
-            'dni_id' => $driver_information['dni_id'],
-            'first_name' => $driver_information['first_name'],
-            'second_name' => $driver_information['second_name'] != "" ? $driver_information['second_name'] : "NA",
-            'f_last_name' => $driver_information['f_last_name'],
-            's_last_name' => $driver_information['s_last_name'] != "" ? $driver_information['s_last_name'] : "NA",
-            'e_mail_address' => $driver_information['e_mail_address'],
-            'gender' => $driver_information['gender'],
-            'education' => $driver_information['education'],
-            'country_born' => $driver_information['country_born'],
-            // 'city_born' => $data_input['city_born'],
-            'city_residence_place' => $driver_information['city_residence_place'],
-            'department' => $driver_information['department'],
-            'civil_state' => $driver_information['civil_state'],
-            'score' => !empty($driver_information['score']) ? number_format($driver_information['score'], 2) : null,
-            'address' => $driver_information['address'],
-            'phone' => $driver_information['phone'],
-            'db_user_id' => auth()->id(),
-            'company_id' => $driver_information['company_id'],
-            'user_id' => auth()->id()
-        ]);
-
-        $insert_driving = DrivingLicence::create([
-            'driver_information_dni_id' => $insert_di->dni_id,
-            'licence_num' => $driving_licence['licence_num'],
-            'country_expedition' =>  $driving_licence['country_expedition'],
-            'category' => $driving_licence['category'],
-            'state' => $driving_licence['state'],
-            'expedition_day' => $driving_licence['expedition_day'],
-            'expi_date' => $driving_licence['expi_date'],
-            'user_id' => auth()->id()
-        ]);
-        if ($insert_di->dni_id > 0 && $insert_driving->driver_information_dni_id > 0) {
-            return response()->json(['response' => 'Se ha registrado la información de la fase 1-3', 'errors' => []]);
+        $dni_id = $driver_information['dni_id'];
+        $insert_v = "";
+        $insert_uv = "";
+        foreach ($data_clean_vehicles as $key_v => $value_v) {
+            $insert_v = Vehicle::create([
+                'plate_id' => $value_v['plate_id'],
+                    'type_v' => $value_v['type_v'],
+                    'owner_v' => $value_v['owner_v'] != "" ? $value_v['owner_v'] : 0,
+                    'taxi_type' => $value_v['taxi_type'] != "" ? $value_v['taxi_type'] : "NA",
+                    'number_of_drivers' => $value_v['number_of_drivers'] != "" ? $value_v['number_of_drivers'] : 1,
+                    'soat_expi_date' => $value_v['soat_expi_date'],
+                    'capacity' => $value_v['capacity'],
+                    'service' => $value_v['service'] != "" ? $value_v['service'] : "Otros",
+                    'cylindrical_cc' => $value_v['cylindrical_cc'] != "" ? $value_v['cylindrical_cc'] : 1,
+                    'model' => $value_v['model'] != "" ? $value_v['model'] : "",
+                    'line' => $value_v['line'] != "" ? $value_v['line'] : "",
+                    'brand' => $value_v['brand'] != "" ? $value_v['brand'] : "",
+                    'color' => $value_v['color'] != "" ? $value_v['color'] : "",
+                    'technomechanical_date' => $value_v['technomechanical_date'] != "" ? $value_v['technomechanical_date'] : null,
+                    'company_id' => $company_id,
+                    'user_id' => auth()->id(),
+            ]);
+            $insert_uv = DriverVehicle::create([
+                'vehicle_plate_id' => $insert_v->plate_id,
+                'driver_information_dni_id' => $dni_id,
+                'user_id' => auth()->id()
+            ]);
+        }
+        if ($insert_v->plate_id  != "" && $insert_uv->vehicle_plate_id != "") {
+            return response()->json(['response' => 'Se ha registrado la información de la fase 2-3', 'errors' => []]);
         } else {
             return response()->json(['errors' => ['response' => 'No se pudo actualizar la información']]);
         }
@@ -1138,11 +1132,11 @@ class VehicleController extends Controller
         $new = [];
         foreach ($array_vehicle as $key_vehicle => $value_vehicle) {
             if (strpos($key_vehicle, $str_soat_expi_date) !== false) {
-                $explit = str_split($str_soat_expi_date, $lenght_soat);
-                $new[$explit[1]][$str_soat_expi_date] = $value_vehicle;
+                $explit = str_split($key_vehicle, $lenght_soat);
+                $new[($explit[1])-1][$str_soat_expi_date] = $value_vehicle;
             } else if (strpos($key_vehicle, $str_technomechanical_date) !== false) {
-                $explit = str_split($str_technomechanical_date, $lenght_tech);
-                $new[$explit[1]][$str_technomechanical_date] = $value_vehicle;
+                $explit = str_split($key_vehicle, $lenght_tech);
+                $new[($explit[1])-1][$str_technomechanical_date] = $value_vehicle;
             } else {
                 foreach ($value_vehicle as $key_child => $value_child) {
                     $new[$key_child][$key_vehicle] = $value_child;

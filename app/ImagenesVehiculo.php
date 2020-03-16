@@ -29,6 +29,8 @@ class ImagenesVehiculo extends Model
     ];
 
     protected $table = 'imagenes_vehiculo';
+    
+    public $timestamps = false;
 
     protected $fillable = [
         'tipo_doc',

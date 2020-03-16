@@ -40,6 +40,11 @@
                         generateCardsVehicle(response.vehicles);
                     }
                 });
+
+                $(".field_driver_info").on('click', function(){
+                    $input = $(this);
+                    $input.attr("readonly",false);
+                });
         });
     });
 

@@ -42,7 +42,122 @@
                     //Add Class Active
                     //Revisa si el section es de vehiculos
                     if (typeof (current_fs.attr('data-vehicle')) !== "undefined") {
-                        generateFormImageVehicle(next_fs);
+                        generateFormImageVehicle(next_fs, function () {
+                            //Lógica para subir las imágenes del formulario de vehiculos
+                            $(".btn_images_vehicle").on('click', function (event) {
+                                event.preventDefault();
+                                $btn = $(this);
+                                $key = $btn.data('key');
+                                $input = $btn.parent().parent().find(".input_files_drivers");
+                                $index = $btn.data('index');
+                                $col = $btn.parent().parent();
+                                var element = $("#msform");
+                                var datafr = new FormData(element[0]);
+                                var val_file = $input.val();
+                                if (val_file == "") {
+                                    swal.fire(
+                                        'Archivo vacío!',
+                                        'No se ha elegido ningún archivo.',
+                                        //     'Archivo Duplicado',
+                                        //     data.errors.message,
+                                        //     'error'
+                                        // );
+                                        'error'
+                                    );
+                                } else {
+                                    let plate = $btn.parent().parent().parent().parent().parent().find(".header_plate_id").text();
+                                    console.log("placa: "+plate);
+                                    datafr.append('key', $key);
+                                    datafr.append('plate', plate);
+                                    datafr.append('index', $index);
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: $('#function_store_image_vehicle').val(),
+                                        cache: false,
+                                        contentType: false,
+                                        processData: false,
+                                        data: datafr,
+                                        success: function (data) {
+                                            console.log(data);
+                                            if (Object.keys(data.errors).length > 0) {
+                                                if (data.response == "Carga fallida") {
+                                                    swal.fire(
+                                                        'Proceso Incompleto',
+                                                        data.errors.message,
+                                                        'error'
+                                                    );
+                                                } else if (data.response == "validator errors") {
+                                                    let cadena = "";
+                                                    $.each(data.errors, function (index, value) {
+                                                        cadena = cadena + "<strong id='file-error-strong' class='error-strong'>" + value[0] + "</strong>";
+                                                    });
+                                                    $col.find(".error_file" + $key).html(cadena);
+                                                } else if (data.response == "file exists") {
+                                                    let id_image = data.errors.id;
+                                                    let url = data.errors.path;
+                                                    datafr.append('id', id_image);
+                                                    datafr.append('url', url);
+                                                    swal.fire({
+                                                        title: '<strong>Archivo Encontrado</strong>',
+                                                        icon: 'warning',
+                                                        html: data.errors.message,
+                                                        showCloseButton: true,
+                                                        showCancelButton: true,
+                                                        focusConfirm: false,
+                                                        confirmButtonText: 'Confirmar',
+                                                        confirmButtonAriaLabel: 'Sí, reemplazarlo!',
+                                                        cancelButtonText: 'Cancelar',
+                                                        cancelButtonAriaLabel: 'Thumbs down'
+                                                    }).then((result) => {
+                                                        if (result.value) {
+                                                            $.ajax({
+                                                                type: 'POST',
+                                                                url: $("#function_update_images-vehicle").val(),
+                                                                cache: false,
+                                                                contentType: false,
+                                                                processData: false,
+                                                                data: datafr,
+                                                                success: function (data) {
+                                                                    if (Object.keys(data.errors).length > 0) {
+                                                                        swal.fire(
+                                                                            'Error en el proceso',
+                                                                            data.errors.response,
+                                                                            'error'
+                                                                        );
+                                                                    } else {
+                                                                        swal.fire(
+                                                                            'Proceso Completado',
+                                                                            data.messagge,
+                                                                            'success'
+                                                                        );
+                                                                        $input.next().text("Seleccionar ...");
+                                                                        $input.val("");
+                                                                    }
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                            } else {
+                                                swal.fire(
+                                                    'Proceso Completado',
+                                                    'Archivo subido correctamente.',
+                                                    'success'
+                                                );
+                                                $input.next().text("Seleccionar ...");
+                                                $input.val("");
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                            $(".input_files_drivers").on('change', function () {
+                                let element = $(this);
+                                let name = element[0].files[0].name;
+                                $(this).parent().find("label").text(name)
+                                element.parent().parent().find("#file-error").text("")
+                            });
+                        });
                     }
 
                     //revisar si el section es de Licencia e inserta la información recogida
@@ -51,17 +166,17 @@
                             .done(function (response) {
                                 if (Object.keys(response.errors).length > 0) {
                                     swal.fire({
-                                        title:'Proceso Incompleto!',
-                                        text:response.errors.response,
+                                        title: 'Proceso Incompleto!',
+                                        text: response.errors.response,
                                         timer: 1500,
-                                        icon:'error'
+                                        icon: 'error'
                                     });
-                                }else{
+                                } else {
                                     swal.fire({
-                                        title:'Proceso Completo!',
-                                        text:response.response,
+                                        title: 'Proceso Completo!',
+                                        text: response.response,
                                         timer: 1500,
-                                        icon:'success'
+                                        icon: 'success'
                                     });
                                 }
                             });
@@ -72,17 +187,17 @@
                             .done(function (response) {
                                 if (Object.keys(response.errors).length > 0) {
                                     swal.fire({
-                                        title:'Proceso Incompleto!',
-                                        text:response.errors.response,
+                                        title: 'Proceso Incompleto!',
+                                        text: response.errors.response,
                                         timer: 1500,
-                                        icon:'error'
+                                        icon: 'error'
                                     });
-                                }else{
+                                } else {
                                     swal.fire({
-                                        title:'Proceso Completo!',
-                                        text:response.response,
+                                        title: 'Proceso Completo!',
+                                        text: response.response,
                                         timer: 1500,
-                                        icon:'success'
+                                        icon: 'success'
                                     });
                                 }
                             });
@@ -152,17 +267,22 @@
         });
     });
 
-    function generateFormImageVehicle(next_fs) {
+    function generateFormImageVehicle(next_fs, callback) {
         let number_forms = $("#number_of_vehicles_form").val();
         let dataArray = $("#msform").serializeArray();
         let content = "";
+        let contador = 0;
         $(dataArray).each(function (i, field) {
             if (field.name == "vehicle[plate_id][]") {
-                content += String($("#card-form-vehicles").html()).replace("&amp;PLACA", "" + "Vehículo con placa: " + field.value);
+                content += String($("#card-form-vehicles").html())
+                .replace("&amp;PLACA", "" + "Vehículo con placa: <span class='header_plate_id'>" + field.value + "</span>")
+                .replace('data-index=""','data-index="'+contador+'"');
+                contador++;
                 // $(".select_user_vehicle").append("<option value='" + field.value + "'>" + field.value + "</option>");
             }
         });
         $("#forms_images_vehicle").html(content);
+        callback();
     }
 
     // The rest of the code goes here!

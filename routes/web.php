@@ -95,10 +95,12 @@ Route::prefix('admin')->group(function () {
     Route::post('driver-vehicle/destroy','admin\DriverVehicleController@destroy')->name('admin.driver-vehicle.destroy'); 
     Route::get('images/', 'admin\ImageController@index')->name('images.index');
     Route::post('images/store', 'admin\ImageController@store')->name('images.store');
+    Route::post('images/store-vehicle', 'admin\ImageController@storeVehicles')->name('images.store-vehicle');
     Route::post('images/validate-register','admin\ImageController@validateInformation')->name('images.validate');
     Route::get('downloads3/{path}', 'admin\ImageController@downloadFile')->name('images.downloadfiles3');
     Route::post('images/get-documents-driver', 'admin\ImageController@getDocumentsDriver')->name('images.get-documents-driver');
     Route::post('images/update', 'admin\ImageController@update')->name('images.update');
+    Route::post('images/update-vehicle', 'admin\ImageController@updateVehicles')->name('images.update-vehicle');
     Route::get('/manual-doc-verification/list', 'admin\DocVerificationController@dataTable')->name('admin.manual-doc-verification.list');
     Route::post('/manual-doc-verification/store', 'admin\DocVerificationController@store')->name('admin.manual-doc-verification.store');
     Route::post('/manual-doc-verification/update', 'admin\DocVerificationController@updateDocVerification')->name('admin.manual-doc-verification.update');

@@ -38,22 +38,7 @@
                                 @include('admin.partials.register.images_vehicle')
                             </fieldset>
                             <fieldset>
-                                <div class="form-card">
-                                    <h2 class="fs-title text-center">Completado !</h2> <br><br>
-                                    <div class="row justify-content-center">
-                                        <div class="col-3"> <img src="https://img.icons8.com/color/96/000000/ok--v2.png"
-                                                class="fit-image"> </div>
-                                    </div> <br><br>
-                                    <div class="row justify-content-center">
-                                        <div class="col-7 text-center">
-                                            <h5>Has completado el registro de información!</h5>
-                                            <a href="{{ route('welcome') }}">Terminar</a>
-                                            <a href="{{ route('admin','driver_information') }}">Registrar otro conductor</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <input type="button" name="previous" class="previous action-button-previous"
-                                    value="Anterior" />
+                                @include('admin.partials.register.finish')
                             </fieldset>
                         </form>
                     </div>
