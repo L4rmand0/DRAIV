@@ -10,6 +10,13 @@
         'dni_id', 'phone'
     ];
 
+    var options_gender={
+        "Femenino":1,
+        "Masculino":0
+    };
+    
+    var input_event = false;
+
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
     $(function () {
@@ -20,7 +27,7 @@
             if ($("#container_card_driver").is(":visible")) {
                 $("#container_card_driver").hide();
             }
-            $.post($("#route-search-information").val(),$form.serialize())
+            $.post($("#route-search-information").val(), $form.serialize())
                 .done(function (response) {
                     target_element = "nav-driver-information";
                     if (response.response == "no data") {
@@ -40,11 +47,101 @@
                         generateCardsVehicle(response.vehicles);
                     }
                 });
-
-                $(".field_driver_info").on('click', function(){
-                    $input = $(this);
-                    $input.attr("readonly",false);
+            $(".field_driver_info").on('click', function () {
+                let $input = $(this);
+                let old_val = $input.val();
+                $input.attr("readonly", false);
+                $input.off("blur keyup");
+                $input.on('blur keyup', function (e) {
+                    let new_val = $input.val();
+                    let field = $input.attr("id");
+                    if (e.type == "keyup") {
+                        if (e.key == "Enter" && new_val != old_val) {
+                            console.log("event keyup ");
+                            $input.off("blur");
+                            //Se apaga el evento blur
+                            inputLookChange($input, field, old_val, new_val);
+                            $input.attr("readonly", true);
+                        } else if (e.key == "Enter" && new_val != old_val) {
+                            $input.attr("readonly", true);
+                        } else if (e.key == "Escape") {
+                            $input.val(old_val);
+                            $input.attr("readonly", true);
+                        }
+                    } else if (e.type == "blur") {
+                        if(new_val != old_val){
+                            $input.off("keyup");
+                            console.log("event blur ");
+                            inputLookChange($input, field, old_val, new_val);
+                        }else{
+                            $input.attr("readonly", true);
+                        }
+                    }
                 });
+            });
+
+            $(".field_driver_info_select").on('click', function () {
+                let $input = $(this);
+                let old_val = $input.val();
+                let field = $input.attr("id");
+                let $col = $input.parent();
+                let $select = $col.find("select");
+                $input.hide();
+                $select.attr("hidden", false);
+                $select.show();
+                $select.focus();
+                $select.val(options_gender[old_val]);
+
+                $select.on('change keyup blur', function(e){
+                    // debugger
+                    let new_val = $select.val();
+                    console.log("new val: "+new_val);
+                    if(e.type == "keyup"){
+                        if(e.key == "Escape"){
+                            $select.hide();    
+                            $input.show();    
+                        }
+                        console.log("keyup select");
+                    }else if(e.type == "change"){
+                        $select.off("blur keyup");
+                        inputLookChange($input, field, old_val, new_val, $select);
+                    }else if(e.type == "blur"){
+                        if(options_gender[old_val] == new_val){
+                            $select.hide();    
+                            $input.show();
+                        }
+                    }
+                });
+                
+                // $input.attr("readonly", false);
+                // $input.off("blur keyup");
+                // $input.on('blur keyup', function (e) {
+                //     let new_val = $input.val();
+                //     let field = $input.attr("id");
+                //     if (e.type == "keyup") {
+                //         if (e.key == "Enter" && new_val != old_val) {
+                //             console.log("event keyup ");
+                //             $input.off("blur");
+                //             //Se apaga el evento blur
+                //             inputLookChange($input, field, old_val, new_val);
+                //             $input.attr("readonly", true);
+                //         } else if (e.key == "Enter" && new_val != old_val) {
+                //             $input.attr("readonly", true);
+                //         } else if (e.key == "Escape") {
+                //             $input.val(old_val);
+                //             $input.attr("readonly", true);
+                //         }
+                //     } else if (e.type == "blur") {
+                //         if(new_val != old_val){
+                //             $input.off("keyup");
+                //             console.log("event blur ");
+                //             inputLookChange($input, field, old_val, new_val);
+                //         }else{
+                //             $input.attr("readonly", true);
+                //         }
+                //     }
+                // });
+            });
         });
     });
 
@@ -92,6 +189,63 @@
             $.each(item_vehicles, function (j, field) {
                 card_element.find(".")
             })
+        });
+    }
+
+    function inputLookChange($input, field, old_val, new_val, $element = 'undefined') {
+        let dni_id = $("#title_dni_id").text();
+        let new_value = new_val;
+        if($element != 'undefined'){
+            new_value = $element[0].selectedOptions[0].label;
+        }
+        swal.fire({
+            title: '<strong id="title_swal">Actualización de datos</strong>',
+            icon: 'warning',
+            html: "¿Desea actualizar este registro?",
+            showCloseButton: true,
+            showCancelButton: true,
+            focusConfirm: false,
+            confirmButtonText: 'Confirmar',
+            confirmButtonAriaLabel: 'Sí, actualizarlo!',
+            cancelButtonText: 'Cancelar',
+            cancelButtonAriaLabel: 'Thumbs down'
+        }).then((result) => {
+            if (result.value) {
+                $.post($("#function-driver-info-update").val(), { 'fieldch': field, 'valuech': new_value, 'dni_id': dni_id }).done(function (response) {
+                    if (Object.keys(response.errors).length > 0) {
+                        swal.fire({
+                            title: 'Error en el proceso!',
+                            text: response.errors.response,
+                            timer: 1500,
+                            icon: 'success'
+                        });
+                    } else {
+                        swal.fire({
+                            title: 'Proceso Completo!',
+                            text: 'Este registro se ha actualizado correctamente.',
+                            timer: 1500,
+                            icon: 'success'
+                        });
+                    }
+                    if($element == null){
+                        $input.attr("readonly", true);
+                    }else{
+                        $element.hide();
+                        $input.show();
+                        $input.val(new_value)
+                    }
+                });
+            } else {
+                if($element == 'undefined'){
+                    console.log("por acá");
+                    $input.attr("readonly", true);
+                    $input.val(old_val);
+                }else{
+                    console.log("else swal");
+                    $element.hide();
+                    $input.show();
+                }
+            }
         });
     }
     // The rest of the code goes here!

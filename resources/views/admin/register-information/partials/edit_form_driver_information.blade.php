@@ -27,7 +27,11 @@
             <div class="row mb-3">
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">Género:
                 </div>
-                <div class="col-md-3"> <input type="text" class="form-control field_driver_info" name="" id="gender" value="" readonly>
+                <div class="col-md-3"> <input type="text" class="form-control field_driver_info_select" name="" id="gender" value="" readonly>
+                    <select name="" class="form-control" id="edit_input_gender" hidden>
+                        <option value="0">Masculino</option>
+                        <option value="1">Femenino</option>
+                    </select>
                 </div>
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">Dia de
                     nacimiento:</div>

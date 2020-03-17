@@ -4,7 +4,7 @@
 <input type="hidden" name="route-search-information" id="route-search-information"
     value="{{ route('edit-driver.search') }}">
 <input type="hidden" name="url-validate-driver-information" id="url-validate-driver-information" value="">
-<input type="hidden" name="url-validate-driver-information" id="url-validate-driver-information" value="">
+<input type="hidden" name="function-driver-info-update" id="function-driver-info-update" value="{{route('driver-info.update')}}">
 <input type="hidden" name="index_section" id="index_section">
 <div class="container-fluid">
     <div class="row justify-content-center mt-0">
@@ -40,7 +40,7 @@
             </div>
         </div>
     </div>
-    <div class="row justify-content-center mt-0" id="container_card_driver">
+    <div class="row justify-content-center mt-0" id="container_card_driver" hidden>
         <div class="col-11 col-sm-9 col-md-9 col-lg-8 text-center p-0 mt-3 mb-2">
             <div class="card px-0 pt-4 pb-0 mt-3 mb-3"
                 style="-webkit-box-shadow: 10px 10px 5px -3px rgba(0,0,0,0.75);-moz-box-shadow: 10px 10px 5px -3px rgba(0,0,0,0.75);box-shadow: 10px 10px 5px -3px rgba(0,0,0,0.75);">

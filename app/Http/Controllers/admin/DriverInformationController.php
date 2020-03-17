@@ -250,10 +250,10 @@ class DriverInformationController extends Controller
         // var_dump(is_numeric($value));
         // die;
         if(!is_numeric($value) && $field == "score"){
-            return response()->json(['error' => ['response' => 'Formato incorrecto, el número no puede llevar comas ni texto. Ejemplo Correcto: 4.00']]);
+            return response()->json(['errors' => ['response' => 'Formato incorrecto, el número no puede llevar comas ni texto. Ejemplo Correcto: 4.00']]);
         }
         if ($field == "score" && ($value > 5 || $value < 0)) {
-            return response()->json(['error' => ['response' => 'El score no puede ser mayor a 5 ni menor a 0. Ejemplo: 5.00']]);
+            return response()->json(['errors' => ['response' => 'El score no puede ser mayor a 5 ni menor a 0. Ejemplo: 5.00']]);
         }
         $response = DriverInformation::where('dni_id', $data_updated['dni_id'])->update([
             $field => $value,
@@ -262,9 +262,9 @@ class DriverInformationController extends Controller
             'user_id' => auth()->id(),
         ]);
         if ($response) {
-            return response()->json(['response' => 'Información actualizada', 'error' => []]);
+            return response()->json(['response' => 'Información actualizada', 'errors' => []]);
         } else {
-            return response()->json(['error' => ['response' => 'No se pudo actualizar la información']]);
+            return response()->json(['errors' => ['response' => 'No se pudo actualizar la información']]);
         }
     }
 
@@ -338,9 +338,9 @@ class DriverInformationController extends Controller
         }
 
         if ($errors == 0) {
-            return response()->json(['response' => 'Usuario eliminado', 'error' => '']);
+            return response()->json(['response' => 'Usuario eliminado', 'errors' => '']);
         } else {
-            return response()->json(['error' => 'No se pudo eliminar el usuario']);
+            return response()->json(['errors' => 'No se pudo eliminar el usuario']);
         }
     }
 

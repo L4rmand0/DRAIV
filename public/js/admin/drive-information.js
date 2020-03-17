@@ -279,7 +279,7 @@
                         url: $("#form_driver_info_admin").data("url-delete"),
                         data: data_delete,
                         success: function(data) {
-                            if (data.error == "") {
+                            if (data.errors == "") {
                                 swal.fire(
                                     'Proceso Completado',
                                     'El usuario ha sido eliminado.',
@@ -312,10 +312,10 @@
                     data: dataSend,
                     async: false,
                     success: function(data) {
-                        if (Object.keys(data.error).length > 0)
+                        if (Object.keys(data.errors).length > 0)
                             swal.fire(
                                 'Error!',
-                                data.error.response,
+                                data.errors.response,
                                 'error'
                             )
                     }

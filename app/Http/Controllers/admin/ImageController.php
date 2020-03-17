@@ -153,7 +153,7 @@ class ImageController extends Controller
         // echo '<pre> acá';
         // print_r($request->file('file'));
         // print_r($request->all());
-        
+        // die;
         $file_type = request()->get('key');
         $index = request()->get('index');
         $cedula = Request()->get('driverInformation')['dni_id'];
