@@ -14,7 +14,7 @@
                 <div class="col-md-4">
                     <label for="customFile" class="text-secondaty ml-2"> {{ $type_images_key }} </label>
                     <div class="custom-file overflow-hidden rounded-pill mb-1">
-                        <input id="file{{$item_type_images}}" type="file" name="file[][{{$item_type_images}}]"
+                        <input id="file{{$item_type_images}}" type="file" name="file[&index_iv][{{$item_type_images}}]"
                             style="cursor:pointer;" class="custom-file-input rounded-pill input_files_drivers"
                             accept=".jpg, .jpeg" data-key="{{ $item_type_images }}">
                         <label for="file{{$item_type_images}}"
@@ -39,7 +39,7 @@
             <div class="col-md-4">
                 <label for="customFile" class="text-secondaty ml-2"> {{ $type_images_key }} </label>
                 <div class="custom-file overflow-hidden rounded-pill mb-1">
-                    <input id="file{{$item_type_images}}" type="file" name="file[][{{$item_type_images}}]"
+                    <input id="file{{$item_type_images}}" type="file" name="file[&index_iv][{{$item_type_images}}]"
                         style="cursor:pointer;" class="custom-file-input rounded-pill input_files_drivers"
                         accept=".jpg, .jpeg" data-key="{{ $item_type_images }}">
                     <label for="file{{$item_type_images}}" class="custom-file-label rounded-pill name_file">Seleccionar
@@ -63,7 +63,7 @@
         <div class="col-md-4">
             <label for="customFile" class="text-secondaty ml-2"> {{ $type_images_key }} </label>
             <div class="custom-file overflow-hidden rounded-pill mb-1">
-                <input id="file{{$item_type_images}}" type="file" name="file[][{{$item_type_images}}]"
+                <input id="file{{$item_type_images}}" type="file" name="file[&index_iv][{{$item_type_images}}]"
                     style="cursor:pointer;" class="custom-file-input rounded-pill input_files_drivers"
                     accept=".jpg, .jpeg" data-key="{{ $item_type_images }}">
                 <label for="file{{$item_type_images}}" class="custom-file-label rounded-pill name_file">Seleccionar

@@ -276,6 +276,7 @@
             if (field.name == "vehicle[plate_id][]") {
                 content += String($("#card-form-vehicles").html())
                 .replace("&amp;PLACA", "" + "Vehículo con placa: <span class='header_plate_id'>" + field.value + "</span>")
+                .replace(/&amp;index_iv/g, ""+contador+"")
                 .replace(/data-index=""/g,'data-index="'+contador+'"');
                 contador++;
                 // $(".select_user_vehicle").append("<option value='" + field.value + "'>" + field.value + "</option>");
