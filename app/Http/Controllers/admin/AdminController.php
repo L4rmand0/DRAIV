@@ -147,9 +147,9 @@ class AdminController extends Controller
                     return view('admin.register-information.edit', $data_motorcycle_technology);
                     break;
                 case 'register_evaluation':
-                    $data_motorcycle_technology = $this->showRegisterDriver($company_name);
-                    $data_motorcycle_technology = $this->checkMultipleAdmin($auth_user, $child_companies, $data_motorcycle_technology);
-                    return view('admin.register-information.edit', $data_motorcycle_technology);
+                    $data_register_driver = $this->showRegisterDriver($company_name);
+                    $data_register_driver = $this->checkMultipleAdmin($auth_user, $child_companies, $data_register_driver);
+                    return view('admin.register-information.register-evaluation', $data_register_driver);
                     break;
                 default:
                     return view('404_draiv');

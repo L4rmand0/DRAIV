@@ -9,6 +9,7 @@
             <h5>Has completado el registro de información!</h5>
             <a href="{{ route('welcome') }}" class="btn btn-success">Terminar</a>
             <a href="{{ route('admin','register_driver') }}" class="btn btn-info">Registrar otro conductor</a>
+            <a href="{{ route('admin','register_evaluation') }}" class="btn btn-primary">Evaluar Conductor</a>
         </div>
     </div>
 </div>
