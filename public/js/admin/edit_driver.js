@@ -10,11 +10,11 @@
         'dni_id', 'phone'
     ];
 
-    var options_gender={
-        "Femenino":1,
-        "Masculino":0
+    var options_gender = {
+        "Femenino": 1,
+        "Masculino": 0
     };
-    
+
     var input_event = false;
 
     // The $ is now locally scoped 
@@ -45,103 +45,42 @@
                         fillNameDriver(response.data);
                         fillExpiredSoat(response);
                         generateCardsVehicle(response.vehicles);
-                    }
-                });
-            $(".field_driver_info").on('click', function () {
-                let $input = $(this);
-                let old_val = $input.val();
-                $input.attr("readonly", false);
-                $input.off("blur keyup");
-                $input.on('blur keyup', function (e) {
-                    let new_val = $input.val();
-                    let field = $input.attr("id");
-                    if (e.type == "keyup") {
-                        if (e.key == "Enter" && new_val != old_val) {
-                            console.log("event keyup ");
-                            $input.off("blur");
-                            //Se apaga el evento blur
-                            inputLookChange($input, field, old_val, new_val);
-                            $input.attr("readonly", true);
-                        } else if (e.key == "Enter" && new_val != old_val) {
-                            $input.attr("readonly", true);
-                        } else if (e.key == "Escape") {
-                            $input.val(old_val);
-                            $input.attr("readonly", true);
-                        }
-                    } else if (e.type == "blur") {
-                        if(new_val != old_val){
-                            $input.off("keyup");
-                            console.log("event blur ");
-                            inputLookChange($input, field, old_val, new_val);
-                        }else{
-                            $input.attr("readonly", true);
-                        }
-                    }
-                });
-            });
 
-            $(".field_driver_info_select").on('click', function () {
-                let $input = $(this);
-                let old_val = $input.val();
-                let field = $input.attr("id");
-                let $col = $input.parent();
-                let $select = $col.find("select");
-                $input.hide();
-                $select.attr("hidden", false);
-                $select.show();
-                $select.focus();
-                $select.val(options_gender[old_val]);
-
-                $select.on('change keyup blur', function(e){
-                    // debugger
-                    let new_val = $select.val();
-                    console.log("new val: "+new_val);
-                    if(e.type == "keyup"){
-                        if(e.key == "Escape"){
-                            $select.hide();    
-                            $input.show();    
-                        }
-                        console.log("keyup select");
-                    }else if(e.type == "change"){
-                        $select.off("blur keyup");
-                        inputLookChange($input, field, old_val, new_val, $select);
-                    }else if(e.type == "blur"){
-                        if(options_gender[old_val] == new_val){
-                            $select.hide();    
-                            $input.show();
-                        }
+                        $(".field_driver_info").on('click', function () {
+                            let $input = $(this);
+                            let old_val = $input.val();
+                            $input.attr("readonly", false);
+                            $input.off("blur keyup");
+                            $input.on('blur keyup', function (e) {
+                                let new_val = $input.val();
+                                let field = $input.attr("id");
+                                if (e.type == "keyup") {
+                                    if (e.key == "Enter" && new_val != old_val) {
+                                        console.log("event keyup ");
+                                        $input.off("blur");
+                                        //Se apaga el evento blur
+                                        inputLookChange($input, field, old_val, new_val);
+                                        $input.attr("readonly", true);
+                                    } else if (e.key == "Enter" && new_val != old_val) {
+                                        $input.attr("readonly", true);
+                                    } else if (e.key == "Escape") {
+                                        $input.val(old_val);
+                                        $input.attr("readonly", true);
+                                    }
+                                } else if (e.type == "blur") {
+                                    if (new_val != old_val) {
+                                        $input.off("keyup");
+                                        console.log("event blur ");
+                                        inputLookChange($input, field, old_val, new_val);
+                                    } else {
+                                        $input.attr("readonly", true);
+                                    }
+                                }
+                            });
+                        });
                     }
                 });
-                
-                // $input.attr("readonly", false);
-                // $input.off("blur keyup");
-                // $input.on('blur keyup', function (e) {
-                //     let new_val = $input.val();
-                //     let field = $input.attr("id");
-                //     if (e.type == "keyup") {
-                //         if (e.key == "Enter" && new_val != old_val) {
-                //             console.log("event keyup ");
-                //             $input.off("blur");
-                //             //Se apaga el evento blur
-                //             inputLookChange($input, field, old_val, new_val);
-                //             $input.attr("readonly", true);
-                //         } else if (e.key == "Enter" && new_val != old_val) {
-                //             $input.attr("readonly", true);
-                //         } else if (e.key == "Escape") {
-                //             $input.val(old_val);
-                //             $input.attr("readonly", true);
-                //         }
-                //     } else if (e.type == "blur") {
-                //         if(new_val != old_val){
-                //             $input.off("keyup");
-                //             console.log("event blur ");
-                //             inputLookChange($input, field, old_val, new_val);
-                //         }else{
-                //             $input.attr("readonly", true);
-                //         }
-                //     }
-                // });
-            });
+        
         });
     });
 
@@ -177,17 +116,21 @@
     function generateCardsVehicle(vehicles) {
         let content_example = $("#example_card_vehicles").html();
         let content_cards = "";
+        //Genera los cards de cada uno de los vehículos
         $.each(vehicles, function (i, value) {
+            // debugger
             card = String(content_example).replace('id="card_single_vehicle"', 'id="card_single_vehicle' + (i + 1) + '"');
+            card = card.replace("&amp;PLACA", String(value['plate_id']));
             card = card.replace(/collapseItem/g, 'collapseItem' + (i + 1));
             content_cards += card;
         });
         $("#accordion_vehicles").html(content_cards);
-        //inserta inserta la información en los cards o card del vehículo
+        //inserta la información en los cards o card del vehículo
         $.each(vehicles, function (i, item_vehicles) {
-            card_element = $("card_single_vehicle" + (i + 1));
+            card_element = $("#card_single_vehicle" + (i + 1));
             $.each(item_vehicles, function (j, field) {
-                card_element.find(".")
+                // debugger
+                card_element.find("." + j).val(field)
             })
         });
     }
@@ -195,7 +138,7 @@
     function inputLookChange($input, field, old_val, new_val, $element = 'undefined') {
         let dni_id = $("#title_dni_id").text();
         let new_value = new_val;
-        if($element != 'undefined'){
+        if ($element != 'undefined') {
             new_value = $element[0].selectedOptions[0].label;
         }
         swal.fire({
@@ -227,20 +170,20 @@
                             icon: 'success'
                         });
                     }
-                    if($element == null){
+                    if ($element == null) {
                         $input.attr("readonly", true);
-                    }else{
+                    } else {
                         $element.hide();
                         $input.show();
                         $input.val(new_value)
                     }
                 });
             } else {
-                if($element == 'undefined'){
+                if ($element == 'undefined') {
                     console.log("por acá");
                     $input.attr("readonly", true);
                     $input.val(old_val);
-                }else{
+                } else {
                     console.log("else swal");
                     $element.hide();
                     $input.show();

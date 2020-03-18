@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-6">
             <input type="text" name="drivingLicence[licence_num]" class="form-control form-dataconductores" autocomplete="false"
-                placeholder="Número de licencia" id="licence_num"/>
+                placeholder="Número de licencia" id="licence_num" onkeypress="this.value = this.value.toUpperCase();"/>
         </div>
     </div>
     <div class="row mt-2">
