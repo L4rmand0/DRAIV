@@ -142,7 +142,7 @@ class AdminController extends Controller
                     return view('admin.register-information.register', $data_register_driver);
                     break;
                 case 'edit_driver':
-                    $data_motorcycle_technology = $this->showRegisterDriver($company_name);
+                    $data_motorcycle_technology = $this->showEditDriver($company_name);
                     $data_motorcycle_technology = $this->checkMultipleAdmin($auth_user, $child_companies, $data_motorcycle_technology);
                     return view('admin.register-information.edit', $data_motorcycle_technology);
                     break;
@@ -279,8 +279,6 @@ class AdminController extends Controller
             // variales de verificación manual
             'category_list'=>DocVerification::CATEGORY,
             'runstate_list'=>DocVerification::RUNSTATE,
-            'company_name' => ucwords(strtolower($company_name)),
-            'permissions' => $this->permissions,
             'values_slalom' => SkillMtM::VALUE_SLALOM,
             'values_projection' => SkillMtM::VALUE_PROJECTION,
             'values_braking' => SkillMtM::VALUE_BRAKING,
@@ -290,6 +288,15 @@ class AdminController extends Controller
             'runstate_t_list'=> json_encode($this->ListDT()->query(DocVerification::RUNSTATE)->make('array')),
             'soat_available_t_list'=> json_encode($this->ListDT()->query(DocVerification::SOAT_AVAILABLE)->make('array')),
             'technom_review_t_list'=> json_encode($this->ListDT()->query(DocVerification::TECHNOM_REVIEW)->make('array')),
+            'company_name' => ucwords(strtolower($company_name)),
+            'permissions' => $this->permissions,
+        ];
+    }
+
+    private function showEditDriver($company_name)
+    {
+        return [
+            'options_education'=>DriverInformation::enum_education,
             'company_name' => ucwords(strtolower($company_name)),
             'permissions' => $this->permissions,
         ];

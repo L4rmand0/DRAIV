@@ -19,3 +19,23 @@ CREATE TABLE `imagenes_vehiculo` (
 
 
 ALTER TABLE sam.imagenes MODIFY COLUMN tipo_doc enum('Fotografía_rostro','Cedula_frente','Cedula_reverso','Eps_frente','Eps_reverso','Licencia_transito_frente','Licencia_transito_reverso','Licencia_conducción_frente','Licencia_conducción_reverso','Fondo_pension','ARL','Casco','Foto_usuario_moto') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL;
+ALTER TABLE sam.driver_information CHANGE born_day born_date DATE NOT NULL;
+ALTER TABLE sam.driver_information MODIFY COLUMN born_date DATE NOT NULL;
+
+create table IF NOT exists doc_verification_vehicle(
+doc_id bigint UNSIGNED auto_increment not null,
+soat enum("Y","N"),
+technom_review enum("Y","N"),
+expi_date date not null,
+user_id bigint(10) UNSIGNED,
+ws_name varchar(20) default "pro_sam_bw19" not null ,
+start_date datetime not null DEFAULT CURRENT_TIMESTAMP,
+date_operation timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+operation enum("A","U","D") default "A" not null,
+version double default 1 not null,
+user_vehicle_id bigint(20) unsigned NOT NULL,
+primary key(doc_id),#Creacion FK (PK_TablaOrigen)
+constraint fkdoc_verification_vehicle_user_vehicle #FKTabla destino_tabla origen
+foreign key(user_vehicle_id)#PK_tabla origen
+references user_vehicle(id)#Tablaorigen(PK)
+)engine=INNODB;

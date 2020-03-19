@@ -99,7 +99,7 @@
     </div>
     <div class="row mb-3" style="margin-top: 15px;">
         <div class="col-md-6">
-            <input type="number" name="driverInformation[born_day]" class="form-control form-dataconductores" id="born_day"
+            <input type="number" name="driverInformation[born_date]" class="form-control form-dataconductores" id="born_date"
                 placeholder="Edad" required />
         </div>
         <!-- <div class="col-md-6 form_select_conductores">

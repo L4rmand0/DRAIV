@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <input class="form-control form-vehicles text-datadrivers" type="text" name="vehicle[plate_id][]" placeholder="Placa"
-                        id="plate_id" data-check="{{ route('admin.vehicle.checkvehiclebyid') }}" onkeypress="this.value = this.value.toUpperCase();"/>
+                        id="plate_id" data-check="{{ route('admin.vehicle.checkvehiclebyid') }}" onkeyup="this.value = this.value.toUpperCase();"/>
                 </div>
                 <div class="col-md-6">
                 </div>

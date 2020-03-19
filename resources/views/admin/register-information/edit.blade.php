@@ -93,13 +93,13 @@
                                 href="#nav-vehicle" role="tab" aria-controls="nav-profile" aria-selected="false"><i
                                     class="fas fa-car"></i>
                                 Vehículo</a>
-                            <a class="nav-item nav-link a-profile" id="nav-contact-tab" data-toggle="tab"
+                            {{-- <a class="nav-item nav-link a-profile" id="nav-contact-tab" data-toggle="tab"
                                 href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false"><i
                                     class="fas fa-users-cog"></i> Componente Humano</a>
                             <a class="nav-item nav-link a-profile" id="nav-contact-tab" data-toggle="tab"
                                 href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false"><i
                                     class="fas fa-tools"></i>
-                                Componente Técnico</a>
+                                Componente Técnico</a> --}}
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">

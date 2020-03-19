@@ -16,7 +16,7 @@
                         <form action="" method="POST" id="msform" accept-charset="UTF-8" enctype="multipart/form-data">
                             @csrf
                             <!-- progressbar -->
-                            <ul id="progressbar">
+                            <ul id="progressbar" style="display: flex;justify-content: center;align-items: center;">
                                 <li id="personal" class="active"><strong>Componente Humano</strong></li>
                                 <li id="Licence"><strong>Componente Técnico</strong></li>
                                 {{-- <li id="photos"><strong>Imágenes</strong></li>

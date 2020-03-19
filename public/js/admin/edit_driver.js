@@ -78,6 +78,53 @@
                                 }
                             });
                         });
+                        $(".field_driver_info_select").on('click', function () {
+                            let $input = $(this);
+                            let old_val = $input.val();
+                            $col = $input.parent();
+                            $select = $col.find('select');
+                            // $input.attr("readonly", false);
+                            // $input.off("blur keyup");
+                            $input.hide();
+                            $select.attr('hidden',false);
+                            $select.val(options_gender[old_val]);
+                            $select.show();
+                            $select.focus();
+                            $select.on('blur keyup change', function (e) {
+                                let new_val = $input.val();
+                                let field = $input.attr("id");
+                                if (e.type == "keyup") {
+                                    if (e.key == "Enter" && new_val != old_val) {
+                                        console.log("event keyup ");
+                                        $input.off("blur");
+                                        //Se apaga el evento blur
+                                        inputLookChange($input, field, old_val, new_val);
+                                        $input.attr("readonly", true);
+                                    } else if (e.key == "Enter" && new_val != old_val) {
+                                        $input.attr("readonly", true);
+                                    } else if (e.key == "Escape") {
+                                        $input.val(old_val);
+                                        $input.attr("readonly", true);
+                                    }
+                                } else if (e.type == "change") {
+                                    if (new_val != old_val) {
+                                        $input.off("keyup blur");
+                                        console.log("event: "+e.type);
+                                        inputLookChange($input, field, old_val, new_val, $select);
+                                    } 
+                                } else if (e.type == "blur") {
+                                    console.log("event: "+e.type);
+                                    if (new_val != old_val) {
+                                        $input.off("keyup");
+                                        inputLookChange($input, field, old_val, new_val);
+                                    } else {
+                                        $select.hide();
+                                        $input.show();
+                                        $input.attr("readonly", true);
+                                    }
+                                }
+                            });
+                        });
                     }
                 });
         
@@ -118,10 +165,12 @@
         let content_cards = "";
         //Genera los cards de cada uno de los vehículos
         $.each(vehicles, function (i, value) {
-            // debugger
             card = String(content_example).replace('id="card_single_vehicle"', 'id="card_single_vehicle' + (i + 1) + '"');
             card = card.replace("&amp;PLACA", String(value['plate_id']));
             card = card.replace(/collapseItem/g, 'collapseItem' + (i + 1));
+            if(i!=0){
+                card = card.replace('class="collapse show"', 'class="collapse"');
+            }
             content_cards += card;
         });
         $("#accordion_vehicles").html(content_cards);
