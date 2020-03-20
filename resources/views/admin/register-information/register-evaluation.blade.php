@@ -17,28 +17,18 @@
                             @csrf
                             <!-- progressbar -->
                             <ul id="progressbar" style="display: flex;justify-content: center;align-items: center;">
+                                <li id="empty"><strong></strong></li>
                                 <li id="personal" class="active"><strong>Componente Humano</strong></li>
                                 <li id="Licence"><strong>Componente Técnico</strong></li>
+                                <li id="empty"><strong></strong></li>
                                 {{-- <li id="photos"><strong>Imágenes</strong></li>
                                 <li id="vehicle"><strong>Vehículo</strong></li> --}}
                             </ul> <!-- fieldsets -->
-                            <fieldset data-endsection="true">
-                                @include('admin.partials.register.driver_information')
-                            </fieldset>
-                            <fieldset data-endsection="true" data-licence="true">
-                                @include('admin.partials.register.driving_licence')
+                            <fieldset>
+                                @include('admin.partials.evaluation.choose-driver')
                             </fieldset>
                             <fieldset data-endsection="true">
-                                @include('admin.partials.register.images')
-                            </fieldset>
-                            <fieldset data-vehicle="true">
-                                @include('admin.partials.register.vehicle')
-                            </fieldset> 
-                            <fieldset>
-                                @include('admin.partials.register.images_vehicle')
-                            </fieldset>
-                            <fieldset>
-                                @include('admin.partials.register.finish')
+                                @include('admin.partials.evaluation.doc-verification-driver')
                             </fieldset>
                         </form>
                     </div>
@@ -48,13 +38,9 @@
     </div>
 </div>
 <div hidden>
-    @include('admin.partials.register.form_vehicle')
+    
 </div>
 <div hidden>
-    @include('admin.partials.register.doc_verification')
-</div>
-<div hidden>
-    @include('admin.partials.register.form_images_vehicle')
 </div>
 
 <!-- /.container-fluid -->

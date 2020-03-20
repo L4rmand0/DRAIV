@@ -109,6 +109,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/doc-verification/list', 'admin\DocVerificationController@listVerifiedDrivers')->name('admin.doc-verification.list');
     Route::post('/doc-verification/update', 'admin\DocVerificationController@update')->name('admin.doc-verification.update');
     Route::post('/doc-verification/drivers-verify-chart', 'admin\DocVerificationController@makeDonutChartDriversVerified')->name('admin.doc-verification.drivers-verify-chart'); 
+    Route::post('/doc-verification/validate-first','admin\DocVerificationController@validateSelectDriver')->name('doc-verification.validate-first');
+    Route::post('/doc-verification-driver/validate-register','admin\DocVerificationController@validateInformation')->name('doc-verification-driver.validate-register');
     Route::get('/list-datatable', 'admin\UserController@MakeListProfile')->name('list-datatable');
     Route::get('skills-m-t-m/list', 'admin\SkillMtMController@datatable')->name('admin.skills-m-t-m.list');
     Route::post('skills-m-t-m/create', 'admin\SkillMtMController@store')->name('admin.skills-m-t-m.store');

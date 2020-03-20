@@ -12,7 +12,7 @@
     // Listen for the jQuery ready event on the document
     $(function () {
         var error_founds = 0;
-        var index_fieldset = 0;
+        var index_fieldset = 1;
         $(".next").click(function () {
             // debugger
             let element_button = $(this);
@@ -235,7 +235,7 @@
                 current_fs.find(".next").show()
             }
             //Remove class active
-            $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+            $("#progressbar li").eq(index_fieldset).removeClass("active");
 
             //show the previous fieldset
             previous_fs.show();

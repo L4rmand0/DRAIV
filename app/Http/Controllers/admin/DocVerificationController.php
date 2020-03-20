@@ -70,7 +70,7 @@ class DocVerificationController extends Controller
             ->where('uv.operation', '!=', 'D')
             ->first();
         if (empty($user_vehicle)) {
-            return response()->json(['response' => 'error_swal','errors'=>['message' => 'Este conductor ha sido elminado.']]);
+            return response()->json(['response' => 'error_swal', 'errors' => ['message' => 'Este conductor ha sido elminado.']]);
         }
         $uv_id = !empty($user_vehicle) ? $user_vehicle->id : "";
         $validator = Validator::make(
@@ -80,8 +80,8 @@ class DocVerificationController extends Controller
             ]
         );
         $errors = $validator->errors()->getMessages();
-        if(!empty($errors)){
-            return response()->json(['response' => 'error_swal','errors'=>['message' => 'Este conductor ya registró una evalución hoy, solo se permite una por día.']]);
+        if (!empty($errors)) {
+            return response()->json(['response' => 'error_swal', 'errors' => ['message' => 'Este conductor ya registró una evalución hoy, solo se permite una por día.']]);
         }
         // echo '<pre>';
         // print_r($errors);
@@ -136,7 +136,7 @@ class DocVerificationController extends Controller
             ->select('p.profile_id', 'p.user_profile')
             ->where('p.operation', '!=', 'D')
             ->get()->toArray();
-        return $this->ListDT()->query(self::sanitazeArr($profile_list))->make('sql','profile_id','user_profile');
+        return $this->ListDT()->query(self::sanitazeArr($profile_list))->make('sql', 'profile_id', 'user_profile');
     }
 
 
@@ -172,7 +172,8 @@ class DocVerificationController extends Controller
         return response()->json(['response' => 'Registro actualizado', 'errors' => [], 'updates' => $update]);
     }
 
-    public function updateDocVerification(Request $request){
+    public function updateDocVerification(Request $request)
+    {
         $now = date("Y-m-d H:i:s");
         $data_updated = $request->all();
         $field = $data_updated['fieldch'];
@@ -249,9 +250,9 @@ class DocVerificationController extends Controller
             ->where('di.operation', '!=', 'D')
             ->groupBy('validated_data')
             ->get()->toArray();
-            // echo '<pre>';
-            // print_r($drivers_verifieds);
-            // die;
+        // echo '<pre>';
+        // print_r($drivers_verifieds);
+        // die;
         foreach ($drivers_verifieds as $key => $value) {
             if ($value->validated_data == 1) {
                 $drivers_verifieds[$key]->validated_data = "Verificado";
@@ -337,20 +338,58 @@ class DocVerificationController extends Controller
         return datatables()->of($drive_information)->make(true);
     }
 
-    public function validateInformation(Request $request){
-        $data_input = $request->get('doc_verification');
-        $user_vehicle_id = $request->get('doc_verification');
+    public function validateInformation(Request $request)
+    {
+        // echo '<pre>';
+        // print_r($request->all());
+        // die;
+        $dni_id = $request->get('driver_select_evaluation');
+        $data_input = $request->get('doc_verification_driver');
+        $data_input['driver_information_dni_id'] = $dni_id;
+        // print_r($data_input);
+        // die;
+        // $user_vehicle_id = $request->get('doc_verification');
         $validator = Validator::make(
             $data_input,
             [
-                'start_date' => [new NotToday(['user_vehicle_id', $user_vehicle_id], 'doc_verification')],
+                'category' => 'required|max:255',
+                'runt_state' => 'required|max:255',
+                // 'driver_information_dni_id' => 'required|max:255',
+            ],
+            [
+                'category.required' => "La categoría es obligatoria",
+                'runt_state.required' => "El runt es obligatorio",
             ]
         );
         $errors = $validator->errors()->getMessages();
         if (!empty($errors)) {
             return response()->json(['errors' => $errors]);
-        }else{
-            return response()->json(['response'=>'','errors' => []]);
+        } else {
+            return response()->json(['response' => '', 'errors' => []]);
+        }
+    }
+
+    public function validateSelectDriver(Request $request)
+    {
+        $data_input = $request->all();
+        // echo '<pre>';
+        // print_r($request->all());
+        // die;
+        $validator = Validator::make(
+            $data_input,
+            [
+                'driver_select_evaluation' => 'required|max:255',
+            ],
+            [
+                'driver_select_evaluation.required' => "Se debe seleccionar un conductor"
+            ]
+        );
+        $data_input = $request->all();
+        $errors = $validator->errors()->getMessages();
+        if (!empty($errors)) {
+            return response()->json(['errors' => $errors]);
+        } else {
+            return response()->json(['response' => '', 'errors' => []]);
         }
     }
 }

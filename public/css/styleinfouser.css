@@ -217,6 +217,10 @@ select.list-dt:focus {
     z-index: -1
 }
 
+#progressbar #empty:after {
+    top: -14px;
+}
+
 #progressbar li.active:before,
 #progressbar li.active:after {
     background: skyblue

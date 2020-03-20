@@ -147,7 +147,7 @@ class AdminController extends Controller
                     return view('admin.register-information.edit', $data_motorcycle_technology);
                     break;
                 case 'register_evaluation':
-                    $data_register_driver = $this->showRegisterDriver($company_name);
+                    $data_register_driver = $this->showRegisterEvaluationDriver($company_name);
                     $data_register_driver = $this->checkMultipleAdmin($auth_user, $child_companies, $data_register_driver);
                     return view('admin.register-information.register-evaluation', $data_register_driver);
                     break;
@@ -215,7 +215,7 @@ class AdminController extends Controller
             'permissions' => $this->permissions,
         ];
     }
-
+    
     private function showRegisterDriver($company_name)
     {
         //Información de Conductores
@@ -288,6 +288,23 @@ class AdminController extends Controller
             'runstate_t_list'=> json_encode($this->ListDT()->query(DocVerification::RUNSTATE)->make('array')),
             'soat_available_t_list'=> json_encode($this->ListDT()->query(DocVerification::SOAT_AVAILABLE)->make('array')),
             'technom_review_t_list'=> json_encode($this->ListDT()->query(DocVerification::TECHNOM_REVIEW)->make('array')),
+            'company_name' => ucwords(strtolower($company_name)),
+            'permissions' => $this->permissions,
+        ];
+    }
+
+    private function showRegisterEvaluationDriver($company_name)
+    {
+        //Evaluación de Conductores
+        return [
+            'category_list'=>DocVerification::CATEGORY,
+            'runstate_list'=>DocVerification::RUNSTATE,
+            'values_slalom' => SkillMtM::VALUE_SLALOM,
+            'values_projection' => SkillMtM::VALUE_PROJECTION,
+            'values_braking' => SkillMtM::VALUE_BRAKING,
+            'values_evasion' => SkillMtM::VALUE_EVASION,
+            'values_mobility' => SkillMtM::VALUE_MOBILITY,
+            'driver_information_list'=> DriverInformationController::driveInformationListbyCompany(),
             'company_name' => ucwords(strtolower($company_name)),
             'permissions' => $this->permissions,
         ];

@@ -826,6 +826,20 @@ class DriverInformationController extends Controller
         } else {
             return response()->json(['errors' => ['response' => 'No se pudo actualizar la información']]);
         }
-    
+    }
+
+    public static function driveInformationListbyCompany()
+    {
+        $company_id = Auth::user()->company_active;
+        return DB::table('driver_information')
+            ->orderBy('driver_information.start_date', 'desc')
+            ->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.operation', '!=', 'D')
+            ->select(DB::raw(
+                'driver_information.dni_id,
+            driver_information.first_name'
+            ))
+            // ->toSql();
+            ->get()->toArray();
     }
 }

@@ -16,16 +16,16 @@
                         <form action="" method="POST" id="msform" accept-charset="UTF-8" enctype="multipart/form-data">
                             @csrf
                             <!-- progressbar -->
-                            <ul id="progressbar">
+                            <ul id="progressbar" style="display: flex;justify-content: center;align-items: center;">
+                                <li id="empty"><strong></strong></li>
                                 <li id="personal" class="active"><strong>Datos Personales</strong></li>
-                                <li id="Licence"><strong>Licencia</strong></li>
-                                <li id="photos"><strong>Imágenes</strong></li>
                                 <li id="vehicle"><strong>Vehículo</strong></li>
+                                <li id="empty"><strong></strong></li>
                             </ul> <!-- fieldsets -->
-                            <fieldset data-endsection="true">
+                            <fieldset>
                                 @include('admin.partials.register.driver_information')
                             </fieldset>
-                            <fieldset data-endsection="true" data-licence="true">
+                            <fieldset data-licence="true">
                                 @include('admin.partials.register.driving_licence')
                             </fieldset>
                             <fieldset data-endsection="true">
@@ -49,9 +49,6 @@
 </div>
 <div hidden>
     @include('admin.partials.register.form_vehicle')
-</div>
-<div hidden>
-    @include('admin.partials.register.doc_verification')
 </div>
 <div hidden>
     @include('admin.partials.register.form_images_vehicle')
