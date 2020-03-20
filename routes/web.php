@@ -130,9 +130,11 @@ Route::prefix('admin')->group(function () {
     Route::post('personal-ele-protection/destroy', 'admin\EppController@destroy')->name('admin.personal-ele-protection.destroy');
     // RUTAS PARA EL MÓDULO DE EDITAR INFORMACIPON DE CONDUCTOR
     Route::post('edit-driver/search', 'admin\EditDriverController@getInformationDriver')->name('edit-driver.search');
-    // RUTAS PARA EL MÓDULO DE REGISTRART INFORMACIPON DE CONDUCTOR
+    // RUTAS PARA EL MÓDULO DE REGISTRART INFORMACIÓN DE CONDUCTOR
     Route::post('register-driver/primary-information', 'admin\DriverInformationController@registerPrimaryInformation')->name('register-driver.primary-information');
     Route::post('register-driver/secondary-information', 'admin\VehicleController@registerSecondaryInformation')->name('register-driver.secondary-information');
+    // RUTAS PARA REGISTRAR EVALUACIÓN DEL CONDCUTOR
+    Route::post('driver-info/list-driver-vehicles', 'admin\DriverVehicleController@getVehiclesByDriver')->name('drivers-info.list-driver-vehicles');
 });
 
 // Route::get('/api-text-extract', 'ApiController@extractText')->name('api-text-extract');

@@ -1,9 +1,7 @@
 @extends('layouts-admin.app')
 @section('content')
 <!-- Begin Page Content -->
-<input type="hidden" name="url-validate-driver-information" id="url-validate-driver-information" value="">
-<input type="hidden" name="url-register-primary-information" id="route-register-primary-information" value="{{ route('register-driver.primary-information') }}">
-<input type="hidden" name="url-register-secondary-information" id="route-register-secondary-information" value="{{ route('register-driver.secondary-information') }}">
+<input type="hidden" id="function-list-driver-vehicles" value="{{ route('drivers-info.list-driver-vehicles') }}">
 <input type="hidden" name="index_section" id="index_section">
 <div class="container-fluid" id="grad1">
     <div class="row justify-content-center mt-0">
@@ -27,6 +25,9 @@
                             <fieldset>
                                 @include('admin.partials.evaluation.choose-driver')
                             </fieldset>
+                            <fieldset>
+                                @include('admin.partials.evaluation.doc-verification-driver')
+                            </fieldset>
                             <fieldset data-endsection="true">
                                 @include('admin.partials.evaluation.doc-verification-driver')
                             </fieldset>
@@ -48,6 +49,7 @@
 <link href="{{ asset('css/styleinfouser.css') }}" rel="stylesheet">
 <script src="{{ asset('js/dataconductores.js') }}" defer></script>
 <script src="{{ asset('js/styleinfouser.js') }}" defer></script>
+<script src="{{ asset('js/admin/register-evaluation.js') }}" defer></script>
 <script>
 </script>
 @endsection

@@ -1082,9 +1082,10 @@ class VehicleController extends Controller
     {
         $company_id = auth()->user()->company_active;
         // echo '<pre>';
-        // print_r($request->all());
+        // die;
         $vechicles = $request->get('vehicle');
         $data_clean_vehicles = $this->cleanArray($vechicles);
+        // print_r($data_clean_vehicles);
         // $v = $this->toArrayByNumber($request->get('vehicle'));
         // die;
         $driver_information = $request->get('driverInformation');
@@ -1110,6 +1111,9 @@ class VehicleController extends Controller
                     'company_id' => $company_id,
                     'user_id' => auth()->id(),
             ]);
+            // echo ' di '.$dni_id;
+            // echo ' placa: '.$insert_v->plate_id;
+            // die;
             $insert_uv = DriverVehicle::create([
                 'vehicle_plate_id' => $insert_v->plate_id,
                 'driver_information_dni_id' => $dni_id,

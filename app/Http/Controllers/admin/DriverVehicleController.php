@@ -357,10 +357,10 @@ class DriverVehicleController extends Controller
                 ->where('v.operation', '!=', 'D')
                 ->where('uv.operation', '!=', 'D')
                 ->first();
-                // ->toSql();
-                // echo '<pre>';
-                // print_r($vechicles);
-                // die;
+            // ->toSql();
+            // echo '<pre>';
+            // print_r($vechicles);
+            // die;
         } else {
             $vechicles = DB::table('vehicle')
                 ->select(DB::raw('count(plate_id) as total_vehicles'))
@@ -372,5 +372,38 @@ class DriverVehicleController extends Controller
         // print_r($vechicles);
         // die;
         return response()->json(['response' => $vechicles->total_vehicles, 'errors' => []]);
+    }
+
+    public function getVehiclesByDriver(Request $request)
+    {
+        $has_motos = false;
+        $has_autos = false;
+        $dni_id = $request->get('dni_id');
+        $result = DB::table('user_vehicle as uv')
+            ->select(DB::raw(
+                'uv.driver_information_dni_id,
+                v.type_v,
+                v.plate_id'
+            ))
+            ->join('vehicle as v', 'v.plate_id', '=', 'uv.vehicle_plate_id')
+            ->where('uv.driver_information_dni_id', '=', $dni_id)
+            ->where('uv.operation', '!=', 'D')
+            ->get()->toArray();
+        foreach ($result as $key => $value) {
+            if(in_array($value->type_v,Vehicle::MOTOS)){
+                $has_motos = true;
+            }else if(in_array($value->type_v,Vehicle::AUTOS)){
+                $has_autos = true;
+            }
+        }    
+        // print_r($result);
+        // die;
+        return response()->json([
+            'data'=>$result,'errors'=>[],
+            'has_autos'=>$has_autos,
+            'has_motos'=>$has_motos
+        ]);
+        // print_r($result);
+        // die;
     }
 }

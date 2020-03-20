@@ -1,6 +1,6 @@
 <div class="form-card">
     {{-- <h2 class="fs-title mt-2">Información Del Vehículo</h2> --}}
-    <h2 class="fs-title" style="margin-bottom: 20px">Evaluación de Información</h2>
+    <h2 class="fs-title" style="margin-bottom: 20px">Evaluación de Conductores</h2>
     <div class="row mt-2">
         <div class="col-md-6">
             <label for="valid_licence_form">Conductor a evaluar:</label><br>
