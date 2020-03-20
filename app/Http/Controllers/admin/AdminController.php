@@ -296,6 +296,7 @@ class AdminController extends Controller
     private function showEditDriver($company_name)
     {
         return [
+            'options_civil_state'=>DriverInformation::enum_civil_state,
             'options_education'=>DriverInformation::enum_education,
             'company_name' => ucwords(strtolower($company_name)),
             'permissions' => $this->permissions,

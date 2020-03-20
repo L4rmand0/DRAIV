@@ -10,11 +10,6 @@
         'dni_id', 'phone'
     ];
 
-    var options_gender = {
-        "Femenino": 1,
-        "Masculino": 0
-    };
-
     var input_event = false;
 
     // The $ is now locally scoped 
@@ -26,6 +21,15 @@
             //Revisa si el contenedor de información de conductor está oculto
             if ($("#container_card_driver").is(":visible")) {
                 $("#container_card_driver").hide();
+            }
+            if($("#search_param").val()==""){
+                swal.fire(
+                    'Información requerida!',
+                    'Se debe elegir elegir un parámetro de búsqueda.',
+                    'warning'
+                )
+                $("#search_param").focus();
+                return
             }
             $.post($("#route-search-information").val(), $form.serialize())
                 .done(function (response) {
@@ -39,12 +43,23 @@
                     } else {
                         $("#container_card_driver").attr('hidden', false);
                         $("#container_card_driver").show('hidden', false);
-                        console.log(response);
                         fillTitles(response.data, titles);
                         fillInformation(target_element, response.data);
                         fillNameDriver(response.data);
                         fillExpiredSoat(response);
                         generateCardsVehicle(response.vehicles);
+                        $(".field_driver_info_date").datepicker({ dateFormat: 'yy-mm-dd', changeYear: true, yearRange: "-100:+0" });
+                        $(".field_driver_info_date").on('click', function () {
+                            let $input = $(this);
+                            let field = $input.attr("id");
+                            let old_val = $input.val();
+                            $input.on('change', function () {
+                                let new_val = $input.val();
+                                if (old_val != new_val) {
+                                    inputLookChange($input, field, old_val, new_val);
+                                }
+                            });
+                        });
 
                         $(".field_driver_info").on('click', function () {
                             let $input = $(this);
@@ -79,17 +94,16 @@
                             });
                         });
                         $(".field_driver_info_select").on('click', function (event) {
-                            console.log("event: "+event.type);
+                            console.log("event: " + event.type);
                             let $input = $(this);
                             let old_val = $input.val();
                             $col = $input.parent();
                             $select = $col.find('select');
                             //muestra el select con la información y oculta el input
                             $input.hide();
-                            $select.attr('hidden',false);
-                            $select.val(options_gender[old_val]);
+                            $select.attr('hidden', false);
                             //pone en selected el valo en base de datos
-                            $select.children().filter(function(){
+                            $select.children().filter(function () {
                                 return this.text == old_val;
                             }).prop('selected', true)
                             $select.show();
@@ -101,10 +115,8 @@
                             $select.on('blur keyup change', function (e) {
                                 let new_val = $select[0].selectedOptions[0].label;
                                 let field = $input.attr("id");
-                                let swal = $(".swal2-container").is(':visible');
-                                
                                 if (e.type == "keyup") {
-                                    console.log("event: "+e.type);
+                                    console.log("event: " + e.type);
                                     if (e.key == "Enter" && new_val != old_val) {
                                         //Se apaga el evento blur
                                         $input.off("blur change");
@@ -120,13 +132,13 @@
                                     if (new_val != old_val) {
                                         $input.off("blur");
                                         $input.off("keyup");
-                                        console.log("event: "+e.type);
+                                        console.log("event: " + e.type);
                                         inputLookChange($input, field, old_val, new_val, $select);
-                                    }else{
+                                    } else {
                                         console.log("No es diferente");
-                                    } 
+                                    }
                                 } else if (e.type == "blur") {
-                                    console.log("event: "+e.type);
+                                    console.log("event: " + e.type);
                                     if (new_val == old_val) {
                                         $select.hide();
                                         $input.show();
@@ -137,7 +149,7 @@
                         });
                     }
                 });
-        
+
         });
     });
 
@@ -178,7 +190,7 @@
             card = String(content_example).replace('id="card_single_vehicle"', 'id="card_single_vehicle' + (i + 1) + '"');
             card = card.replace("&amp;PLACA", String(value['plate_id']));
             card = card.replace(/collapseItem/g, 'collapseItem' + (i + 1));
-            if(i!=0){
+            if (i != 0) {
                 card = card.replace('class="collapse show"', 'class="collapse"');
             }
             content_cards += card;

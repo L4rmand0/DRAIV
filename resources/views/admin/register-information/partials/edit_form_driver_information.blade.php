@@ -36,15 +36,15 @@
                 </div>
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">Fecha de
                     nacimiento:</div>
-                <div class="col-md-3"><input type="text" class="form-control field_driver_info" name="" id="born_date"
+                <div class="col-md-3"><input type="text" class="form-control field_driver_info_date" name="" id="born_date"
                         value="" readonly>
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">
                     Educación:</div>
-                <div class="col-md-3"> <input type="text" class="form-control field_driver_info_select" name="" id="education"
-                        value="" readonly>
+                <div class="col-md-3"> <input type="text" class="form-control field_driver_info_select" name=""
+                        id="education" value="" readonly>
                     <select name="" class="form-control" id="edit_input_education" hidden>
                         @foreach ($options_education as $option)
                         <option value="{{$option}}">{{$option}}</option>
@@ -87,8 +87,14 @@
                 </div>
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">Estado
                     Civil:</div>
-                <div class="col-md-3"><input type="text" class="form-control field_driver_info" name="" id="civil_state"
-                        value="" readonly></div>
+                <div class="col-md-3"><input type="text" class="form-control field_driver_info_select" name="" id="civil_state"
+                        value="" readonly>
+                    <select name="" class="form-control" id="edit_input_education" hidden>
+                        @foreach ($options_civil_state as $option)
+                        <option value="{{$option}}">{{$option}}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
         </div>
     </div>

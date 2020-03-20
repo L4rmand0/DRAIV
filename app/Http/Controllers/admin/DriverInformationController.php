@@ -240,6 +240,9 @@ class DriverInformationController extends Controller
      */
     public function update(Request $request)
     {
+        // echo '<pre>';
+        // print_r($request->all());
+        // die;
         $now = date("Y-m-d H:i:s");
         $data_updated = $request->all();
         $field = $data_updated['fieldch'];

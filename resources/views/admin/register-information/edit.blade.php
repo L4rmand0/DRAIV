@@ -17,7 +17,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="">Párametro de búsqueda: </label>
-                                    <select name="search_param" id="" class="form-control">
+                                    <select name="search_param" id="search_param" class="form-control">
                                         <option value="">Seleccionar ...</option>
                                         <option value="dni_id">Cédula</option>
                                         <option value="plate_id">Placa</option>
