@@ -78,27 +78,37 @@
                                 }
                             });
                         });
-                        $(".field_driver_info_select").on('click', function () {
+                        $(".field_driver_info_select").on('click', function (event) {
+                            console.log("event: "+event.type);
                             let $input = $(this);
                             let old_val = $input.val();
                             $col = $input.parent();
                             $select = $col.find('select');
-                            // $input.attr("readonly", false);
-                            // $input.off("blur keyup");
+                            //muestra el select con la información y oculta el input
                             $input.hide();
                             $select.attr('hidden',false);
                             $select.val(options_gender[old_val]);
+                            //pone en selected el valo en base de datos
+                            $select.children().filter(function(){
+                                return this.text == old_val;
+                            }).prop('selected', true)
                             $select.show();
                             $select.focus();
+                            //Desactiva los eventos activados anteriormente
+                            $select.off("blur");
+                            $select.off("keyup");
+                            $select.off("change");
                             $select.on('blur keyup change', function (e) {
-                                let new_val = $input.val();
+                                let new_val = $select[0].selectedOptions[0].label;
                                 let field = $input.attr("id");
+                                let swal = $(".swal2-container").is(':visible');
+                                
                                 if (e.type == "keyup") {
+                                    console.log("event: "+e.type);
                                     if (e.key == "Enter" && new_val != old_val) {
-                                        console.log("event keyup ");
-                                        $input.off("blur");
                                         //Se apaga el evento blur
-                                        inputLookChange($input, field, old_val, new_val);
+                                        $input.off("blur change");
+                                        inputLookChange($input, field, old_val, new_val, $select);
                                         $input.attr("readonly", true);
                                     } else if (e.key == "Enter" && new_val != old_val) {
                                         $input.attr("readonly", true);
@@ -108,16 +118,16 @@
                                     }
                                 } else if (e.type == "change") {
                                     if (new_val != old_val) {
-                                        $input.off("keyup blur");
+                                        $input.off("blur");
+                                        $input.off("keyup");
                                         console.log("event: "+e.type);
                                         inputLookChange($input, field, old_val, new_val, $select);
+                                    }else{
+                                        console.log("No es diferente");
                                     } 
                                 } else if (e.type == "blur") {
                                     console.log("event: "+e.type);
-                                    if (new_val != old_val) {
-                                        $input.off("keyup");
-                                        inputLookChange($input, field, old_val, new_val);
-                                    } else {
+                                    if (new_val == old_val) {
                                         $select.hide();
                                         $input.show();
                                         $input.attr("readonly", true);
