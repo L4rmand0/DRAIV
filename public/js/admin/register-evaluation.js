@@ -19,6 +19,18 @@
                     dni_id = $select.val();
                     $.post($("#function-list-driver-vehicles").val(), {'dni_id':dni_id}).done(function(response){
                         console.log(response);
+                        if (Object.keys(response.errors).length > 0) {
+                            
+                        }else{
+                            if(response.has_autos){
+                                
+                            }else if (response.has_motos){
+
+                            }
+                            cards = $("#example_card_skill").html();
+                            cards +=cards; 
+                            $("#accordion_skills").html(cards);
+                        }
                     });
                 });
             });

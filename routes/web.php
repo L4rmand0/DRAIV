@@ -133,7 +133,7 @@ Route::prefix('admin')->group(function () {
     // RUTAS PARA EL MÓDULO DE REGISTRART INFORMACIÓN DE CONDUCTOR
     Route::post('register-driver/primary-information', 'admin\DriverInformationController@registerPrimaryInformation')->name('register-driver.primary-information');
     Route::post('register-driver/secondary-information', 'admin\VehicleController@registerSecondaryInformation')->name('register-driver.secondary-information');
-    // RUTAS PARA REGISTRAR EVALUACIÓN DEL CONDCUTOR
+    // RUTAS PARA REGISTRAR EVALUACIÓN DEL CONDUCTOR
     Route::post('driver-info/list-driver-vehicles', 'admin\DriverVehicleController@getVehiclesByDriver')->name('drivers-info.list-driver-vehicles');
 });
 
