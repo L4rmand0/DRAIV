@@ -31,8 +31,11 @@
                             <fieldset data-endsection="true" id="fs_skills">
                                 @include('admin.partials.evaluation.skill-m-t-m-driver')
                             </fieldset>
-                            <fieldset>
+                            <fieldset id="fs_doc_v_vehicle">
                                 @include('admin.partials.evaluation.doc-verification-vehicle')
+                            </fieldset>
+                            <fieldset id="fs_motor_technology">
+                                @include('admin.partials.evaluation.motorcycle-technology')
                             </fieldset>
                         </form>
                     </div>
@@ -46,6 +49,9 @@
 </div>
 <div id="example_card_doc_v_vehicle" hidden>
     @include('admin.register-information.partials.card_doc_verification_vehicle')
+</div>
+<div id="example_card_motorcycle_technology" hidden>
+    @include('admin.register-information.partials.card_motorcycle_technology')
 </div>
 
 <!-- /.container-fluid -->

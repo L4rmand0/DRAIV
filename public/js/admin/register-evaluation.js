@@ -24,19 +24,9 @@
                         } else {
                             generateCardSkills(response);
                             generateCardDocvVehicle(response);
+                            generateCardMotorTechnology(response);
                             // ----- Limpia los estilos de error en los formularios -----
-                            $("#msform #fs_skills input[type=text], #msform  #fs_skillsinput[type=email], #msform #fs_skills input[type=password], #msform #fs_skills input[type=number], #msform #fs_skills input[type=tel]").on("keypress", function () {
-                                let $target = $(this);
-                                $(this).cleanErrorElementForm($target);
-                            });
-                            $("#msform #fs_skills input[type=text], #msform #fs_skills input[type=email], #msform #fs_skills input[type=password], #msform #fs_skills input[type=number], #msform #fs_skills input[type=tel], #msform #fs_skills input[type=date]").on("change", function () {
-                                let $target = $(this);
-                                $(this).cleanErrorElementForm($target);
-                            });
-                            $("#msform #fs_skills input[type=checkbox], #msform #fs_skills select").on("change", function () {
-                                let $target = $(this);
-                                $(this).cleanErrorElementForm($target);
-                            });
+                            
                             // ------- Termina limpiar el formulario -------
                         }
                     });
@@ -61,6 +51,18 @@
             $("#has_motos").val("true")
         }
         $("#accordion_skills").html(cards);
+        $("#msform #fs_skills input[type=text], #msform  #fs_skills input[type=email], #msform #fs_skills input[type=password], #msform #fs_skills input[type=number], #msform #fs_skills input[type=tel]").on("keypress", function () {
+            let $target = $(this);
+            $(this).cleanErrorElementForm($target);
+        });
+        $("#msform #fs_skills input[type=text], #msform #fs_skills input[type=email], #msform #fs_skills input[type=password], #msform #fs_skills input[type=number], #msform #fs_skills input[type=tel], #msform #fs_skills input[type=date]").on("change", function () {
+            let $target = $(this);
+            $(this).cleanErrorElementForm($target);
+        });
+        $("#msform #fs_skills input[type=checkbox], #msform #fs_skills select").on("change", function () {
+            let $target = $(this);
+            $(this).cleanErrorElementForm($target);
+        });
     }
 
     function generateCardDocvVehicle(response){
@@ -72,6 +74,42 @@
             cards+=card_auto;
         })
         $("#accordion_doc_verification_vehicle").html(cards);
+        $(".doc_v_v_expi_date").datepicker({ dateFormat: 'yy-mm-dd' });
+        $("#msform #fs_doc_v_vehicle input[type=text], #msform  #fs_doc_v_vehicle input[type=email], #msform #fs_doc_v_vehicle input[type=password], #msform #fs_doc_v_vehicle input[type=number], #msform #fs_doc_v_vehicle input[type=tel]").on("keypress", function () {
+            let $target = $(this);
+            $(this).cleanErrorElementForm($target);
+        });
+        $("#msform #fs_doc_v_vehicle input[type=text], #msform #fs_doc_v_vehicle input[type=email], #msform #fs_doc_v_vehicle input[type=password], #msform #fs_doc_v_vehicle input[type=number], #msform #fs_doc_v_vehicle input[type=tel], #msform #fs_doc_v_vehicle input[type=date]").on("change", function () {
+            let $target = $(this);
+            $(this).cleanErrorElementForm($target);
+        });
+        $("#msform #fs_doc_v_vehicle input[type=checkbox], #msform #fs_doc_v_vehicle select").on("change", function () {
+            let $target = $(this);
+            $(this).cleanErrorElementForm($target);
+        });
+    }
+
+    function generateCardMotorTechnology(response){
+        let cards = "";
+        $.each(response.data,function(k,v){
+            let plate_id = v["plate_id"];
+            let card_auto = $("#example_card_motorcycle_technology").html();
+            card_auto = card_auto.replace(/&amp;PLACA/g, String(plate_id));
+            cards+=card_auto;
+        })
+        $("#accordion_motorcycle_technology_vehicle").html(cards);
+        $("#msform #fs_motor_technology input[type=text], #msform  #fs_motor_technology input[type=email], #msform #fs_motor_technology input[type=password], #msform #fs_motor_technology input[type=number], #msform #fs_motor_technology input[type=tel]").on("keypress", function () {
+            let $target = $(this);
+            $(this).cleanErrorElementForm($target);
+        });
+        $("#msform #fs_motor_technology input[type=text], #msform #fs_motor_technology input[type=email], #msform #fs_motor_technology input[type=password], #msform #fs_motor_technology input[type=number], #msform #fs_motor_technology input[type=tel], #msform #fs_motor_technology input[type=date]").on("change", function () {
+            let $target = $(this);
+            $(this).cleanErrorElementForm($target);
+        });
+        $("#msform #fs_motor_technology input[type=checkbox], #msform #fs_motor_technology select").on("change", function () {
+            let $target = $(this);
+            $(this).cleanErrorElementForm($target);
+        });
     }
     // The rest of the code goes here!
 }));

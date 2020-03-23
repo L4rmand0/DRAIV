@@ -5,14 +5,16 @@ namespace App\Http\Controllers\admin;
 use DB;
 use App\Rules\NotToday;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\MotorcycleTechnology;
+use App\Traits\ArrayFunctions;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 
 class MotorcycleTechnologyController extends Controller
 {
+    use ArrayFunctions;
     /**
      * Display a listing of the resource.
      *
@@ -186,5 +188,42 @@ class MotorcycleTechnologyController extends Controller
         ]);    
         $motorcycle_technology = $this->addDeleteButtonDatatable($motorcycle_technology);
         return datatables()->of($motorcycle_technology)->make(true);
+    }
+
+    protected function validateInformation(Request $request)
+    {
+        $all = $request->all();
+        $data_input = $request->get('motorcycle_technology');
+        echo '<pre>';
+        print_r($data_input);
+        print_r($all);
+        die;
+
+        foreach ($data_input as $key => $value) {
+            $validator = Validator::make(
+                $value,
+                [
+                    'brake_type' => ['required', 'max:10'],
+                    'assistence_brake' => 'required|max:10',
+                    'automatic_lights' => 'required|max:10',
+                    // 'operation' => [new IsNotDelete(['plate_id', $plate_id], 'vehicle')],
+                ],
+                [
+                    'brake_type.required' => "El tipo de frenado de disco es obligatorio",
+                    'assistence_brake.required' => "El tipo de asistencia de frenos es obligatoria",
+                    'automatic_lights.required' => "El tipo de luces es obligatoria",
+                ]
+            );
+            $errors[$key] = $validator->errors()->getMessages();
+        }
+        $errors_new = self::personalizeErrorsTypeVehicle($errors);
+        // print_r($errors_new);
+        // die;
+       
+        if (!empty($errors_new)) {
+            return response()->json(['errors' => $errors_new]);
+        } else {
+            return response()->json(['response' => '', 'errors' => []]);
+        }
     }
 }

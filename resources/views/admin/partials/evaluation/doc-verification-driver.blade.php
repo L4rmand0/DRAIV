@@ -1,6 +1,6 @@
 <div class="form-card">
     {{-- <h2 class="fs-title mt-2">Información Del Vehículo</h2> --}}
-    <h2 class="fs-title" style="margin-bottom: 20px">Evaluación de Documentación de Conductores</h2>
+    <h2 class="fs-title" style="margin-bottom: 20px">Evaluación de Documentación del Conductor</h2>
     <div class="row mt-2">
         <div class="col-md-6">
             <label for="valid_licence_form">Licencia Vigente <a

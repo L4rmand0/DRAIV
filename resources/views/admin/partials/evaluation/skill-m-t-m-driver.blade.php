@@ -2,7 +2,7 @@
 <input type="hidden" name="has_motos" id="has_motos" value="false">
 <div class="form-card">
     {{-- <h2 class="fs-title mt-2">Información Del Vehículo</h2> --}}
-    <h2 class="fs-title" style="margin-bottom: 20px">Evaluación de Documentación de Conductores</h2>
+    <h2 class="fs-title" style="margin-bottom: 20px">Evaluación de Habilidades del Conductor</h2>
     <div id="accordion_skills">
                 
     </div>

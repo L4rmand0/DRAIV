@@ -34,16 +34,10 @@
             </div>
             <div class="row mt-2">
                 <div class="col-md-6 form_select_conductores">
-                    <label for="run_state_form">Fecha de Vencimiento<a
+                    <label for="run_state_form">Fecha de Vencimiento <a
                             href="https://www.runt.com.co/consultaCiudadana/#/consultaPersona" target="_blank"><img
                                 src="{{ asset('img/help.png') }}" alt="" srcset="" style="width: 17px;"></a></label><br>
-                    <select name="doc_verification_vehicle[&PLACA][expi_date]" class="form-control" style="width: 100%"
-                        id="&PLACAexpi_date">
-                        <option value="">Seleccionar ...</option>
-                        @foreach ($runstate_list as $runstate_item)
-                        <option value="{{ $runstate_item }}">{{ $runstate_item }}</option>
-                        @endforeach
-                    </select>
+                    <input type="text" name="doc_verification_vehicle[&PLACA][expi_date]" class="form-control doc_v_v_expi_date form-dataconductores" style="width: 100%" id="&PLACAexpi_date" placeholder="Elija una fecha ..." readonly>            
                 </div>
             </div>
         </div>

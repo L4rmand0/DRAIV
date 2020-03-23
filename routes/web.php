@@ -137,6 +137,7 @@ Route::prefix('admin')->group(function () {
     Route::post('driver-info/list-driver-vehicles', 'admin\DriverVehicleController@getVehiclesByDriver')->name('drivers-info.list-driver-vehicles');
     Route::post('skills-m-t-m/validate-register', 'admin\SkillMtMController@validateInformation')->name('skills-m-t-m.validate-register');
     Route::post('doc-verification-vehicle/validate-register', 'admin\DocVerificationVehicleController@validateInformation')->name('doc-verification-vehicle.validate-register');
+    Route::post('motorcycle-technology/validate-register', 'admin\MotorcycleTechnologyController@validateInformation')->name('motorcycle-technology.validate-register');
 });
 
 // Route::get('/api-text-extract', 'ApiController@extractText')->name('api-text-extract');

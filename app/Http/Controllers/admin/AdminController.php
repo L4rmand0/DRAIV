@@ -305,6 +305,10 @@ class AdminController extends Controller
             'values_evasion' => SkillMtM::VALUE_EVASION,
             'values_mobility' => SkillMtM::VALUE_MOBILITY,
             'driver_information_list'=> DriverInformationController::driveInformationListbyCompany(),
+            // Motorcycle Technology Evaluation
+            'values_type_brake' => MotorcycleTechnology::VALUE_TYPE_BRAKE,
+            'values_assistence_brake' => MotorcycleTechnology::VALUE_ASSISTENCE_BRAKE,
+            'values_automatic_lights' => MotorcycleTechnology::VALUE_AUTOMATIC_LIGHTS,
             'company_name' => ucwords(strtolower($company_name)),
             'permissions' => $this->permissions,
         ];

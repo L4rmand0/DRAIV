@@ -92,7 +92,7 @@ class DocVerificationVehicleController extends Controller
     {
         // $data_input = $request->all();
         $data_input = $request->get('doc_verification_vehicle');
-        echo '<pre>';
+        // echo '<pre>';
         // print_r($data_input);
         // die;
 
@@ -114,11 +114,11 @@ class DocVerificationVehicleController extends Controller
             $errors[$key] = $validator->errors()->getMessages();
         }
         $errors_new = self::personalizeErrorsTypeVehicle($errors);
-        print_r($errors_new);
-        die;
+        // print_r($errors_new);
+        // die;
        
-        if (!empty($errors)) {
-            return response()->json(['errors' => $errors]);
+        if (!empty($errors_new)) {
+            return response()->json(['errors' => $errors_new]);
         } else {
             return response()->json(['response' => '', 'errors' => []]);
         }
