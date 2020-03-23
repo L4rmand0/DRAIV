@@ -28,8 +28,11 @@
                             <fieldset>
                                 @include('admin.partials.evaluation.doc-verification-driver')
                             </fieldset>
-                            <fieldset data-endsection="true">
+                            <fieldset data-endsection="true" id="fs_skills">
                                 @include('admin.partials.evaluation.skill-m-t-m-driver')
+                            </fieldset>
+                            <fieldset>
+                                @include('admin.partials.evaluation.doc-verification-vehicle')
                             </fieldset>
                         </form>
                     </div>
@@ -40,6 +43,9 @@
 </div>
 <div id="example_card_skill" hidden>
     @include('admin.register-information.partials.card_skill_m_t_m')
+</div>
+<div id="example_card_doc_v_vehicle" hidden>
+    @include('admin.register-information.partials.card_doc_verification_vehicle')
 </div>
 
 <!-- /.container-fluid -->

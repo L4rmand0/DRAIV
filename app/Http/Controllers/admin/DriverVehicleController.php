@@ -395,8 +395,12 @@ class DriverVehicleController extends Controller
             }else if(in_array($value->type_v,Vehicle::AUTOS)){
                 $has_autos = true;
             }
-        }    
-        // print_r($result);
+        }   
+        // echo ' autos: ';
+        // var_dump($has_autos); 
+        // echo ' motos: ';
+        // var_dump($has_motos); 
+        // // print_r($result);
         // die;
         return response()->json([
             'data'=>$result,'errors'=>[],

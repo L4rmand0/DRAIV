@@ -6,12 +6,14 @@ use DB;
 use App\SkillMtM;
 use App\Rules\NotToday;
 use Illuminate\Http\Request;
+use App\Traits\ArrayFunctions;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class SkillMtMController extends Controller
 {
+    use ArrayFunctions;
     /**
      * Display a listing of the resource.
      *
@@ -189,4 +191,48 @@ class SkillMtMController extends Controller
         $drive_information = $this->addDeleteButtonDatatable($skill_m_t_m);
         return datatables()->of($drive_information)->make(true);
     }
+
+    protected function validateInformation(Request $request)
+    {
+        // $data_input = $request->all();
+        $data_input = $request->get('skillmtm');
+        // echo '<pre>';
+        // print_r($data_input);
+        // die;
+        // echo '<pre> index:';
+        // print($index);
+        // print_r($data_input);
+        // die;
+        // if($has_)
+
+        foreach ($data_input as $key => $value) {
+            $validator = Validator::make(
+                $value,
+                [
+                    'slalom' => ['required', 'max:10'],
+                    'projection' => 'required|max:10',
+                    'braking' => 'required|max:10',
+                    'evasion' => 'required|max:10',
+                    // 'operation' => [new IsNotDelete(['plate_id', $plate_id], 'vehicle')],
+                ],
+                [
+                    'slalom.required' => "La destreza es obligatoria",
+                    'projection.required' => "La habilidad de proyección es obligatoria",
+                    'braking.required' => "La habilidad de frenado es obligatoria",
+                    'evasion.required' => "La habilidad de evasión es obligatoria",
+                ]
+            );
+            $errors[$key] = $validator->errors()->getMessages();
+        }
+        $errors_new = self::personalizeErrorsTypeVehicle($errors);
+        // print_r($errors_new);
+        // die;
+       
+        if (!empty($errors_new)) {
+            return response()->json(['errors' => $errors_new]);
+        } else {
+            return response()->json(['response' => '', 'errors' => []]);
+        }
+    }
+
 }

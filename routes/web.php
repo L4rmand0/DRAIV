@@ -135,6 +135,8 @@ Route::prefix('admin')->group(function () {
     Route::post('register-driver/secondary-information', 'admin\VehicleController@registerSecondaryInformation')->name('register-driver.secondary-information');
     // RUTAS PARA REGISTRAR EVALUACIÓN DEL CONDUCTOR
     Route::post('driver-info/list-driver-vehicles', 'admin\DriverVehicleController@getVehiclesByDriver')->name('drivers-info.list-driver-vehicles');
+    Route::post('skills-m-t-m/validate-register', 'admin\SkillMtMController@validateInformation')->name('skills-m-t-m.validate-register');
+    Route::post('doc-verification-vehicle/validate-register', 'admin\DocVerificationVehicleController@validateInformation')->name('doc-verification-vehicle.validate-register');
 });
 
 // Route::get('/api-text-extract', 'ApiController@extractText')->name('api-text-extract');

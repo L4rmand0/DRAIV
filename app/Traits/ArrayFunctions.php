@@ -38,6 +38,16 @@ trait ArrayFunctions {
         }
         return $new;
     }
+
+    protected static function personalizeErrorsTypeVehicle($error){
+        $new_arr_errors = [];
+        foreach ($error as $key_err => $value_err) {
+            foreach ($value_err as $key_err_t => $value_err_t) {
+                $new_arr_errors[$key_err.$key_err_t]=$value_err_t; 
+            }
+        }
+        return $new_arr_errors;
+    }
     
 }
 

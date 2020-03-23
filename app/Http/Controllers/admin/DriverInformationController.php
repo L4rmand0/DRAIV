@@ -833,12 +833,13 @@ class DriverInformationController extends Controller
         $company_id = Auth::user()->company_active;
         return DB::table('driver_information')
             ->orderBy('driver_information.start_date', 'desc')
-            ->where('driver_information.company_id', '=', $company_id)
-            ->where('driver_information.operation', '!=', 'D')
             ->select(DB::raw(
                 'driver_information.dni_id,
             driver_information.first_name'
             ))
+            ->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.operation', '!=', 'D')
+            ->orderBy('driver_information.start_date', 'desc')
             // ->toSql();
             ->get()->toArray();
     }
