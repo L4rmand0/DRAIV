@@ -57,7 +57,7 @@
         </div>
         <div class="col-md-6">
             <label for="date_penality_1_form">Fecha Comparendo 1</label><br>
-            <input type="text" name="doc_verification_driver[date_penality_1]" id="date_penality_1" class="form-control" readonly>
+            <input type="text" name="doc_verification_driver[date_penality_1]" id="date_penality_1" class="form-control doc_v_date_penality" readonly>
         </div>
     </div>
     <div class="row mt-2">
@@ -67,7 +67,7 @@
         </div>
         <div class="col-md-6">
             <label for="date_penality_2_form">Fecha Comparendo 2</label><br>
-            <input type="text" name="doc_verification_driver[date_penality_2]" id="date_penality_2" class="form-control" readonly>
+            <input type="text" name="doc_verification_driver[date_penality_2]" id="date_penality_2" class="form-control doc_v_date_penality" readonly>
         </div>
     </div>
     <div class="row mt-2">
@@ -77,7 +77,7 @@
         </div>
         <div class="col-md-6">
             <label for="date_penality_3_form">Fecha Comparendo 3</label><br>
-            <input type="text" name="doc_verification_driver[date_penality_3]" id="date_penality_3" class="form-control" readonly>
+            <input type="text" name="doc_verification_driver[date_penality_3]" id="date_penality_3" class="form-control doc_v_date_penality" readonly>
         </div>
     </div>
     <div class="row mt-2">
@@ -87,7 +87,7 @@
         </div>
         <div class="col-md-6">
             <label for="date_penality_4_form">Fecha Comparendo 4</label><br>
-            <input type="text" name="doc_verification_driver[date_penality_4]" id="date_penality_4" class="form-control" readonly>
+            <input type="text" name="doc_verification_driver[date_penality_4]" id="date_penality_4" class="form-control doc_v_date_penality" readonly>
         </div>
     </div>
     <div class="row mt-2">
@@ -97,7 +97,7 @@
         </div>
         <div class="col-md-6">
             <label for="date_penality_5_form">Fecha Comparendo 5</label><br>
-            <input type="text" class="form-control" name="doc_verification_driver[date_penality_5]" id="date_penality_5" readonly>
+            <input type="text" class="form-control doc_v_date_penality" name="doc_verification_driver[date_penality_5]" id="date_penality_5" readonly>
         </div>
     </div>
 

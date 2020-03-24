@@ -5,15 +5,25 @@ namespace App\Http\Controllers\admin;
 use DB;
 use App\Epp;
 use App\Company;
+use App\DocVerification;
+use App\DocVerificationDriver;
 use App\Rules\NotToday;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\MotorcycleTechnology;
+use App\Traits\ArrayFunctions;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class EppController extends Controller
 {
+    use ArrayFunctions;
+
+
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -212,5 +222,59 @@ class EppController extends Controller
         ]);
         $personal_element_protection = $this->addDeleteButtonDatatable($personal_element_protection);
         return datatables()->of($personal_element_protection)->make(true);
+    }
+
+    protected function validateInformation(Request $request)
+    {
+        $all_data_input = $request->all();
+        $data_input = $request->get('epp');
+        // echo '<pre>';
+        // print_r($data_input);
+        // print_r($all);
+        // die;
+
+        foreach ($data_input as $key => $value) {
+            $validator = Validator::make(
+                $value,
+                [
+                    'casco' => ['required', 'max:10'],
+                    'airbag' => 'required|max:10',
+                    'rodilleras' => 'required|max:10',
+                    'coderas' => 'required|max:10',
+                    'hombreras' => 'required|max:10',
+                    'espalda' => 'required|max:10',
+                    'botas' => 'required|max:10',
+                    'guantes' => 'required|max:10',
+                ],
+                [
+                    'casco.required' => "La evaluación de llantas es obligatorio",
+                    'airbag.required' => "La evaluación de la manigueta guaya es obligatorio",
+                    'rodilleras.required' => "La evaluación de tipo de frenado es obligatorio",
+                    'coderas.required' => "El tipo del kit es obligatorio",
+                    'hombreras.required' => "La evaluación de dirección/suspensión es obligatoria",
+                    'espalda.required' => "La evaluación de la fuga de aceite es obligatoria",
+                    'botas.required' => "La evaluación de chasis,espejos, guardabarros, etc, es obligatoria",
+                    'guantes.required' => "La evaluación de la bocina es obligatoria",
+                ]
+            );
+            $errors[$key] = $validator->errors()->getMessages();
+        }
+        $errors_new = self::personalizeErrorsTypeVehicle($errors);
+       
+        if (!empty($errors_new)) {
+            return response()->json(['errors' => $errors_new]);
+        } else {
+            $this->storeAllEvaluationsDriverVehicle($all_data_input);
+            return response()->json(['response' => '', 'errors' => []]);
+        }
+    }
+
+    public function storeAllEvaluationsDriverVehicle($data_input){
+        $doc_verification_driver = DocVerificationDriver::create([
+            
+        ]);
+        echo '<pre> guardar todos';
+        print_r($data_input);
+        die;
     }
 }

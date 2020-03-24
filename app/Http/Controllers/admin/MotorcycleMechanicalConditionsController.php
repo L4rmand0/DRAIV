@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use DB;
 use App\Rules\NotToday;
 use Illuminate\Http\Request;
+use App\Traits\ArrayFunctions;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\MotorcycleMechanicalConditions;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 
 class MotorcycleMechanicalConditionsController extends Controller
 {
+    use ArrayFunctions;
     /**
      * Display a listing of the resource.
      *
@@ -204,5 +206,51 @@ class MotorcycleMechanicalConditionsController extends Controller
         ]);    
         $mt_mechanical_conditions = $this->addDeleteButtonDatatable($mt_mechanical_conditions);
         return datatables()->of($mt_mechanical_conditions)->make(true);
+    }
+
+    protected function validateInformation(Request $request)
+    {
+        $all = $request->all();
+        $data_input = $request->get('motorcycle_mechanical_conditions');
+        // echo '<pre>';
+        // print_r($data_input);
+        // print_r($all);
+        // die;
+
+        foreach ($data_input as $key => $value) {
+            $validator = Validator::make(
+                $value,
+                [
+                    'tires' => ['required', 'max:10'],
+                    'manigueta_guaya' => 'required|max:10',
+                    'braking_system' => 'required|max:10',
+                    'kit' => 'required|max:10',
+                    'stee_susp' => 'required|max:10',
+                    'oil_leak' => 'required|max:10',
+                    'other_components' => 'required|max:10',
+                    'horn' => 'required|max:10',
+                    'lights' => 'required|max:10',
+                ],
+                [
+                    'tires.required' => "La evaluación de llantas es obligatorio",
+                    'manigueta_guaya.required' => "La evaluación de la manigueta guaya es obligatorio",
+                    'braking_system.required' => "La evaluación de tipo de frenado es obligatorio",
+                    'kit.required' => "El tipo del kit es obligatorio",
+                    'stee_susp.required' => "La evaluación de dirección/suspensión es obligatoria",
+                    'oil_leak.required' => "La evaluación de la fuga de aceite es obligatoria",
+                    'other_components.required' => "La evaluación de chasis,espejos, guardabarros, etc, es obligatoria",
+                    'horn.required' => "La evaluación de la bocina es obligatoria",
+                    'lights.required' => "El evaluación de luces es obligatoria",
+                ]
+            );
+            $errors[$key] = $validator->errors()->getMessages();
+        }
+        $errors_new = self::personalizeErrorsTypeVehicle($errors);
+       
+        if (!empty($errors_new)) {
+            return response()->json(['errors' => $errors_new]);
+        } else {
+            return response()->json(['response' => '', 'errors' => []]);
+        }
     }
 }

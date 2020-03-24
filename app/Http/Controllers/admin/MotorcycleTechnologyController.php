@@ -194,10 +194,10 @@ class MotorcycleTechnologyController extends Controller
     {
         $all = $request->all();
         $data_input = $request->get('motorcycle_technology');
-        echo '<pre>';
-        print_r($data_input);
-        print_r($all);
-        die;
+        // echo '<pre>';
+        // print_r($data_input);
+        // print_r($all);
+        // die;
 
         foreach ($data_input as $key => $value) {
             $validator = Validator::make(

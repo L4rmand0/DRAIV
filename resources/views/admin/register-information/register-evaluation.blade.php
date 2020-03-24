@@ -37,6 +37,12 @@
                             <fieldset id="fs_motor_technology">
                                 @include('admin.partials.evaluation.motorcycle-technology')
                             </fieldset>
+                            <fieldset id="fs_moto_mechanicals_conditions">
+                                @include('admin.partials.evaluation.moto-mechanical-conditions')
+                            </fieldset>
+                            <fieldset id="fs_epp">
+                                @include('admin.partials.evaluation.epp')
+                            </fieldset>
                         </form>
                     </div>
                 </div>
@@ -52,6 +58,12 @@
 </div>
 <div id="example_card_motorcycle_technology" hidden>
     @include('admin.register-information.partials.card_motorcycle_technology')
+</div>
+<div id="example_card_moto_mechanical_conditions" hidden>
+    @include('admin.register-information.partials.card_moto_mechanical_conditions')
+</div>
+<div id="example_card_epp" hidden>
+    @include('admin.register-information.partials.card_epp')
 </div>
 
 <!-- /.container-fluid -->

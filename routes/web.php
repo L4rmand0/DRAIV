@@ -138,6 +138,8 @@ Route::prefix('admin')->group(function () {
     Route::post('skills-m-t-m/validate-register', 'admin\SkillMtMController@validateInformation')->name('skills-m-t-m.validate-register');
     Route::post('doc-verification-vehicle/validate-register', 'admin\DocVerificationVehicleController@validateInformation')->name('doc-verification-vehicle.validate-register');
     Route::post('motorcycle-technology/validate-register', 'admin\MotorcycleTechnologyController@validateInformation')->name('motorcycle-technology.validate-register');
+    Route::post('motorcycle-mechanical-conditions/validate-register', 'admin\MotorcycleMechanicalConditionsController@validateInformation')->name('motorcycle-mechanical-conditions.validate-register');
+    Route::post('personal-ele-protection/validate-register', 'admin\EppController@validateInformation')->name('personal-ele-protection.validate-register');
 });
 
 // Route::get('/api-text-extract', 'ApiController@extractText')->name('api-text-extract');

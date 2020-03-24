@@ -13,6 +13,7 @@
         }(function ($, window, document) {
             // The $ is now locally scoped 
             // Listen for the jQuery ready event on the document
+            $(".doc_v_date_penality").datepicker({ dateFormat: 'yy-mm-dd' });
             $(function () {
                 $("#driver_select_evaluation").on('change', function () {
                     $select = $(this);
@@ -25,6 +26,8 @@
                             generateCardSkills(response);
                             generateCardDocvVehicle(response);
                             generateCardMotorTechnology(response);
+                            generateCardMotoMehcanicalConditions(response);
+                            generateCardElementPersonalProtection(response);
                             // ----- Limpia los estilos de error en los formularios -----
                             
                             // ------- Termina limpiar el formulario -------
@@ -74,7 +77,13 @@
             cards+=card_auto;
         })
         $("#accordion_doc_verification_vehicle").html(cards);
-        $(".doc_v_v_expi_date").datepicker({ dateFormat: 'yy-mm-dd' });
+        if ($(".doc_v_v_expi_date").hasClass("hasDatepicker")) {
+            // $(".date_vehicle").datepicker( "destroy" );
+            $(".doc_v_v_expi_date").removeClass("hasDatepicker");
+            $(".doc_v_v_expi_date").datepicker({ dateFormat: 'yy-mm-dd' });
+        } else {
+            $(".doc_v_v_expi_date").datepicker({ dateFormat: 'yy-mm-dd' });
+        }
         $("#msform #fs_doc_v_vehicle input[type=text], #msform  #fs_doc_v_vehicle input[type=email], #msform #fs_doc_v_vehicle input[type=password], #msform #fs_doc_v_vehicle input[type=number], #msform #fs_doc_v_vehicle input[type=tel]").on("keypress", function () {
             let $target = $(this);
             $(this).cleanErrorElementForm($target);
@@ -107,6 +116,52 @@
             $(this).cleanErrorElementForm($target);
         });
         $("#msform #fs_motor_technology input[type=checkbox], #msform #fs_motor_technology select").on("change", function () {
+            let $target = $(this);
+            $(this).cleanErrorElementForm($target);
+        });
+    }
+
+    function generateCardMotoMehcanicalConditions(response){
+        let cards = "";
+        $.each(response.data,function(k,v){
+            let plate_id = v["plate_id"];
+            let card_auto = $("#example_card_moto_mechanical_conditions").html();
+            card_auto = card_auto.replace(/&amp;PLACA/g, String(plate_id));
+            cards+=card_auto;
+        })
+        $("#accordion_moto_mechanical_conditions").html(cards);
+        $("#msform #fs_moto_mechanicals_conditions input[type=text], #msform  #fs_moto_mechanicals_conditions input[type=email], #msform #fs_moto_mechanicals_conditions input[type=password], #msform #fs_moto_mechanicals_conditions input[type=number], #msform #fs_moto_mechanicals_conditions input[type=tel]").on("keypress", function () {
+            let $target = $(this);
+            $(this).cleanErrorElementForm($target);
+        });
+        $("#msform #fs_moto_mechanicals_conditions input[type=text], #msform #fs_moto_mechanicals_conditions input[type=email], #msform #fs_moto_mechanicals_conditions input[type=password], #msform #fs_moto_mechanicals_conditions input[type=number], #msform #fs_moto_mechanicals_conditions input[type=tel], #msform #fs_moto_mechanicals_conditions input[type=date]").on("change", function () {
+            let $target = $(this);
+            $(this).cleanErrorElementForm($target);
+        });
+        $("#msform #fs_moto_mechanicals_conditions input[type=checkbox], #msform #fs_moto_mechanicals_conditions select").on("change", function () {
+            let $target = $(this);
+            $(this).cleanErrorElementForm($target);
+        });
+    }
+
+    function generateCardElementPersonalProtection(response){
+        let cards = "";
+        $.each(response.data,function(k,v){
+            let plate_id = v["plate_id"];
+            let card_auto = $("#example_card_epp").html();
+            card_auto = card_auto.replace(/&amp;PLACA/g, String(plate_id));
+            cards+=card_auto;
+        })
+        $("#accordion_epp").html(cards);
+        $("#msform #fs_epp input[type=text], #msform  #fs_epp input[type=email], #msform #fs_epp input[type=password], #msform #fs_epp input[type=number], #msform #fs_epp input[type=tel]").on("keypress", function () {
+            let $target = $(this);
+            $(this).cleanErrorElementForm($target);
+        });
+        $("#msform #fs_epp input[type=text], #msform #fs_epp input[type=email], #msform #fs_epp input[type=password], #msform #fs_epp input[type=number], #msform #fs_epp input[type=tel], #msform #fs_epp input[type=date]").on("change", function () {
+            let $target = $(this);
+            $(this).cleanErrorElementForm($target);
+        });
+        $("#msform #fs_epp input[type=checkbox], #msform #fs_epp select").on("change", function () {
             let $target = $(this);
             $(this).cleanErrorElementForm($target);
         });

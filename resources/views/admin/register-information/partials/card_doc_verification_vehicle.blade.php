@@ -12,7 +12,7 @@
         <div class="card-body">
             <div class="row mt-2">
                 <div class="col-md-6">
-                    <label for="valid_licence_form">Soat <a
+                    <label for="&PLACAsoat">Soat <a
                             href="https://www.runt.com.co/consultaCiudadana/#/consultaPersona" target="_blank"><img
                                 src="{{ asset('img/help.png') }}" alt="" srcset="" style="width: 17px;"></a></label><br>
                     <select name="doc_verification_vehicle[&PLACA][soat]" id="&PLACAsoat" class="form-control">
@@ -24,7 +24,7 @@
             </div>
             <div class="row mt-2">
                 <div class="col-md-6">
-                    <label for="category_form">Revisión Tecnomecánica</label>
+                    <label for="&PLACAtechnom_review">Revisión Tecnomecánica</label>
                     <select name="doc_verification_vehicle[&PLACA][technom_review]" id="&PLACAtechnom_review" class="form-control">
                         <option value="">Seleccionar ...</option>
                         <option value="Y">Sí</option>
@@ -34,7 +34,7 @@
             </div>
             <div class="row mt-2">
                 <div class="col-md-6 form_select_conductores">
-                    <label for="run_state_form">Fecha de Vencimiento <a
+                    <label for="&PLACArun_state">Fecha de Vencimiento <a
                             href="https://www.runt.com.co/consultaCiudadana/#/consultaPersona" target="_blank"><img
                                 src="{{ asset('img/help.png') }}" alt="" srcset="" style="width: 17px;"></a></label><br>
                     <input type="text" name="doc_verification_vehicle[&PLACA][expi_date]" class="form-control doc_v_v_expi_date form-dataconductores" style="width: 100%" id="&PLACAexpi_date" placeholder="Elija una fecha ..." readonly>            
