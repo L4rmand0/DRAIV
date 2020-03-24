@@ -33,6 +33,6 @@ class DocVerificationDriver extends Model
         'user_id',
         'date_operation',
         'operation',
-        'user_vehicle_id',
+        'driver_information_dni_id',
     ];
 }

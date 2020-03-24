@@ -374,7 +374,7 @@ class DriverVehicleController extends Controller
         return response()->json(['response' => $vechicles->total_vehicles, 'errors' => []]);
     }
 
-    public function getVehiclesByDriver(Request $request)
+    public static function getVehiclesByDriver(Request $request)
     {
         $has_motos = false;
         $has_autos = false;
@@ -390,12 +390,12 @@ class DriverVehicleController extends Controller
             ->where('uv.operation', '!=', 'D')
             ->get()->toArray();
         foreach ($result as $key => $value) {
-            if(in_array($value->type_v,Vehicle::MOTOS)){
+            if (in_array($value->type_v, Vehicle::MOTOS)) {
                 $has_motos = true;
-            }else if(in_array($value->type_v,Vehicle::AUTOS)){
+            } else if (in_array($value->type_v, Vehicle::AUTOS)) {
                 $has_autos = true;
             }
-        }   
+        }
         // echo ' autos: ';
         // var_dump($has_autos); 
         // echo ' motos: ';
@@ -403,11 +403,57 @@ class DriverVehicleController extends Controller
         // // print_r($result);
         // die;
         return response()->json([
-            'data'=>$result,'errors'=>[],
-            'has_autos'=>$has_autos,
-            'has_motos'=>$has_motos
+            'data' => $result, 'errors' => [],
+            'has_autos' => $has_autos,
+            'has_motos' => $has_motos
         ]);
         // print_r($result);
         // die;
+    }
+
+    public static function getUserVehicleIdTypeVehicle($dni_id)
+    {
+        // echo '<pre>';
+        // print_r($dni_id);
+        // die;
+        $arr_vehicles = [];
+        $result = DB::table('user_vehicle as uv')
+            ->select(DB::raw(
+                'uv.id,
+                uv.driver_information_dni_id,
+                v.type_v,
+                v.plate_id'
+            ))
+            ->join('vehicle as v', 'v.plate_id', '=', 'uv.vehicle_plate_id')
+            ->where('uv.driver_information_dni_id', '=', $dni_id)
+            ->where('uv.operation', '!=', 'D')
+            ->get()->toArray();
+        foreach ($result as $key => $value) {
+            if (in_array($value->type_v, Vehicle::MOTOS)) {
+                $arr_vehicles['motos'][] = $value->id;
+            } else if (in_array($value->type_v, Vehicle::AUTOS)) {
+                $arr_vehicles['autos'][] = $value->id;
+            }
+        }
+        // echo '<pre>';
+        // print_r($arr_vehicles);
+        // print_r($result);
+        // die;
+        return $arr_vehicles;
+    }
+
+
+    public static function getArraygetVehiclesByDniId($dni_id){
+        return DB::table('user_vehicle as uv')
+            ->select(DB::raw(
+                'uv.id,
+                uv.driver_information_dni_id,
+                v.type_v,
+                v.plate_id'
+            ))
+            ->join('vehicle as v', 'v.plate_id', '=', 'uv.vehicle_plate_id')
+            ->where('uv.driver_information_dni_id', '=', $dni_id)
+            ->where('uv.operation', '!=', 'D')
+            ->get()->toArray();
     }
 }
