@@ -98,6 +98,7 @@ class EditDriverController extends Controller
                 ->orderBy('driver_information.start_date', 'desc')
                 ->join('users', 'driver_information.db_user_id', '=', 'users.id')
                 ->join('company', 'company.Company_id', '=', 'driver_information.company_id')
+                ->join('admin1', 'admin1.adm1_id', '=', 'driver_information.country_born')
                 ->join('admin2', 'admin2.adm2_id', '=', 'driver_information.department')
                 ->join('admin3', 'admin3.adm3_id', '=', 'driver_information.city_residence_place')
                 ->where('driver_information.company_id', '=', $company_id)
@@ -113,9 +114,11 @@ class EditDriverController extends Controller
             driver_information.education,
             driver_information.e_mail_address,
             driver_information.address,
-            driver_information.country_born,
+            driver_information.country_born as country_id,
+            driver_information.born_date,
             admin3.name AS city_residence_place,
             admin2.name AS department,
+            admin1.name AS country_born,
             driver_information.phone,
             driver_information.civil_state,
             driver_information.score,

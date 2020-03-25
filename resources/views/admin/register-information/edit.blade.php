@@ -5,6 +5,7 @@
     value="{{ route('edit-driver.search') }}">
 <input type="hidden" name="url-validate-driver-information" id="url-validate-driver-information" value="">
 <input type="hidden" name="function-driver-info-update" id="function-driver-info-update" value="{{route('driver-info.update')}}">
+<input type="hidden" name="function-vehicle-update" id="function-vehicle-update" value="{{route('admin.vehicle.update')}}">
 <input type="hidden" name="index_section" id="index_section">
 <div class="container-fluid">
     <div class="row justify-content-center mt-0">
@@ -93,13 +94,13 @@
                                 href="#nav-vehicle" role="tab" aria-controls="nav-profile" aria-selected="false"><i
                                     class="fas fa-car"></i>
                                 Vehículo</a>
-                            {{-- <a class="nav-item nav-link a-profile" id="nav-contact-tab" data-toggle="tab"
+                            <a class="nav-item nav-link a-profile" id="nav-contact-tab" data-toggle="tab"
                                 href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false"><i
                                     class="fas fa-users-cog"></i> Componente Humano</a>
                             <a class="nav-item nav-link a-profile" id="nav-contact-tab" data-toggle="tab"
                                 href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false"><i
                                     class="fas fa-tools"></i>
-                                Componente Técnico</a> --}}
+                                Componente Técnico</a>
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">

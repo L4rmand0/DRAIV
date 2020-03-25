@@ -1,7 +1,7 @@
 <div class="card" id="card_form_motorcycle_technology">
     <div class="card-header" id="headingOne">
         <h5 class="mb-0">
-            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseItemMT_&PLACA" aria-expanded="true"
+            <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseItemMT_&PLACA" aria-expanded="true"
                 aria-controls="collapseItem">
                 PLACA: &PLACA
             </button>

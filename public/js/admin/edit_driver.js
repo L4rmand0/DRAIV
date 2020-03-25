@@ -188,7 +188,7 @@
         //Genera los cards de cada uno de los vehículos
         $.each(vehicles, function (i, value) {
             card = String(content_example).replace('id="card_single_vehicle"', 'id="card_single_vehicle' + (i + 1) + '"');
-            card = card.replace("&amp;PLACA", String(value['plate_id']));
+            card = card.replace(/&amp;PLACA/g, String(value['plate_id']));
             card = card.replace(/collapseItem/g, 'collapseItem' + (i + 1));
             if (i != 0) {
                 card = card.replace('class="collapse show"', 'class="collapse"');
@@ -225,7 +225,11 @@
             cancelButtonAriaLabel: 'Thumbs down'
         }).then((result) => {
             if (result.value) {
-                $.post($("#function-driver-info-update").val(), { 'fieldch': field, 'valuech': new_value, 'dni_id': dni_id }).done(function (response) {
+                let form_data = { 'fieldch': field, 'valuech': new_value, 'dni_id': dni_id };
+                if(typeof ($input.attr('data-plate')) !== "undefined"){
+                    form_data.plate = $input.data('plate');
+                } 
+                $.post($("#function-"+$input.data('module')+"-update").val(),form_data).done(function (response) {
                     if (Object.keys(response.errors).length > 0) {
                         swal.fire({
                             title: 'Error en el proceso!',

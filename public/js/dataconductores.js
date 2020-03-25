@@ -6,6 +6,7 @@
 
 }(function ($, window, document) {
     // vars form vehicles
+    var index_card_vehicle = 1;
     var current_sec, next_sec, previous_sec; //fieldsets
     var opacity_sec;
     // The $ is now locally scoped 
@@ -342,6 +343,57 @@
             }
         });
 
+        $("input[name=radio_vehicle]").change(function () {	
+            $input = $(this); 
+            $card_inside = $input.closest(".card-body").find(".card_inside_vehicle_type");
+            let value =  $input.val();
+            if(value == "new_vehiculo"){
+                let content = $("#example_form_vehicle_regis").html();
+                content = content.replace(/&amp;NUMFORM/g, String($input.data('index-form')));
+                $card_inside.html(content);
+            }else if(value == "vehiculo_exist"){
+                content = $("#example_select_vehicle_exist").html();
+                $card_inside.html(content);
+            }
+        });
+        
+        $("#btn_add_vehicle_form").on('click', function(){
+            let index_form = index_card_vehicle;
+            $btn = $(this);
+            $btn_remove = $("#btn_remove_vehicle_form");
+            index_card_vehicle++;
+            if(index_card_vehicle >= 2 && $btn_remove.is(":hidden")){
+                $("#btn_remove_vehicle_form").attr('hidden',false);
+                $("#btn_remove_vehicle_form").show();
+            }
+            let content = $("#example_card_container_vehicle_regis").html()
+            content = content.replace(/&amp;NUM/g, String(index_card_vehicle));
+            content = content.replace(/&amp;NMFORM/g, String(index_form));
+            $("#accordion_vehicles_register").append(content);
+            //Evento onchange después de ser creados los inputs radio
+            $("input[name=radio_vehicle]").off("change", "**" );
+            $("input[name=radio_vehicle]").change(function () {	
+                $input = $(this); 
+                $card_inside = $input.closest(".card-body").find(".card_inside_vehicle_type");
+                let value =  $input.val();
+                if(value == "new_vehiculo"){
+                    let content = $("#example_form_vehicle_regis").html();
+                    $card_inside.html(content);
+                }else if(value == "vehiculo_exist"){
+                    content = $("#example_select_vehicle_exist").html();
+                    $card_inside.html(content);
+                }
+            });
+        });
+
+        $("#btn_remove_vehicle_form").on('click', function(){
+            $btn = $(this);
+            index_card_vehicle--;
+            if(index_card_vehicle == 1){
+                $btn.hide();
+            } 
+            $("#accordion_vehicles_register .card:nth-child("+(index_card_vehicle+1)+")").remove()
+        });
     });
     // The rest of the code goes here!
 }));

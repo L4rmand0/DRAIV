@@ -311,6 +311,9 @@ class VehicleController extends Controller
      */
     public function update(Request $request)
     {
+        echo '<pre>';
+        print_r($request->all());
+        die;
         $now = date("Y-m-d H:i:s");
         $data_updated = $request->all();
         $field = $data_updated['fieldch'];
@@ -1040,11 +1043,12 @@ class VehicleController extends Controller
 
     protected function validateInformation(Request $request)
     {
+        $all = $request->all();
         $data_input = $request->get('vehicle');
         $index = $request->get('index');
-        // echo '<pre>';
-        // print_r($data_input);
-        // die;
+        echo '<pre>';
+        print_r($all);
+        die;
         $data_input = $this->toArrayColumn($data_input, $index, ['soat_expi_date', 'technomechanical_date']);
         // echo '<pre> index:';
         // print($index);
@@ -1095,21 +1099,21 @@ class VehicleController extends Controller
         foreach ($data_clean_vehicles as $key_v => $value_v) {
             $insert_v = Vehicle::create([
                 'plate_id' => $value_v['plate_id'],
-                    'type_v' => $value_v['type_v'],
-                    'owner_v' => $value_v['owner_v'] != "" ? $value_v['owner_v'] : 0,
-                    'taxi_type' => $value_v['taxi_type'] != "" ? $value_v['taxi_type'] : "NA",
-                    'number_of_drivers' => $value_v['number_of_drivers'] != "" ? $value_v['number_of_drivers'] : 1,
-                    'soat_expi_date' => $value_v['soat_expi_date'],
-                    'capacity' => $value_v['capacity'],
-                    'service' => $value_v['service'] != "" ? $value_v['service'] : "Otros",
-                    'cylindrical_cc' => $value_v['cylindrical_cc'] != "" ? $value_v['cylindrical_cc'] : 1,
-                    'model' => $value_v['model'] != "" ? $value_v['model'] : "",
-                    'line' => $value_v['line'] != "" ? $value_v['line'] : "",
-                    'brand' => $value_v['brand'] != "" ? $value_v['brand'] : "",
-                    'color' => $value_v['color'] != "" ? $value_v['color'] : "",
-                    'technomechanical_date' => $value_v['technomechanical_date'] != "" ? $value_v['technomechanical_date'] : null,
-                    'company_id' => $company_id,
-                    'user_id' => auth()->id(),
+                'type_v' => $value_v['type_v'],
+                'owner_v' => $value_v['owner_v'] != "" ? $value_v['owner_v'] : 0,
+                'taxi_type' => $value_v['taxi_type'] != "" ? $value_v['taxi_type'] : "NA",
+                'number_of_drivers' => $value_v['number_of_drivers'] != "" ? $value_v['number_of_drivers'] : 1,
+                'soat_expi_date' => $value_v['soat_expi_date'],
+                'capacity' => $value_v['capacity'],
+                'service' => $value_v['service'] != "" ? $value_v['service'] : "Otros",
+                'cylindrical_cc' => $value_v['cylindrical_cc'] != "" ? $value_v['cylindrical_cc'] : 1,
+                'model' => $value_v['model'] != "" ? $value_v['model'] : "",
+                'line' => $value_v['line'] != "" ? $value_v['line'] : "",
+                'brand' => $value_v['brand'] != "" ? $value_v['brand'] : "",
+                'color' => $value_v['color'] != "" ? $value_v['color'] : "",
+                'technomechanical_date' => $value_v['technomechanical_date'] != "" ? $value_v['technomechanical_date'] : null,
+                'company_id' => $company_id,
+                'user_id' => auth()->id(),
             ]);
             // echo ' di '.$dni_id;
             // echo ' placa: '.$insert_v->plate_id;
@@ -1130,17 +1134,17 @@ class VehicleController extends Controller
     private function cleanArray($array_vehicle)
     {
         $str_soat_expi_date = 'soat_expi_date';
-        $lenght_soat = strlen($str_soat_expi_date); 
+        $lenght_soat = strlen($str_soat_expi_date);
         $str_technomechanical_date = 'technomechanical_date';
-        $lenght_tech = strlen($str_technomechanical_date); 
+        $lenght_tech = strlen($str_technomechanical_date);
         $new = [];
         foreach ($array_vehicle as $key_vehicle => $value_vehicle) {
             if (strpos($key_vehicle, $str_soat_expi_date) !== false) {
                 $explit = str_split($key_vehicle, $lenght_soat);
-                $new[($explit[1])-1][$str_soat_expi_date] = $value_vehicle;
+                $new[($explit[1]) - 1][$str_soat_expi_date] = $value_vehicle;
             } else if (strpos($key_vehicle, $str_technomechanical_date) !== false) {
                 $explit = str_split($key_vehicle, $lenght_tech);
-                $new[($explit[1])-1][$str_technomechanical_date] = $value_vehicle;
+                $new[($explit[1]) - 1][$str_technomechanical_date] = $value_vehicle;
             } else {
                 foreach ($value_vehicle as $key_child => $value_child) {
                     $new[$key_child][$key_vehicle] = $value_child;
@@ -1148,5 +1152,21 @@ class VehicleController extends Controller
             }
         }
         return $new;
+    }
+
+    public static function listArray()
+    {
+        $company_id = auth()->user()->company_active;
+        return DB::table('vehicle')
+            ->orderBy('vehicle.start_date', 'desc')
+            ->where('vehicle.operation', '!=', 'D')
+            ->where('vehicle.company_id', '=', $company_id)
+            ->select(DB::raw(
+                'vehicle.plate_id,
+                vehicle.type_v'
+            ))->get()->toArray();
+        // echo '<pre>';
+        // print_r($vehicle);
+        // die;
     }
 }

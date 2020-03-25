@@ -1,7 +1,7 @@
 <div class="card" id="card_form_skill_&TYPE_VEHICLE">
     <div class="card-header" id="headingOne">
         <h5 class="mb-0">
-            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseItem_skills&TYPE_VEHICLE" aria-expanded="true"
+            <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseItem_skills&TYPE_VEHICLE" aria-expanded="true"
                 aria-controls="collapseItem">
                 &TYPE_VEHICLE
             </button>

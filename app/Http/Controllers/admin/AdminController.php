@@ -248,6 +248,7 @@ class AdminController extends Controller
         $list_service = Vehicle::enum_service;
         $enum_taxi_type = $this->generateOptionsEnumDt(Vehicle::enum_taxi_type);
         $list_taxi_type = Vehicle::enum_taxi_type;
+        $select_all_vehicles = VehicleController::listArray();
 
         return [
             'enum_education' => $enum_education,
@@ -276,6 +277,7 @@ class AdminController extends Controller
             'list_type_v' => $list_type_v,
             'list_service' => $list_service,
             'list_taxi_type' => $list_taxi_type,
+            'select_all_vehicles' => $select_all_vehicles,
             // variales de verificación manual
             'category_list'=>DocVerification::CATEGORY,
             'runstate_list'=>DocVerification::RUNSTATE,

@@ -7,28 +7,28 @@
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">Nombre:
                 </div>
                 <div class="col-md-3"> <input type="text" class="form-control field_driver_info" name="" id="first_name"
-                        value="" readonly>
+                        value="" data-module="driver-info" readonly>
                 </div>
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">Segundo
                     Nombre:</div>
                 <div class="col-md-3"><input type="text" class="form-control field_driver_info" name="" id="second_name"
-                        value="" readonly></div>
+                        value="" data-module="driver-info" readonly></div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">Apellido:
                 </div>
                 <div class="col-md-3"> <input type="text" class="form-control field_driver_info" name=""
-                        id="f_last_name" value="" readonly> </div>
+                        id="f_last_name" value="" data-module="driver-info" readonly> </div>
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">Segundo
                     Apellido:</div>
                 <div class="col-md-3"><input type="text" class="form-control field_driver_info" name="" id="s_last_name"
-                        value="" readonly></div>
+                        value="" data-module="driver-info" readonly></div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">Género:
                 </div>
                 <div class="col-md-3"> <input type="text" class="form-control field_driver_info_select" name=""
-                        id="gender" value="" readonly>
+                        id="gender" value="" data-module="driver-info" readonly>
                     <select name="" class="form-control" id="edit_input_gender" hidden>
                         <option value="0">Masculino</option>
                         <option value="1">Femenino</option>
@@ -37,14 +37,14 @@
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">Fecha de
                     nacimiento:</div>
                 <div class="col-md-3"><input type="text" class="form-control field_driver_info_date" name="" id="born_date"
-                        value="" readonly>
+                        value="" data-module="driver-info" readonly>
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">
                     Educación:</div>
                 <div class="col-md-3"> <input type="text" class="form-control field_driver_info_select" name=""
-                        id="education" value="" readonly>
+                        id="education" value="" data-module="driver-info" readonly>
                     <select name="" class="form-control" id="edit_input_education" hidden>
                         @foreach ($options_education as $option)
                         <option value="{{$option}}">{{$option}}</option>
@@ -54,28 +54,28 @@
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">Correo
                     Electrónico:</div>
                 <div class="col-md-3"><input type="text" class="form-control field_driver_info" name=""
-                        id="e_mail_address" value="" readonly></div>
+                        id="e_mail_address" value="" data-module="driver-info" readonly></div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">
                     Dirección:</div>
                 <div class="col-md-3"> <input type="text" class="form-control field_driver_info" name="" id="address"
-                        value="" readonly>
+                        value="" data-module="driver-info" readonly>
                 </div>
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">País de
                     nacimiento:</div>
-                <div class="col-md-3"><input type="text" class="form-control field_driver_info" name=""
+                <div class="col-md-3"><input type="text" class="form-control" name=""
                         id="country_born" value="" readonly></div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">Ciudad de
                     Nacimiento:</div>
-                <div class="col-md-3"> <input type="text" class="form-control field_driver_info" name="" id="city_born"
+                <div class="col-md-3"> <input type="text" class="form-control" name="" id="city_born"
                         value="" readonly>
                 </div>
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">
                     Departamento:</div>
-                <div class="col-md-3"><input type="text" class="form-control field_driver_info" name="" id="department"
+                <div class="col-md-3"><input type="text" class="form-control" name="" id="department"
                         value="" readonly>
                 </div>
             </div>
@@ -83,12 +83,12 @@
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">Teléfono:
                 </div>
                 <div class="col-md-3"> <input type="text" class="form-control field_driver_info" name="" id="phone"
-                        value="" readonly>
+                        value="" data-module="driver-info" readonly>
                 </div>
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">Estado
                     Civil:</div>
                 <div class="col-md-3"><input type="text" class="form-control field_driver_info_select" name="" id="civil_state"
-                        value="" readonly>
+                        value="" data-module="driver-info" readonly>
                     <select name="" class="form-control" id="edit_input_education" hidden>
                         @foreach ($options_civil_state as $option)
                         <option value="{{$option}}">{{$option}}</option>
