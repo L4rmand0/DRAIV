@@ -235,7 +235,10 @@
                 current_fs.find(".next").show()
             }
             //Remove class active
-            $("#progressbar li").eq(index_fieldset).removeClass("active");
+            if (typeof previous_fs.data('endsection') !== "undefined") {
+                $("#progressbar li").eq(index_fieldset).removeClass("active");
+                index_fieldset--;
+            }
 
             //show the previous fieldset
             previous_fs.show();
@@ -254,7 +257,6 @@
                 },
                 duration: 600
             });
-            index_fieldset--;
         });
 
         $('.radio-group .radio').click(function () {

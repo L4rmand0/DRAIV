@@ -40,8 +40,11 @@
                             <fieldset id="fs_moto_mechanicals_conditions">
                                 @include('admin.partials.evaluation.moto-mechanical-conditions')
                             </fieldset>
-                            <fieldset id="fs_epp">
+                            <fieldset id="fs_epp" data-endsection="true">
                                 @include('admin.partials.evaluation.epp')
+                            </fieldset>
+                            <fieldset>
+                                @include('admin.partials.evaluation.finish')
                             </fieldset>
                         </form>
                     </div>
