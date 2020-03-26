@@ -343,27 +343,56 @@
             }
         });
 
-        $(".radio_vehicle").change(function () {	
-            $input = $(this); 
+        $(".radio_vehicle").change(function () {
+            $input = $(this);
+            // Limpia los errores del radio
+            $(".error-radio").html("");
+            $(".label_radio").css("color", "");
             $card_inside = $input.closest(".card-body").find(".card_inside_vehicle_type");
-            let value =  $input.val();
-            if(value == "new_vehiculo"){
+            let value = $input.val();
+            if (value == "new_vehiculo") {
                 let content = $("#example_form_vehicle_regis").html();
                 content = content.replace(/&amp;NUMFORM/g, String($input.data('index-form')));
                 $card_inside.html(content);
-            }else if(value == "vehiculo_exist"){
+                if ($(".date_vehicle").hasClass("hasDatepicker")) {
+                    $(".date_vehicle").removeClass("hasDatepicker");
+                    $(".date_vehicle").datepicker({ dateFormat: 'yy-mm-dd' });
+                } else {
+                    $(".date_vehicle").datepicker({ dateFormat: 'yy-mm-dd' });
+                }
+                //Limpia los estilos de error en los formularios
+                $("#msform #fs_regis_vehicle input[type=text], #msform #fs_regis_vehicle input[type=email], #msform #fs_regis_vehicle input[type=password], #msform #fs_regis_vehicle input[type=number], #msform #fs_regis_vehicle input[type=tel]").on("keypress", function () {
+                    let $target = $(this);
+                    $(this).cleanErrorElementForm($target);
+                });
+
+                $("#msform #fs_regis_vehicle input[type=text], #msform #fs_regis_vehicle input[type=email], #msform #fs_regis_vehicle input[type=password], #msform #fs_regis_vehicle input[type=number], #msform #fs_regis_vehicle input[type=tel], #msform #fs_regis_vehicle input[type=date]").on("change", function () {
+                    let $target = $(this);
+                    $(this).cleanErrorElementForm($target);
+                });
+
+                $("#msform #fs_regis_vehicle input[type=checkbox], #msform #fs_regis_vehicle select").on("change", function () {
+                    let $target = $(this);
+                    $(this).cleanErrorElementForm($target);
+                });
+            } else if (value == "vehiculo_exist") {
                 content = $("#example_select_vehicle_exist").html();
+                content = content.replace(/&amp;NUM/g,String(index_card_vehicle-1))
                 $card_inside.html(content);
+
+                $(".select_plate_vehicle").on('change', function(){
+                    $(".error-radio-select").remove();
+                });
             }
         });
-        
-        $("#btn_add_vehicle_form").on('click', function(){
+
+        $("#btn_add_vehicle_form").on('click', function () {
             let index_form = index_card_vehicle;
             $btn = $(this);
             $btn_remove = $("#btn_remove_vehicle_form");
             index_card_vehicle++;
-            if(index_card_vehicle >= 2 && $btn_remove.is(":hidden")){
-                $("#btn_remove_vehicle_form").attr('hidden',false);
+            if (index_card_vehicle >= 2 && $btn_remove.is(":hidden")) {
+                $("#btn_remove_vehicle_form").attr('hidden', false);
                 $("#btn_remove_vehicle_form").show();
             }
             let content = $("#example_card_container_vehicle_regis").html()
@@ -371,29 +400,42 @@
             content = content.replace(/&amp;NMFORM/g, String(index_form));
             $("#accordion_vehicles_register").append(content);
             //Evento onchange después de ser creados los inputs radio
-            $(".radio_vehicle").off("change", "**" );
-            $(".radio_vehicle").change(function () {	
-                $input = $(this); 
+            $(".radio_vehicle").off("change", "**");
+            $(".radio_vehicle").change(function () {
+                $input = $(this);
+                // Limpia los errores del radio
+                $(".error-radio").html("");
+                $(".label_radio").css("color", "");
                 $card_inside = $input.closest(".card-body").find(".card_inside_vehicle_type");
-                let value =  $input.val();
-                if(value == "new_vehiculo"){
+                let value = $input.val();
+                if (value == "new_vehiculo") {
                     let content = $("#example_form_vehicle_regis").html();
                     content = content.replace(/&amp;NUMFORM/g, String($input.data('index-form')));
                     $card_inside.html(content);
-                }else if(value == "vehiculo_exist"){
+                    if ($(".date_vehicle").hasClass("hasDatepicker")) {
+                        $(".date_vehicle").removeClass("hasDatepicker");
+                        $(".date_vehicle").datepicker({ dateFormat: 'yy-mm-dd' });
+                    } else {
+                        $(".date_vehicle").datepicker({ dateFormat: 'yy-mm-dd' });
+                    }
+                } else if (value == "vehiculo_exist") {
                     content = $("#example_select_vehicle_exist").html();
+                    content = content.replace(/&amp;NUM/g,String(index_card_vehicle-1))
                     $card_inside.html(content);
+                    $(".select_plate_vehicle").on('change', function(){
+                        $(".error-radio-select").remove();
+                    });
                 }
             });
         });
 
-        $("#btn_remove_vehicle_form").on('click', function(){
+        $("#btn_remove_vehicle_form").on('click', function () {
             $btn = $(this);
             index_card_vehicle--;
-            if(index_card_vehicle == 1){
+            if (index_card_vehicle == 1) {
                 $btn.hide();
-            } 
-            $("#accordion_vehicles_register .card:nth-child("+(index_card_vehicle+1)+")").remove()
+            }
+            $("#accordion_vehicles_register .card:nth-child(" + (index_card_vehicle + 1) + ")").remove()
         });
     });
     // The rest of the code goes here!

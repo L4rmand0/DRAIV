@@ -22,7 +22,7 @@
                                 <li id="vehicle"><strong>Vehículo</strong></li>
                                 <li id="empty"><strong></strong></li>
                             </ul> <!-- fieldsets -->
-                            {{-- <fieldset>
+                            <fieldset>
                                 @include('admin.partials.register.driver_information')
                             </fieldset>
                             <fieldset data-licence="true">
@@ -30,8 +30,8 @@
                             </fieldset>
                             <fieldset data-endsection="true">
                                 @include('admin.partials.register.images')
-                            </fieldset> --}}
-                            <fieldset data-vehicle="true">
+                            </fieldset>
+                            <fieldset data-vehicle="true" id="fs_regis_vehicle">
                                 @include('admin.partials.register.vehicle')
                             </fieldset> 
                             <fieldset>
@@ -59,8 +59,8 @@
 <div id="example_select_vehicle_exist" hidden>
     <div class="select_vehicle_exist">
         <label for="plate_id1">Placa:</label>
-        <select name="vehicle[plate_id][]" class="form-control form-vehicles text-datadrivers"
-            id="plate_id1" style="width: 55%">
+        <select name="vehicle_exist[plate_id][]" class="form-control form-vehicles text-datadrivers select_plate_vehicle"
+            id="plate_id&NUM" style="width: 55%">
             <option value="">Seleccionar...</option>
             @foreach ($select_all_vehicles as $item_vehicle)
             <option value="{{$item_vehicle->plate_id}}"> {{$item_vehicle->plate_id}} </option>

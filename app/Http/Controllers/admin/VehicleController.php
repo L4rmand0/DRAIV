@@ -1041,42 +1041,90 @@ class VehicleController extends Controller
         }
     }
 
+    // protected function validateInformation(Request $request)
+    // {
+    //     $all = $request->all();
+    //     $data_input = $request->get('vehicle');
+    //     $index = $request->get('index');
+    //     echo '<pre>';
+    //     print_r($all);
+    //     die;
+    //     $data_input = $this->toArrayColumn($data_input, $index, ['soat_expi_date', 'technomechanical_date']);
+    //     $plate_id = !empty($data_input['plate_id']) ? $data_input['plate_id'] : "";
+    //     $validator = Validator::make(
+    //         $data_input,
+    //         [
+    //             'plate_id' => ['required', 'max:15', 'unique:vehicle'],
+    //             'type_v' => 'required|max:255',
+    //             'owner_v' => 'required|max:255',
+    //             'soat_expi_date' . ($index + 1) => 'required|max:255',
+    //             'capacity' => 'required|max:11',
+    //             'operation' => [new IsNotDelete(['plate_id', $plate_id], 'vehicle')],
+    //         ],
+    //         [
+    //             'plate_id.required' => "La placa no puede ser vacía",
+    //             'type_v.required' => "Se debe elegir el tipo de vehiculo",
+    //             'owner_v.required' => "Se debe elegir una opción",
+    //             'soat_expi_date' . ($index + 1) . '.required' => "Se debe seleccionar una fecha",
+    //             'capacity.required' => "Se debe seleccionar la capacidad",
+    //             'plate_id.unique' => "Esta placa ya está en uso. Para actualizarla hágalo en la tabla.",
+    //         ]
+    //     );
+    //     $errors = $validator->errors()->getMessages();
+    //     if (!empty($errors)) {
+    //         return response()->json(['errors' => $errors]);
+    //     } else {
+    //         return response()->json(['response' => '', 'errors' => []]);
+    //     }
+    // }
+
     protected function validateInformation(Request $request)
     {
         $all = $request->all();
         $data_input = $request->get('vehicle');
         $index = $request->get('index');
-        echo '<pre>';
-        print_r($all);
-        die;
-        $data_input = $this->toArrayColumn($data_input, $index, ['soat_expi_date', 'technomechanical_date']);
-        // echo '<pre> index:';
-        // print($index);
-        // print_r($data_input);
+        // echo '<pre>';
+        // print_r($all);
         // die;
-        $plate_id = !empty($data_input['plate_id']) ? $data_input['plate_id'] : "";
-        $validator = Validator::make(
-            $data_input,
-            [
-                'plate_id' => ['required', 'max:15', 'unique:vehicle'],
-                'type_v' => 'required|max:255',
-                'owner_v' => 'required|max:255',
-                'soat_expi_date' . ($index + 1) => 'required|max:255',
-                'capacity' => 'required|max:11',
-                'operation' => [new IsNotDelete(['plate_id', $plate_id], 'vehicle')],
-            ],
-            [
-                'plate_id.required' => "La placa no puede ser vacía",
-                'type_v.required' => "Se debe elegir el tipo de vehiculo",
-                'owner_v.required' => "Se debe elegir una opción",
-                'soat_expi_date' . ($index + 1) . '.required' => "Se debe seleccionar una fecha",
-                'capacity.required' => "Se debe seleccionar la capacidad",
-                'plate_id.unique' => "Esta placa ya está en uso. Para actualizarla hágalo en la tabla.",
-            ]
-        );
-        $errors = $validator->errors()->getMessages();
-        if (!empty($errors)) {
-            return response()->json(['errors' => $errors]);
+        if (!empty($data_input)) {
+            $data_input = $this->toArrayColumn($data_input, null, ['soat_expi_date', 'technomechanical_date']);
+            $data_input = self::invertRowColumnArray($data_input);
+            // echo '<pre> index:';
+            // print_r($all);
+            // print_r($data_input);
+            // die;
+            $plate_id = !empty($data_input['plate_id']) ? $data_input['plate_id'] : "";
+            foreach ($data_input as $key => $value) {
+                $validator = Validator::make(
+                    $value,
+                    [
+                        'plate_id' => ['required', 'max:15', 'unique:vehicle'],
+                        'type_v' => 'required|max:255',
+                        'owner_v' => 'required|max:255',
+                        'soat_expi_date' => 'required|max:255',
+                        'capacity' => 'required|max:11',
+                        'operation' => [new IsNotDelete(['plate_id', $plate_id], 'vehicle')],
+                    ],
+                    [
+                        'plate_id.required' => "La placa no puede ser vacía",
+                        'type_v.required' => "Se debe elegir el tipo de vehiculo",
+                        'owner_v.required' => "Se debe elegir una opción",
+                        'soat_expi_date.required' => "Se debe seleccionar una fecha",
+                        'capacity.required' => "Se debe seleccionar la capacidad",
+                        'plate_id.unique' => "Esta placa ya está en uso. Para actualizarla hágalo en la tabla.",
+                    ]
+                );
+                $errors[$key] = $validator->errors()->getMessages();
+            }
+            $errors_new = self::personalizeErrorsTypeVehicle($errors);
+        }
+
+        // print_r($errors_new);
+        // print_r($errors);
+        // die;
+
+        if (!empty($errors_new)) {
+            return response()->json(['errors' => $errors_new]);
         } else {
             return response()->json(['response' => '', 'errors' => []]);
         }
@@ -1085,45 +1133,60 @@ class VehicleController extends Controller
     public function registerSecondaryInformation(Request $request)
     {
         $company_id = auth()->user()->company_active;
-        // echo '<pre>';
-        // die;
+
         $vechicles = $request->get('vehicle');
-        $data_clean_vehicles = $this->cleanArray($vechicles);
-        // print_r($data_clean_vehicles);
-        // $v = $this->toArrayByNumber($request->get('vehicle'));
+        $data_input_exist = $request->get('vehicle_exist');
+        // echo ' <pre> ';
+        // print_r($data_input_exist);
         // die;
+        // print_r($data_input_exist);
+        // echo ' data_clean ';
+        // print_r($data_clean_vehicles);
         $driver_information = $request->get('driverInformation');
         $dni_id = $driver_information['dni_id'];
+        // die;
         $insert_v = "";
         $insert_uv = "";
-        foreach ($data_clean_vehicles as $key_v => $value_v) {
-            $insert_v = Vehicle::create([
-                'plate_id' => $value_v['plate_id'],
-                'type_v' => $value_v['type_v'],
-                'owner_v' => $value_v['owner_v'] != "" ? $value_v['owner_v'] : 0,
-                'taxi_type' => $value_v['taxi_type'] != "" ? $value_v['taxi_type'] : "NA",
-                'number_of_drivers' => $value_v['number_of_drivers'] != "" ? $value_v['number_of_drivers'] : 1,
-                'soat_expi_date' => $value_v['soat_expi_date'],
-                'capacity' => $value_v['capacity'],
-                'service' => $value_v['service'] != "" ? $value_v['service'] : "Otros",
-                'cylindrical_cc' => $value_v['cylindrical_cc'] != "" ? $value_v['cylindrical_cc'] : 1,
-                'model' => $value_v['model'] != "" ? $value_v['model'] : "",
-                'line' => $value_v['line'] != "" ? $value_v['line'] : "",
-                'brand' => $value_v['brand'] != "" ? $value_v['brand'] : "",
-                'color' => $value_v['color'] != "" ? $value_v['color'] : "",
-                'technomechanical_date' => $value_v['technomechanical_date'] != "" ? $value_v['technomechanical_date'] : null,
-                'company_id' => $company_id,
-                'user_id' => auth()->id(),
-            ]);
-            // echo ' di '.$dni_id;
-            // echo ' placa: '.$insert_v->plate_id;
-            // die;
-            $insert_uv = DriverVehicle::create([
-                'vehicle_plate_id' => $insert_v->plate_id,
-                'driver_information_dni_id' => $dni_id,
-                'user_id' => auth()->id()
-            ]);
+        if (!empty($vechicles)) {
+            $v = self::invertRowColumnArray($vechicles);
+            // echo '<pre> data_vehicles ';
+            // print_r($v);
+            foreach ($v as $key_v => $value_v) {
+                $insert_v = Vehicle::create([
+                    'plate_id' => $value_v['plate_id'],
+                    'type_v' => $value_v['type_v'],
+                    'owner_v' => $value_v['owner_v'] != "" ? $value_v['owner_v'] : 0,
+                    'taxi_type' => $value_v['taxi_type'] != "" ? $value_v['taxi_type'] : "NA",
+                    'number_of_drivers' => $value_v['number_of_drivers'] != "" ? $value_v['number_of_drivers'] : 1,
+                    'soat_expi_date' => $value_v['soat_expi_date'],
+                    'capacity' => $value_v['capacity'],
+                    'service' => $value_v['service'] != "" ? $value_v['service'] : "Otros",
+                    'cylindrical_cc' => $value_v['cylindrical_cc'] != "" ? $value_v['cylindrical_cc'] : 1,
+                    'model' => $value_v['model'] != "" ? $value_v['model'] : "",
+                    'line' => $value_v['line'] != "" ? $value_v['line'] : "",
+                    'brand' => $value_v['brand'] != "" ? $value_v['brand'] : "",
+                    'color' => $value_v['color'] != "" ? $value_v['color'] : "",
+                    'technomechanical_date' => $value_v['technomechanical_date'] != "" ? $value_v['technomechanical_date'] : null,
+                    'company_id' => $company_id,
+                    'user_id' => auth()->id(),
+                ]);
+                $insert_uv = DriverVehicle::create([
+                    'vehicle_plate_id' => $insert_v->plate_id,
+                    'driver_information_dni_id' => $dni_id,
+                    'user_id' => auth()->id()
+                ]);
+            }
         }
+        if (!empty($data_input_exist['plate_id'])) {
+            foreach ($data_input_exist['plate_id'] as $die_key => $die_value) {
+                $insert_uv = DriverVehicle::create([
+                    'vehicle_plate_id' => $die_value,
+                    'driver_information_dni_id' => $dni_id,
+                    'user_id' => auth()->id()
+                ]);
+            }
+        }
+
         if ($insert_v->plate_id  != "" && $insert_uv->vehicle_plate_id != "") {
             return response()->json(['response' => 'Se ha registrado la información de la fase 2-3', 'errors' => []]);
         } else {

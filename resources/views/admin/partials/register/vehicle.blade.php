@@ -22,7 +22,7 @@
                                 style="margin-top: 0 !important" value="new_vehiculo" data-index-form="0">
                         </div>
                         <div class="col-md-5">
-                            <label for="">Vehículo Nuevo</label>
+                            <label for="" class="label_radio">Vehículo Nuevo</label>
                         </div>
                         <div class="col-md-1">
                             <input type="radio" name="radio_vehicle0" class="radio_vehicle"

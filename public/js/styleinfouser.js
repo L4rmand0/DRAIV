@@ -26,11 +26,27 @@
             current_fs = element_button.parent();
             next_fs = element_button.parent().next();
             if (typeof (current_fs.attr('data-vehicle')) !== "undefined") {
+                // Limpia los errores del radio y los selects
+                $(".error-radio-select").remove();
+                $(".error-radio").remove();
+                $(".label_radio").css("color","");
                 let num_cards = $("#msform .card_single_vehicle_register").length
                 for (let i = 0; i < num_cards; i++) {
+                    $input = $("input[name=radio_vehicle" + i + "]");
+                     
                     if (!$("input[name=radio_vehicle" + i + "]").is(":checked")) {
+                        $row = $input.closest(".row");
+                        $row.append("<span role='alert' class='ml-3 error-radio'><strong class='el-red'>Debe elegir una opción</strong></p>");
+                        $row.find(".label_radio").css('color','var(--red)');
                         return
                     }
+                }
+                for (let j = 0; j < num_cards; j++) {
+                    let $select = $("#plate_id"+j);
+                    if($select.val() == ""){
+                        $select.closest(".select_vehicle_exist").append("<span role='alert' class='ml-1 mt-2 error-radio-select'><strong class='el-red'>Debe seleccionar una placa</strong></p>");
+                        return 
+                    }                  
                 }
             }
             $.ajax({
@@ -282,8 +298,9 @@
         let dataArray = $("#msform").serializeArray();
         let content = "";
         let contador = 0;
+        
         $(dataArray).each(function (i, field) {
-            if (field.name == "vehicle[plate_id][]") {
+            if (String(field.name).includes("vehicle[plate_id]") || String(field.name).includes("vehicle_exist[plate_id]")){
                 content += String($("#card-form-vehicles").html())
                     .replace("&amp;PLACA", "" + "Vehículo con placa: <span class='header_plate_id'>" + field.value + "</span>")
                     .replace(/&amp;index_iv/g, "" + contador + "")
