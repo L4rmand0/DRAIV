@@ -25,18 +25,26 @@
 
             current_fs = element_button.parent();
             next_fs = element_button.parent().next();
-
+            if (typeof (current_fs.attr('data-vehicle')) !== "undefined") {
+                let num_cards = $("#msform .card_single_vehicle_register").length
+                for (let i = 0; i < num_cards; i++) {
+                    if (!$("input[name=radio_vehicle" + i + "]").is(":checked")) {
+                        return
+                    }
+                }
+            }
             $.ajax({
                 type: 'POST',
                 url: $url_action,
                 data: $form_data_arr,
             }).done(function (response) {
                 // debugger
-                if (typeof (current_fs.attr('data-vehicle')) !== "undefined") {
-                    container_validate = current_fs.find("section:last-child");
-                } else {
-                    container_validate = current_fs;
-                }
+                // if (typeof (current_fs.attr('data-vehicle')) !== "undefined") {
+                //     container_validate = current_fs.find("section:last-child");
+                // } else {
+                //     container_validate = current_fs;
+                // }
+                container_validate = current_fs;
                 if (!current_fs.hasErrorsForms(container_validate, response)) {
                     // if (true) {
                     //Add Class Active
@@ -66,7 +74,7 @@
                                     );
                                 } else {
                                     let plate = $btn.parent().parent().parent().parent().parent().find(".header_plate_id").text();
-                                    console.log("placa: "+plate);
+                                    console.log("placa: " + plate);
                                     datafr.append('key', $key);
                                     datafr.append('plate', plate);
                                     datafr.append('index', $index);
@@ -277,9 +285,9 @@
         $(dataArray).each(function (i, field) {
             if (field.name == "vehicle[plate_id][]") {
                 content += String($("#card-form-vehicles").html())
-                .replace("&amp;PLACA", "" + "Vehículo con placa: <span class='header_plate_id'>" + field.value + "</span>")
-                .replace(/&amp;index_iv/g, ""+contador+"")
-                .replace(/data-index=""/g,'data-index="'+contador+'"');
+                    .replace("&amp;PLACA", "" + "Vehículo con placa: <span class='header_plate_id'>" + field.value + "</span>")
+                    .replace(/&amp;index_iv/g, "" + contador + "")
+                    .replace(/data-index=""/g, 'data-index="' + contador + '"');
                 contador++;
                 // $(".select_user_vehicle").append("<option value='" + field.value + "'>" + field.value + "</option>");
             }

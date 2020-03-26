@@ -1,7 +1,7 @@
 <div class="form-card">
     <h2 class="fs-title mt-2">Información de Vehículos del conductor</h2>
     <div id="accordion_vehicles_register">
-        <div class="card" id="card_single_vehicle_register">
+        <div class="card card_single_vehicle_register">
             <div class="card-header" id="headingOne">
                 <h5 class="mb-0">
                     <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseItem-V1"
@@ -18,14 +18,14 @@
                         insertado?</p>
                     <div class="row mb-4">
                         <div class="col-md-1">
-                            <input type="radio" name="radio_vehicle" class="radio_vehicle"
+                            <input type="radio" name="radio_vehicle0" class="radio_vehicle"
                                 style="margin-top: 0 !important" value="new_vehiculo" data-index-form="0">
                         </div>
                         <div class="col-md-5">
                             <label for="">Vehículo Nuevo</label>
                         </div>
                         <div class="col-md-1">
-                            <input type="radio" name="radio_vehicle" class="radio_vehicle"
+                            <input type="radio" name="radio_vehicle0" class="radio_vehicle"
                                 style="margin-top: 0 !important" value="vehiculo_exist">
                         </div>
                         <div class="col-md-5">

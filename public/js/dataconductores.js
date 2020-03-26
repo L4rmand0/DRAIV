@@ -343,7 +343,7 @@
             }
         });
 
-        $("input[name=radio_vehicle]").change(function () {	
+        $(".radio_vehicle").change(function () {	
             $input = $(this); 
             $card_inside = $input.closest(".card-body").find(".card_inside_vehicle_type");
             let value =  $input.val();
@@ -371,13 +371,14 @@
             content = content.replace(/&amp;NMFORM/g, String(index_form));
             $("#accordion_vehicles_register").append(content);
             //Evento onchange después de ser creados los inputs radio
-            $("input[name=radio_vehicle]").off("change", "**" );
-            $("input[name=radio_vehicle]").change(function () {	
+            $(".radio_vehicle").off("change", "**" );
+            $(".radio_vehicle").change(function () {	
                 $input = $(this); 
                 $card_inside = $input.closest(".card-body").find(".card_inside_vehicle_type");
                 let value =  $input.val();
                 if(value == "new_vehiculo"){
                     let content = $("#example_form_vehicle_regis").html();
+                    content = content.replace(/&amp;NUMFORM/g, String($input.data('index-form')));
                     $card_inside.html(content);
                 }else if(value == "vehiculo_exist"){
                     content = $("#example_select_vehicle_exist").html();
