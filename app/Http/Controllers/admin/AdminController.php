@@ -41,7 +41,7 @@ class AdminController extends Controller
         $this->user_controller = new UserController();
     }
 
-    public function index(Request $request, $module = null)
+    public function index(Request $request, $module = null, $aditional = null)
     {
         $auth_user = auth()->user();
         $module = $this->checkModulePermission($module, $auth_user->id);
@@ -149,6 +149,10 @@ class AdminController extends Controller
                 case 'register_evaluation':
                     $data_register_driver = $this->showRegisterEvaluationDriver($company_name);
                     $data_register_driver = $this->checkMultipleAdmin($auth_user, $child_companies, $data_register_driver);
+                    $data_register_driver['driver_dni_id'] = false;
+                    if($aditional != null){
+                        $data_register_driver['driver_dni_id'] = $aditional;
+                    }
                     return view('admin.register-information.register-evaluation', $data_register_driver);
                     break;
                 default:

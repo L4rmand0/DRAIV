@@ -80,7 +80,7 @@ body {
 
 #msform .action-button {
     width: 100px;
-    background: skyblue;
+    background: #006CC9;
     font-weight: bold;
     color: white;
     border: 0 none;
@@ -223,7 +223,7 @@ select.list-dt:focus {
 
 #progressbar li.active:before,
 #progressbar li.active:after {
-    background: skyblue
+    background: #006CC9;
 }
 
 .radio-group {

@@ -202,6 +202,10 @@
                                         timer: 1500,
                                         icon: 'success'
                                     });
+                                    let url_old = $("#btn_evaluate_driver").attr("href");
+                                    let dni_id = $("#dni_id").val();
+                                    let new_url = `${url_old}/${dni_id}`;
+                                    $("#btn_evaluate_driver").attr("href",new_url);
                                 }
                             });
                     }
@@ -294,11 +298,9 @@
     });
 
     function generateFormImageVehicle(next_fs, callback) {
-        let number_forms = $("#number_of_vehicles_form").val();
         let dataArray = $("#msform").serializeArray();
         let content = "";
         let contador = 0;
-        
         $(dataArray).each(function (i, field) {
             if (String(field.name).includes("vehicle[plate_id]") || String(field.name).includes("vehicle_exist[plate_id]")){
                 content += String($("#card-form-vehicles").html())
@@ -306,7 +308,6 @@
                     .replace(/&amp;index_iv/g, "" + contador + "")
                     .replace(/data-index=""/g, 'data-index="' + contador + '"');
                 contador++;
-                // $(".select_user_vehicle").append("<option value='" + field.value + "'>" + field.value + "</option>");
             }
         });
         $("#forms_images_vehicle").html(content);

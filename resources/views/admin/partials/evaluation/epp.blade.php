@@ -6,4 +6,4 @@
 </div>
 <input type="button" name="previous" class="previous action-button-previous form-dataconductores" value="Anterior" />
 <input type="button" name="next" class="next action-button form-dataconductores" value="Registrar Evaluación"
-    id="fieldset_infouser" data-validate="{{ route('personal-ele-protection.validate-register') }}"/>
+    id="fieldset_infouser" style="width: 190px;" data-validate="{{ route('personal-ele-protection.validate-register') }}"/>

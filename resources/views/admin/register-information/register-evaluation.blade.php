@@ -15,7 +15,7 @@
                             @csrf
                             <!-- progressbar -->
                             <ul id="progressbar" style="display: flex;justify-content: center;align-items: center;">
-                                <li id="empty"><strong></strong></li>
+                                <li id="empty" class="active"><strong></strong></li>
                                 <li id="personal" class="active"><strong>Componente Humano</strong></li>
                                 <li id="Licence"><strong>Componente Técnico</strong></li>
                                 <li id="empty"><strong></strong></li>

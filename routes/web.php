@@ -33,7 +33,7 @@ Route::prefix('news')->group(function () {
 });
 
 Route::prefix('admin')->group(function () {
-    Route::get('/i/{module?}', 'admin\AdminController@index')->name("admin");
+    Route::get('/i/{module?}/{aditional?}', 'admin\AdminController@index')->name("admin");
     Route::post('users/update', 'admin\UserController@update')->name('users.update');
     Route::get('users-list', 'admin\UserController@usersList')->name('users-list'); 
     Route::post('/register-user','admin\UserController@storeUserAdmin')->name('register-user');
