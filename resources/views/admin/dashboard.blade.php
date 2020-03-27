@@ -12,7 +12,6 @@
     <input type="hidden" id="function_pie_line_v" value="{{ route('admin.vehicle.line-v-chart') }}">
     <input type="hidden" id="function_pie_brand_v" value="{{ route('admin.vehicle.brand-v-chart') }}">
     <input type="hidden" id="function_pie_model_v" value="{{ route('admin.vehicle.model-v-chart') }}">
-    <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
     <input type="hidden" id="function_total_drivers" value="{{ route('drivers-info.total-drivers') }}">
     <input type="hidden" id="function_total_vehicles" value="{{ route('drivers-info.total-vehicles') }}">
     <input type="hidden" id="function_gender" value="{{ route('drivers-info.gender') }}">
