@@ -22,15 +22,15 @@
                                 <li id="vehicle"><strong>Vehículo</strong></li>
                                 <li id="empty"><strong></strong></li>
                             </ul> <!-- fieldsets -->
-                            <fieldset>
+                            {{-- <fieldset>
                                 @include('admin.partials.register.driver_information')
                             </fieldset>
                             <fieldset data-licence="true">
                                 @include('admin.partials.register.driving_licence')
-                            </fieldset>
-                            <fieldset data-endsection="true">
+                            </fieldset> --}}
+                            {{-- <fieldset data-endsection="true">
                                 @include('admin.partials.register.images')
-                            </fieldset>
+                            </fieldset> --}}
                             <fieldset data-vehicle="true" id="fs_regis_vehicle">
                                 @include('admin.partials.register.vehicle')
                             </fieldset> 
@@ -63,13 +63,16 @@
             id="plate_id&NUM" style="width: 55%">
             <option value="">Seleccionar...</option>
             @foreach ($select_all_vehicles as $item_vehicle)
-            <option value="{{$item_vehicle->plate_id}}"> {{$item_vehicle->plate_id}} </option>
+            <option value="{{$item_vehicle->plate_id}}" data-type="{{$item_vehicle->type_v}}"> {{$item_vehicle->plate_id}} </option>
             @endforeach
         </select>
     </div>
 </div>
 <div hidden>
     @include('admin.partials.register.form_images_vehicle')
+</div>
+<div id="example_col_form_single_image_v" hidden>
+    @include('admin.partials.register.form_single_image_vehicle')
 </div>
 
 <!-- /.container-fluid -->

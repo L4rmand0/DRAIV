@@ -5,10 +5,12 @@ namespace App\Http\Controllers\admin;
 use DB;
 use App\Vehicle;
 use App\DriverVehicle;
+use App\Rules\NotToday;
 use App\DriverInformation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class DriverVehicleController extends Controller
 {

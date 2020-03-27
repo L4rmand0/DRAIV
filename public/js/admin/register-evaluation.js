@@ -34,7 +34,6 @@
                             generateCardMotoMehcanicalConditions(response);
                             generateCardElementPersonalProtection(response);
                             // ----- Limpia los estilos de error en los formularios -----
-
                             // ------- Termina limpiar el formulario -------
                         }
                     });

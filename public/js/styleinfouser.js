@@ -29,24 +29,24 @@
                 // Limpia los errores del radio y los selects
                 $(".error-radio-select").remove();
                 $(".error-radio").remove();
-                $(".label_radio").css("color","");
+                $(".label_radio").css("color", "");
                 let num_cards = $("#msform .card_single_vehicle_register").length
                 for (let i = 0; i < num_cards; i++) {
                     $input = $("input[name=radio_vehicle" + i + "]");
-                     
+
                     if (!$("input[name=radio_vehicle" + i + "]").is(":checked")) {
                         $row = $input.closest(".row");
                         $row.append("<span role='alert' class='ml-3 error-radio'><strong class='el-red'>Debe elegir una opción</strong></p>");
-                        $row.find(".label_radio").css('color','var(--red)');
+                        $row.find(".label_radio").css('color', 'var(--red)');
                         return
                     }
                 }
                 for (let j = 0; j < num_cards; j++) {
-                    let $select = $("#plate_id"+j);
-                    if($select.val() == ""){
+                    let $select = $("#plate_id" + j);
+                    if ($select.val() == "") {
                         $select.closest(".select_vehicle_exist").append("<span role='alert' class='ml-1 mt-2 error-radio-select'><strong class='el-red'>Debe seleccionar una placa</strong></p>");
-                        return 
-                    }                  
+                        return
+                    }
                 }
             }
             $.ajax({
@@ -66,7 +66,7 @@
                     //Add Class Active
                     //Revisa si el section es de vehiculos
                     if (typeof (current_fs.attr('data-vehicle')) !== "undefined") {
-                        generateFormImageVehicle(next_fs, function () {
+                        generateFormImageVehicle(next_fs, arr_all_types_vehicle, function () {
                             //Lógica para subir las imágenes del formulario de vehiculos
                             $(".btn_images_vehicle").on('click', function (event) {
                                 event.preventDefault();
@@ -205,7 +205,7 @@
                                     let url_old = $("#btn_evaluate_driver").attr("href");
                                     let dni_id = $("#dni_id").val();
                                     let new_url = `${url_old}/${dni_id}`;
-                                    $("#btn_evaluate_driver").attr("href",new_url);
+                                    $("#btn_evaluate_driver").attr("href", new_url);
                                 }
                             });
                     }
@@ -297,21 +297,62 @@
         });
     });
 
-    function generateFormImageVehicle(next_fs, callback) {
+    function generateFormImageVehicle(next_fs, arr_all_types_vehicle, callback) {
         let dataArray = $("#msform").serializeArray();
-        let content = "";
         let contador = 0;
-        $(dataArray).each(function (i, field) {
-            if (String(field.name).includes("vehicle[plate_id]") || String(field.name).includes("vehicle_exist[plate_id]")){
-                content += String($("#card-form-vehicles").html())
-                    .replace("&amp;PLACA", "" + "Vehículo con placa: <span class='header_plate_id'>" + field.value + "</span>")
-                    .replace(/&amp;index_iv/g, "" + contador + "")
-                    .replace(/data-index=""/g, 'data-index="' + contador + '"');
-                contador++;
-            }
+        let content_cards = "";
+        // Genera la imágenes de los selects de los vehículos ya existentes
+        $("#msform .select_plate_vehicle").each(function (i, element) {
+            let plate = element.value;
+            let indexSelected = element.options.selectedIndex;
+            let type = $(element.options[indexSelected]).data('type');
+            debugger
+            if(type == "Taxis"){
+                generateFormSingleV(arr_all_types_vehicle.taxis, plate, function (content) {
+                    content_cards += content;
+                });
+            }else if(type != "Taxis"){
+                generateFormSingleV(arr_all_types_vehicle.general, plate, function (content) {
+                    content_cards += content;
+                });
+            } 
         });
-        $("#forms_images_vehicle").html(content);
+        // Genera la imágenes de los inputs de vehículos nuevos
+        $("#msform .plate_id_input").each(function (i, element) {
+            let plate = element.value;
+            generateFormSingleV(arr_type_images_vehicle, plate, function (content) {
+                content_cards += content;
+            });
+        });
+        // $(dataArray).each(function (i, field) {
+        //     if (String(field.name).includes("vehicle[plate_id]") || String(field.name).includes("vehicle_exist[plate_id]")) {
+        //         let plate = field.value;
+        //         generateFormSingleV(arr_type_images_vehicle,plate, function(content){
+        //             content_cards+=content;
+        //         });
+        //     }
+        // });
+        $("#forms_images_vehicle").html(content_cards);
         callback();
+    }
+
+    function generateFormSingleV(arr_type_images_vehicle, plate, callback) {
+        let content = `<div class="card"><div class="card-header"> ${plate} </div><div class="card-body">`;
+        $.each(arr_type_images_vehicle, function (key, value) {
+            content += "<div class='row'>";
+            $.each(value, function (key_item, value_item) {
+                let example_form = String($("#example_col_form_single_image_v").html());
+                let title = value_item.title;
+                let type_image = value_item.type;
+                example_form = example_form.replace(/&amp;TITLE/g, title)
+                    .replace(/&amp;TYPE_IMG/g, title)
+                    .replace(/&amp;INDEX/g, title);
+                content += example_form;
+            })
+            content += "</div>";
+        });
+        content += "</div></div>";
+        callback(content);
     }
 
     // The rest of the code goes here!

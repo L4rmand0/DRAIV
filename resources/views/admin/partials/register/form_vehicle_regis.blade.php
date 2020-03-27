@@ -1,8 +1,8 @@
 <div class="form-card" style="margin-bottom: 50px;">
     <div class="row">
         <div class="col-md-6">
-            <input class="form-control form-vehicles text-datadrivers" type="text" name="vehicle[plate_id][&NUMFORM]" placeholder="Placa"
-                id="&NUMFORMplate_id" data-check="{{ route('admin.vehicle.checkvehiclebyid') }}" onkeyup="this.value = this.value.toUpperCase();"/>
+            <input class="form-control form-vehicles text-datadrivers plate_id_input" type="text" name="vehicle[plate_id][&NUMFORM]" placeholder="Placa"
+                id="&NUMFORMplate_id" data-check="{{ route('admin.vehicle.checkvehiclebyid') }}" data-index="&NUMFORM" onkeyup="this.value = this.value.toUpperCase();"/>
         </div>
         <div class="col-md-6">
         </div>

@@ -28,6 +28,22 @@ class ImagenesVehiculo extends Model
         'Tarjetón de Taxi'=>'Tarjeton_taxi',
     ];
 
+    const ARR_ASSOC_TIPO_DOC_GENERAL = [
+        ['title'=>'Soat de Frente','type'=>'SOAT_frente'],
+        ['title'=>'Tecnomecánica Frente','type'=>'Tecnomecanica_frente'],
+        ['title'=>'Tecnomecánica Reverso','type'=>'Tecnomecanica_reverso'],
+        ['title'=>'Seguro','type'=>'Seguro'],
+    ];
+
+    const ARR_ASSOC_TIPO_DOC_TAXI = [
+        ['title'=>'Soat de Frente','type'=>'SOAT_frente'],
+        ['title'=>'Tecnomecánica Frente','type'=>'Tecnomecanica_frente'],
+        ['title'=>'Tecnomecánica Reverso','type'=>'Tecnomecanica_reverso'],
+        ['title'=>'Seguro','type'=>'Seguro'],
+        ['title'=>'Tarjetón de Taxi','type'=>'Tarjeton_taxi'],
+    ];
+
+
     protected $table = 'imagenes_vehiculo';
     
     public $timestamps = false;

@@ -244,6 +244,10 @@ class AdminController extends Controller
         $last_element_type_images = $this->getLastElementArrayAssoc($type_images);
         //Imágenes Vehículos
         $type_images_vehicle = ImagenesVehiculo::enum_assoc_tipo_doc;
+        $cols = 3;
+        $arr_types_images['general'] = array_chunk(ImagenesVehiculo::ARR_ASSOC_TIPO_DOC_GENERAL, $cols);
+        $arr_types_images['taxis'] = array_chunk(ImagenesVehiculo::ARR_ASSOC_TIPO_DOC_TAXI, $cols);
+        $arr_type_images_vehicle = $arr_types_images;
         $last_element_type_images_v = $this->getLastElementArrayAssoc($type_images_vehicle);
         //Vehículos
         $enum_type_v = $this->generateOptionsEnumDt(Vehicle::enum_type_v);
@@ -282,6 +286,7 @@ class AdminController extends Controller
             'list_service' => $list_service,
             'list_taxi_type' => $list_taxi_type,
             'select_all_vehicles' => $select_all_vehicles,
+            'arr_type_images_vehicle' => $arr_type_images_vehicle,
             // variales de verificación manual
             'category_list'=>DocVerification::CATEGORY,
             'runstate_list'=>DocVerification::RUNSTATE,

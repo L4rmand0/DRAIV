@@ -33,17 +33,22 @@
                         </div>
                     </div>
                     <div class="card_inside_vehicle_type">
-                        
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div style="text-align: right;">
-        <button type="button" class="btn btn-danger" id="btn_remove_vehicle_form" hidden><i class="fas fa-minus"></i> Vehículo</button>
-        <button type="button" class="btn btn-primary" id="btn_add_vehicle_form"><i class="fas fa-plus"></i> Vehículo</button>
+        <button type="button" class="btn btn-danger" id="btn_remove_vehicle_form" hidden><i class="fas fa-minus"></i>
+            Vehículo</button>
+        <button type="button" class="btn btn-primary" id="btn_add_vehicle_form"><i class="fas fa-plus"></i>
+            Vehículo</button>
     </div>
 </div>
 <input type="button" name="previous" class="previous action-button-previous form-dataconductores" value="Anterior" />
 <input type="button" name="next" class="next action-button form-dataconductores" value="Siguiente"
-    id="fieldset_infouser" data-validate="{{ route('vehicle.validate-register') }}" data-error="info_user"/>
+    id="fieldset_infouser" data-validate="{{ route('vehicle.validate-register') }}" data-error="info_user" />
+<script>
+    var arr_all_types_vehicle = @json($arr_type_images_vehicle);
+</script>
