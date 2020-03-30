@@ -33,7 +33,6 @@
                 let num_cards = $("#msform .card_single_vehicle_register").length
                 for (let i = 0; i < num_cards; i++) {
                     $input = $("input[name=radio_vehicle" + i + "]");
-
                     if (!$("input[name=radio_vehicle" + i + "]").is(":checked")) {
                         $row = $input.closest(".row");
                         $row.append("<span role='alert' class='ml-3 error-radio'><strong class='el-red'>Debe elegir una opción</strong></p>");
@@ -235,13 +234,15 @@
                         $("#progressbar li").eq(index_fieldset).addClass("active");
                     }
                     //show the next fieldset
+                    while(next_fs.data('pass')==true){
+                        next_fs = next_fs.next();
+                    }
                     next_fs.show();
                     //hide the current fieldset with style
                     current_fs.animate({ opacity: 0 }, {
                         step: function (now) {
                             // for making fielset appear animation
                             opacity = 1 - now;
-
                             current_fs.css({
                                 'display': 'none',
                                 'position': 'relative'
@@ -258,6 +259,10 @@
 
             current_fs = $(this).parent();
             previous_fs = $(this).parent().prev();
+            //show the previous fieldset
+            while(previous_fs.data('pass')==true){
+                previous_fs = previous_fs.prev();
+            }
 
             if (current_fs.find(".next").is(":hidden") == true) {
                 current_fs.find(".next").show()
@@ -268,7 +273,6 @@
                 index_fieldset--;
             }
 
-            //show the previous fieldset
             previous_fs.show();
 
             //hide the current fieldset with style
@@ -290,10 +294,6 @@
         $('.radio-group .radio').click(function () {
             $(this).parent().find('.radio').removeClass('selected');
             $(this).addClass('selected');
-        });
-
-        $(".submit").click(function () {
-            return false;
         });
     });
 

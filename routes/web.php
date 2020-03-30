@@ -140,6 +140,7 @@ Route::prefix('admin')->group(function () {
     Route::post('motorcycle-technology/validate-register', 'admin\MotorcycleTechnologyController@validateInformation')->name('motorcycle-technology.validate-register');
     Route::post('motorcycle-mechanical-conditions/validate-register', 'admin\MotorcycleMechanicalConditionsController@validateInformation')->name('motorcycle-mechanical-conditions.validate-register');
     Route::post('personal-ele-protection/validate-register', 'admin\EppController@validateInformation')->name('personal-ele-protection.validate-register');
+    Route::post('register-evaluation/store', 'admin\EppController@storeAllEvaluationsDriverVehicle')->name('register-evaluation.store');
 });
 
 // Route::get('/api-text-extract', 'ApiController@extractText')->name('api-text-extract');

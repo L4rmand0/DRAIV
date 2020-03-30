@@ -33,7 +33,7 @@
                         </div>
                     </div>
                     <div class="card_inside_vehicle_type">
-
+                        
                     </div>
                 </div>
             </div>

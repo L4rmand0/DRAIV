@@ -22,15 +22,15 @@
                                 <li id="vehicle"><strong>Vehículo</strong></li>
                                 <li id="empty"><strong></strong></li>
                             </ul> <!-- fieldsets -->
-                            {{-- <fieldset>
+                            <fieldset>
                                 @include('admin.partials.register.driver_information')
                             </fieldset>
                             <fieldset data-licence="true">
                                 @include('admin.partials.register.driving_licence')
-                            </fieldset> --}}
-                            {{-- <fieldset data-endsection="true">
+                            </fieldset>
+                            <fieldset data-endsection="true">
                                 @include('admin.partials.register.images')
-                            </fieldset> --}}
+                            </fieldset>
                             <fieldset data-vehicle="true" id="fs_regis_vehicle">
                                 @include('admin.partials.register.vehicle')
                             </fieldset> 

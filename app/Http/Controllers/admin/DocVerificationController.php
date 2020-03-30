@@ -375,10 +375,12 @@ class DocVerificationController extends Controller
         // echo '<pre>';
         // print_r($request->all());
         // die;
+
         $validator = Validator::make(
             $data_input,
             [
                 'driver_select_evaluation' => 'required|max:255',
+                // 'start_date' => [new NotToday(['user_vehicle_id', $user_vehicle->id], 'skill_m_t_m')],
             ],
             [
                 'driver_select_evaluation.required' => "Se debe seleccionar un conductor"

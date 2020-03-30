@@ -230,13 +230,11 @@ class EppController extends Controller
 
     protected function validateInformation(Request $request)
     {
-        $all_data_input = $request->all();
         $data_input = $request->get('epp');
         // echo '<pre>';
         // print_r($data_input);
         // print_r($all);
         // die;
-
         foreach ($data_input as $key => $value) {
             $validator = Validator::make(
                 $value,
@@ -264,16 +262,18 @@ class EppController extends Controller
             $errors[$key] = $validator->errors()->getMessages();
         }
         $errors_new = self::personalizeErrorsTypeVehicle($errors);
-       
+
         if (!empty($errors_new)) {
             return response()->json(['errors' => $errors_new]);
         } else {
-            $this->storeAllEvaluationsDriverVehicle($all_data_input);
             return response()->json(['response' => '', 'errors' => []]);
+            // $this->storeAllEvaluationsDriverVehicle($all_data_input);
         }
     }
 
-    public function storeAllEvaluationsDriverVehicle($data_input){
+    public function storeAllEvaluationsDriverVehicle(Request $request)
+    {
+        $data_input = $request->all();
         // echo '<pre> guardar todos';
         // print_r($data_input);
         // die;
@@ -284,38 +284,38 @@ class EppController extends Controller
 
         $motorcycle_technology = $data_input['motorcycle_technology'];
         $doc_verification_vehicle = $data_input['doc_verification_vehicle'];
-        $motorcycle_mechanical_conditions = $data_input['motorcycle_mechanical_conditions'];
-        $epp = $data_input['epp'];
+        $motorcycle_mechanical_conditions = !empty($data_input['motorcycle_mechanical_conditions']) ? $data_input['motorcycle_mechanical_conditions'] : false;
+        $epp = !empty($data_input['epp']) ? $data_input['epp'] : false;
         //Insertar información en la tabla de verificación documental de conductores
         $doc_verification_driver = DocVerificationDriver::create([
-            'valid_licence'=> $data_doc_verification_driver['valid_licence'],
-            'category'=> $data_doc_verification_driver['category'],
-            'runt_state'=> $data_doc_verification_driver['runt_state'],
-            'accident_rate'=> $data_doc_verification_driver['accident_rate'],
-            'penality_record'=> $data_doc_verification_driver['penality_record'],
-            'code_penality_1'=> $data_doc_verification_driver['code_penality_1'],
-            'date_penality_1'=> $data_doc_verification_driver['date_penality_1'],
-            'code_penality_2'=> $data_doc_verification_driver['code_penality_2'],
-            'date_penality_2'=> $data_doc_verification_driver['date_penality_2'],
-            'code_penality_3'=> $data_doc_verification_driver['code_penality_3'],
-            'date_penality_3'=> $data_doc_verification_driver['date_penality_3'],
-            'code_penality_4'=> $data_doc_verification_driver['code_penality_4'],
-            'date_penality_4'=> $data_doc_verification_driver['date_penality_4'],
-            'code_penality_5'=> $data_doc_verification_driver['code_penality_5'],
-            'date_penality_5'=> $data_doc_verification_driver['date_penality_5'],
-            'driver_information_dni_id'=> $dni_id,
+            'valid_licence' => $data_doc_verification_driver['valid_licence'],
+            'category' => $data_doc_verification_driver['category'],
+            'runt_state' => $data_doc_verification_driver['runt_state'],
+            'accident_rate' => $data_doc_verification_driver['accident_rate'],
+            'penality_record' => $data_doc_verification_driver['penality_record'],
+            'code_penality_1' => $data_doc_verification_driver['code_penality_1'],
+            'date_penality_1' => $data_doc_verification_driver['date_penality_1'],
+            'code_penality_2' => $data_doc_verification_driver['code_penality_2'],
+            'date_penality_2' => $data_doc_verification_driver['date_penality_2'],
+            'code_penality_3' => $data_doc_verification_driver['code_penality_3'],
+            'date_penality_3' => $data_doc_verification_driver['date_penality_3'],
+            'code_penality_4' => $data_doc_verification_driver['code_penality_4'],
+            'date_penality_4' => $data_doc_verification_driver['date_penality_4'],
+            'code_penality_5' => $data_doc_verification_driver['code_penality_5'],
+            'date_penality_5' => $data_doc_verification_driver['date_penality_5'],
+            'driver_information_dni_id' => $dni_id,
         ]);
-        
+
         $driver_vehicles = DriverVehicleController::getUserVehicleIdTypeVehicle($dni_id);
         $driver_vehicles_arr = DriverVehicleController::getArraygetVehiclesByDniId($dni_id);
         // print_r($driver_vehicles_arr);
         // echo 'foreach';
-        
+
         foreach ($driver_vehicles_arr as $key_dva => $value_dva) {
-            $mt_data = $motorcycle_technology[$value_dva->plate_id];
+            $mt_data = !empty($motorcycle_technology[$value_dva->plate_id]) ? $motorcycle_technology[$value_dva->plate_id] : false;
             $doc_v_vehicle_data = $doc_verification_vehicle[$value_dva->plate_id];
-            $mt_mechanical_cond_data = $motorcycle_mechanical_conditions[$value_dva->plate_id];
-            $epp_data = $epp[$value_dva->plate_id];
+            $mt_mechanical_cond_data = !empty($motorcycle_mechanical_conditions[$value_dva->plate_id]) ? $motorcycle_mechanical_conditions[$value_dva->plate_id] : false;
+            $epp_data = !empty($epp[$value_dva->plate_id]) ? $epp[$value_dva->plate_id] : false;
             // Inserta la información de la evaluación de la tecnología de la moto
             DocVerificationVehicle::create([
                 'date_evaluation' => $now_date,
@@ -325,49 +325,52 @@ class EppController extends Controller
                 'user_id' => auth()->id(),
                 'user_vehicle_id' => $value_dva->id,
             ]);
-
-            MotorcycleTechnology::create([
-                'date_evaluation' => $now_date,
-                'brake_type' => $mt_data['brake_type'],
-                'assistence_brake' => $mt_data['assistence_brake'],
-                'automatic_lights' => $mt_data['automatic_lights'],
-                'user_id' => auth()->id(),
-                'user_vehicle_id' => $value_dva->id,
-            ]);
-
-            MotorcycleMechanicalConditions::create([
-                'date_evaluation' => $now_date,
-                'tires' => $mt_mechanical_cond_data['tires'],
-                'manigueta_guaya' => $mt_mechanical_cond_data['manigueta_guaya'],
-                'braking_system' => $mt_mechanical_cond_data['braking_system'],
-                'kit' => $mt_mechanical_cond_data['kit'],
-                'stee_susp' => $mt_mechanical_cond_data['stee_susp'],
-                'oil_leak' => $mt_mechanical_cond_data['oil_leak'],
-                'other_components' => $mt_mechanical_cond_data['other_components'],
-                'horn' => $mt_mechanical_cond_data['horn'],
-                'lights' => $mt_mechanical_cond_data['lights'],
-                'user_id' => auth()->id(),
-                'user_vehicle_id' => $value_dva->id,
-            ]);
-
-            Epp::create([
-                'date_evaluation' => $now_date,
-                'casco' => $epp_data['casco'],
-                'airbag' => $epp_data['airbag'],
-                'rodilleras' => $epp_data['rodilleras'],
-                'coderas' => $epp_data['coderas'],
-                'hombreras' => $epp_data['hombreras'],
-                'espalda' => $epp_data['espalda'],
-                'botas' => $epp_data['botas'],
-                'guantes' => $epp_data['guantes'],
-                'user_id' => auth()->id(),
-                'user_vehicle_id' => $value_dva->id,
-            ]);
+            if ($mt_data) {
+                MotorcycleTechnology::create([
+                    'date_evaluation' => $now_date,
+                    'brake_type' => $mt_data['brake_type'],
+                    'assistence_brake' => $mt_data['assistence_brake'],
+                    'automatic_lights' => $mt_data['automatic_lights'],
+                    'user_id' => auth()->id(),
+                    'user_vehicle_id' => $value_dva->id,
+                ]);
+            }
+            if ($mt_data) {
+                MotorcycleMechanicalConditions::create([
+                    'date_evaluation' => $now_date,
+                    'tires' => $mt_mechanical_cond_data['tires'],
+                    'manigueta_guaya' => $mt_mechanical_cond_data['manigueta_guaya'],
+                    'braking_system' => $mt_mechanical_cond_data['braking_system'],
+                    'kit' => $mt_mechanical_cond_data['kit'],
+                    'stee_susp' => $mt_mechanical_cond_data['stee_susp'],
+                    'oil_leak' => $mt_mechanical_cond_data['oil_leak'],
+                    'other_components' => $mt_mechanical_cond_data['other_components'],
+                    'horn' => $mt_mechanical_cond_data['horn'],
+                    'lights' => $mt_mechanical_cond_data['lights'],
+                    'user_id' => auth()->id(),
+                    'user_vehicle_id' => $value_dva->id,
+                ]);
+            }
+            if ($epp_data) {
+                Epp::create([
+                    'date_evaluation' => $now_date,
+                    'casco' => $epp_data['casco'],
+                    'airbag' => $epp_data['airbag'],
+                    'rodilleras' => $epp_data['rodilleras'],
+                    'coderas' => $epp_data['coderas'],
+                    'hombreras' => $epp_data['hombreras'],
+                    'espalda' => $epp_data['espalda'],
+                    'botas' => $epp_data['botas'],
+                    'guantes' => $epp_data['guantes'],
+                    'user_id' => auth()->id(),
+                    'user_vehicle_id' => $value_dva->id,
+                ]);
+            }
             // print_r($value_dva);
             // print_r($motorcycle_technology[$value_dva->plate_id]);
         }
         // Inserta la evaluación de habilidades según si es moto o carro (skills_m_t_m)
-        if(!empty($driver_vehicles['motos'])){
+        if (!empty($driver_vehicles['motos'])) {
             $data_skill_motos = $skillmtm['Motos'];
             foreach ($driver_vehicles['motos'] as $key_motos_uvid => $value_motos_uvid) {
                 SkillMtM::create([
@@ -381,7 +384,7 @@ class EppController extends Controller
                 ]);
             }
         }
-        if(!empty($driver_vehicles['autos'])){
+        if (!empty($driver_vehicles['autos'])) {
             $data_skill_autos = $skillmtm['Autos'];
             foreach ($driver_vehicles['autos'] as $key_autos_uvid => $value_autos_uvid) {
                 SkillMtM::create([
@@ -397,6 +400,4 @@ class EppController extends Controller
         }
         return response()->json(['response' => 'El registro de evaluaciones ha sido insertado correctamente', 'errors' => []]);
     }
-
-    
 }

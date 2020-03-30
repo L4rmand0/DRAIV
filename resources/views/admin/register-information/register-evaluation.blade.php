@@ -22,28 +22,31 @@
                                 {{-- <li id="photos"><strong>Imágenes</strong></li>
                                 <li id="vehicle"><strong>Vehículo</strong></li> --}}
                             </ul> <!-- fieldsets -->
-                            <fieldset>
+                            <fieldset data-pass="false">
                                 @include('admin.partials.evaluation.choose-driver')
                             </fieldset>
-                            <fieldset>
+                            <fieldset data-pass="false">
                                 @include('admin.partials.evaluation.doc-verification-driver')
                             </fieldset>
-                            <fieldset data-endsection="true" id="fs_skills">
+                            <fieldset data-endsection="true" id="fs_skills" data-pass="false">
                                 @include('admin.partials.evaluation.skill-m-t-m-driver')
                             </fieldset>
-                            <fieldset id="fs_doc_v_vehicle">
+                            <fieldset id="fs_doc_v_vehicle" data-pass="false">
                                 @include('admin.partials.evaluation.doc-verification-vehicle')
                             </fieldset>
-                            <fieldset id="fs_motor_technology">
+                            <fieldset id="fs_motor_technology" data-pass="false">
                                 @include('admin.partials.evaluation.motorcycle-technology')
                             </fieldset>
-                            <fieldset id="fs_moto_mechanicals_conditions">
+                            <fieldset id="fs_moto_mechanicals_conditions" data-pass="false">
                                 @include('admin.partials.evaluation.moto-mechanical-conditions')
                             </fieldset>
-                            <fieldset id="fs_epp" data-endsection="true">
+                            <fieldset id="fs_epp" data-endsection="true" data-pass="false">
                                 @include('admin.partials.evaluation.epp')
                             </fieldset>
-                            <fieldset>
+                            <fieldset id="fs_confirm" data-pass="false">
+                                @include('admin.partials.evaluation.confirm')
+                            </fieldset>
+                            <fieldset id="fs_confirm" data-pass="false">
                                 @include('admin.partials.evaluation.finish')
                             </fieldset>
                         </form>

@@ -383,16 +383,11 @@
                 $(".select_plate_vehicle").on('change', function () {
                     $(".error-radio-select").remove();
                 });
-                var $select = $('.select_plate_vehicle').select2();
-                //console.log($select);
-                $select.each(function (i, item) {
-                    //console.log(item);
-                    $(item).select2("destroy");
-                });
-                // if ($('.select_plate_vehicle').hasClass("select2-hidden-accessible")) {
-                //     $('.select_plate_vehicle').select2('destroy');
-                // }
-                $(".select_plate_vehicle").select2();
+                $select = $card_inside.find('select');
+                if ($select.hasClass("select2-hidden-accessible")) {
+                    $select.select2('destroy');
+                }
+                $select = $select.select2();
             }
         });
 
@@ -432,14 +427,15 @@
                     content = $("#example_select_vehicle_exist").html();
                     content = content.replace(/&amp;NUM/g, String(index_card_vehicle - 1))
                     $card_inside.html(content);
-                    $(".select_plate_vehicle").off('change');
-                    $(".select_plate_vehicle").on('change', function () {
+                    $select = $card_inside.find('select');
+                    $select.off('change');
+                    $select.on('change', function () {
                         $(".error-radio-select").remove();
                     });
-                    if ($('.select_plate_vehicle').hasClass("select2-hidden-accessible")) {
-                        $('.select_plate_vehicle').select2('destroy');
+                    if ($select.hasClass("select2-hidden-accessible")) {
+                        $select.select2('destroy');
                     }
-                    $(".select_plate_vehicle").select2();
+                    $select = $select.select2();
                 }
             });
         });
