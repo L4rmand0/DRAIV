@@ -130,7 +130,7 @@
     @include('admin.register-information.partials.edit_card_mt_mech_conditions')
 </div>
 <div id="example_card_epe" hidden>
-    @include('admin.register-information.partials.edit_card_epe')
+    @include('admin.register-information.partials.edit_card_epp')
 </div>
 
 <!-- /.container-fluid -->

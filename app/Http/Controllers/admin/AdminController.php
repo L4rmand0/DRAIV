@@ -328,7 +328,7 @@ class AdminController extends Controller
             'values_other_components' => MotorcycleMechanicalConditions::VALUE_OTHER_COMPONENTS,
             'values_horn' => MotorcycleMechanicalConditions::VALUE_HORN,
             'values_lights' => MotorcycleMechanicalConditions::VALUE_LIGHTS,
-            // Personsal Elements Protection
+            // Personal Elements Protection
             'values_casco' => Epp::VALUE_CASCO,
             'values_airbag' => Epp::VALUE_AIRBAG,
             'values_rodilleras' => Epp::VALUE_RODILLERAS,
@@ -369,7 +369,15 @@ class AdminController extends Controller
             'values_lights' => MotorcycleMechanicalConditions::VALUE_LIGHTS,
             'company_name' => ucwords(strtolower($company_name)),
             'permissions' => $this->permissions,
-            
+            // Personal Elements Protection
+            'values_casco' => Epp::VALUE_CASCO,
+            'values_airbag' => Epp::VALUE_AIRBAG,
+            'values_rodilleras' => Epp::VALUE_RODILLERAS,
+            'values_coderas' => Epp::VALUE_CODERAS,
+            'values_hombreras' => Epp::VALUE_HOMBRERAS,
+            'values_espalda' => Epp::VALUE_ESPALDA,
+            'values_botas' => Epp::VALUE_BOTAS,
+            'values_guantes' => Epp::VALUE_GUANTES
         ];
     }
 

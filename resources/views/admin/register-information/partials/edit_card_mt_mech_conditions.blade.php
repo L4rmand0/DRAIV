@@ -8,7 +8,7 @@
         </h5>
     </div>
     <div id="collapseItemmtmc&PLACA" class="collapse show" aria-labelledby="headingOne"
-        data-parent="#accordion_technology_evaluation">
+        data-parent="#accordion_mechanical_conditions">
         <div class="card-body">
             <div class="row mb-3 mt-3">
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">
@@ -49,8 +49,6 @@
                         @endforeach
                     </select>
                 </div>
-            </div>
-            <div class="row mb-3">
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">
                     {{ __('Kit de Arrastre') }}:
                 </div>
@@ -77,8 +75,6 @@
                         @endforeach
                     </select>
                 </div>
-            </div>
-            <div class="row mb-3">
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">
                     {{ __('Fuga de Aceite') }}:
                 </div>
@@ -105,8 +101,6 @@
                         @endforeach
                     </select>
                 </div>
-            </div>
-            <div class="row mb-3">
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">
                     {{ __('Bocina') }}:
                 </div>

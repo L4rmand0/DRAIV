@@ -282,6 +282,9 @@ class MotorcycleMechanicalConditionsController extends Controller
             ->where('mmc.operation', '!=', 'D')
             ->orderBy('mmc.start_date', 'desc')
             ->get();
+        // echo '<pre> ';
+        // print_r($mt_mechanical_conditions);
+        // die;
 
         $mt_mechanical_conditions = $this->dataQuery($mt_mechanical_conditions)->make([
             'tires'=>MotorcycleMechanicalConditions::VALUE_TIRES,

@@ -240,9 +240,57 @@
         });
     }
 
+    function generateCardsMtMechanicalConditions(data){
+        let content_example = $("#example_card_mechanical_conditions").html();
+        let content_cards= "";
+        // PROCESO DE GENERAR CARDS DE TECNOLOGÍA DE VEHÍCULOS
+        $.each(data, function (i, value) {
+            let plate = value.plate_id;
+            card = String(content_example).replace(/&amp;PLACA/g,''+plate);
+            // Revisa cuáles inputs debe ocultar según el tipo de vehículo
+            content_cards += card;
+        });
+        $("#accordion_mechanical_conditions").html(content_cards);
+        $container = $("#accordion_mechanical_conditions");
+        // PROCESO DE LLENAR LOS DATOS DE TECNOLOGÍA DE VEHÍCULOS
+        $.each(data, function (key, val_items_tech) {
+            let plate = val_items_tech.plate_id;
+            $card_element = $("#card_single_vehicle_mtmc" + plate);
+            $.each(val_items_tech, function (field, val_tech) {
+                $card_element.find("." + field).val(val_tech);
+            });
+        });
+    }
+
+    function generateCardsEpp(data){
+        let content_example = $("#example_card_epe").html();
+        let content_cards= "";
+        // PROCESO DE GENERAR CARDS DE TECNOLOGÍA DE VEHÍCULOS
+        $.each(data, function (i, value) {
+            let plate = value.plate_id;
+            card = String(content_example).replace(/&amp;PLACA/g,''+plate);
+            // Revisa cuáles inputs debe ocultar según el tipo de vehículo
+            content_cards += card;
+        });
+        $("#accordion_personal_protection_elements").html(content_cards);
+        $container = $("#accordion_personal_protection_elements");
+        // PROCESO DE LLENAR LOS DATOS DE TECNOLOGÍA DE VEHÍCULOS
+        $.each(data, function (key, val_items_tech) {
+            let plate = val_items_tech.plate_id;
+            $card_element = $("#card_single_vehicle_epp" + plate);
+            $.each(val_items_tech, function (field, val_tech) {
+                $card_element.find("." + field).val(val_tech);
+            });
+        });
+    }
+
     function generateCardsTechnicalComponent(data) {
         let motorcycle_technology = data.motorcycle_technology;
+        let mt_mechanical_conditions = data.mt_mechanical_conditions;
+        let epp = data.epp;
         generateCardsTechnologyEvaluation(motorcycle_technology);
+        generateCardsMtMechanicalConditions(mt_mechanical_conditions);
+        generateCardsEpp(epp);
     }
 
     function fillInformationDocVeriDriver(data) {

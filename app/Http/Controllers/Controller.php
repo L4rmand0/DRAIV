@@ -85,6 +85,8 @@ class Controller extends BaseController
         return $this;
     }
 
+    // Convierte los valores en textos 
+    // Se estalla si la consulta no tiene todos los datos
     protected function make($arr_columns){
         $this->arr_columns = $arr_columns;
         foreach ($this->data_query as $key_data => $value_data) {
