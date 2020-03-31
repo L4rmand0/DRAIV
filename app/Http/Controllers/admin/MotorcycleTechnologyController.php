@@ -226,4 +226,34 @@ class MotorcycleTechnologyController extends Controller
             return response()->json(['response' => '', 'errors' => []]);
         }
     }
+
+    public function getDatabyDriver($dni_id){
+        $company_id = Auth::user()->company_active;
+        $motorcycle_technology = DB::table('motorcycle_technology as mt')
+            ->select(DB::raw(
+                'mt.m_t_id, 
+                mt.brake_type, 
+                mt.assistence_brake,
+                mt.automatic_lights,
+                di.first_name,
+                di.f_last_name,
+                di.dni_id,
+                v.plate_id'
+            ))
+            ->join('user_vehicle as uv', 'uv.id', '=', 'mt.user_vehicle_id')
+            ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+            ->join('vehicle as v', 'v.plate_id', '=', 'uv.vehicle_plate_id')
+            ->where('di.dni_id', '=', $dni_id)
+            ->where('di.company_id', '=', $company_id)
+            ->where('mt.operation', '!=', 'D')
+            ->orderBy('mt.start_date', 'desc')
+            ->get();
+
+        $motorcycle_technology = $this->dataQuery($motorcycle_technology)->make([
+            'brake_type'=>MotorcycleTechnology::VALUE_TYPE_BRAKE,
+            'assistence_brake'=>MotorcycleTechnology::VALUE_ASSISTENCE_BRAKE,
+            'automatic_lights'=>MotorcycleTechnology::VALUE_AUTOMATIC_LIGHTS,
+        ]); 
+        return $motorcycle_technology;
+    }
 }

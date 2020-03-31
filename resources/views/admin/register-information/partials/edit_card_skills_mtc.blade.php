@@ -7,13 +7,13 @@
             </button>
         </h5>
     </div>
-    <div id="collapseItem&ID" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion_vehicles">
+    <div id="collapseItem&ID" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion_skills_auto">
         <div class="card-body">
             <div class="row mb-3 mt-3">
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">
                     {{ __('Destreza') }}:
                 </div>
-                <div class="col-md-3"> <input type="text" class="form-control field_driver_info" name="" id="slalom"
+                <div class="col-md-3"> <input type="text" class="form-control" name="" id="slalom"
                         value="" data-module="driver-info" readonly>
                     <select class="form-control" name="" id="edit_input_slalom" style="width:100%;" hidden>
                         <option value="">Seleccionar ...</option>
@@ -25,7 +25,7 @@
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">
                     {{ __('Proyección') }}:
                 </div>
-                <div class="col-md-3"><input type="text" class="form-control field_driver_info" name="" id="projection"
+                <div class="col-md-3"><input type="text" class="form-control" name="" id="projection"
                         value="" data-module="driver-info" readonly>
                     <select class="form-control" name="" id="edit_input_projection_form" style="width:100%;" hidden>
                         <option value="">Seleccionar ...</option>
@@ -39,7 +39,7 @@
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">
                     {{ __('Frenado') }}:
                 </div>
-                <div class="col-md-3"> <input type="text" class="form-control field_driver_info" name="" id="braking"
+                <div class="col-md-3"> <input type="text" class="form-control" name="" id="braking"
                         value="" data-module="driver-info" readonly>
                     <select class="form-control" name="" id="edit_input_braking" style="width:100%;" hidden>
                         <option value="">Seleccionar ...</option>
@@ -51,7 +51,7 @@
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">
                     {{ __('Evasión') }}:
                 </div>
-                <div class="col-md-3"><input type="text" class="form-control field_driver_info" name="" id="evasion"
+                <div class="col-md-3"><input type="text" class="form-control" name="" id="evasion"
                         value="" data-module="driver-info" readonly>
                     <select class="form-control" name="evasion" id="evasion_form" style="width:100%;" hidden>
                         <option value="">Seleccionar ...</option>

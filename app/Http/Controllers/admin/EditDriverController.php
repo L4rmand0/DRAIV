@@ -9,6 +9,17 @@ use DB;
 
 class EditDriverController extends Controller
 {
+    private $skill_mtm_controller;
+    private $motorcycle_technology_controller;
+    private $mt_mechanical_conditions_controller;
+    private $epp_controller;
+
+    public function __construct() {
+        $this->skill_mtm_controller = new SkillMtMController();
+        $this->motorcycle_technology_controller = new MotorcycleTechnologyController();
+        $this->mt_mechanical_conditions_controller = new MotorcycleMechanicalConditionsController();
+        $this->epp_controller = new EppController();
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,6 +27,7 @@ class EditDriverController extends Controller
      */
     public function index()
     {
+        
         //
     }
 
@@ -193,8 +205,10 @@ class EditDriverController extends Controller
                     ->orderBy('dv.start_date', 'desc')
                     ->first();
 
-                $skill_m_t_m = SkillMtMController::skillSeparateMotoAutos($driver_information->dni_id);
-
+                $skill_m_t_m = $this->skill_mtm_controller->skillSeparateMotoAutos($driver_information->dni_id);
+                $motorcycle_technology = $this->motorcycle_technology_controller->getDatabyDriver($driver_information->dni_id);
+                $mt_mechanical_conditions = $this->mt_mechanical_conditions_controller->getDatabyDriver($driver_information->dni_id);
+                $epp = $this->epp_controller->getDatabyDriver($driver_information->dni_id);
                 // echo '<pre>';
                 // print_r($soats_vencidos);
                 // print_r($vehicles);
@@ -207,7 +221,10 @@ class EditDriverController extends Controller
                     'soats_vencidos' => $soats_vencidos,
                     'vehicles' => $vehicles,
                     'doc_verification_d' => $doc_verification_driver,
-                    'skill_m_t_m' => $skill_m_t_m
+                    'skill_m_t_m' => $skill_m_t_m,
+                    'motorcycle_technology' => $motorcycle_technology,
+                    'mt_mechanical_conditions' => $mt_mechanical_conditions,
+                    'epp' => $epp,
                 ]);
             } else {
                 return response()->json([

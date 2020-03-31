@@ -353,8 +353,23 @@ class AdminController extends Controller
             'values_braking' => SkillMtM::VALUE_BRAKING,
             'values_evasion' => SkillMtM::VALUE_EVASION,
             'values_mobility' => SkillMtM::VALUE_MOBILITY,
+            // Motorcycle Technology Evaluation
+            'values_type_brake' => MotorcycleTechnology::VALUE_TYPE_BRAKE,
+            'values_assistence_brake' => MotorcycleTechnology::VALUE_ASSISTENCE_BRAKE,
+            'values_automatic_lights' => MotorcycleTechnology::VALUE_AUTOMATIC_LIGHTS,
+            // Motorcycle Mechanical Conditions
+            'values_tires' => MotorcycleMechanicalConditions::VALUE_TIRES,
+            'values_manigueta_guaya' => MotorcycleMechanicalConditions::VALUE_MANIGUETA_GUAYA,
+            'values_braking_system' => MotorcycleMechanicalConditions::VALUE_BRAKING_SYSTEM,
+            'values_kit' => MotorcycleMechanicalConditions::VALUE_KIT,
+            'values_stee_susp' => MotorcycleMechanicalConditions::VALUE_STEE_SUSP,
+            'values_oil_leak' => MotorcycleMechanicalConditions::VALUE_OIL_LEAK,
+            'values_other_components' => MotorcycleMechanicalConditions::VALUE_OTHER_COMPONENTS,
+            'values_horn' => MotorcycleMechanicalConditions::VALUE_HORN,
+            'values_lights' => MotorcycleMechanicalConditions::VALUE_LIGHTS,
             'company_name' => ucwords(strtolower($company_name)),
             'permissions' => $this->permissions,
+            
         ];
     }
 

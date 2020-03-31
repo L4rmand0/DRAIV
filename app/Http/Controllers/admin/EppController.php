@@ -400,4 +400,49 @@ class EppController extends Controller
         }
         return response()->json(['response' => 'El registro de evaluaciones ha sido insertado correctamente', 'errors' => []]);
     }
+
+    public function getDatabyDriver($dni_id)
+    {
+        $company_id = Auth::user()->company_active;
+        $personal_element_protection = DB::table('epp as e')
+            ->select(DB::raw(
+                'e.epp_id, 
+                e.name_evaluator, 
+                e.empresa,
+                e.casco,
+                e.airbag,
+                e.rodilleras,
+                e.coderas,
+                e.hombreras,
+                e.espalda,
+                e.botas,
+                e.guantes,
+                e.epp_results,
+                e.risk,
+                di.first_name,
+                di.f_last_name,
+                di.dni_id,
+                v.plate_id'
+            ))
+            ->join('user_vehicle as uv', 'uv.id', '=', 'e.user_vehicle_id')
+            ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+            ->join('vehicle as v', 'v.plate_id', '=', 'uv.vehicle_plate_id')
+            ->where('di.dni_id', '=', $dni_id)
+            ->where('di.company_id', '=', $company_id)
+            ->where('e.operation', '!=', 'D')
+            ->orderBy('e.start_date', 'desc')
+            ->get();
+
+        $personal_element_protection = $this->dataQuery($personal_element_protection)->make([
+            'casco' => Epp::VALUE_CASCO,
+            'airbag' => Epp::VALUE_AIRBAG,
+            'rodilleras' => Epp::VALUE_RODILLERAS,
+            'coderas' => Epp::VALUE_CODERAS,
+            'hombreras' => Epp::VALUE_HOMBRERAS,
+            'espalda' => Epp::VALUE_ESPALDA,
+            'botas' => Epp::VALUE_BOTAS,
+            'guantes' => Epp::VALUE_GUANTES,
+        ]);
+        return $personal_element_protection;
+    }
 }

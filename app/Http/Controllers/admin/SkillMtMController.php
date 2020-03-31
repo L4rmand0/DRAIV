@@ -57,7 +57,7 @@ class SkillMtMController extends Controller
             ->where('uv.operation', '!=', 'D')
             ->first();
         if (empty($user_vehicle)) {
-            return response()->json(['response' => 'error_swal','errors'=>['message' => 'Este conductor ha sido elminado.']]);
+            return response()->json(['response' => 'error_swal', 'errors' => ['message' => 'Este conductor ha sido elminado.']]);
         }
         $uv_id = !empty($user_vehicle) ? $user_vehicle->id : "";
         $validator = Validator::make(
@@ -67,8 +67,8 @@ class SkillMtMController extends Controller
             ]
         );
         $errors = $validator->errors()->getMessages();
-        if(!empty($errors)){
-            return response()->json(['response' => 'error_swal','errors'=>['message' => 'Este conductor ya registró una evalución hoy, solo se permite una por día.']]);
+        if (!empty($errors)) {
+            return response()->json(['response' => 'error_swal', 'errors' => ['message' => 'Este conductor ya registró una evalución hoy, solo se permite una por día.']]);
         }
         // echo '<pre>';
         // print_r($errors);
@@ -157,7 +157,8 @@ class SkillMtMController extends Controller
         }
     }
 
-    public function dataTable(Request $request){
+    public function dataTable(Request $request)
+    {
         $company_id = Auth::user()->company_active;
         $skill_m_t_m = DB::table('skill_m_t_m as smtm')
             ->select(DB::raw(
@@ -183,11 +184,11 @@ class SkillMtMController extends Controller
             ->get();
 
         $skill_m_t_m = $this->dataQuery($skill_m_t_m)->make([
-            'slalom'=>SkillMtM::VALUE_SLALOM,
-            'projection'=>SkillMtM::VALUE_PROJECTION,
-            'braking'=>SkillMtM::VALUE_BRAKING,
-            'evasion'=>SkillMtM::VALUE_EVASION,
-        ]);    
+            'slalom' => SkillMtM::VALUE_SLALOM,
+            'projection' => SkillMtM::VALUE_PROJECTION,
+            'braking' => SkillMtM::VALUE_BRAKING,
+            'evasion' => SkillMtM::VALUE_EVASION,
+        ]);
         $drive_information = $this->addDeleteButtonDatatable($skill_m_t_m);
         return datatables()->of($drive_information)->make(true);
     }
@@ -227,7 +228,7 @@ class SkillMtMController extends Controller
         $errors_new = self::personalizeErrorsTypeVehicle($errors);
         // print_r($errors_new);
         // die;
-       
+
         if (!empty($errors_new)) {
             return response()->json(['errors' => $errors_new]);
         } else {
@@ -235,12 +236,13 @@ class SkillMtMController extends Controller
         }
     }
 
-    public static function skillSeparateMotoAutos($dni_id){
+    public function skillSeparateMotoAutos($dni_id)
+    {
         // echo '<pre> separate ';
         $company_id = Auth::user()->company_active;
         $skill_m_t_m = DB::table('skill_m_t_m as smtm')
-                    ->select(DB::raw(
-                        'smtm.reg_id, 
+            ->select(DB::raw(
+                'smtm.reg_id, 
                 smtm.date_evaluation,
                 smtm.slalom,
                 smtm.projection,
@@ -253,38 +255,44 @@ class SkillMtMController extends Controller
                 di.dni_id,
                 v.plate_id,
                 v.type_v'
-                    ))
-                    ->join('user_vehicle as uv', 'uv.id', '=', 'smtm.user_vehicle_id')
-                    ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
-                    ->join('vehicle as v', 'v.plate_id', '=', 'uv.vehicle_plate_id')
-                    ->where('di.dni_id', '=', $dni_id)
-                    ->where('di.company_id', '=', $company_id)
-                    ->where('smtm.operation', '!=', 'D')
-                    ->orderBy('smtm.start_date', 'desc')
-                    ->get()->toArray();
-        
-        $skills_type = [];                
+            ))
+            ->join('user_vehicle as uv', 'uv.id', '=', 'smtm.user_vehicle_id')
+            ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+            ->join('vehicle as v', 'v.plate_id', '=', 'uv.vehicle_plate_id')
+            ->where('di.dni_id', '=', $dni_id)
+            ->where('di.company_id', '=', $company_id)
+            ->where('smtm.operation', '!=', 'D')
+            ->orderBy('smtm.start_date', 'desc')
+            ->get()->toArray();
+        $skill_m_t_m = $this->dataQuery($skill_m_t_m)->make([
+            'slalom' => SkillMtM::VALUE_SLALOM,
+            'projection' => SkillMtM::VALUE_PROJECTION,
+            'braking' => SkillMtM::VALUE_BRAKING,
+            'evasion' => SkillMtM::VALUE_EVASION,
+        ]);
+
+        $skills_type = [];
+        //Separa las evaluaciones en autos y motos
         foreach ($skill_m_t_m as $key => $value) {
-            if($value->type_v == 'Motos'){
+            if ($value->type_v == 'Motos') {
                 $skills_type['Motos'][] = $value;
-            }else{
+            } else {
                 $skills_type['Autos'][] = $value;
-            } 
+            }
         }
         $skills_all = [];
         //Une las evaluaciones de motos por fecha
-        if(!empty($skills_type['Motos'])){
+        if (!empty($skills_type['Motos'])) {
             foreach ($skills_type['Motos'] as $key_motos => $value_motos) {
-              $skills_all['Motos'][$value_motos->date_evaluation]=$value_motos;
+                $skills_all['Motos'][$value_motos->date_evaluation] = $value_motos;
             }
         }
         //Une las evaluaciones de autos por fecha
-        if(!empty($skills_type['Autos'])){
+        if (!empty($skills_type['Autos'])) {
             foreach ($skills_type['Autos'] as $key_motos => $value_motos) {
-              $skills_all['Autos'][$value_motos->date_evaluation]=$value_motos;
+                $skills_all['Autos'][$value_motos->date_evaluation] = $value_motos;
             }
         }
         return $skills_all;
     }
-
 }

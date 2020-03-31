@@ -253,4 +253,47 @@ class MotorcycleMechanicalConditionsController extends Controller
             return response()->json(['response' => '', 'errors' => []]);
         }
     }
+
+    public function getDatabyDriver($dni_id){
+        $company_id = Auth::user()->company_active;
+        $mt_mechanical_conditions = DB::table('motorcycle_mechanical_conditions as mmc')
+            ->select(DB::raw(
+                'mmc.evaluation_id,
+                mmc.name_evaluator, 
+                mmc.tires, 
+                mmc.manigueta_guaya,
+                mmc.braking_system,
+                mmc.kit,
+                mmc.stee_susp,
+                mmc.oil_leak,
+                mmc.other_components,
+                mmc.horn,
+                mmc.lights,
+                di.first_name,
+                di.f_last_name,
+                di.dni_id,
+                v.plate_id'
+            ))
+            ->join('user_vehicle as uv', 'uv.id', '=', 'mmc.user_vehicle_id')
+            ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+            ->join('vehicle as v', 'v.plate_id', '=', 'uv.vehicle_plate_id')
+            ->where('di.dni_id', '=', $dni_id)
+            ->where('di.company_id', '=', $company_id)
+            ->where('mmc.operation', '!=', 'D')
+            ->orderBy('mmc.start_date', 'desc')
+            ->get();
+
+        $mt_mechanical_conditions = $this->dataQuery($mt_mechanical_conditions)->make([
+            'tires'=>MotorcycleMechanicalConditions::VALUE_TIRES,
+            'manigueta_guaya'=>MotorcycleMechanicalConditions::VALUE_MANIGUETA_GUAYA,
+            'braking_system'=>MotorcycleMechanicalConditions::VALUE_BRAKING_SYSTEM,
+            'kit'=>MotorcycleMechanicalConditions::VALUE_KIT,
+            'stee_susp'=>MotorcycleMechanicalConditions::VALUE_STEE_SUSP,
+            'oil_leak'=>MotorcycleMechanicalConditions::VALUE_OIL_LEAK,
+            'other_components'=>MotorcycleMechanicalConditions::VALUE_OTHER_COMPONENTS,
+            'horn'=>MotorcycleMechanicalConditions::VALUE_HORN,
+            'lights'=>MotorcycleMechanicalConditions::VALUE_LIGHTS,
+        ]); 
+        return $mt_mechanical_conditions;
+    }
 }

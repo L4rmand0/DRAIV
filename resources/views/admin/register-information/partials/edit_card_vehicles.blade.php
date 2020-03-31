@@ -1,13 +1,13 @@
-<div class="card" id="card_single_vehicle&ID">
+<div class="card" id="card_single_vehicle">
     <div class="card-header" id="headingOne">
         <h5 class="mb-0">
-            <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseItem&ID"
+            <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseItem"
                 aria-expanded="true" aria-controls="collapseItem">
-                FECHA: &FECHA
+                PLACA: &PLACA
             </button>
         </h5>
     </div>
-    <div id="collapseItem&ID" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion_vehicles">
+    <div id="collapseItem" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion_vehicles">
         <div class="card-body">
             <div class="row mb-3">
                 <div class="col-md-3"

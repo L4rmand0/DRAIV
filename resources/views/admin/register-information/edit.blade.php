@@ -107,6 +107,7 @@
                         @include('admin.register-information.partials.edit_form_driver_information')
                         @include('admin.register-information.partials.edit_form_vehicle')
                         @include('admin.register-information.partials.edit_human_component')
+                        @include('admin.register-information.partials.edit_technical_component')
                     </div>
                 </div>
             </div>
@@ -114,13 +115,22 @@
     </div>
 </div>
 <div id="example_card_vehicles" hidden>
-    @include('admin.register-information.partials.card_vehicles')
+    @include('admin.register-information.partials.edit_card_vehicles')
 </div>
 <div id="example_card_skill_mtm" hidden>
-    @include('admin.register-information.partials.card_skills_mtm')
+    @include('admin.register-information.partials.edit_card_skills_mtm')
 </div>
 <div id="example_card_skill_mtc" hidden>
-    @include('admin.register-information.partials.card_skills_mtc')
+    @include('admin.register-information.partials.edit_card_skills_mtc')
+</div>
+<div id="example_card_mt_technology" hidden>
+    @include('admin.register-information.partials.edit_card_mt_technology')
+</div>
+<div id="example_card_mechanical_conditions" hidden>
+    @include('admin.register-information.partials.edit_card_mt_mech_conditions')
+</div>
+<div id="example_card_epe" hidden>
+    @include('admin.register-information.partials.edit_card_epe')
 </div>
 
 <!-- /.container-fluid -->

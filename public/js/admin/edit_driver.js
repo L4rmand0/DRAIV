@@ -50,6 +50,7 @@
                         fillExpiredSoat(response);
                         generateCardsVehicle(response.vehicles);
                         generateCardsHumanComponent(response);
+                        generateCardsTechnicalComponent(response);
                         $(".field_driver_info_date").datepicker({ dateFormat: 'yy-mm-dd', changeYear: true, yearRange: "-100:+0" });
                         $(".field_driver_info_date").on('click', function () {
                             let $input = $(this);
@@ -215,7 +216,33 @@
         let skill_m_t_m = data.skill_m_t_m;
         fillInformationDocVeriDriver(doc_verification_driver);
         generateCardsSkillMtM(skill_m_t_m);
+    }
 
+    function generateCardsTechnologyEvaluation(data){
+        let content_example = $("#example_card_mt_technology").html();
+        let content_cards= "";
+        // PROCESO DE GENERAR CARDS DE TECNOLOGÍA DE VEHÍCULOS
+        $.each(data, function (i, value) {
+            let plate = value.plate_id;
+            card = String(content_example).replace(/&amp;PLACA/g,''+plate);
+            // Revisa cuáles inputs debe ocultar según el tipo de vehículo
+            content_cards += card;
+        });
+        $("#accordion_technology_evaluation").html(content_cards);
+        $container = $("#accordion_technology_evaluation");
+        // PROCESO DE LLENAR LOS DATOS DE TECNOLOGÍA DE VEHÍCULOS
+        $.each(data, function (key, val_items_tech) {
+            let plate = val_items_tech.plate_id;
+            $card_element = $("#card_single_vehicle_tech" + plate);
+            $.each(val_items_tech, function (field, val_tech) {
+                $card_element.find("." + field).val(val_tech);
+            });
+        });
+    }
+
+    function generateCardsTechnicalComponent(data) {
+        let motorcycle_technology = data.motorcycle_technology;
+        generateCardsTechnologyEvaluation(motorcycle_technology);
     }
 
     function fillInformationDocVeriDriver(data) {
@@ -243,6 +270,7 @@
             content_cards_m += card;
         });
         $("#accordion_skills_moto").html(content_cards_m);
+        // PROCESO DE LLENAR LOS DATOS DE MOTOS
         $container = $("#accordion_skills_moto");
         $.each(data_skills_motos, function (date, val_items_m) {
             $.each(val_items_m, function (field, val_skills_m) {
@@ -260,13 +288,13 @@
             content_cards_a += card;
         });
         $("#accordion_skills_auto").html(content_cards_a);
+        // PROCESO DE LLENAR LOS DATOS DE AUTOS
         $container = $("#accordion_skills_auto");
         $.each(data_skills_motos, function (date, val_items_m) {
             $.each(val_items_m, function (field, val_skills_m) {
                 $container.find("#" + field).val(val_skills_m);
             });
         });
-
     }
 
     function inputLookChange($input, field, old_val, new_val, $element = 'undefined') {
