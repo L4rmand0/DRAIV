@@ -235,4 +235,56 @@ class SkillMtMController extends Controller
         }
     }
 
+    public static function skillSeparateMotoAutos($dni_id){
+        // echo '<pre> separate ';
+        $company_id = Auth::user()->company_active;
+        $skill_m_t_m = DB::table('skill_m_t_m as smtm')
+                    ->select(DB::raw(
+                        'smtm.reg_id, 
+                smtm.date_evaluation,
+                smtm.slalom,
+                smtm.projection,
+                smtm.braking,
+                smtm.evasion,
+                smtm.mobility,
+                smtm.result,
+                di.first_name,
+                di.f_last_name,
+                di.dni_id,
+                v.plate_id,
+                v.type_v'
+                    ))
+                    ->join('user_vehicle as uv', 'uv.id', '=', 'smtm.user_vehicle_id')
+                    ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+                    ->join('vehicle as v', 'v.plate_id', '=', 'uv.vehicle_plate_id')
+                    ->where('di.dni_id', '=', $dni_id)
+                    ->where('di.company_id', '=', $company_id)
+                    ->where('smtm.operation', '!=', 'D')
+                    ->orderBy('smtm.start_date', 'desc')
+                    ->get()->toArray();
+        
+        $skills_type = [];                
+        foreach ($skill_m_t_m as $key => $value) {
+            if($value->type_v == 'Motos'){
+                $skills_type['Motos'][] = $value;
+            }else{
+                $skills_type['Autos'][] = $value;
+            } 
+        }
+        $skills_all = [];
+        //Une las evaluaciones de motos por fecha
+        if(!empty($skills_type['Motos'])){
+            foreach ($skills_type['Motos'] as $key_motos => $value_motos) {
+              $skills_all['Motos'][$value_motos->date_evaluation]=$value_motos;
+            }
+        }
+        //Une las evaluaciones de autos por fecha
+        if(!empty($skills_type['Autos'])){
+            foreach ($skills_type['Autos'] as $key_motos => $value_motos) {
+              $skills_all['Autos'][$value_motos->date_evaluation]=$value_motos;
+            }
+        }
+        return $skills_all;
+    }
+
 }

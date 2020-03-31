@@ -6,9 +6,17 @@
         </div>
     </div>
     <div class="card text-left">
-        <h5 class="card-header">Habilidades Del Conductor</h5>
+        <h5 class="card-header">Habilidades en Motos</h5>
         <div class="card-body" >
-            <div id="accordion_skills">
+            <div id="accordion_skills_moto">
+                
+            </div>
+        </div>
+    </div>
+    <div class="card text-left">
+        <h5 class="card-header">Habilidades en Autos</h5>
+        <div class="card-body" >
+            <div id="accordion_skills_auto">
                 
             </div>
         </div>

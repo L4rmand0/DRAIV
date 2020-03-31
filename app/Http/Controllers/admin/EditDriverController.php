@@ -193,7 +193,7 @@ class EditDriverController extends Controller
                     ->orderBy('dv.start_date', 'desc')
                     ->first();
 
-
+                $skill_m_t_m = SkillMtMController::skillSeparateMotoAutos($driver_information->dni_id);
 
                 // echo '<pre>';
                 // print_r($soats_vencidos);
@@ -206,7 +206,8 @@ class EditDriverController extends Controller
                     'errors' => [], 'data' => $driver_information,
                     'soats_vencidos' => $soats_vencidos,
                     'vehicles' => $vehicles,
-                    'doc_verification_d' => $doc_verification_driver
+                    'doc_verification_d' => $doc_verification_driver,
+                    'skill_m_t_m' => $skill_m_t_m
                 ]);
             } else {
                 return response()->json([

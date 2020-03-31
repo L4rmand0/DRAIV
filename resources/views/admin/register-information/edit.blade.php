@@ -116,6 +116,12 @@
 <div id="example_card_vehicles" hidden>
     @include('admin.register-information.partials.card_vehicles')
 </div>
+<div id="example_card_skill_mtm" hidden>
+    @include('admin.register-information.partials.card_skills_mtm')
+</div>
+<div id="example_card_skill_mtc" hidden>
+    @include('admin.register-information.partials.card_skills_mtc')
+</div>
 
 <!-- /.container-fluid -->
 <link href="{{ asset('css/profile-admin.css') }}" rel="stylesheet">

@@ -22,7 +22,7 @@
             if ($("#container_card_driver").is(":visible")) {
                 $("#container_card_driver").hide();
             }
-            if($("#search_param").val()==""){
+            if ($("#search_param").val() == "") {
                 swal.fire(
                     'Información requerida!',
                     'Se debe elegir elegir un parámetro de búsqueda.',
@@ -49,7 +49,7 @@
                         fillNameDriver(response.data);
                         fillExpiredSoat(response);
                         generateCardsVehicle(response.vehicles);
-                        generateCardsHumanComponent(response.doc_verification_d);
+                        generateCardsHumanComponent(response);
                         $(".field_driver_info_date").datepicker({ dateFormat: 'yy-mm-dd', changeYear: true, yearRange: "-100:+0" });
                         $(".field_driver_info_date").on('click', function () {
                             let $input = $(this);
@@ -203,18 +203,70 @@
             $.each(item_vehicles, function (j, field) {
                 card_element.find("." + j).val(field);
                 // Revisa si es un taxi u oculta los campos de taxis
-                if(field != "Taxis" && j == "type_v"){
-                    card_element.find(".col-taxi-type").hide();    
+                if (field != "Taxis" && j == "type_v") {
+                    card_element.find(".col-taxi-type").hide();
                 }
-                if (i != 0) {
-
-                }
-            })
+            });
         });
     }
 
-    function generateCardsHumanComponent(data){
-        
+    function generateCardsHumanComponent(data) {
+        let doc_verification_driver = data.doc_verification_d;
+        let skill_m_t_m = data.skill_m_t_m;
+        fillInformationDocVeriDriver(doc_verification_driver);
+        generateCardsSkillMtM(skill_m_t_m);
+
+    }
+
+    function fillInformationDocVeriDriver(data) {
+        $container = $("#con_doc_verification_driver");
+        $.each(data, function (field, val_doc_v_d) {
+            $container.find("#" + field).val(val_doc_v_d);
+        });
+    }
+
+    function generateCardsSkillMtM(data) {
+        let data_skills_motos = data.Motos; 
+        let data_skills_autos = data.Autos; 
+        let content_example_m = $("#example_card_skill_mtm").html();
+        let content_example_a = $("#example_card_skill_mtc").html();
+        let content_cards_m = "";
+        let content_cards_a = "";
+
+        // PROCESO DE GENERAR CARDS SKILLS CON INFORMACIÓN MOTOS
+        $.each(data_skills_motos, function (i, value) {
+            let date = value.date_evaluation;
+            let id = value.reg_id;
+            card = String(content_example_m).replace(/&amp;ID/g,''+id);
+            card = card.replace(/&amp;FECHA/g, String(date));
+            // Revisa cuáles inputs debe ocultar según el tipo de vehículo
+            content_cards_m += card;
+        });
+        $("#accordion_skills_moto").html(content_cards_m);
+        $container = $("#accordion_skills_moto");
+        $.each(data_skills_motos, function (date, val_items_m) {
+            $.each(val_items_m, function (field, val_skills_m) {
+                $container.find("#" + field).val(val_skills_m);
+            });
+        });
+
+        // PROCESO DE GENERAR CARDS SKILLS CON INFORMACIÓN AUTOS
+        $.each(data_skills_autos, function (i, value) {
+            let date = value.date_evaluation;
+            let id = value.reg_id;
+            card = String(content_example_a).replace(/&amp;ID/g,''+id);
+            card = card.replace(/&amp;FECHA/g, String(date));
+            // Revisa cuáles inputs debe ocultar según el tipo de vehículo
+            content_cards_a += card;
+        });
+        $("#accordion_skills_auto").html(content_cards_a);
+        $container = $("#accordion_skills_auto");
+        $.each(data_skills_motos, function (date, val_items_m) {
+            $.each(val_items_m, function (field, val_skills_m) {
+                $container.find("#" + field).val(val_skills_m);
+            });
+        });
+
     }
 
     function inputLookChange($input, field, old_val, new_val, $element = 'undefined') {
@@ -237,10 +289,10 @@
         }).then((result) => {
             if (result.value) {
                 let form_data = { 'fieldch': field, 'valuech': new_value, 'dni_id': dni_id };
-                if(typeof ($input.attr('data-plate')) !== "undefined"){
+                if (typeof ($input.attr('data-plate')) !== "undefined") {
                     form_data.plate = $input.data('plate');
-                } 
-                $.post($("#function-"+$input.data('module')+"-update").val(),form_data).done(function (response) {
+                }
+                $.post($("#function-" + $input.data('module') + "-update").val(), form_data).done(function (response) {
                     if (Object.keys(response.errors).length > 0) {
                         swal.fire({
                             title: 'Error en el proceso!',
