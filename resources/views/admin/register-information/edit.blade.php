@@ -95,10 +95,10 @@
                                     class="fas fa-car"></i>
                                 Vehículo</a>
                             <a class="nav-item nav-link a-profile" id="nav-contact-tab" data-toggle="tab"
-                                href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false"><i
+                                href="#nav-human-component" role="tab" aria-controls="nav-contact" aria-selected="false"><i
                                     class="fas fa-users-cog"></i> Componente Humano</a>
                             <a class="nav-item nav-link a-profile" id="nav-contact-tab" data-toggle="tab"
-                                href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false"><i
+                                href="#nav-technical-component" role="tab" aria-controls="nav-contact" aria-selected="false"><i
                                     class="fas fa-tools"></i>
                                 Componente Técnico</a>
                         </div>
@@ -106,6 +106,7 @@
                     <div class="tab-content" id="nav-tabContent">
                         @include('admin.register-information.partials.edit_form_driver_information')
                         @include('admin.register-information.partials.edit_form_vehicle')
+                        @include('admin.register-information.partials.edit_human_component')
                     </div>
                 </div>
             </div>

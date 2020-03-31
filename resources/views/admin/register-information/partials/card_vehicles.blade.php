@@ -29,10 +29,10 @@
                 </div>
                 <div class="col-md-3"> <input type="text" class="form-control owner_v field_driver_info" name=""
                         value="" id="owner_v" data-module="vehicle" data-plate="&PLACA" readonly> </div>
-                <div class="col-md-3"
+                <div class="col-md-3 col-taxi-type"
                     style="display: flex;align-items: center;justify-content: center;">
                     Tipo de taxi:</div>
-                <div class="col-md-3"><input type="text" class="form-control taxi_type field_driver_info" name=""
+                <div class="col-md-3 col-taxi-type"><input type="text" class="form-control taxi_type field_driver_info" name=""
                         value="" id="taxi_type" data-module="vehicle" data-plate="&PLACA" readonly></div>
             </div>
             <div class="row mb-3">

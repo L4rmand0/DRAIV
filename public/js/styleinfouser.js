@@ -299,14 +299,12 @@
 
     function generateFormImageVehicle(next_fs, arr_all_types_vehicle, callback) {
         let dataArray = $("#msform").serializeArray();
-        let contador = 0;
         let content_cards = "";
         // Genera la imágenes de los selects de los vehículos ya existentes
         $("#msform .select_plate_vehicle").each(function (i, element) {
             let plate = element.value;
             let indexSelected = element.options.selectedIndex;
             let type = $(element.options[indexSelected]).data('type');
-            debugger
             if(type == "Taxis"){
                 generateFormSingleV(arr_all_types_vehicle.taxis, plate, function (content) {
                     content_cards += content;

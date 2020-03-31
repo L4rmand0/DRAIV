@@ -89,11 +89,13 @@ class EditDriverController extends Controller
     {
         // echo '<pre>';
         // print_r($request->all());
+        // die;
         $company_id = Auth::user()->company_active;
         $param = $request->get('search_param');
         $value = $request->get('value_param');
         if ($param == "plate_id") {
-        } else {
+        } else if ($param == "dni_id") {
+            //Obtiene la información personal del conductor
             $driver_information = DB::table('driver_information')
                 ->orderBy('driver_information.start_date', 'desc')
                 ->join('users', 'driver_information.db_user_id', '=', 'users.id')
@@ -132,6 +134,7 @@ class EditDriverController extends Controller
             // print_r($driver_information);
             // die;
             if (!empty($driver_information)) {
+                //Obtiene la información de vehículos que tiene el conductor
                 $vehicles = DB::table('user_vehicle as uv')
                     ->select(DB::raw('
                     v.plate_id,
@@ -155,6 +158,7 @@ class EditDriverController extends Controller
                     ->where('uv.operation', '!=', 'D')
                     ->where('uv.driver_information_dni_id', '=', $driver_information->dni_id)
                     ->get()->toArray();
+                //Agrupa la información de los soats vencidos del conductor    
                 $soats_vencidos = [];
                 foreach ($vehicles as $key_v => $value_v) {
                     $fecha_actual = strtotime(date("Y-m-d"));
@@ -163,6 +167,34 @@ class EditDriverController extends Controller
                         $soats_vencidos[] = $value_v->plate_id;
                     }
                 }
+
+                $doc_verification_driver = DB::table('doc_verification_driver as dv')
+                    ->select(DB::raw(
+                        'dv.valid_licence ,
+                    dv.category,
+                    dv.runt_state,
+                    dv.penality_record,
+                    dv.accident_rate,
+                    dv.date_penality_1,
+                    dv.code_penality_1,
+                    dv.date_penality_2,
+                    dv.code_penality_2,
+                    dv.date_penality_3,
+                    dv.code_penality_3,
+                    dv.date_penality_4,
+                    dv.code_penality_4,
+                    dv.date_penality_5,
+                    dv.date_penality_5'
+                    ))
+                    ->join('driver_information as di', 'di.dni_id', '=', 'dv.driver_information_dni_id')
+                    ->where('di.company_id', '=', $company_id)
+                    ->where('dv.operation', '!=', 'D')
+                    ->where('di.' . $param, '=', $value)
+                    ->orderBy('dv.start_date', 'desc')
+                    ->first();
+
+
+
                 // echo '<pre>';
                 // print_r($soats_vencidos);
                 // print_r($vehicles);
@@ -173,7 +205,8 @@ class EditDriverController extends Controller
                     'response' => 'data found',
                     'errors' => [], 'data' => $driver_information,
                     'soats_vencidos' => $soats_vencidos,
-                    'vehicles' => $vehicles
+                    'vehicles' => $vehicles,
+                    'doc_verification_d' => $doc_verification_driver
                 ]);
             } else {
                 return response()->json([

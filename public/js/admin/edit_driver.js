@@ -33,6 +33,7 @@
             }
             $.post($("#route-search-information").val(), $form.serialize())
                 .done(function (response) {
+                    console.log(response);
                     target_element = "nav-driver-information";
                     if (response.response == "no data") {
                         swal.fire(
@@ -48,6 +49,7 @@
                         fillNameDriver(response.data);
                         fillExpiredSoat(response);
                         generateCardsVehicle(response.vehicles);
+                        generateCardsHumanComponent(response.doc_verification_d);
                         $(".field_driver_info_date").datepicker({ dateFormat: 'yy-mm-dd', changeYear: true, yearRange: "-100:+0" });
                         $(".field_driver_info_date").on('click', function () {
                             let $input = $(this);
@@ -187,12 +189,11 @@
         let content_cards = "";
         //Genera los cards de cada uno de los vehículos
         $.each(vehicles, function (i, value) {
+            let type_v = value.type_v;
             card = String(content_example).replace('id="card_single_vehicle"', 'id="card_single_vehicle' + (i + 1) + '"');
             card = card.replace(/&amp;PLACA/g, String(value['plate_id']));
             card = card.replace(/collapseItem/g, 'collapseItem' + (i + 1));
-            if (i != 0) {
-                card = card.replace('class="collapse show"', 'class="collapse"');
-            }
+            // Revisa cuáles inputs debe ocultar según el tipo de vehículo
             content_cards += card;
         });
         $("#accordion_vehicles").html(content_cards);
@@ -200,10 +201,20 @@
         $.each(vehicles, function (i, item_vehicles) {
             card_element = $("#card_single_vehicle" + (i + 1));
             $.each(item_vehicles, function (j, field) {
-                // debugger
-                card_element.find("." + j).val(field)
+                card_element.find("." + j).val(field);
+                // Revisa si es un taxi u oculta los campos de taxis
+                if(field != "Taxis" && j == "type_v"){
+                    card_element.find(".col-taxi-type").hide();    
+                }
+                if (i != 0) {
+
+                }
             })
         });
+    }
+
+    function generateCardsHumanComponent(data){
+        
     }
 
     function inputLookChange($input, field, old_val, new_val, $element = 'undefined') {

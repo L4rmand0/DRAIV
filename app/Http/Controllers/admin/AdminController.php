@@ -287,7 +287,7 @@ class AdminController extends Controller
             'list_taxi_type' => $list_taxi_type,
             'select_all_vehicles' => $select_all_vehicles,
             'arr_type_images_vehicle' => $arr_type_images_vehicle,
-            // variales de verificación manual
+            // variables de verificación manual
             'category_list'=>DocVerification::CATEGORY,
             'runstate_list'=>DocVerification::RUNSTATE,
             'values_slalom' => SkillMtM::VALUE_SLALOM,
@@ -295,10 +295,6 @@ class AdminController extends Controller
             'values_braking' => SkillMtM::VALUE_BRAKING,
             'values_evasion' => SkillMtM::VALUE_EVASION,
             'values_mobility' => SkillMtM::VALUE_MOBILITY,
-            'category_t_list'=> json_encode($this->ListDT()->query(DocVerification::CATEGORY)->make('array')),
-            'runstate_t_list'=> json_encode($this->ListDT()->query(DocVerification::RUNSTATE)->make('array')),
-            'soat_available_t_list'=> json_encode($this->ListDT()->query(DocVerification::SOAT_AVAILABLE)->make('array')),
-            'technom_review_t_list'=> json_encode($this->ListDT()->query(DocVerification::TECHNOM_REVIEW)->make('array')),
             'company_name' => ucwords(strtolower($company_name)),
             'permissions' => $this->permissions,
         ];
@@ -349,6 +345,14 @@ class AdminController extends Controller
         return [
             'options_civil_state'=>DriverInformation::enum_civil_state,
             'options_education'=>DriverInformation::enum_education,
+            // Doc_verification
+            'category_list'=>DocVerification::CATEGORY,
+            'runstate_list'=>DocVerification::RUNSTATE,
+            'values_slalom' => SkillMtM::VALUE_SLALOM,
+            'values_projection' => SkillMtM::VALUE_PROJECTION,
+            'values_braking' => SkillMtM::VALUE_BRAKING,
+            'values_evasion' => SkillMtM::VALUE_EVASION,
+            'values_mobility' => SkillMtM::VALUE_MOBILITY,
             'company_name' => ucwords(strtolower($company_name)),
             'permissions' => $this->permissions,
         ];

@@ -1,5 +1,4 @@
-<div class="tab-pane fade show active" id="nav-driver-information" role="tabpanel" aria-labelledby="nav-home-tab"
-    style="padding: 2em; border: solid 1px #dddfeb;">
+<div class="tab-pane fade show active" id="nav-driver-information" role="tabpanel" aria-labelledby="nav-home-tab">
     <div class="card text-left">
         <h5 class="card-header">Información personal</h5>
         <div class="card-body">
