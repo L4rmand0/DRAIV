@@ -88,7 +88,8 @@
                                         'error'
                                     );
                                 } else {
-                                    let plate = $btn.parent().parent().parent().parent().parent().find(".header_plate_id").text();
+                                    // let plate = $btn.parent().parent().parent().parent().parent().find(".header_plate_id").text();
+                                    let plate = $btn.closest(".card").find(".plate-title").text().trim();
                                     console.log("placa: " + plate);
                                     datafr.append('key', $key);
                                     datafr.append('plate', plate);
@@ -318,7 +319,7 @@
         // Genera la imágenes de los inputs de vehículos nuevos
         $("#msform .plate_id_input").each(function (i, element) {
             let plate = element.value;
-            generateFormSingleV(arr_type_images_vehicle, plate, function (content) {
+            generateFormSingleV(arr_all_types_vehicle.general, plate, function (content) {
                 content_cards += content;
             });
         });
@@ -335,7 +336,7 @@
     }
 
     function generateFormSingleV(arr_type_images_vehicle, plate, callback) {
-        let content = `<div class="card"><div class="card-header"> ${plate} </div><div class="card-body">`;
+        let content = `<div class="card"><div class="card-header plate-title"> ${plate} </div><div class="card-body">`;
         $.each(arr_type_images_vehicle, function (key, value) {
             content += "<div class='row'>";
             $.each(value, function (key_item, value_item) {
@@ -344,7 +345,7 @@
                 let type_image = value_item.type;
                 example_form = example_form.replace(/&amp;TITLE/g, title)
                     .replace(/&amp;TYPE_IMG/g, title)
-                    .replace(/&amp;INDEX/g, title);
+                    .replace(/&amp;INDEX/g, plate);
                 content += example_form;
             })
             content += "</div>";

@@ -48,6 +48,8 @@ class AdminController extends Controller
         $this->module = $module;
         // dd($this->company_id);
         $this->company_active = auth()->user()->company_active;
+        $rol = auth()->user()->profile_id;
+        // dd($rol);
         // dd($this->company_active);
         $this->company_active_name = Company::where('company_id', $this->company_active)->first()->name_company;
         $this->company = auth()->user()->company;
