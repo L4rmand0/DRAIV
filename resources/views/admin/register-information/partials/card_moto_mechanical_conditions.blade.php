@@ -1,14 +1,14 @@
 <div class="card" id="card_form_moto_mechanical_conditions">
     <div class="card-header" id="headingOne">
         <h5 class="mb-0">
-            <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseItemMT_&PLACA"
+            <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseItemCmmc_&PLACA"
                 aria-expanded="true" aria-controls="collapseItem">
                 PLACA: &PLACA
             </button>
         </h5>
     </div>
-    <div id="collapseItemMT_&PLACA" class="collapse show" aria-labelledby="headingOne"
-        data-parent="#example_card_motorcycle_technology">
+    <div id="collapseItemCmmc_&PLACA" class="collapse show" aria-labelledby="headingOne"
+        data-parent="#accordion_moto_mechanical_conditions">
         <div class="card-body">
             <div class="form-group row">
                 <label for="&PLACAtires" style="padding-top: calc(0.135rem + 1px);"

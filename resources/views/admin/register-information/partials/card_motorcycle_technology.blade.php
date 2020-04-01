@@ -8,7 +8,7 @@
         </h5>
     </div>
     <div id="collapseItemMT_&PLACA" class="collapse show" aria-labelledby="headingOne"
-        data-parent="#example_card_motorcycle_technology">
+        data-parent="#accordion_motorcycle_technology_vehicle">
         <div class="card-body">
             <div class="form-group row">
                 <label for="&PLACAbrake_type" style="padding-top: calc(0.135rem + 1px);"
