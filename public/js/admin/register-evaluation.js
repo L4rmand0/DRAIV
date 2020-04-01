@@ -12,12 +12,15 @@
 
         }(function ($, window, document) {
 
-            $("#driver_select_evaluation").select2();
             // The $ is now locally scoped 
             // Listen for the jQuery ready event on the document
             $(function () {
                 // Revisa si el input o el select están visibles
-                checkInputOrSelectDrivers();
+                checkInputOrSelectDrivers(function(response){
+                    if(!response){
+                        $("#driver_select_evaluation").select2();
+                    }
+                });
                 $(".doc_v_date_penality").datepicker({ dateFormat: 'yy-mm-dd' });
                 $("#driver_select_evaluation").on('change', function () {
                     $select = $(this);
@@ -192,10 +195,13 @@
         });
     }
 
-    function checkInputOrSelectDrivers() {
+    function checkInputOrSelectDrivers(callback) {
+        console.log("entra");
+        is_input = false;
         $input = $(".item_input_evaluation");
         dni_id = $input.val();
         if ($input.is(":visible")) {
+            is_input = true;
             $.post($("#function-list-driver-vehicles").val(), { 'dni_id': dni_id, "_token": $('#token').val() }).done(function (response) {
                 console.log(response);
                 if (Object.keys(response.errors).length > 0) {
@@ -212,6 +218,7 @@
                 }
             });
         }
+        callback(is_input);
     }
     // The rest of the code goes here!
 }));
