@@ -533,7 +533,7 @@ var table_sumarize;
 
                 } else {
                     chart_line_v = new Chart(ele_chart_line_v, {
-                        type: 'pie',
+                        type: 'bar',
                         data: datac.data,
                         options: {
                             plugins: {
@@ -565,7 +565,7 @@ var table_sumarize;
 
                 } else {
                     chart_brand_v = new Chart(ele_chart_brand_v, {
-                        type: 'polarArea',
+                        type: 'horizontalBar',
                         data: datac.data,
                         options: {
                             plugins: {
@@ -573,7 +573,7 @@ var table_sumarize;
                                     render: 'label',
                                     font: {
                                         weight: 'bold',
-                                        size: 14,
+                                        size: 11,
                                     }
                                 }
 
@@ -597,7 +597,7 @@ var table_sumarize;
 
                 } else {
                     chart_model_v = new Chart(ele_chart_model_v, {
-                        type: 'polarArea',
+                        type: 'bar',
                         data: datac.data,
                         options: {
                             plugins: {

@@ -17,22 +17,20 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="vehicle_datatable" class="table table_dashboard table-striped nowrap"
-                style="width:100%;" data-url-list="{{ route ('vehicle-list') }}"
-                data-url-delete="{{ route ('vehicle-admin.destroy') }}">
+            <table id="vehicle_datatable" class="table table_dashboard table-striped nowrap" style="width:100%;"
+                data-url-list="{{ route ('vehicle-list') }}" data-url-delete="{{ route ('vehicle-admin.destroy') }}">
                 <thead>
                     <tr>
                         <th></th>
                         <th>Placa</th>
                         <th>Tipo</th>
                         <th>Propietario</th>
-                        <th>Tipo de Taxi</th>
+                        <!-- <th>Tipo de Taxi</th> -->
                         <th>Número de Conductores</th>
                         <th>Fecha de Vencimiento Soat</th>
                         <th>Capacidad</th>
                         <th>Servicio</th>
                         <th>Cilindraje</th>
-                        <th>Clase Vehículo</th>
                         <th>modelo</th>
                         <th>Línea</th>
                         <th>Marca</th>
@@ -43,13 +41,29 @@
             </table>
         </div>
         <div class="card-footer">
-            <div class="container text-center">
-                <button class="btn btn-primary" type="button" style="margin-top: 17px;" data-toggle="modal"
-                    data-target="#form_create_vehicle" id="modal_form_create_vehicle"><i class="fas fa-plus"></i> Agregar Vehículo</button>
-                <div class="container text-center">
-                    <button class="btn btn-success" type="button" style="margin-top: 17px;" data-toggle="modal"
-                        data-target="#form_import_excel" id="modal_form_drive_info"><i class="fas fa-file-excel"></i> Importar
-                        Información Masiva</button>
+            <div class="row">
+                <div class="col-md-2" style="display: flex;align-items: center;justify-content: center;">
+                    <a href="{{ route('admin','driving_licence') }}"><img src="{{ asset('img/back.png') }}" alt=""></a>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                    <div class="container text-center">
+                        <button class="btn btn-primary" type="button" style="margin-top: 17px;" data-toggle="modal"
+                            data-target="#form_create_vehicle" id="modal_form_create_vehicle"><i
+                                class="fas fa-plus"></i> Agregar Vehículo</button>
+                        <div class="container text-center">
+                            <button class="btn btn-success" type="button" style="margin-top: 17px;" data-toggle="modal"
+                                data-target="#form_import_excel" id="modal_form_drive_info"><i
+                                    class="fas fa-file-excel"></i> Importar
+                                Información Masiva</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+
+                </div>
+                <div class="col-md-2 text-right" style="display: flex;align-items: center;justify-content: center;">
+                    <a href="{{ route('admin','driver_images') }}"><img src="{{ asset('img/next.png') }}" alt=""></a>
                 </div>
             </div>
         </div>
@@ -321,7 +335,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="modal fade" id="add_driver_vehicle_modal" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalLabel" aria-hidden="true">

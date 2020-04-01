@@ -11,6 +11,10 @@ use App\Traits\PermissionUser;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests, PermissionUser;
+
+    protected $data_query;
+    protected $arr_columns;
+
     public function addDeleteButtonDatatable($data)
     {
         foreach ($data as $key => $value) {
@@ -74,5 +78,43 @@ class Controller extends BaseController
             $array_objects[$key] = (array) $value;
         }
         return $array_objects;
+    }
+
+    protected function dataQuery($data_query){
+        $this->data_query = $data_query;
+        return $this;
+    }
+
+    // Convierte los valores en textos 
+    // Se estalla si la consulta no tiene todos los datos
+    protected function make($arr_columns){
+        $this->arr_columns = $arr_columns;
+        foreach ($this->data_query as $key_data => $value_data) {
+            foreach ($value_data as $key_c_data => $value_c_data) {
+                //Si la columna que viene dentro de los datos está dentro de $arr_columns
+                //Modifica los datos de la query inicial con los valores de las constantes del array
+                if(self::cin_array($key_c_data, $arr_columns)){
+                    $this->data_query[$key_data]->$key_c_data = $arr_columns[$key_c_data][$value_c_data]; 
+                }
+            }
+        }
+        return $this->data_query;
+    }
+
+    protected static function cin_array($element,$array){
+        $exist = false;
+        foreach ($array as $key => $value) {
+            if($key == $element){
+                $exist = true;
+            }
+        }
+        return $exist;
+    }
+
+    protected function getLastElementArrayAssoc($array){
+        foreach ($array as $key => $value) {
+            $element = $key;
+        }
+        return $element;
     }
 }

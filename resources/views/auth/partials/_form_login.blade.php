@@ -1,6 +1,6 @@
 @if ($company)
 <div class="container">
-    <div class="card-group col-lg-12" style="margin-top:40px;">
+    <div class="card-group col-lg-12" style="margin-top:100px !important;">
         <div class="card" id="card_login_register">
             <div id="login_card">
                 @include('auth.partials.login_card')
@@ -18,15 +18,15 @@
                 <ul class="nav nav-tabs border-0" style="background:#EDE6DD;">
                     <li class="nav-item">
                         <a class="nav-link active" id="btn_free_plan"
-                            style="color: #4F4F4F; font-weight: 400 !important; background: #fff; cursor: pointer; ">Gratis</a>
+                            style="color: #4F4F4F; font-weight: 400 !important; background: #fff; cursor: pointer; ">Free</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="btn_medium_plan"
-                            style="color: #4F4F4F; font-weight: 400; background: #EDE6DD; cursor: pointer;">Intermedio</a>
+                            style="color: #4F4F4F; font-weight: 400; background: #EDE6DD; cursor: pointer;">Estandar</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="btn_all_plan"
-                            style="color: #4F4F4F; font-weight: 400; background: #EDE6DD; cursor: pointer;">Completo</a>
+                            style="color: #4F4F4F; font-weight: 400; background: #EDE6DD; cursor: pointer;">Medium</a>
                     </li>
                 </ul>
                 {{-- </div> --}}

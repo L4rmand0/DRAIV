@@ -15,7 +15,8 @@ body {
 #msform {
     text-align: center;
     position: relative;
-    margin-top: 20px
+    margin-top: 20px;
+    font-size: 0.9rem;
 }
 
 #msform fieldset .form-card {
@@ -79,7 +80,7 @@ body {
 
 #msform .action-button {
     width: 100px;
-    background: skyblue;
+    background: #006CC9;
     font-weight: bold;
     color: white;
     border: 0 none;
@@ -157,22 +158,38 @@ select.list-dt:focus {
 }
 
 #progressbar #Licence:before {
-    font-family: FontAwesome;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     content: "\f2c2"
 }
 
 #progressbar #personal:before {
-    font-family: FontAwesome;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     content: "\f007"
 }
 
 #progressbar #vehicle:before {
-    font-family: FontAwesome;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     content: "\f1b9"
 }
 
+#progressbar #tech_component:before {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    content: "\f0ad"
+}
+
+#progressbar #photos:before {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    content: "\f302"
+}
+
 #progressbar #confirm:before {
-    font-family: FontAwesome;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     content: "\f00c"
 }
 
@@ -200,9 +217,13 @@ select.list-dt:focus {
     z-index: -1
 }
 
+#progressbar #empty:after {
+    top: -14px;
+}
+
 #progressbar li.active:before,
 #progressbar li.active:after {
-    background: skyblue
+    background: #006CC9;
 }
 
 .radio-group {
@@ -244,6 +265,10 @@ select.list-dt:focus {
     font-size: 0.9rem !important;
 }
 
+.text-datadrivers{
+    font-family: "Nunito", sans-serif !important;
+}
+
 .small_forms{
     font-weight: 700;
     font-size: 0.89em;
@@ -260,4 +285,26 @@ select.list-dt:focus {
 .row_form_input_vehicle{
     margin-top: 8px;
 }
+
+.el-red{
+    color: var(--red);
+}
+
+.error-strong{
+    font-size: 0.8em;
+}
+
+#forms_vehicles section:not(:first-of-type) {
+    display: none
+}
+
+
+#msform input[type=submit]{
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 1em;
+    border-radius: 0.5em;
+}
+
+
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\DriverInformation;
 use DB;
 use App\Vehicle;
 use App\DriverVehicle;
@@ -12,9 +13,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\admin\DriverVehicleController;
+use App\Rules\IsNotDelete;
+use App\Traits\ArrayFunctions;
+
+use function Aws\flatmap;
 
 class VehicleController extends Controller
 {
+    use ArrayFunctions;
     private $chart_js;
 
     /**
@@ -80,20 +87,24 @@ class VehicleController extends Controller
     public function store(Request $request)
     {
         $company_id = auth()->user()->company_active;
-        // echo $company_id;
-        // die;
+        // Información para ser insertada en la tabla user_vehicle
         $data_input_drivers = $request->get('driver_vehicle');
+        // Información para ser insertada en la tabla vehicle
         $data_input = $request->get('vehicle');
+        $data_input['operation'] = 'A';
         $plate_id = $data_input['plate_id'];
+        // echo '<pre>';
         // print_r($data_input_drivers);
         // print_r($data_input);
         // die;
+        //Revisa si el vehículo es un taxi
         if (!$data_input['type_v'] == "Taxis") {
             unset($data_input_drivers);
             unset($data_input['taxi_type']);
             unset($data_input['number_of_drivers']);
         }
-        $duplicate_drivers = DriverVehicleController::checkDuplicateDriversPlateId($data_input_drivers, $plate_id);
+        // Revisa que las cédulas de conductores a ingresar todavía no están ingresadas de lo contrario bota un error
+        // $duplicate_drivers = DriverVehicleController::checkDuplicateDriversPlateId($data_input_drivers, $plate_id);
         // echo '<pre>';
         // print_r($duplicate_drivers);
         // die;
@@ -108,6 +119,7 @@ class VehicleController extends Controller
                 'owner_v' => 'required|max:255',
                 'soat_expi_date' => 'required|max:255',
                 'capacity' => 'required|max:11',
+                'operation' => [new IsNotDelete(['plate_id', $plate_id], 'vehicle')],
             ],
             [
                 'plate_id.required' => "La placa no puede ser vacía",
@@ -122,66 +134,97 @@ class VehicleController extends Controller
         $errors = $validator->errors()->getMessages();
         // print_r($errors);
         // die;
-
         //Revisa que ya se haya insertado un vehículo con esa placa y lo actualiza
-        foreach ($errors as $key => $value) {
-            if (strpos($value[0], "uso") !== false) {
-                $plate_id = $data_input[$key];
+        // foreach ($errors as $key => $value) {
+        //     if (strpos($value[0], "uso") !== false) {
+        //         $plate_id = $data_input[$key];
+        //         // Revisa que la placa esté en Delete o en operation = D
+        //         $check_vehicle = DB::table('vehicle')
+        //             ->orderBy('vehicle.start_date', 'desc')
+        //             ->where('vehicle.operation', '=', 'D')
+        //             ->where('vehicle.plate_id', '=', $plate_id)
+        //             ->select(DB::raw(
+        //                 'vehicle.plate_id,
+        //              vehicle.operation,
+        //              vehicle.technomechanical_date'
+        //             ))->first();
+        //         // Si la placa existe y no está en D retorna una error de que ya existe    
+        //         if (empty($check_vehicle)) {
+        //             return response()->json(['response' => 'vehicle exists', 'errors' => $errors]);
+        //         }
 
-                $check_vehicle = DB::table('vehicle')
-                    ->orderBy('vehicle.start_date', 'desc')
-                    ->where('vehicle.operation', '=', 'D')
-                    ->where('vehicle.plate_id', '=', $plate_id)
-                    ->select(DB::raw(
-                        'vehicle.plate_id,
-                     vehicle.operation,
-                     vehicle.technomechanical_date'
-                    ))->first();
-                if (empty($check_vehicle)) {
-                    return response()->json(['response' => 'vehicle exists', 'errors' => $errors]);
-                }
-
-                $now = date("Y-m-d H:i:s");
-                $response = Vehicle::where($key, $plate_id)->update([
-                    'plate_id' => $data_input['plate_id'],
-                    'type_v' => $data_input['type_v'],
-                    'owner_v' => $data_input['owner_v'] != "" ? $data_input['owner_v'] : 0,
-                    'taxi_type' => !empty($data_input['taxi_type']) ? $data_input['taxi_type'] : "NA",
-                    'number_of_drivers' => !empty($data_input['number_of_drivers']) ? $data_input['number_of_drivers'] : 1,
-                    'soat_expi_date' => $data_input['soat_expi_date'],
-                    'capacity' => $data_input['capacity'],
-                    'service' => $data_input['service'] != "" ? $data_input['service'] : "Otros",
-                    'cylindrical_cc' => $data_input['cylindrical_cc'] != "" ? $data_input['cylindrical_cc'] : 1,
-                    'v_class' => $data_input['v_class'] != "" ? $data_input['v_class'] : "",
-                    'model' => $data_input['model'] != "" ? $data_input['model'] : "",
-                    'line' => $data_input['line'] != "" ? $data_input['line'] : "",
-                    'brand' => $data_input['brand'] != "" ? $data_input['brand'] : "",
-                    'color' => $data_input['color'] != "" ? $data_input['color'] : "",
-                    'technomechanical_date' => $data_input['technomechanical_date'] != "" ? $data_input['technomechanical_date'] : null,
-                    'operation' => 'U',
-                    'date_operation' => $now,
-                    'user_id' => auth()->id(),
-                    'company_id' => $company_id,
-                ]);
-                if ($response) {
-                    $list_drivers = DriverVehicleController::listDriverByPlateId($plate_id);
-                    if (empty($list_drivers)) {
-                        $response_transaction = DriverVehicleController::insertOrUpdateDriverNoList($data_input_drivers, $plate_id);
-                    } else {
-                        $response_transaction = DriverVehicleController::insertOrUpdateDrivers($data_input_drivers, $list_drivers, $plate_id);
-                    }
-                    return response()->json(['response' => 'Información actualizada', 'errors' => []]);
-                } else {
-                    return response()->json(['errors' => ['response' => 'No se pudo actualizar la información']]);
-                }
-            }
-        }
-
-        //Si no hay errores en el formulario y el vehículo no está en la tabla vehicle, lo inserta
+        //         $now = date("Y-m-d H:i:s");
+        //         //Actualiza el vehículo con los nuevos datos para revivir el vehículo
+        //         $response = Vehicle::where($key, $plate_id)->update([
+        //             'plate_id' => $data_input['plate_id'],
+        //             'type_v' => $data_input['type_v'],
+        //             'owner_v' => $data_input['owner_v'] != "" ? $data_input['owner_v'] : 0,
+        //             'taxi_type' => !empty($data_input['taxi_type']) ? $data_input['taxi_type'] : "NA",
+        //             'number_of_drivers' => !empty($data_input['number_of_drivers']) ? $data_input['number_of_drivers'] : 1,
+        //             'soat_expi_date' => $data_input['soat_expi_date'],
+        //             'capacity' => $data_input['capacity'],
+        //             'service' => $data_input['service'] != "" ? $data_input['service'] : "Otros",
+        //             'cylindrical_cc' => $data_input['cylindrical_cc'] != "" ? $data_input['cylindrical_cc'] : 1,
+        //             'model' => $data_input['model'] != "" ? $data_input['model'] : "",
+        //             'line' => $data_input['line'] != "" ? $data_input['line'] : "",
+        //             'brand' => $data_input['brand'] != "" ? $data_input['brand'] : "",
+        //             'color' => $data_input['color'] != "" ? $data_input['color'] : "",
+        //             'technomechanical_date' => $data_input['technomechanical_date'] != "" ? $data_input['technomechanical_date'] : null,
+        //             'operation' => 'U',
+        //             'date_operation' => $now,
+        //             'user_id' => auth()->id(),
+        //             'company_id' => $company_id,
+        //         ]);
+        //         if ($response) {
+        //             $list_drivers = DriverVehicleController::listDriverByPlateId($plate_id);
+        //             if (empty($list_drivers)) {
+        //                 $response_transaction = DriverVehicleController::insertOrUpdateDriverNoList($data_input_drivers, $plate_id);
+        //             } else {
+        //                 $response_transaction = DriverVehicleController::insertOrUpdateDrivers($data_input_drivers, $list_drivers, $plate_id);
+        //             }
+        //             return response()->json(['response' => 'Información actualizada', 'errors' => []]);
+        //         } else {
+        //             return response()->json(['errors' => ['response' => 'No se pudo actualizar la información']]);
+        //         }
+        //     }
+        // }
+        // print_r($errors);
+        // die;    
+        //Si no hay errores en el formulario y el vehículo no está en la tabla vehicle, lo inserta de lo contrario devuelve un error
         if (!empty($errors)) {
+            //Revisa los errores de que la placa ya exista y  que el registro esté en D o delete
+            if (empty($errors['operation']) && !empty($errors['plate_id'])) {
+                //Actualiza el vehículo con los nuevos datos para revivir el vehículo
+                if (strpos($errors['plate_id'][0], 'uso') !== false) {
+                    $now = date("Y-m-d H:i:s");
+                    $vehicle = Vehicle::where('plate_id', $plate_id)->update([
+                        'plate_id' => $data_input['plate_id'],
+                        'type_v' => $data_input['type_v'],
+                        'owner_v' => $data_input['owner_v'] != "" ? $data_input['owner_v'] : 0,
+                        'taxi_type' => !empty($data_input['taxi_type']) ? $data_input['taxi_type'] : "NA",
+                        'number_of_drivers' => !empty($data_input['number_of_drivers']) ? $data_input['number_of_drivers'] : 1,
+                        'soat_expi_date' => $data_input['soat_expi_date'],
+                        'capacity' => $data_input['capacity'],
+                        'service' => $data_input['service'] != "" ? $data_input['service'] : "Otros",
+                        'cylindrical_cc' => $data_input['cylindrical_cc'] != "" ? $data_input['cylindrical_cc'] : 1,
+                        'model' => $data_input['model'] != "" ? $data_input['model'] : "",
+                        'line' => $data_input['line'] != "" ? $data_input['line'] : "",
+                        'brand' => $data_input['brand'] != "" ? $data_input['brand'] : "",
+                        'color' => $data_input['color'] != "" ? $data_input['color'] : "",
+                        'technomechanical_date' => $data_input['technomechanical_date'] != "" ? $data_input['technomechanical_date'] : null,
+                        'operation' => 'U',
+                        'date_operation' => $now,
+                        'user_id' => auth()->id(),
+                        'company_id' => $company_id,
+                    ]);
+                    $this->insertDriversVehicle($plate_id, $data_input_drivers);
+                    $this->updateNumsVehiclesOfListDrivers($data_input_drivers);
+                    return response()->json(['response' => 'Información actualizada', 'errors' => []]);
+                }
+                return response()->json(['errors' => $errors]);
+            }
             return response()->json(['errors' => $errors]);
         } else {
-
             // echo 'else '.$company_id;
             // die;
             $vehicle = Vehicle::create([
@@ -194,7 +237,6 @@ class VehicleController extends Controller
                 'capacity' => $data_input['capacity'],
                 'service' => $data_input['service'] != "" ? $data_input['service'] : "Otros",
                 'cylindrical_cc' => $data_input['cylindrical_cc'] != "" ? $data_input['cylindrical_cc'] : 1,
-                'v_class' => $data_input['v_class'] != "" ? $data_input['v_class'] : "",
                 'model' => $data_input['model'] != "" ? $data_input['model'] : "",
                 'line' => $data_input['line'] != "" ? $data_input['line'] : "",
                 'brand' => $data_input['brand'] != "" ? $data_input['brand'] : "",
@@ -204,18 +246,37 @@ class VehicleController extends Controller
                 'user_id' => auth()->id(),
             ]);
             //Inserta todos los conductores elegidos y con la placa enviada en la tabla user_vehicle
-            if ($vehicle->plate_id != "" && !empty($data_input_drivers)) {
-                $list_drivers = DriverVehicleController::listDriverByPlateId($plate_id);
-                if (empty($list_drivers)) {
-                    $response_transaction = DriverVehicleController::insertOrUpdateDriverNoList($data_input_drivers, $plate_id);
-                } else {
-                    $response_transaction = DriverVehicleController::insertOrUpdateDrivers($data_input_drivers, $list_drivers, $plate_id);
-                }
-                return response()->json([
-                    'success' => 'Información registrada.',
-                    'errors' => $errors,
-                ]);
-            }
+            $this->insertDriversVehicle($plate_id, $data_input_drivers);
+            $this->updateNumsVehiclesOfListDrivers($data_input_drivers);
+            return response()->json([
+                'success' => 'Información registrada.',
+                'errors' => [],
+            ]);
+        }
+    }
+
+    private function insertDriversVehicle($plate_id, $data_input_drivers)
+    {
+        $now = date("Y-m-d H:i:s");
+        $update_driver_vechiculo = DriverVehicle::where('vehicle_plate_id', $plate_id)->update([
+            'operation' => 'D',
+            'date_operation' => $now,
+            'user_id' => auth()->id()
+        ]);
+        foreach ($data_input_drivers as $key_drivers => $value_dni) {
+            $insert_drive_vehicle = DriverVehicle::create([
+                'vehicle_plate_id' => $plate_id,
+                'driver_information_dni_id' => $value_dni,
+                'user_id' => auth()->id()
+            ]);
+        }
+    }
+
+    private function updateNumsVehiclesOfListDrivers($list_drivers)
+    {
+        $now = date("Y-m-d H:i:s");
+        foreach ($list_drivers as $key => $value) {
+            DriverInformationController::incresases1NumberOfVehiclesByDriver($value);
         }
     }
 
@@ -250,6 +311,9 @@ class VehicleController extends Controller
      */
     public function update(Request $request)
     {
+        echo '<pre>';
+        print_r($request->all());
+        die;
         $now = date("Y-m-d H:i:s");
         $data_updated = $request->all();
         $field = $data_updated['fieldch'];
@@ -278,9 +342,9 @@ class VehicleController extends Controller
      */
     public function destroy(Request $request)
     {
-        echo '<pre>';
-        print_r($request->all());
-        die;
+        // echo '<pre>';
+        // print_r($request->all());
+        // die;
         $data_delete = $request->all();
         $now = date("Y-m-d H:i:s");
         $plate_id = $data_delete['plate_id'];
@@ -295,11 +359,28 @@ class VehicleController extends Controller
             'date_operation' => $now,
         ]);
         if ($delete) {
+            //Consulta todos los conductores de ese vehículo en user_vehiculo y que no estén en D
+            $vehicles_driver = DB::table('user_vehicle as uv')
+                ->select(DB::raw('
+                di.dni_id
+            '))
+                ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+                ->where('uv.vehicle_plate_id', '=', $plate_id)
+                ->where('uv.operation', '!=', 'D')
+                ->get()->toArray();
+            //Eliminina o pone en D el campo operation que pertenezcan a esa placa en user_vehicle
             $response = DriverVehicle::where('vehicle_plate_id', $plate_id)->update([
                 'operation' => 'D',
                 'date_operation' => $now,
                 'user_id' => auth()->id(),
             ]);
+
+            // echo '<pre>';
+            // print_r($vehicles_driver);
+            // die;
+            foreach ($vehicles_driver as $key => $value) {
+                DriverInformationController::decresases1NumberOfVehiclesByDriver($value->dni_id);
+            }
             return response()->json(['response' => 'Usuario eliminado', 'error' => '']);
         } else {
             return response()->json(['error' => 'No se pudo eliminar el usuario']);
@@ -317,13 +398,11 @@ class VehicleController extends Controller
                 'vehicle.plate_id,
                 vehicle.type_v,
                 IF(vehicle.owner_v="Y","Sí","No") as owner_v,
-                vehicle.taxi_type,
                 vehicle.number_of_drivers,
                 vehicle.soat_expi_date,
                 vehicle.capacity,
                 vehicle.service,
                 vehicle.cylindrical_cc,
-                vehicle.v_class,
                 vehicle.model,
                 vehicle.line,
                 vehicle.brand,
@@ -355,9 +434,9 @@ class VehicleController extends Controller
             ->where('v.company_id', '=', $company_id)
             ->where('v.operation', '!=', 'D')
             ->whereBetween('v.soat_expi_date', [$fecha_actual, $date_month])
-        // ->toSql();
-        // print_r($soats_expiration);
-        // die;
+            // ->toSql();
+            // print_r($soats_expiration);
+            // die;
             ->first();
         return $soats_expiration->total;
     }
@@ -409,9 +488,9 @@ class VehicleController extends Controller
             ->where('v.company_id', '=', $company_id)
             ->where('v.operation', '!=', 'D')
             ->where('v.soat_expi_date', '<=', $fecha_actual)
-        // ->toSql();
-        // print_r($soats_expiration);
-        // die;
+            // ->toSql();
+            // print_r($soats_expiration);
+            // die;
             ->first();
         return $soats_expiration->total;
     }
@@ -458,9 +537,9 @@ class VehicleController extends Controller
             ->where('v.company_id', '=', $company_id)
             ->where('v.operation', '!=', 'D')
             ->whereBetween('v.technomechanical_date', [$fecha_actual, $date_month])
-        // ->toSql();
-        // print_r($tecnomecanical_expiration);
-        // die;
+            // ->toSql();
+            // print_r($tecnomecanical_expiration);
+            // die;
             ->first();
         return $tecnomecanical_expiration->total;
     }
@@ -555,7 +634,7 @@ class VehicleController extends Controller
             ->where('v.company_id', '=', $company_id)
             ->where('v.operation', '!=', 'D')
             ->groupBy('v.type_v')
-        // ->toSql();
+            // ->toSql();
             ->get()->toArray();
     }
 
@@ -572,7 +651,7 @@ class VehicleController extends Controller
             ->where('v.operation', '!=', 'D')
             ->where('di.dni_id', '=', $dni_id)
             ->groupBy('v.type_v')
-        // ->toSql();
+            // ->toSql();
             ->get()->toArray();
     }
 
@@ -586,7 +665,7 @@ class VehicleController extends Controller
             ->where('v.company_id', '=', $company_id)
             ->where('v.operation', '!=', 'D')
             ->groupBy('v.owner_v')
-        // ->toSql();
+            // ->toSql();
             ->get()->toArray();
     }
 
@@ -603,7 +682,7 @@ class VehicleController extends Controller
             ->where('v.operation', '!=', 'D')
             ->where('di.dni_id', '=', $dni_id)
             ->groupBy('v.owner_v')
-        // ->toSql();
+            // ->toSql();
             ->get()->toArray();
     }
 
@@ -617,7 +696,7 @@ class VehicleController extends Controller
             ->where('v.company_id', '=', $company_id)
             ->where('v.operation', '!=', 'D')
             ->groupBy('v.line')
-        // ->toSql();
+            // ->toSql();
             ->get()->toArray();
     }
 
@@ -647,7 +726,7 @@ class VehicleController extends Controller
             ->where('v.company_id', '=', $company_id)
             ->where('v.operation', '!=', 'D')
             ->groupBy('v.brand')
-        // ->toSql();
+            // ->toSql();
             ->get()->toArray();
     }
 
@@ -664,7 +743,7 @@ class VehicleController extends Controller
             ->where('v.operation', '!=', 'D')
             ->where('di.dni_id', '=', $dni_id)
             ->groupBy('v.brand')
-        // ->toSql();
+            // ->toSql();
             ->get()->toArray();
     }
 
@@ -678,7 +757,7 @@ class VehicleController extends Controller
             ->where('v.company_id', '=', $company_id)
             ->where('v.operation', '!=', 'D')
             ->groupBy('v.model')
-        // ->toSql();
+            // ->toSql();
             ->get()->toArray();
     }
 
@@ -695,7 +774,7 @@ class VehicleController extends Controller
             ->where('v.operation', '!=', 'D')
             ->where('di.dni_id', '=', $dni_id)
             ->groupBy('v.model')
-        // ->toSql();
+            // ->toSql();
             ->get()->toArray();
     }
 
@@ -764,7 +843,7 @@ class VehicleController extends Controller
         $vehicle_plate_id = $data_request['vehicle_plate_id'];
         // echo '<pre>';
         // print_r($data_request);
-
+        //Revisan los vehículos de ese conductor
         $check_vehicles = DB::table('user_vehicle')
             ->where('user_vehicle.driver_information_dni_id', '=', $driver_information_dni_id)
             ->select(DB::raw(
@@ -775,56 +854,28 @@ class VehicleController extends Controller
         // print_r($check_vehicles);
         // die;
         if (empty($check_vehicles)) {
-            DriverVehicle::create([
-                'user_id' => auth()->id(),
-                'vehicle_plate_id' => $vehicle_plate_id,
-                'driver_information_dni_id' => $driver_information_dni_id,
-            ]);
-            $check_vehicles_dni_id = DB::table('user_vehicle')
-                ->where('user_vehicle.vehicle_plate_id', '=', $vehicle_plate_id)
-                ->where('user_vehicle.operation', '!=', 'D')
-                ->select(DB::raw(
-                    'user_vehicle.vehicle_plate_id,
-                         user_vehicle.driver_information_dni_id,
-                         user_vehicle.operation'
-                ))->get();
-            $num_vehicles = count($check_vehicles_dni_id);
-            $response = Vehicle::where('plate_id', $vehicle_plate_id)->update([
-                'number_of_drivers' => $num_vehicles,
-                'operation' => 'U',
-                'date_operation' => $now,
-                'user_id' => auth()->id(),
-            ]);
+            //Le asigna a ese vehículo ese nuevo conductor
+            self::updateDriversByVehicle($vehicle_plate_id, $driver_information_dni_id);
+            DriverInformationController::incresases1NumberOfVehiclesByDriver($driver_information_dni_id);
             return response()->json(['response' => 'El conductor ha sido asignado al vehículo.', 'errors' => []]);
         } else {
             // print_r($check_vehicles);
             if ($check_vehicles->operation == "D") {
                 // echo ' tiene D';
                 // die;
-                $response = DriverVehicle::where('driver_information_dni_id', $driver_information_dni_id)->update([
-                    'vehicle_plate_id' => $vehicle_plate_id,
-                    'operation' => 'U',
-                    'date_operation' => $now,
-                    'user_id' => auth()->id(),
-                ]);
-                $check_vehicles_dni_id = DB::table('user_vehicle')
-                    ->where('user_vehicle.vehicle_plate_id', '=', $vehicle_plate_id)
-                    ->where('user_vehicle.operation', '!=', 'D')
-                    ->select(DB::raw(
-                        'user_vehicle.vehicle_plate_id,
-                         user_vehicle.driver_information_dni_id,
-                         user_vehicle.operation'
-                    ))->get();
-                $num_vehicles = count($check_vehicles_dni_id);
-                $response = Vehicle::where('plate_id', $vehicle_plate_id)->update([
-                    'number_of_drivers' => $num_vehicles,
-                    'operation' => 'U',
-                    'date_operation' => $now,
-                    'user_id' => auth()->id(),
-                ]);
+                self::updateDriversByVehicle($vehicle_plate_id, $driver_information_dni_id);
+                DriverInformationController::incresases1NumberOfVehiclesByDriver($driver_information_dni_id);
                 return response()->json(['response' => 'El conductor ha sido asignado al vehículo.', 'errors' => []]);
             } else {
-                return response()->json(['response' => 'Conductor Ya asociado', 'errors' => ['driver_information_dni_id' => ['Este conductor ya tiene asociado un vehículo.']]]);
+                // echo '<pre>';
+                // print_r($check_vehicles);
+                if ($this->ifExistDriverVehicle($vehicle_plate_id, $driver_information_dni_id)) {
+                    return response()->json(['response' => 'Conductor Ya asociado', 'errors' => ['driver_information_dni_id' => ['Este conductor ya tiene asociado este vehículo.']]]);
+                } else {
+                    self::updateDriversByVehicle($vehicle_plate_id, $driver_information_dni_id);
+                    DriverInformationController::incresases1NumberOfVehiclesByDriver($driver_information_dni_id);
+                    return response()->json(['response' => 'El conductor ha sido asignado al vehículo.', 'errors' => []]);
+                }
             }
         }
     }
@@ -855,6 +906,57 @@ class VehicleController extends Controller
         // $data['datasets'][] = $datasets;
         // $data['labels'] = $labels;
         // return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
+    }
+
+    private function ifExistDriverVehicle($plate_id, $driver)
+    {
+        $exist = false;
+        $check_drivers = DB::table('user_vehicle')
+            ->where('user_vehicle.vehicle_plate_id', '=', $plate_id)
+            ->select(DB::raw(
+                'user_vehicle.vehicle_plate_id,
+                user_vehicle.driver_information_dni_id,
+                user_vehicle.operation'
+            ))->get()->toArray();
+        // echo '<pre>';
+        // print_r($check_drivers);
+        // echo $driver;
+        // die;
+        foreach ($check_drivers as $key => $value) {
+            if ($value->driver_information_dni_id == $driver) {
+                $exist = true;
+            }
+        }
+        return $exist;
+    }
+
+    public static function updateDriversByVehicle($vehicle_plate_id, $driver_information_dni_id)
+    {
+        $now = date("Y-m-d H:i:s");
+        //Inserta en la tabla relación user_vehicle
+        DriverVehicle::create([
+            'user_id' => auth()->id(),
+            'vehicle_plate_id' => $vehicle_plate_id,
+            'driver_information_dni_id' => $driver_information_dni_id,
+        ]);
+        //Consulta cuántos conductores tienen ese vehículo
+        $check_vehicles_dni_id = DB::table('user_vehicle')
+            ->where('user_vehicle.vehicle_plate_id', '=', $vehicle_plate_id)
+            ->where('user_vehicle.operation', '!=', 'D')
+            ->select(DB::raw(
+                'user_vehicle.vehicle_plate_id,
+                     user_vehicle.driver_information_dni_id,
+                     user_vehicle.operation'
+            ))->get();
+        //cuenta la cantidad de vehículos
+        $num_vehicles = count($check_vehicles_dni_id);
+        //Actualiza la cantidad de conductores en la tabla vehicle
+        $response = Vehicle::where('plate_id', $vehicle_plate_id)->update([
+            'number_of_drivers' => $num_vehicles,
+            'operation' => 'U',
+            'date_operation' => $now,
+            'user_id' => auth()->id(),
+        ]);
     }
 
     public function makePolarChartBrandV(Request $request)
@@ -913,6 +1015,7 @@ class VehicleController extends Controller
 
     public function checkVehicleByPlateId(Request $request)
     {
+        $company_id_active = Auth::user()->company_active;
         $plate_id = $request->get('plate_id');
         $check_vehicle = DB::table('vehicle')
             ->orderBy('vehicle.start_date', 'desc')
@@ -920,16 +1023,213 @@ class VehicleController extends Controller
             ->select(DB::raw(
                 'vehicle.plate_id,
                  vehicle.operation,
-                 vehicle.technomechanical_date'
+                 vehicle.technomechanical_date,
+                 vehicle.company_id'
             ))->first();
+        // echo '<pre> '.$company_id_active.' ';
         // print_r($check_vehicle);
+        // var_dump($check_vehicle->company_id == $company_id_active);
         // die;
         if (empty($check_vehicle)) {
             return response()->json(['response' => 'ok', 'errors' => []]);
-        } else if ($check_vehicle->operation == "U" || $check_vehicle->operation == "A") {
-            return response()->json(['response' => 'error', 'errors' => ['plate_id' => ['Esta placa ya tiene un vehículo. Para actualizarla debe hacerlo en la tabla.']]]);
+        } else if (($check_vehicle->operation == "U" || $check_vehicle->operation == "A") && $check_vehicle->company_id == $company_id_active) {
+            return response()->json(['response' => 'error', 'errors' => ['plate_id' => ['Esta placa ya existe. Para actualizarla debe hacerlo en la tabla.']]]);
+        } else if (($check_vehicle->operation == "U" || $check_vehicle->operation == "A") && $check_vehicle->company_id != $company_id_active) {
+            return response()->json(['response' => 'error', 'errors' => ['plate_id' => ['Esta placa se encuentra reigstrada en otra empresa.']]]);
         } else {
             return response()->json(['response' => 'ok', 'errors' => []]);
         }
+    }
+
+    // protected function validateInformation(Request $request)
+    // {
+    //     $all = $request->all();
+    //     $data_input = $request->get('vehicle');
+    //     $index = $request->get('index');
+    //     echo '<pre>';
+    //     print_r($all);
+    //     die;
+    //     $data_input = $this->toArrayColumn($data_input, $index, ['soat_expi_date', 'technomechanical_date']);
+    //     $plate_id = !empty($data_input['plate_id']) ? $data_input['plate_id'] : "";
+    //     $validator = Validator::make(
+    //         $data_input,
+    //         [
+    //             'plate_id' => ['required', 'max:15', 'unique:vehicle'],
+    //             'type_v' => 'required|max:255',
+    //             'owner_v' => 'required|max:255',
+    //             'soat_expi_date' . ($index + 1) => 'required|max:255',
+    //             'capacity' => 'required|max:11',
+    //             'operation' => [new IsNotDelete(['plate_id', $plate_id], 'vehicle')],
+    //         ],
+    //         [
+    //             'plate_id.required' => "La placa no puede ser vacía",
+    //             'type_v.required' => "Se debe elegir el tipo de vehiculo",
+    //             'owner_v.required' => "Se debe elegir una opción",
+    //             'soat_expi_date' . ($index + 1) . '.required' => "Se debe seleccionar una fecha",
+    //             'capacity.required' => "Se debe seleccionar la capacidad",
+    //             'plate_id.unique' => "Esta placa ya está en uso. Para actualizarla hágalo en la tabla.",
+    //         ]
+    //     );
+    //     $errors = $validator->errors()->getMessages();
+    //     if (!empty($errors)) {
+    //         return response()->json(['errors' => $errors]);
+    //     } else {
+    //         return response()->json(['response' => '', 'errors' => []]);
+    //     }
+    // }
+
+    protected function validateInformation(Request $request)
+    {
+        $all = $request->all();
+        $data_input = $request->get('vehicle');
+        $index = $request->get('index');
+        // echo '<pre>';
+        // print_r($all);
+        // die;
+        if (!empty($data_input)) {
+            $data_input = $this->toArrayColumn($data_input, null, ['soat_expi_date', 'technomechanical_date']);
+            $data_input = self::invertRowColumnArray($data_input);
+            // echo '<pre> index:';
+            // print_r($all);
+            // print_r($data_input);
+            // die;
+            $plate_id = !empty($data_input['plate_id']) ? $data_input['plate_id'] : "";
+            foreach ($data_input as $key => $value) {
+                $validator = Validator::make(
+                    $value,
+                    [
+                        'plate_id' => ['required', 'max:15', 'unique:vehicle'],
+                        'type_v' => 'required|max:255',
+                        'owner_v' => 'required|max:255',
+                        'soat_expi_date' => 'required|max:255',
+                        'capacity' => 'required|max:11',
+                        'operation' => [new IsNotDelete(['plate_id', $plate_id], 'vehicle')],
+                    ],
+                    [
+                        'plate_id.required' => "La placa no puede ser vacía",
+                        'type_v.required' => "Se debe elegir el tipo de vehiculo",
+                        'owner_v.required' => "Se debe elegir una opción",
+                        'soat_expi_date.required' => "Se debe seleccionar una fecha",
+                        'capacity.required' => "Se debe seleccionar la capacidad",
+                        'plate_id.unique' => "Esta placa ya está en uso. Para actualizarla hágalo en la tabla.",
+                    ]
+                );
+                $errors[$key] = $validator->errors()->getMessages();
+            }
+            $errors_new = self::personalizeErrorsTypeVehicle($errors);
+        }
+
+        // print_r($errors_new);
+        // print_r($errors);
+        // die;
+
+        if (!empty($errors_new)) {
+            return response()->json(['errors' => $errors_new]);
+        } else {
+            return response()->json(['response' => '', 'errors' => []]);
+        }
+    }
+
+    public function registerSecondaryInformation(Request $request)
+    {
+        $company_id = auth()->user()->company_active;
+
+        $vechicles = $request->get('vehicle');
+        $data_input_exist = $request->get('vehicle_exist');
+        // echo ' <pre> ';
+        // print_r($data_input_exist);
+        // die;
+        // print_r($data_input_exist);
+        // echo ' data_clean ';
+        // print_r($data_clean_vehicles);
+        $driver_information = $request->get('driverInformation');
+        $dni_id = $driver_information['dni_id'];
+        // die;
+        $insert_v = "";
+        $insert_uv = "";
+        if (!empty($vechicles)) {
+            $v = self::invertRowColumnArray($vechicles);
+            // echo '<pre> data_vehicles ';
+            // print_r($v);
+            foreach ($v as $key_v => $value_v) {
+                $insert_v = Vehicle::create([
+                    'plate_id' => $value_v['plate_id'],
+                    'type_v' => $value_v['type_v'],
+                    'owner_v' => $value_v['owner_v'] != "" ? $value_v['owner_v'] : 0,
+                    'taxi_type' => $value_v['taxi_type'] != "" ? $value_v['taxi_type'] : "NA",
+                    'number_of_drivers' => $value_v['number_of_drivers'] != "" ? $value_v['number_of_drivers'] : 1,
+                    'soat_expi_date' => $value_v['soat_expi_date'],
+                    'capacity' => $value_v['capacity'],
+                    'service' => $value_v['service'] != "" ? $value_v['service'] : "Otros",
+                    'cylindrical_cc' => $value_v['cylindrical_cc'] != "" ? $value_v['cylindrical_cc'] : 1,
+                    'model' => $value_v['model'] != "" ? $value_v['model'] : "",
+                    'line' => $value_v['line'] != "" ? $value_v['line'] : "",
+                    'brand' => $value_v['brand'] != "" ? $value_v['brand'] : "",
+                    'color' => $value_v['color'] != "" ? $value_v['color'] : "",
+                    'technomechanical_date' => $value_v['technomechanical_date'] != "" ? $value_v['technomechanical_date'] : null,
+                    'company_id' => $company_id,
+                    'user_id' => auth()->id(),
+                ]);
+                $insert_uv = DriverVehicle::create([
+                    'vehicle_plate_id' => $insert_v->plate_id,
+                    'driver_information_dni_id' => $dni_id,
+                    'user_id' => auth()->id()
+                ]);
+            }
+        }
+        if (!empty($data_input_exist['plate_id'])) {
+            foreach ($data_input_exist['plate_id'] as $die_key => $die_value) {
+                $insert_uv = DriverVehicle::create([
+                    'vehicle_plate_id' => $die_value,
+                    'driver_information_dni_id' => $dni_id,
+                    'user_id' => auth()->id()
+                ]);
+            }
+        }
+
+        if ($insert_v->plate_id  != "" && $insert_uv->vehicle_plate_id != "") {
+            return response()->json(['response' => 'Se ha registrado la información de la fase 2-3', 'errors' => []]);
+        } else {
+            return response()->json(['errors' => ['response' => 'No se pudo actualizar la información']]);
+        }
+    }
+
+    private function cleanArray($array_vehicle)
+    {
+        $str_soat_expi_date = 'soat_expi_date';
+        $lenght_soat = strlen($str_soat_expi_date);
+        $str_technomechanical_date = 'technomechanical_date';
+        $lenght_tech = strlen($str_technomechanical_date);
+        $new = [];
+        foreach ($array_vehicle as $key_vehicle => $value_vehicle) {
+            if (strpos($key_vehicle, $str_soat_expi_date) !== false) {
+                $explit = str_split($key_vehicle, $lenght_soat);
+                $new[($explit[1]) - 1][$str_soat_expi_date] = $value_vehicle;
+            } else if (strpos($key_vehicle, $str_technomechanical_date) !== false) {
+                $explit = str_split($key_vehicle, $lenght_tech);
+                $new[($explit[1]) - 1][$str_technomechanical_date] = $value_vehicle;
+            } else {
+                foreach ($value_vehicle as $key_child => $value_child) {
+                    $new[$key_child][$key_vehicle] = $value_child;
+                }
+            }
+        }
+        return $new;
+    }
+
+    public static function listArray()
+    {
+        $company_id = auth()->user()->company_active;
+        return DB::table('vehicle')
+            ->orderBy('vehicle.start_date', 'desc')
+            ->where('vehicle.operation', '!=', 'D')
+            ->where('vehicle.company_id', '=', $company_id)
+            ->select(DB::raw(
+                'vehicle.plate_id,
+                vehicle.type_v'
+            ))->get()->toArray();
+        // echo '<pre>';
+        // print_r($vehicle);
+        // die;
     }
 }

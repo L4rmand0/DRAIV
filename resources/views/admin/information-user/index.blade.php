@@ -14,8 +14,9 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="drive_information_datatable" class="table table_dashboard table-striped nowrap" style="width:100%;">
-            {{-- <table id="drive_information_datatable" class="table table-sm table-striped table-bordered table-hover nowrap"
+            <table id="drive_information_datatable" class="table table_dashboard table-striped nowrap"
+                style="width:100%;">
+                {{-- <table id="drive_information_datatable" class="table table-sm table-striped table-bordered table-hover nowrap"
                 style="width:100%"> --}}
                 <thead>
                     <tr>
@@ -25,6 +26,7 @@
                         <th>Segundo Nombre</th>
                         <th>Primer Apellido</th>
                         <th>Segundo Apellido</th>
+                        <th>Número Vehículos</th>
                         <th>Género</th>
                         <th>Educación</th>
                         <th>Email</th>
@@ -44,13 +46,27 @@
             </table>
         </div>
         <div class="card-footer">
-            <div class="container text-center">
-                <button class="btn btn-primary" type="button" style="margin-top: 17px;" data-toggle="modal"
-                    data-target="#form_create_driver_information" id="modal_form_drive_info"><i class="fas fa-plus"></i> Agregar Conductor</button>
-            </div>
-            <div class="container text-center">
-                <button class="btn btn-success" type="button" style="margin-top: 17px;" data-toggle="modal"
-                    data-target="#form_import_excel" id="modal_form_drive_info"><i class="fas fa-file-excel"></i> Importar Información Masiva</button>
+            <div class="row">
+                <div class="col-md-2" style="display: flex;align-items: center;justify-content: center;">
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                    <div class="container text-center">
+                        <button class="btn btn-primary" type="button" style="margin-top: 17px;" data-toggle="modal"
+                            data-target="#form_create_driver_information" id="modal_form_drive_info"><i
+                                class="fas fa-plus"></i> Agregar Conductor</button>
+                    </div>
+
+                    <div class="container text-center">
+                        <button class="btn btn-success" type="button" style="margin-top: 17px;" data-toggle="modal"
+                            data-target="#form_import_excel" id="modal_form_drive_info"><i
+                                class="fas fa-file-excel"></i> Importar Información Masiva</button>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-2 text-right" style="display: flex;align-items: center;justify-content: center;">
+                    <a href="{{ route('admin','driving_licence') }}"><img src="{{ asset('img/next.png') }}" alt=""></a>
+                </div>
             </div>
         </div>
     </div>
@@ -180,12 +196,12 @@
                             </div>
                         </div>
                         <div class="row" style="margin-top: 18px;">
-                            <div class="col-md-6 form_select_conductores">
+                            <!-- <div class="col-md-6 form_select_conductores">
                                 <label for="city_born_form">Ciudad de Nacimiento:</label><br>
                                 <select name="driverInformation[city_born]" class="form-control" id="city_born_form"
                                     data-url="{{ route('admin3-select-lists') }}" style="width: 100%" required>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="col-md-6 form_select_conductores">
                                 <label for="city_residence_place_form">Ciudad de Residencia:</label><br>
                                 <select name="driverInformation[city_residence_place]" class="form-control"

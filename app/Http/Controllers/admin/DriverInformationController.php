@@ -92,6 +92,7 @@ class DriverInformationController extends Controller
      */
     public function store(Request $request)
     {
+        $company_id_active = Auth::user()->company_active;
         // echo '<pre>';
         $data_input = $request->all()['driverInformation'];
         // print_r($data_input);
@@ -102,12 +103,11 @@ class DriverInformationController extends Controller
                 'first_name' => 'required|max:70',
                 'f_last_name' => 'required|max:20',
                 's_last_name' => 'max:20',
-                'e_mail_address' => ['required', 'max:35', 'unique:driver_information'],
                 'dni_id' => ['required', 'max:10', 'unique:driver_information'],
                 'gender' => 'required',
                 'education' => 'required',
                 'country_born' => 'required',
-                'city_born' => 'required|max:20',
+                // 'city_born' => 'required|max:20',
                 'city_residence_place' => 'required|max:20',
                 'department' => 'required|max:20',
                 'civil_state' => 'required',
@@ -116,7 +116,6 @@ class DriverInformationController extends Controller
             ],
             [
                 'dni_id.unique' => "Esta cédula ya está en uso.",
-                'e_mail_address.unique' => "Este email ya está en uso.",
             ]
         );
         // echo ' store ';
@@ -144,7 +143,7 @@ class DriverInformationController extends Controller
                             'gender' => $data_input['gender'],
                             'education' => $data_input['education'],
                             'country_born' => $data_input['country_born'],
-                            'city_born' => $data_input['city_born'],
+                            // 'city_born' => $data_input['city_born'],
                             'city_residence_place' => $data_input['city_residence_place'],
                             'department' => $data_input['department'],
                             'civil_state' => $data_input['civil_state'],
@@ -183,7 +182,7 @@ class DriverInformationController extends Controller
                 'gender' => $data_input['gender'],
                 'education' => $data_input['education'],
                 'country_born' => $data_input['country_born'],
-                'city_born' => $data_input['city_born'],
+                // 'city_born' => $data_input['city_born'],
                 'city_residence_place' => $data_input['city_residence_place'],
                 'department' => $data_input['department'],
                 'civil_state' => $data_input['civil_state'],
@@ -241,6 +240,9 @@ class DriverInformationController extends Controller
      */
     public function update(Request $request)
     {
+        // echo '<pre>';
+        // print_r($request->all());
+        // die;
         $now = date("Y-m-d H:i:s");
         $data_updated = $request->all();
         $field = $data_updated['fieldch'];
@@ -251,10 +253,10 @@ class DriverInformationController extends Controller
         // var_dump(is_numeric($value));
         // die;
         if(!is_numeric($value) && $field == "score"){
-            return response()->json(['error' => ['response' => 'Formato incorrecto, el número no puede llevar comas ni texto. Ejemplo Correcto: 4.00']]);
+            return response()->json(['errors' => ['response' => 'Formato incorrecto, el número no puede llevar comas ni texto. Ejemplo Correcto: 4.00']]);
         }
         if ($field == "score" && ($value > 5 || $value < 0)) {
-            return response()->json(['error' => ['response' => 'El score no puede ser mayor a 5 ni menor a 0. Ejemplo: 5.00']]);
+            return response()->json(['errors' => ['response' => 'El score no puede ser mayor a 5 ni menor a 0. Ejemplo: 5.00']]);
         }
         $response = DriverInformation::where('dni_id', $data_updated['dni_id'])->update([
             $field => $value,
@@ -263,9 +265,9 @@ class DriverInformationController extends Controller
             'user_id' => auth()->id(),
         ]);
         if ($response) {
-            return response()->json(['response' => 'Información actualizada', 'error' => []]);
+            return response()->json(['response' => 'Información actualizada', 'errors' => []]);
         } else {
-            return response()->json(['error' => ['response' => 'No se pudo actualizar la información']]);
+            return response()->json(['errors' => ['response' => 'No se pudo actualizar la información']]);
         }
     }
 
@@ -339,9 +341,9 @@ class DriverInformationController extends Controller
         }
 
         if ($errors == 0) {
-            return response()->json(['response' => 'Usuario eliminado', 'error' => '']);
+            return response()->json(['response' => 'Usuario eliminado', 'errors' => '']);
         } else {
-            return response()->json(['error' => 'No se pudo eliminar el usuario']);
+            return response()->json(['errors' => 'No se pudo eliminar el usuario']);
         }
     }
 
@@ -350,10 +352,10 @@ class DriverInformationController extends Controller
         $company_id = Auth::user()->company_active;
         $drive_information = DB::table('driver_information')
             ->orderBy('driver_information.start_date', 'desc')
-            ->join('users', 'driver_information.Db_user_id', '=', 'users.id')
+            ->join('users', 'driver_information.db_user_id', '=', 'users.id')
             ->join('company', 'company.Company_id', '=', 'driver_information.company_id')
             ->join('admin2', 'admin2.adm2_id', '=', 'driver_information.department')
-            ->join('admin3', 'admin3.adm3_id', '=', 'driver_information.city_born')
+            ->join('admin3', 'admin3.adm3_id', '=', 'driver_information.city_residence_place')
             ->where('driver_information.company_id', '=', $company_id)
             ->where('driver_information.operation', '!=', 'D')
             ->select(DB::raw(
@@ -362,6 +364,7 @@ class DriverInformationController extends Controller
             driver_information.second_name,
             driver_information.f_last_name,
             driver_information.s_last_name,
+            driver_information.number_of_vehicles,
             IF(driver_information.gender=0,"Masculino","Femenino") as gender,
             driver_information.education,
             driver_information.e_mail_address,
@@ -376,7 +379,12 @@ class DriverInformationController extends Controller
             driver_information.company_id,
             users.name as user,
             company.Name_company as company'
-            ))->get();
+            ))
+            // ->toSql();
+            ->get();
+        // echo '<pre>';
+        // print_r($drive_information);
+        // die;    
         $drive_information = $this->addDeleteButtonDatatable($drive_information);
         return datatables()->of($drive_information)->make(true);
     }
@@ -409,6 +417,24 @@ class DriverInformationController extends Controller
             ->where('driver_information.operation', '!=', 'D')
             ->get()->toArray();
         return response()->json($this->createSelect2($admin2));
+    }
+
+    public function getMotorCyclistDriveInformationtoSelect2(Request $request)
+    {
+        $company_id = Auth::user()->company_active;
+        $motor_cyclist = DB::table('user_vehicle as uv')
+            ->select(
+            'di.dni_id'
+            )
+            ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+            ->join('vehicle as v', 'v.plate_id', '=', 'uv.vehicle_plate_id')
+            ->where('di.company_id', '=', $company_id)
+            ->where('uv.operation', '!=', 'D')
+            ->where('v.type_v', '=', 'Motos')
+            ->orderBy('uv.start_date', 'desc')
+            ->get()
+            ->toArray();
+        return response()->json($this->createSelect2($motor_cyclist));
     }
 
     public function createSelect2($query_data)
@@ -476,6 +502,46 @@ class DriverInformationController extends Controller
             ))->get()->toArray();
         return count($drivers);
     }
+
+    public static function incresases1NumberOfVehiclesByDriver($dni_id){
+        $now = date("Y-m-d H:i:s");
+        $drivers = DB::table('driver_information as di')
+                ->select(DB::raw('
+                    di.number_of_vehicles
+                '))
+                ->where('di.dni_id','=',$dni_id)->first();
+                // print_r($drivers);
+                // die;
+                $old_number = (int) $drivers->number_of_vehicles;
+                // var_dump($old_number);
+                // die;
+                $update = DriverInformation::where('dni_id', $dni_id)->update([
+                    'number_of_vehicles' => ($old_number+1),
+                    'operation' => 'A',
+                    'date_operation' => $now,
+                    'user_id' => auth()->id(),
+                ]);
+    }
+
+    public static function decresases1NumberOfVehiclesByDriver($dni_id){
+        $now = date("Y-m-d H:i:s");
+        $drivers = DB::table('driver_information as di')
+                ->select(DB::raw('
+                    di.number_of_vehicles
+                '))
+                ->where('di.dni_id','=',$dni_id)->first();
+                // print_r($drivers);
+                // die;
+                $old_number = (int) $drivers->number_of_vehicles;
+                // var_dump($old_number);
+                // die;
+                $update = DriverInformation::where('dni_id', $dni_id)->update([
+                    'number_of_vehicles' => ($old_number-1),
+                    'operation' => 'A',
+                    'date_operation' => $now,
+                    'user_id' => auth()->id(),
+                ]);
+    } 
 
     public static function getNumberDriversByCompanyR(Request $request)
     {
@@ -667,5 +733,114 @@ class DriverInformationController extends Controller
             $civil_state = $this->getCivilStateByCompany($company_id);
         }
         return $this->chart_js->makeChart($civil_state);
+    }
+
+    // --- FUNCIONES DEL NUEVO FORMULARIOS --- //
+    public function validateInformation(Request $request){
+        // echo '<pre>';
+        // print_r($request->all());
+        // die;
+        $data_input = $request->get('driverInformation');
+        $validator = Validator::make(
+            $data_input,
+            [
+                'first_name' => 'required|max:70',
+                'f_last_name' => 'required|max:20',
+                's_last_name' => 'required|max:20',
+                'dni_id' => ['required', 'max:20', 'unique:driver_information'],
+                'gender' => 'required',
+                'born_date' => 'required',
+                'education' => 'required',
+                'country_born' => 'required',
+                'e_mail_address' => 'required|max:35',
+                'city_residence_place' => 'required|max:20',
+                'department' => 'required|max:20',
+                'civil_state' => 'required',
+                'address' => 'required|max:50',
+                'phone' => 'required|max:30',
+            ],
+            [
+                'first_name.required' => "El primer nombre es obligatorio.",
+                'f_last_name.required' => "El primer apellido es obligatorio.",
+                's_last_name.required' => "El segundo apellido es obligatorio.",
+                'dni_id.required' => "La cédula es obligatoria.",
+                'dni_id.unique' => "Esta cédula ya está en uso.",
+                'gender.required' => "El género es obligatorio.",
+                'born_date.required' => "La edad es obligatoria",
+                'e_mail_address.required' => "El email es obligatorio.",
+                'civil_state.required' => "El estado civil es obligatorio.",
+                'city_residence_place.required' => "La ciudad de residencia es obligatoria.",
+                'country_born.required' => "El país de nacimiento es obligatorio.",
+                'department.required' => "El departamento es obligatorio.",
+            ]
+        );
+        $errors = $validator->errors()->getMessages();
+        if (!empty($errors)) {
+            return response()->json(['errors' => $errors]);
+        }else{
+            return response()->json(['response'=>'','errors' => []]);
+        }
+    }
+
+    public function registerPrimaryInformation(Request $request){
+        // echo '<pre>';
+        // print_r($request->all());
+        // die;
+        $driver_information = $request->get('driverInformation');
+        $driving_licence = $request->get('drivingLicence');
+        
+        $insert_di = DriverInformation::create([
+                'dni_id' => $driver_information['dni_id'],
+                'first_name' => $driver_information['first_name'],
+                'second_name' => $driver_information['second_name'] != "" ? $driver_information['second_name'] : "NA",
+                'f_last_name' => $driver_information['f_last_name'],
+                's_last_name' => $driver_information['s_last_name'] != "" ? $driver_information['s_last_name'] : "NA",
+                'e_mail_address' => $driver_information['e_mail_address'],
+                'gender' => $driver_information['gender'],
+                'education' => $driver_information['education'],
+                'country_born' => $driver_information['country_born'],
+                // 'city_born' => $data_input['city_born'],
+                'city_residence_place' => $driver_information['city_residence_place'],
+                'department' => $driver_information['department'],
+                'civil_state' => $driver_information['civil_state'],
+                'score' => !empty($driver_information['score']) ? number_format($driver_information['score'], 2) : null,
+                'address' => $driver_information['address'],
+                'phone' => $driver_information['phone'],
+                'db_user_id' => auth()->id(),
+                'company_id' => $driver_information['company_id'],
+                'user_id' => auth()->id()
+        ]);
+
+        $insert_driving = DrivingLicence::create([
+            'driver_information_dni_id' => $insert_di->dni_id,
+                'licence_num' => $driving_licence['licence_num'],
+                'country_expedition' =>  $driving_licence['country_expedition'],
+                'category' => $driving_licence['category'],
+                'state' => $driving_licence['state'],
+                'expedition_day' => $driving_licence['expedition_day'],
+                'expi_date' => $driving_licence['expi_date'],
+                'user_id' => auth()->id()
+        ]);
+        if ($insert_di->dni_id > 0 && $insert_driving->driver_information_dni_id > 0) {
+            return response()->json(['response' => 'Se ha registrado la información de la fase 1-3', 'errors' => []]);
+        } else {
+            return response()->json(['errors' => ['response' => 'No se pudo actualizar la información']]);
+        }
+    }
+
+    public static function driveInformationListbyCompany()
+    {
+        $company_id = Auth::user()->company_active;
+        return DB::table('driver_information')
+            ->orderBy('driver_information.start_date', 'desc')
+            ->select(DB::raw(
+                'driver_information.dni_id,
+            driver_information.first_name'
+            ))
+            ->where('driver_information.company_id', '=', $company_id)
+            ->where('driver_information.operation', '!=', 'D')
+            ->orderBy('driver_information.start_date', 'desc')
+            // ->toSql();
+            ->get()->toArray();
     }
 }

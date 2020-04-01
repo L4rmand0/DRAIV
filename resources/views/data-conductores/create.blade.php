@@ -5,8 +5,8 @@
     <div class="row justify-content-center mt-0">
         <div class="col-11 col-sm-9 col-md-7 col-lg-6 text-center p-0 mt-3 mb-2">
             <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                <h2><strong>Información Personal</strong></h2>
-                <p>Llene todo los campos del formulario y vaya al siguiente paso</p>
+                <h2><strong id="section_title">Información Personal</strong></h2>
+                <p>Llene toda la información de esta sección y pase a la siguiente sección</p>
                 <div class="row">
                     <div class="col-md-12 mx-0">
                         <form action="" method="POST" id="msform" accept-charset="UTF-8" enctype="multipart/form-data">
@@ -351,57 +351,29 @@
                                     data-url="{{ route('vehicle.validate') }}" data-error="vehicle" />
 
                             </fieldset>
-                            {{-- <fieldset>
-                            <div class="row">
-                                <div class="col-lg-8 mx-auto">
-                                    <div class="p-4 bg-white shadow rounded-lg">
-                                        <h2 class="fs-title" style="text-align: center">Agregar Imágenes</h2>
-                                        <form method="POST" action="{{ route('saveimg') }}" accept-charset="UTF-8"
-                            enctype="multipart/form-data">
-                            @csrf
-                            <button type="submit" class="btn" id="btn_upload_img" data-function="saveimg"
-                                data-url="{{ route('saveimg') }}"><img
-                                    src="https://res.cloudinary.com/mhmd/image/upload/v1557366994/img_epm3iz.png" alt=""
-                                    width="200" class="d-block mx-auto mb-4 rounded-pill"></button>
-                            <h5 class="text-center">Click para subir</h5>
-                            <!-- Default bootstrap file upload-->
-                            <h6 class="text-center mb-4 text-muted">
-                                Tu puedes usar esta sección para subir imágenes
-                            </h6>
-                            <div class="custom-file overflow-hidden rounded-pill mb-5">
-                                <input id="customFile" type="file" name="file" class="custom-file-input rounded-pill">
-                                <label for="customFile" class="custom-file-label rounded-pill">elegir
-                                    archivo</label>
-                            </div>
+                            <fieldset>
+                                <div class="form-card">
+                                    <h2 class="fs-title text-center">Completado !</h2> <br><br>
+                                    <div class="row justify-content-center">
+                                        <div class="col-3"> <img src="https://img.icons8.com/color/96/000000/ok--v2.png"
+                                                class="fit-image"> </div>
+                                    </div> <br><br>
+                                    <div class="row justify-content-center">
+                                        <div class="col-7 text-center">
+                                            <h5>Has completado el registro de información</h5>
+                                            <a href="{{ route('welcome') }}">Terminar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="button" name="previous" class="previous action-button-previous"
+                                    value="Previous" />
+                            </fieldset>
                         </form>
-                        <!-- End -->
                     </div>
                 </div>
             </div>
-            <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-            </fieldset> --}}
-            <fieldset>
-                <div class="form-card">
-                    <h2 class="fs-title text-center">Completado !</h2> <br><br>
-                    <div class="row justify-content-center">
-                        <div class="col-3"> <img src="https://img.icons8.com/color/96/000000/ok--v2.png"
-                                class="fit-image"> </div>
-                    </div> <br><br>
-                    <div class="row justify-content-center">
-                        <div class="col-7 text-center">
-                            <h5>Has completado el registro de información</h5>
-                            <a href="{{ route('welcome') }}">Terminar</a>
-                        </div>
-                    </div>
-                </div>
-                <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-            </fieldset>
-            </form>
         </div>
     </div>
-</div>
-</div>
-</div>
 </div>
 <link href="{{ asset('css/upload-form.css') }}" rel="stylesheet">
 <link href="{{ asset('css/styleinfouser.css') }}" rel="stylesheet">

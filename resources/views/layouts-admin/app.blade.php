@@ -19,7 +19,7 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Fira+Sans&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}" />
+    <link rel="icon" type="image/png" href="{{ asset('img/d-logo.png') }}" />
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
@@ -30,6 +30,7 @@
 </head>
 
 <body id="page-top">
+    <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
     <div id="app">
         <!-- Page Wrapper -->
         <div id="wrapper">

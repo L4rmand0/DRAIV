@@ -21,6 +21,14 @@ class ApiController extends Controller
         return response()->json(['response' => $extracts]);
     }
 
+    public function extractText(Request $request){
+        // echo '<pre>';
+        // print_r($request->all());
+        // die;
+        $extracts = $this->text_extract->all();
+        return response()->json(['api_response' => $extracts]);
+    }
+
     public function show($id)
     {
     	$post = $this->post->findById($id);

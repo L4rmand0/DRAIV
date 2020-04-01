@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use DB;
 use App\DrivingLicence;
+use App\Rules\ValidateDate;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ChartJS;
 use App\Http\Controllers\Controller;
@@ -465,5 +466,42 @@ class DrivingLicenceController extends Controller
         // $data['datasets'][] = $datasets;
         // $data['labels'] = $labels;
         // return response()->json(['data' => $data, 'errors' => [], 'max' => $maximo]);
+    }
+
+    // --- FUNCIONES DEL NUEVO FORMULARIOS --- //
+    public function validateInformation(Request $request){
+        
+        $data_input = $request->get('drivingLicence');
+        // echo '<pre> licencia';
+        // print_r($data_input);
+        // die;
+        $message_error_expi_date = 'La fecha de vencimiento no puede ser menor a la de expedición';
+        $validator = Validator::make(
+            $data_input,
+            [
+                'licence_num' => 'required|max:255',
+                'country_expedition' => 'required|max:255',
+                'category' => 'required|max:255',
+                'state' => 'required|max:255',
+                'expedition_day' => 'required|max:255',
+                'expi_date' => [new ValidateDate($data_input['expedition_day'],$message_error_expi_date),'required','max:255'],
+            ],
+            [
+                'driver_information_dni_id.unique' => "Este conductor ya tiene una licencia asignada.",
+                'licence_num.required' => "El número de licencia es obligatorio.",
+                'category.required' => "La categoría de la licencia es obligatoria.",
+                'state.required' => "El estado de la licencia es obligatoria.",
+                'expedition_day.required' => "La fecha de expedición es obligatoria.",
+                'expi_date.required' => "La fecha de vencimiento es obligatoria.",
+            ]
+        );
+        $errors = $validator->errors()->getMessages();
+        // print_r($errors);
+        // die;
+        if (!empty($errors)) {
+            return response()->json(['errors' => $errors]);
+        }else{
+            return response()->json(['response'=>'','errors' => []]);
+        }
     }
 }

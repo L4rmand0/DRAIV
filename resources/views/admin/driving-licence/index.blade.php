@@ -15,8 +15,8 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="driving_licence_datatable" class="table table_dashboard table-striped nowrap"
-                style="width:100%;" data-url-list="{{ route ('driving-licence-list') }}"
+            <table id="driving_licence_datatable" class="table table_dashboard table-striped nowrap" style="width:100%;"
+                data-url-list="{{ route ('driving-licence-list') }}"
                 data-url-delete="{{ route ('driving_licence.destroy') }}">
                 <thead>
                     <tr>
@@ -36,20 +36,34 @@
             </table>
         </div>
         <div class="card-footer">
-            <div class="container text-center">
-                <button class="btn btn-primary" type="button" style="margin-top: 17px;" data-toggle="modal"
-                    data-target="#form_create_driving_licence" id="modal_form_create_driving_licence"><i class="fas fa-plus"></i> Agregar Licencia</button>
-            </div>
-            <div class="container text-center">
-                <button class="btn btn-success" type="button" style="margin-top: 17px;" data-toggle="modal"
-                    data-target="#form_import_excel" id="modal_form_drive_info"><i class="fas fa-file-excel"></i> Importar
-                    Información Masiva</button>
+            <div class="row">
+                <div class="col-md-2" style="display: flex;align-items: center;justify-content: center;">
+                    <a href="{{ route('admin','driver_information') }}"><img src="{{ asset('img/back.png') }}" alt=""></a>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                    <div class="container text-center">
+                        <button class="btn btn-primary" type="button" style="margin-top: 17px;" data-toggle="modal"
+                            data-target="#form_create_driving_licence" id="modal_form_create_driving_licence"><i
+                                class="fas fa-plus"></i> Agregar Licencia</button>
+                    </div>
+                    <div class="container text-center">
+                        <button class="btn btn-success" type="button" style="margin-top: 17px;" data-toggle="modal"
+                            data-target="#form_import_excel" id="modal_form_drive_info"><i
+                                class="fas fa-file-excel"></i> Importar
+                            Información Masiva</button>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-2 text-right" style="display: flex;align-items: center;justify-content: center;">
+                    <a href="{{ route('admin','vehicle') }}"><img src="{{ asset('img/next.png') }}" alt=""></a>
+                </div>
             </div>
         </div>
     </div>
     {{-- <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Licencia de Conducir</h1>
-    </div> --}}   
+    </div> --}}
 </div>
 
 <div class="modal fade" id="form_create_driving_licence" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -119,7 +133,8 @@
                                     style="margin-top: 12px;"></label>
                                 <span class="error_admin input_user_admin" role="alert"
                                     id="driver_information_dni_id-error">
-                                    <strong id="driver_information_dni_id-error-strong" class="error-strong"> </strong>
+                                    <strong id="driver_information_dni_id-error-strong" class="error-strong">
+                                    </strong>
                                 </span>
                             </div>
                         </div>

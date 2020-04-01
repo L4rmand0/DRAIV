@@ -1,25 +1,47 @@
 // IIFE - Immediately Invoked Function Expression
-(function(runcode) {
+(function (runcode) {
 
     // The global jQuery object is passed as a parameter
     runcode(window.jQuery, window, document);
 
-}(function($, window, document) {
+}(function ($, window, document) {
 
     // The $ is now locally scoped 
     // Listen for the jQuery ready event on the document
-    $(function() {
+    $(function () {
 
         var $dni_drivers_selects2 = $('#driver_information_dni_id_images').select2();
 
-        $('#driver_information_dni_id_images').on('change', function() {
+        $("#btn_text_extract").on('click', function () {
+            $.ajax({
+                type: 'POST',
+                url: $("#function_text_extract").val(),
+                data: {
+                    'company_id': 'algo',
+                    "_token": $('#token').val()
+                }
+            }).done(function (response) {
+                console.log(response);
+                if (Object.keys(response.api_response.errors).length > 0) {
+                    
+                } else {
+                    swal.fire(
+                        'Proceso Completado',
+                        'Documentos procesados.',
+                        'success'
+                    );
+                }
+            });
+        });
+
+        $('#driver_information_dni_id_images').on('change', function () {
             let element = $(this);
             let driver_information_dni_id = element.val();
             $.ajax({
                 type: 'POST',
                 url: element.data('url'),
                 data: { 'driver_information_dni_id': driver_information_dni_id },
-                success: function(data) {
+                success: function (data) {
                     console.log(data);
                     if (Object.keys(data.errors).length > 0) {
                         console.log(errors);
@@ -31,7 +53,7 @@
                         table += "  <th><center>Archivo</center></th>"
                         table += "</thead>"
                         table += "<tbody>"
-                        $.each(data.documents, function(index, value) {
+                        $.each(data.documents, function (index, value) {
                             table += "<tr>"
                             table += "  <td>" + index + "</td>"
                             if (value.check == "Y") {
@@ -48,35 +70,35 @@
                         });
                         table += "</tbody>"
                         table += "</table>"
-                            // table += '<script>'+
-                            // '          $(".a_file_image").on("click", function(){'+
-                            //          '  window.location.href = $(this).data("url");'+
-                            //          ' })'+
-                            //         '</script>';
+                        // table += '<script>'+
+                        // '          $(".a_file_image").on("click", function(){'+
+                        //          '  window.location.href = $(this).data("url");'+
+                        //          ' })'+
+                        //         '</script>';
                         $("#card_body_list_documents").html(table);
                         $("#btn_text_extract").hide()
-                        if(data.documents_required == true){
+                        if (data.documents_required == true) {
                             $("#btn_text_extract").attr("hidden", false);
                             $("#btn_text_extract_validate").attr("hidden", false);
                             $("#btn_text_extract").show();
                             $("#btn_text_extract_validate").show();
-                        }else{
+                        } else {
                             $("#btn_text_extract").hide();
                             $("#btn_text_extract_validate").hide();
                         }
-                            // swal.fire(
-                            //     'Proceso Completado',
-                            //     'Archivo subido correctamente.',
-                            //     'success'
-                            // );
+                        // swal.fire(
+                        //     'Proceso Completado',
+                        //     'Archivo subido correctamente.',
+                        //     'success'
+                        // );
                     }
                 }
             });
         });
 
 
-
-        $(".form_upload_image").submit(function(event) {
+        //Lógica de la función de subir imágenes
+        $(".form_upload_image").submit(function (event) {
             event.preventDefault();
             let driver_information_dni_id = $("#driver_information_dni_id_images").val();
             var element = $(this);
@@ -105,7 +127,7 @@
                     contentType: false,
                     processData: false,
                     data: datafr,
-                    success: function(data) {
+                    success: function (data) {
                         console.log(data);
                         if (Object.keys(data.errors).length > 0) {
                             if (data.response == "Carga fallida") {
@@ -116,7 +138,7 @@
                                 );
                             } else if (data.response == "validator errors") {
                                 let cadena = "";
-                                $.each(data.errors, function(index, value) {
+                                $.each(data.errors, function (index, value) {
                                     cadena = cadena + "<strong id='file-error-strong' class='error-strong'>" + value[0] + "</strong>";
                                 });
                                 element.find(".error_file").html(cadena);
@@ -150,7 +172,7 @@
                                             contentType: false,
                                             processData: false,
                                             data: datafr,
-                                            success: function(data) {
+                                            success: function (data) {
                                                 if (Object.keys(data.errors).length > 0) {
                                                     swal.fire(
                                                         'Error en el proceso',
@@ -208,7 +230,7 @@
         //     });
         // });
 
-        $(".input_files_drivers").on('change', function() {
+        $(".input_files_drivers").on('change', function () {
             let element = $(this);
             let name = element[0].files[0].name;
             $(this).parent().find("label").text(name)

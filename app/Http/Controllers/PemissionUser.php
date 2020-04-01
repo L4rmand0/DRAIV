@@ -33,6 +33,7 @@ trait PermissionUser
         // echo '<pre>';
         // print_r($data);
         // die;
+        //organiza los grupos de modulos en un solo array
         foreach ($data as $key => $value) {
             if ($value->parent_id == 0 && $value->type == "Group") {
                 $groups[$value->route]["name"] = $value->name;
@@ -42,11 +43,12 @@ trait PermissionUser
                 unset($data[$key]);
             }
         }
-        // print_r($groups);
-        // die;
+
         foreach ($groups as $key_group => $value_group) {
             $groups[$key_group]['childs'] = [];
             $groups_organized[$key_group]['childs'] = [];
+
+            //Agrega los submodulos o hijos a cada grupo
             foreach ($data as $key_childs => $value_childs) {
                 if ($value_childs->parent_id == $value_group['id']) {
                     // print_r($value_childs);
@@ -84,18 +86,6 @@ trait PermissionUser
                 }
             }
         }
-        // print_r($new_gr_or);
-        // die;
-        // $this->orderGroups($groups_organized);
-        // echo '<pre>';
-        //ordenar el array
-
-        // for ($i = 1; $i <= $lenght_groups; $i++) {
-        //     $new_groups[] = $groups_organized[$i];
-        // }
-        // echo '<pre>  xxx ';
-        // print_r($new_groups);
-        // die;
         return $new_gr_or;
     }
 

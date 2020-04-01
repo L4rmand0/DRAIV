@@ -32,6 +32,10 @@ exit
 
 Instalar el composer:
 
+cd ..
+sudo apt update && sudo apt install wget php-cli php-zip unzip curl
+curl -sS https://getcomposer.org/installer |php
+sudo mv composer.phar /usr/local/bin/composer
 
 Arreglar el composer update:
 
@@ -52,5 +56,14 @@ sudo apt-get install php7.2-mbstring
 composer require aws/aws-sdk-php
 composer update
 chmod 777 -R /home/ubuntu/DRAIV/
+
+
+Cambiar el .env de laradock:
+
+cd laradock
+sudo nano .env
+modificar el host= 127.0.0.1
+modificar el path_host= ../DRAIV
+
 
 

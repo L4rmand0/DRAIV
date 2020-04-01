@@ -17,7 +17,6 @@ var new_element = new Array();
         // debugger
         if ($target.closest($selector_table + ' tr ' + $selector_cell).length) {
             console.log($selector_cell);
-
             if (typeof new_element['index'] === 'undefined') {
                 prev_element['index'] = $target.find("select").data("index");
                 prev_element['value'] = $target.find("select").children("option:selected").text();
@@ -256,6 +255,14 @@ var new_element = new Array();
                     }
                 }
             });
+
+            $(document).keyup(function(event){
+                if(event.keyCode===27){
+                    console.log("Escape")    
+                }
+            })
+
+            
         }
 
     });
@@ -293,7 +300,7 @@ var new_element = new Array();
         }
         switch (inputType) {
             case "list":
-                input.html = startWrapperHtml + "<select class='" + inputCss + " selselector" + row[0][0] + "' onchange='$(this).updateEditableCell(this);' data-index='selselector" + row[0][0] + "'> ";
+                input.html = startWrapperHtml + "<select id='ejbeatycelledit' class='" + inputCss + " selselector" + row[0][0] + "' onchange='$(this).updateEditableCell(this);' data-index='selselector" + row[0][0] + "' onkeyup='if(event.keyCode==13) {alert('oye mi perro');$(this).updateEditableCell(this);} else if (event.keyCode===27) {$(this).cancelEditableCell(this);}'> ";
                 $.each(inputSetting.options, function(index, option) {
                     if (oldValue == option.value) {
                         input.html = input.html + "<option value='" + option.value + "' selected>" + option.display + "</option>"
@@ -305,7 +312,7 @@ var new_element = new Array();
                 input.focus = false;
                 break;
             case "list-fixed":
-                input.html = startWrapperHtml + "<select class='" + inputCss + " selselector" + row[0][0] + "' onchange='$(this).updateEditableCell(this);' data-index='selselector" + row[0][0] + "'> ";
+                input.html = startWrapperHtml + "<select id='ejbeatycelledit' class='" + inputCss + " selselector" + row[0][0] + "' onchange='$(this).updateEditableCell(this);' data-index='selselector" + row[0][0] + "' onkeyup='if(event.keyCode==13) {alert('oye mi perro');$(this).updateEditableCell(this);} else if (event.keyCode===27) {$(this).cancelEditableCell(this);}'> ";
                 $.each(inputSetting.options, function(index, option) {
                     if (oldValue == option.display) {
                         input.html = input.html + "<option value='" + option.value + "' selected>" + option.display + "</option>"
@@ -400,7 +407,6 @@ var new_element = new Array();
         if (typeof(cellValue) === 'undefined' || cellValue === null || cellValue.length < 1) {
             return "";
         }
-
         // If not a number
         if (isNaN(cellValue)) {
             // escape single quote

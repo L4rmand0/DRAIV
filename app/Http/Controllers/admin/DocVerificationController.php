@@ -3,13 +3,19 @@
 namespace App\Http\Controllers\admin;
 
 use DB;
+use App\Rules\NotToday;
+use App\DocVerification;
 use App\DriverInformation;
 use Illuminate\Http\Request;
+use App\Traits\TListDataTable;
 use App\Http\Controllers\ChartJS;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class DocVerificationController extends Controller
 {
+    use TListDataTable;
     private $chart_js;
     /**
      * Create a new controller instance.
@@ -49,7 +55,67 @@ class DocVerificationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $now = date("Y-m-d");
+        $data_input = $request->all();
+        $data_input['start_date'] = $now;
+        // echo '<pre>';
+        // print_r($data_input);
+        // die;
+        // Trae el id de la tabla user_vehicle para insertarlo después
+        $user_vehicle = DB::table('user_vehicle as uv')
+            ->select(DB::raw(
+                'uv.id'
+            ))
+            ->where('uv.driver_information_dni_id', '=', $data_input['user_vehicle_id'])
+            ->where('uv.operation', '!=', 'D')
+            ->first();
+        if (empty($user_vehicle)) {
+            return response()->json(['response' => 'error_swal', 'errors' => ['message' => 'Este conductor ha sido elminado.']]);
+        }
+        $uv_id = !empty($user_vehicle) ? $user_vehicle->id : "";
+        $validator = Validator::make(
+            $data_input,
+            [
+                'start_date' => [new NotToday(['user_vehicle_id', $user_vehicle->id], 'doc_verification')],
+            ]
+        );
+        $errors = $validator->errors()->getMessages();
+        if (!empty($errors)) {
+            return response()->json(['response' => 'error_swal', 'errors' => ['message' => 'Este conductor ya registró una evalución hoy, solo se permite una por día.']]);
+        }
+        // echo '<pre>';
+        // print_r($errors);
+        // echo 'finaliza';
+        // die;
+        $doc_verification = DocVerification::create([
+            'valid_licence' => $data_input['valid_licence'],
+            'category' => $data_input['category'],
+            'soat_available' => $data_input['soat_available'],
+            'technom_review' => $data_input['technom_review'],
+            'technom_expi_date' => $data_input['technom_expi_date'],
+            'run_state' => $data_input['run_state'],
+            'accident_rate' => $data_input['accident_rate'],
+            'penality_record' => $data_input['penality_record'],
+            'code_penality_1' => $data_input['code_penality_1'] != "" ? $data_input['code_penality_1'] : "",
+            'date_penality_1' => $data_input['date_penality_1'] != "" ? $data_input['code_penality_1'] : "",
+            'code_penality_2' => $data_input['code_penality_2'] != "" ? $data_input['code_penality_2'] : "",
+            'date_penality_2' => $data_input['date_penality_2'] != "" ? $data_input['date_penality_2'] : "",
+            'code_penality_3' => $data_input['code_penality_3'] != "" ? $data_input['code_penality_3'] : "",
+            'date_penality_4' => $data_input['date_penality_3'] != "" ? $data_input['date_penality_3'] : "",
+            'code_penality_4' => $data_input['code_penality_4'] != "" ? $data_input['code_penality_4'] : "",
+            'date_penality_4' => $data_input['date_penality_4'] != "" ? $data_input['date_penality_4'] : "",
+            'code_penality_5' => $data_input['code_penality_5'] != "" ? $data_input['code_penality_5'] : "",
+            'date_penality_5' => $data_input['date_penality_5'] != "" ? $data_input['date_penality_5'] : "",
+            'start_date' => $data_input['start_date'],
+            'validated_data' => 0,
+            'user_vehicle_id' => $user_vehicle->id,
+            'user_id' => auth()->id(),
+        ]);
+        if ($doc_verification->doc_id > 0) {
+            return response()->json(['response' => 'error_swal', 'message' => 'Ocurrió un error en el proceso']);
+        } else {
+            return response()->json(['response' => 'Información insertada correctamente', 'errors' => []]);
+        }
     }
 
     /**
@@ -62,6 +128,17 @@ class DocVerificationController extends Controller
     {
         //
     }
+
+    public function MakeCategoryList()
+    {
+        $profile_list = DB::table('profile_ as p')
+            ->orderBy('p.date_operation', 'asc')
+            ->select('p.profile_id', 'p.user_profile')
+            ->where('p.operation', '!=', 'D')
+            ->get()->toArray();
+        return $this->ListDT()->query(self::sanitazeArr($profile_list))->make('sql', 'profile_id', 'user_profile');
+    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -95,15 +172,43 @@ class DocVerificationController extends Controller
         return response()->json(['response' => 'Registro actualizado', 'errors' => [], 'updates' => $update]);
     }
 
+    public function updateDocVerification(Request $request)
+    {
+        $now = date("Y-m-d H:i:s");
+        $data_updated = $request->all();
+        $field = $data_updated['fieldch'];
+        $value = $data_updated['valuech'];
+        $response = DocVerification::where('doc_id', $data_updated['doc_id'])->update([
+            $field => $value,
+            'operation' => 'U',
+            'date_operation' => $now,
+            'user_id' => auth()->id(),
+        ]);
+        if ($response) {
+            return response()->json(['response' => 'Información actualizada', 'error' => []]);
+        } else {
+            return response()->json(['error' => ['response' => 'No se pudo actualizar la información']]);
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        // echo '<pre>';
+        // print_r($request->all());
+        $data_delete = $request->all();
+        // die;
+        $delete = DocVerification::where('doc_id', $data_delete['doc_id'])->update(['Operation' => 'D']);
+        if ($delete) {
+            return response()->json(['response' => 'Usuario eliminado', 'error' => '']);
+        } else {
+            return response()->json(['error' => 'No se pudo eliminar el usuario']);
+        }
     }
 
     public function listVerifiedDrivers(Request $request)
@@ -131,7 +236,8 @@ class DocVerificationController extends Controller
         return datatables()->of($list_verifieds)->make(true);
     }
 
-    public static function getNumberValidatedDrivers($company_id){
+    public static function getNumberValidatedDrivers($company_id)
+    {
         $drivers_verifieds = DB::table('driver_information as di')
             ->select(DB::raw(
                 'di.validated_data, 
@@ -144,17 +250,21 @@ class DocVerificationController extends Controller
             ->where('di.operation', '!=', 'D')
             ->groupBy('validated_data')
             ->get()->toArray();
+        // echo '<pre>';
+        // print_r($drivers_verifieds);
+        // die;
         foreach ($drivers_verifieds as $key => $value) {
-            if($value->validated_data == 1){
+            if ($value->validated_data == 1) {
                 $drivers_verifieds[$key]->validated_data = "Verificado";
-            }else{
+            } else {
                 $drivers_verifieds[$key]->validated_data = "Sin Verificar";
             }
         }
         return $drivers_verifieds;
     }
 
-    public static function getNumberValidatedDriversADriver($company_id, $dni_id){
+    public static function getNumberValidatedDriversADriver($company_id, $dni_id)
+    {
         $drivers_verifieds = DB::table('driver_information as di')
             ->select(DB::raw(
                 'di.validated_data, 
@@ -166,9 +276,9 @@ class DocVerificationController extends Controller
             ->groupBy('validated_data')
             ->get()->toArray();
         foreach ($drivers_verifieds as $key => $value) {
-            if($value->validated_data == 1){
+            if ($value->validated_data == 1) {
                 $drivers_verifieds[$key]->validated_data = "Verificado";
-            }else{
+            } else {
                 $drivers_verifieds[$key]->validated_data = "Sin Verificar";
             }
         }
@@ -187,13 +297,101 @@ class DocVerificationController extends Controller
         return $this->chart_js->makeChart($verify_drivers, true);
     }
 
-//     select
-// 	di.validated_data, count(di.dni_id) as total
-// from
-// 	driver_information as di 
-// where
-// 	di.company_id = 9013380301
-// 	and di.operation != 'D'
-// GROUP BY validated_data;
+    public function dataTable(Request $request)
+    {
+        $company_id = Auth::user()->company_active;
+        $skill_m_t_m = DB::table('doc_verification as dv')
+            ->select(DB::raw(
+                'dv.doc_id,
+                 dv.valid_licence,
+                 dv.category,
+                 dv.soat_available,
+                 dv.technom_review,
+                 dv.technom_expi_date,
+                 dv.run_state,
+                 dv.accident_rate,
+                 dv.penality_record,
+                 dv.date_penality_1,
+                 dv.date_penality_2,
+                 dv.date_penality_3,
+                 dv.date_penality_4,
+                 dv.date_penality_5,
+                 dv.code_penality_1,
+                 dv.code_penality_2,
+                 dv.code_penality_3,
+                 dv.code_penality_4,
+                 dv.code_penality_5,
+                 dv.validated_data,
+                 di.first_name,
+                 di.f_last_name,
+                 di.dni_id,
+                 v.plate_id'
+            ))
+            ->join('user_vehicle as uv', 'uv.id', '=', 'dv.user_vehicle_id')
+            ->join('driver_information as di', 'di.dni_id', '=', 'uv.driver_information_dni_id')
+            ->join('vehicle as v', 'v.plate_id', '=', 'uv.vehicle_plate_id')
+            ->where('di.company_id', '=', $company_id)
+            ->where('dv.operation', '!=', 'D')
+            ->orderBy('dv.start_date', 'desc')
+            ->get();
+        $drive_information = $this->addDeleteButtonDatatable($skill_m_t_m);
+        return datatables()->of($drive_information)->make(true);
+    }
 
+    public function validateInformation(Request $request)
+    {
+        // echo '<pre>';
+        // print_r($request->all());
+        // die;
+        $dni_id = $request->get('driver_select_evaluation');
+        $data_input = $request->get('doc_verification_driver');
+        $data_input['driver_information_dni_id'] = $dni_id;
+        // print_r($data_input);
+        // die;
+        // $user_vehicle_id = $request->get('doc_verification');
+        $validator = Validator::make(
+            $data_input,
+            [
+                'category' => 'required|max:255',
+                'runt_state' => 'required|max:255',
+                // 'driver_information_dni_id' => 'required|max:255',
+            ],
+            [
+                'category.required' => "La categoría es obligatoria",
+                'runt_state.required' => "El runt es obligatorio",
+            ]
+        );
+        $errors = $validator->errors()->getMessages();
+        if (!empty($errors)) {
+            return response()->json(['errors' => $errors]);
+        } else {
+            return response()->json(['response' => '', 'errors' => []]);
+        }
+    }
+
+    public function validateSelectDriver(Request $request)
+    {
+        $data_input = $request->all();
+        // echo '<pre>';
+        // print_r($request->all());
+        // die;
+
+        $validator = Validator::make(
+            $data_input,
+            [
+                'driver_select_evaluation' => 'required|max:255',
+                // 'start_date' => [new NotToday(['user_vehicle_id', $user_vehicle->id], 'skill_m_t_m')],
+            ],
+            [
+                'driver_select_evaluation.required' => "Se debe seleccionar un conductor"
+            ]
+        );
+        $data_input = $request->all();
+        $errors = $validator->errors()->getMessages();
+        if (!empty($errors)) {
+            return response()->json(['errors' => $errors]);
+        } else {
+            return response()->json(['response' => '', 'errors' => []]);
+        }
+    }
 }

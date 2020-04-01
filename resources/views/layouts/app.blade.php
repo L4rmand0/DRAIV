@@ -18,7 +18,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/modern-business.css') }}" rel="stylesheet">
-    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}" />
+    <link rel="icon" type="image/png" href="{{ asset('img/d-logo.png') }}" />
 </head>
 
 <body>

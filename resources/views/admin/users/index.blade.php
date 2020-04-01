@@ -136,7 +136,6 @@
                         </div>
                     </div>
                     <!-- Button trigger modal -->
-
                 </form>
             </div>
             <div class="modal-footer">

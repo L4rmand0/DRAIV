@@ -1,0 +1,9 @@
+Agregar un Módulo 
+
+1. Agregarlo en en la tabla module
+2. Si se quiere crea un nuevo grupo se crean 2 registros uno del grupo y otro del módulo.
+3. Si el grupo no es nuevo se crea el registro tipo módulo y se le asigna el parent_id con el id del grupo.
+4. Se registra el nuevo módulo en la constante MODULES del archivo de Module.php
+5. Se agrega al switch case del archivo AdminController.php
+
+  

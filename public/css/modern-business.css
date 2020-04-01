@@ -46,16 +46,6 @@ body {
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-
-    display: flex;
-    display: flex;
-    flex-direction: row;
-    -webkit-box-flex: 0;
-    flex: 0 0 100%;
-    max-width: 100%;
-}
-
-
 .container-dr-col-1 {
     display: flex;
     display: flex;

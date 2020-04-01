@@ -21,7 +21,6 @@ var table_relation;
             $(this).editBehaviourInputDT($target, "#vehicle_datatable", "#soat_expi_date");
             $(this).editBehaviourInputDT($target, "#vehicle_datatable", "#capacity");
             $(this).editBehaviourInputDT($target, "#vehicle_datatable", "#cylindrical_cc");
-            $(this).editBehaviourInputDT($target, "#vehicle_datatable", "#v_class");
             $(this).editBehaviourInputDT($target, "#vehicle_datatable", "#model");
             $(this).editBehaviourInputDT($target, "#vehicle_datatable", "#line");
             $(this).editBehaviourInputDT($target, "#vehicle_datatable", "#brand");
@@ -55,30 +54,30 @@ var table_relation;
                 });
             }
         });
-
-        $('#driver_information_dni_id_form').on('change', function() {
-            let user_info_id = $(this).val();
-            $("#name_driver").text("");
-            $.ajax({
-                type: 'GET',
-                url: $('#driver_information_dni_id_form').data('url-name'),
-                data: { 'type': 'select_admin2', 'user_info_id': user_info_id },
-                success: function(data) {
-                    if (Object.keys(data.errors).length > 0) {
-                        let arr_errores = data.errors;
-                        console.log(arr_errores);
-                        $.each(arr_errores, function(index, value) {
-                            let selector = "#" + index + "-error";
-                            let selector_strong = "#" + index + "-error-strong";
-                            $(selector).show();
-                            $(selector_strong).text(value[0]);
-                        });
-                    }
-                    $("#name_driver").text(data.name);
-                }
-            });
-            $(".error-strong").text("");
-        });
+        // VALIDACION PARA MIRAR SI CONDUCTOR YA TENÍA ASOCIADO UN VEHÍCULO
+        // $('#driver_information_dni_id_form').on('change', function() {
+        //     let user_info_id = $(this).val();
+        //     $("#name_driver").text("");
+        //     $.ajax({
+        //         type: 'GET',
+        //         url: $('#driver_information_dni_id_form').data('url-name'),
+        //         data: { 'type': 'select_admin2', 'user_info_id': user_info_id },
+        //         success: function(data) {
+        //             if (Object.keys(data.errors).length > 0) {
+        //                 let arr_errores = data.errors;
+        //                 console.log(arr_errores);
+        //                 $.each(arr_errores, function(index, value) {
+        //                     let selector = "#" + index + "-error";
+        //                     let selector_strong = "#" + index + "-error-strong";
+        //                     $(selector).show();
+        //                     $(selector_strong).text(value[0]);
+        //                 });
+        //             }
+        //             $("#name_driver").text(data.name);
+        //         }
+        //     });
+        //     $(".error-strong").text("");
+        // });
 
         $("#form_add_vehicle_driver").submit(function(event) {
             event.preventDefault();
@@ -94,7 +93,6 @@ var table_relation;
                         let arr_errores = data.errors;
                         console.log(arr_errores);
                         $.each(arr_errores, function(index, value) {
-                            debugger
                             let selector = "#" + index + "-error";
                             let selector_strong = "#" + index + "-error-strong";
                             $(selector).show();
@@ -251,6 +249,7 @@ var table_relation;
 
         $('#drive_information_dni_id').on('change', function() {
             let user_info_id = $(this).val();
+            $(".error-strong").text("")
             $.ajax({
                 type: 'GET',
                 url: $('#driver_information_dni_id').data('url-name'),
@@ -399,13 +398,12 @@ var table_relation;
             'plate_id',
             'type_v',
             'owner_v',
-            'taxi_type',
+            // 'taxi_type',
             'number_of_drivers',
             'soat_expi_date',
             'capacity',
             'service',
             'cylindrical_cc',
-            'v_class',
             'model',
             'line',
             'brand',
@@ -425,13 +423,12 @@ var table_relation;
                 { data: 'plate_id', name: 'plate_id' },
                 { data: 'type_v', name: 'type_v' },
                 { data: 'owner_v', name: 'owner_v' },
-                { data: 'taxi_type', name: 'taxi_type' },
+                // { data: 'taxi_type', name: 'taxi_type' },
                 { data: 'number_of_drivers', name: 'number_of_drivers' },
                 { data: 'soat_expi_date', name: 'soat_expi_date' },
                 { data: 'capacity', name: 'capacity' },
                 { data: 'service', name: 'service' },
                 { data: 'cylindrical_cc', name: 'cylindrical_cc' },
-                { data: 'v_class', name: 'v_class' },
                 { data: 'model', name: 'model' },
                 { data: 'line', name: 'line' },
                 { data: 'brand', name: 'brand' },
@@ -477,7 +474,7 @@ var table_relation;
                         ],
                         language: language_dt,
                     });
-
+                    $("#add_driver_vehicle").focus();
                 }
             });
 
@@ -602,7 +599,7 @@ var table_relation;
 
         table.MakeCellsEditable({
             "onUpdate": myCallbackFunction,
-            columns: [2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+            columns: [2, 3,5,6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
             "inputTypes": [{
                     "column": 2,
                     "type": "list",
@@ -616,13 +613,13 @@ var table_relation;
                         { 'value': "No", "display": "No" }
                     ]
                 },
+                // {
+                //     "column": 4,
+                //     "type": "list",
+                //     "options": enum_taxi_type
+                // },
                 {
-                    "column": 4,
-                    "type": "list",
-                    "options": enum_taxi_type
-                },
-                {
-                    "column": 8,
+                    "column": 7,
                     "type": "list",
                     "options": enum_service
                 }

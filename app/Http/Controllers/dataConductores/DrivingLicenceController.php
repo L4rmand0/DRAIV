@@ -26,9 +26,7 @@ class DrivingLicenceController extends Controller
      */
     public function create(Request $request)
     {
-        echo ' <pre> Método create';
-        print_r($request->all());
-        return view('data-conductores.driving-licence.create');
+        
     }
 
     /**

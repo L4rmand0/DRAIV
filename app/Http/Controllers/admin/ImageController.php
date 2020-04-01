@@ -7,6 +7,7 @@ use DB;
 use League\Flysystem\File;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\ImagenesVehiculo;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpCache\Store;
@@ -67,43 +68,25 @@ class ImageController extends Controller
         $now = date("Y-m-d H-i-s");
         $now_new = str_replace(" ", "-", $now);
         $now_new = str_replace("-", "", $now_new);
-        // echo '<pre>';
+        // echo '<pre> acá';
+        // print_r($request->file('file'));
         // print_r($request->all());
         // die;
         $file_type = request()->get('key');
-        $cedula = request()->get('driver_information_dni_id');
-        $file = $request->file('file');
-        $size = $file->getSize()/1024;
+        $cedula = Request()->get('driver_information_dni_id');
+        // $cedula = request()->get('driver_information_dni_id');
+        $file = $request->file('file')[$file_type];
+        $size = $file->getSize() / 1024;
         $extension = $file->getClientOriginalExtension();
         $extensions_permited = ['jpg'];
-        if(!in_array($extension, $extensions_permited)){
-            return response()->json(['response' => 'validator errors', 'errors' => ['file'=>['Los formatos permitidos son: jpg']]]); 
+        if (!in_array($extension, $extensions_permited)) {
+            return response()->json(['response' => 'validator errors', 'errors' => ['file' => ['Los formatos permitidos son: jpg']]]);
         }
-        if($size > 5120){
-            return response()->json(['response' => 'validator errors', 'errors' => ['file'=>['El archivo supera el máximo peso permitido (5MB).']]]); 
+        if ($size > 5120) {
+            return response()->json(['response' => 'validator errors', 'errors' => ['file' => ['El archivo supera el máximo peso permitido (5MB).']]]);
         }
-        // $validator = Validator::make(
-        //     $request->all(),
-        //     [
-        //         'file' => ['required','mimes:jpeg', 'max:2000' ]
-        //     ],
-        //     [
-        //         'file.required' => "Se debe seleccionar un archivo.",
-        //         'file.max' => "El archivo supera el máximo peso permitido (2MB).",
-        //         'file.mimes' => "Los formatos permitidos son: jpg.",
-        //     ]
-        // );
-
-        // $errors = $validator->errors()->getMessages();
-        // echo '<pre>';
-        // print_r($errors);
-        // die;
-        // if (!empty($errors)) {
-        //     return response()->json(['response' => 'validator errors', 'errors' => $errors]);
-        // }
-
         $check_document = DB::table('imagenes')
-            ->where('imagenes.type_image', '=', $file_type)
+            ->where('imagenes.tipo_doc', '=', $file_type)
             ->where('imagenes.driver_information_dni_id', '=', $cedula)
             ->select(DB::raw(
                 'imagenes.image_id, 
@@ -111,14 +94,14 @@ class ImageController extends Controller
                  imagenes.url,
                  imagenes.operation'
             ))->first();
-        // echo '<pre>';
-        // print_r($check_document);
-        // die;
-
+        // El nombre del archivo es el tipo de imagemn + la cédula + la fecha del momento horas, minutos y segundos
         $filename = $file_type . '_' . $cedula . '_' . $now_new . '.jpg';
+        //el path almacena las imágenes en una carpeta con la cédula del conductor y el nombre del archivo
         $path = $cedula . '/' . $filename;
 
         if (!empty($check_document)) {
+            // Si el registro del documento existe y está delete, entonces actualiza el registro y 
+            //lo pone en el s3 y también borra el anterior documento del s3
             if ($check_document->operation == 'D') {
                 $image_id = $check_document->image_id;
                 $path_old = $check_document->url;
@@ -162,6 +145,106 @@ class ImageController extends Controller
         }
     }
 
+    public function storeVehicles(Request $request)
+    {
+        $now = date("Y-m-d H-i-s");
+        $now_new = str_replace(" ", "-", $now);
+        $now_new = str_replace("-", "", $now_new);
+        // echo '<pre> acá';
+        // print_r($request->file('file'));
+        // print_r($request->all());
+        // die;
+        $file_type = request()->get('key');
+        $index = request()->get('index');
+        $cedula = Request()->get('driverInformation')['dni_id'];
+        $plate_id = Request()->get('plate');
+        $user_vehicle_id = DB::table('user_vehicle as uv')
+            ->where('uv.driver_information_dni_id', '=', $cedula)
+            ->where('uv.vehicle_plate_id', '=', $plate_id)
+            ->where('uv.operation', '!=', 'D')
+            ->select(DB::raw(
+                'uv.id, 
+                uv.vehicle_plate_id,
+                uv.driver_information_dni_id'
+            ))->first()->id;
+        // print_r($user_vehicle_id);
+        // die;
+        //Se obtiene toda la información del archivo a subir        
+        $file = $request->file('file')[$index][$file_type];
+        // print_r($file);
+        // die;
+        $size = $file->getSize() / 1024;
+        $extension = $file->getClientOriginalExtension();
+        $extensions_permited = ['jpg','jpeg'];
+        //Se hacen las validaciones a la imagen
+        if (!in_array($extension, $extensions_permited)) {
+            return response()->json(['response' => 'validator errors', 'errors' => ['file' => ['Los formatos permitidos son: jpg']]]);
+        }
+        if ($size > 5120) {
+            return response()->json(['response' => 'validator errors', 'errors' => ['file' => ['El archivo supera el máximo peso permitido (5MB).']]]);
+        }
+        // Se revisa que el archivo no exista en la tabla de imágenes
+        $check_document = DB::table('imagenes_vehiculo as iv')
+            ->where('iv.tipo_doc', '=', $file_type)
+            ->where('iv.user_vehicle_id', '=', $user_vehicle_id)
+            ->select(DB::raw(
+                'iv.image_id, 
+                 iv.tipo_doc,
+                 iv.url,
+                 iv.operation'
+            ))->first();
+        // El nombre del archivo es el tipo de imagemn + la cédula + la fecha del momento horas, minutos y segundos
+        $filename = $file_type . '_' . $cedula . '_' . $now_new . '.jpg';
+        //el path almacena las imágenes en una carpeta con la cédula del conductor y el nombre del archivo
+        $path = $cedula . '/vehicles/' . $filename;
+
+        if (!empty($check_document)) {
+            // echo ' no está vació ';
+            // Si el registro del documento existe y está delete, entonces actualiza el registro y 
+            //lo pone en el s3 y también borra el anterior documento del s3
+            if ($check_document->operation == 'D') {
+                $image_id = $check_document->image_id;
+                $path_old = $check_document->url;
+                $upload = Storage::disk('s3')->put($path, file_get_contents($file));
+                if ($upload) {
+                    $delete_file = Storage::disk('s3')->delete($path_old);
+                    $response = ImagenesVehiculo::where('image_id', $image_id)->update([
+                        'url' => $path,
+                        'size_image' => $size,
+                        'type_image' => $extension,
+                        'operation' => 'U',
+                        'user_id' => auth()->id(),
+                        'date_operation' => $now
+                    ]);
+                    return response()->json(['response' => 'ok', 'errors' => []]);
+                } else {
+                    return response()->json(['response' => 'Carga fallida', 'errors' => ['response' => 'Carga fallida', 'message' => 'El archivo no se pudo cargar']]);
+                }
+            } else {
+                return response()->json(['response' => 'file exists', 'errors' => [
+                    'message' => 'Este archivo ya fue cargado ¿Desea reemplazarlo?',
+                    'id' => $check_document->image_id,
+                    'path' => $check_document->url
+                ]]);
+            }
+        } else {
+            // echo ' vacio ';
+            $upload = Storage::disk('s3')->put($path, file_get_contents($file));
+            if ($upload) {
+                ImagenesVehiculo::create([
+                    'tipo_doc' => $file_type,
+                    'url' => $path,
+                    'size_image' => $size,
+                    'type_image' => $extension,
+                    'user_id' => auth()->id(),
+                    'user_vehicle_id' => $user_vehicle_id
+                ]);
+                return response()->json(['response' => 'ok', 'errors' => []]);
+            } else {
+                return response()->json(['response' => 'Carga fallida', 'errors' => ['response' => 'Carga fallida', 'message' => 'El archivo no se pudo cargar']]);
+            }
+        }
+    }
 
     public function downloadFile($path)
     {
@@ -207,20 +290,22 @@ class ImageController extends Controller
         // echo '<pre>';
         // print_r($request->all());
         // die;
+
+        //Se arma el nuevo path del archivo
         $file_type = request()->get('key');
         $image_id = request()->get('id');
-        $cedula = request()->get('driver_information_dni_id');
+        // $cedula = request()->get('driver_information_dni_id');
+        $cedula = Request()->get('driver_information_dni_id');
         $path_old = request()->get('url');
-        $file = $request->file('file');
+        $file = $request->file('file')[$file_type];
         $filename = $file_type . '_' . $cedula . '_' . $now_new . '.jpg';
         $path = $cedula . '/' . $filename;
-        // var_dump($file);
-        // die;
 
         $response = 0;
-
+        //Se sube el archivo al S3
         $upload = Storage::disk('s3')->put($path, file_get_contents($file));
         if ($upload) {
+            //Si, sube el archivo entonces se actualiza el registro con el nuevo path y la fecha de operación
             $delete_file = Storage::disk('s3')->delete($path_old);
             $response = Imagenes::where('image_id', $image_id)->update([
                 'url' => $path,
@@ -230,6 +315,57 @@ class ImageController extends Controller
             ]);
         }
 
+        if ($response > 0) {
+            return response()->json(['errors' => '', 'response' => 'ok', 'messagge' => 'Archivo Actualizado correctamente.']);
+        } else {
+            return response()->json(['errors' => ['response' => 'el archivo no se puedo actualizar.'], 'response' => 'error update']);
+        }
+    }
+
+    public function updateVehicles(Request $request)
+    {
+        $now = date("Y-m-d H-i-s");
+        $now_new = str_replace(" ", "-", $now);
+        $now_new = str_replace("-", "", $now_new);
+        $date = date("Y-m-d");
+        $cedula = Request()->get('driverInformation')['dni_id'];
+        $plate_id = Request()->get('plate');
+        // $user_vehicle_id = DB::table('user_vehicle as uv')
+        //     ->where('uv.driver_information_dni_id', '=', $cedula)
+        //     ->where('uv.vehicle_plate_id', '=', $plate_id)
+        //     ->where('uv.operation', '!=', 'D')
+        //     ->select(DB::raw(
+        //         'uv.id, 
+        //         uv.vehicle_plate_id,
+        //         uv.driver_information_dni_id'
+        //     ))->first()->id;
+        // echo '<pre>';
+        // print_r($request->all());
+        // print_r($user_vehicle_id);
+        // die;
+        //Se arma el nuevo path del archivo
+        $file_type = request()->get('key');
+        $index = request()->get('index');
+        $image_id = request()->get('id');
+        // $cedula = request()->get('driver_information_dni_id');
+        $path_old = request()->get('url');
+        $file = $request->file('file')[$index][$file_type];
+        $filename = $file_type . '_' . $cedula . '_' . $now_new . '.jpg';
+        $path = $cedula . '/vehicles/' . $filename;
+
+        $response = 0;
+        //Se sube el archivo al S3
+        $upload = Storage::disk('s3')->put($path, file_get_contents($file));
+        if ($upload) {
+            //Si, sube el archivo entonces se actualiza el registro con el nuevo path y la fecha de operación
+            $delete_file = Storage::disk('s3')->delete($path_old);
+            $response = ImagenesVehiculo::where('image_id', $image_id)->update([
+                'url' => $path,
+                'operation' => 'U',
+                'date_operation' => $now,
+                'user_id' => auth()->id()
+            ]);
+        }
         if ($response > 0) {
             return response()->json(['errors' => '', 'response' => 'ok', 'messagge' => 'Archivo Actualizado correctamente.']);
         } else {
@@ -288,10 +424,11 @@ class ImageController extends Controller
         // print_r($checked_documents);
         // die;
         $has_documents_required = $this->checkRequiredDocuments($documents);
-        return response()->json(['errors' => '', 'documents' => $checked_documents,'documents_required' => $has_documents_required]);
+        return response()->json(['errors' => '', 'documents' => $checked_documents, 'documents_required' => $has_documents_required]);
     }
 
-    public function checkRequiredDocuments($documents){
+    public function checkRequiredDocuments($documents)
+    {
         $documents_required = Imagenes::REQUIRED_DOCUMENTS;
         // echo '<pre> in';
         // print_r($documents);
@@ -300,35 +437,32 @@ class ImageController extends Controller
         $total_docs = 0;
         foreach ($documents as $key_doc => $value_doc) {
             foreach ($documents_required as $key_req => $value_req) {
-                if($value_doc->tipo_doc == $value_req){
+                if ($value_doc->tipo_doc == $value_req) {
                     $total_docs++;
                 }
             }
         }
-        if($total_docs == $total_req){
+        if ($total_docs == $total_req) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    public function checkIncompleteDocumentDrivers($company_id){
+    public function checkIncompleteDocumentDrivers($company_id)
+    {
         $images = $this->getAllImages($company_id);
-        $required_documents = Imagenes::required_documents;
+        $required_documents = Imagenes::REQUIRED_DOCUMENTS;
         $number_documents = count($required_documents);
         $last_documwent = end($required_documents);
         foreach ($required_documents as $key => $value) {
             $number_documents_drivers = 0;
             foreach ($images as $key => $value) {
-                
             }
-            if($number_documents_drivers == $number_documents){
-
-            }else{
-
+            if ($number_documents_drivers == $number_documents) {
+            } else {
             }
         }
-
     }
 
     public function getAllImages($company_id)
@@ -342,5 +476,10 @@ class ImageController extends Controller
             ->where('di.company_id', '=', $company_id)
             ->orderBy('driver_information_dni_id', 'desc')
             ->get()->toArray();
+    }
+
+    public function validateInformation()
+    {
+        return response()->json(['response' => 'ok', 'errors' => []]);
     }
 }
