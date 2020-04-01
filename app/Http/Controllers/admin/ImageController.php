@@ -150,10 +150,6 @@ class ImageController extends Controller
         $now = date("Y-m-d H-i-s");
         $now_new = str_replace(" ", "-", $now);
         $now_new = str_replace("-", "", $now_new);
-        // echo '<pre> acá';
-        // print_r($request->file('file'));
-        // print_r($request->all());
-        // die;
         $file_type = request()->get('key');
         $index = request()->get('index');
         $cedula = Request()->get('driverInformation')['dni_id'];
@@ -167,12 +163,9 @@ class ImageController extends Controller
                 uv.vehicle_plate_id,
                 uv.driver_information_dni_id'
             ))->first()->id;
-        // print_r($user_vehicle_id);
-        // die;
         //Se obtiene toda la información del archivo a subir        
         $file = $request->file('file')[$index][$file_type];
-        // print_r($file);
-        // die;
+        
         $size = $file->getSize() / 1024;
         $extension = $file->getClientOriginalExtension();
         $extensions_permited = ['jpg','jpeg'];
