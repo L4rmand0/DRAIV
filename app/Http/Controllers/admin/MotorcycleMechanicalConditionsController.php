@@ -281,6 +281,7 @@ class MotorcycleMechanicalConditionsController extends Controller
             ->where('di.company_id', '=', $company_id)
             ->where('mmc.operation', '!=', 'D')
             ->orderBy('mmc.start_date', 'desc')
+            ->groupBy('v.plate_id')
             ->get();
         // echo '<pre> ';
         // print_r($mt_mechanical_conditions);

@@ -247,6 +247,7 @@ class MotorcycleTechnologyController extends Controller
             ->where('di.company_id', '=', $company_id)
             ->where('mt.operation', '!=', 'D')
             ->orderBy('mt.start_date', 'desc')
+            ->groupBy('v.plate_id')
             ->get();
 
         $motorcycle_technology = $this->dataQuery($motorcycle_technology)->make([
