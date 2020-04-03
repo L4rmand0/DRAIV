@@ -7,7 +7,7 @@
 
     //Titúlos que deben ser llenados con información
     var titles = [
-        'dni_id', 'phone'
+        'dni_id', 'phone','penality_record'
     ];
 
     var input_event = false;
@@ -44,7 +44,7 @@
                     } else {
                         $("#container_card_driver").attr('hidden', false);
                         $("#container_card_driver").show('hidden', false);
-                        fillTitles(response.data, titles);
+                        fillTitles(response, titles);
                         fillInformation(target_element, response.data);
                         fillNameDriver(response.data);
                         fillExpiredSoat(response);
@@ -175,7 +175,14 @@
     }
 
     function fillTitles(data, titles) {
-        $.each(data, function (key, value) {
+        data_title = data.data 
+        data_doc_verification = data.doc_verification_d 
+        $.each(data_title, function (key, value) {
+            if (titles.indexOf(key) != -1) {
+                $("#title_" + key).text(value);
+            }
+        })
+        $.each(data_doc_verification, function (key, value) {
             if (titles.indexOf(key) != -1) {
                 $("#title_" + key).text(value);
             }
