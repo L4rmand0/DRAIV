@@ -74,7 +74,7 @@
                         <div class="item-comp"
                             style="background-color: #EAFF71;display: flex;align-items: center;justify-content: center;font-size: 0.8em;">
                             <div class="box-text" style="margin-bottom:1em;">
-                                <p>0</p>
+                                <p id="title_penality_record">0</p>
                                 <p>comparendos</p>
                             </div>
                         </div>
