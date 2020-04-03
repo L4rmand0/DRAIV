@@ -53,7 +53,7 @@
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">
                     Fecha de vencimiento Soat:</div>
                 <div class="col-md-3"><input type="text" class="form-control soat_expi_date field_driver_info_date"
-                        name="" value="" id="soat_expi_date" data-module="vehicle" data-plate="&PLACA" readonly>
+                        name="" value="" id="soat_expi_date&PLACA" data-id="soat_expi_date" data-module="vehicle" data-plate="&PLACA" readonly>
                 </div>
             </div>
             <div class="row mb-3">
@@ -110,7 +110,7 @@
                     Fecha Tecnomecánica:</div>
                 <div class="col-md-3"><input type="text"
                         class="form-control technomechanical_date field_driver_info_date" name="" value=""
-                        id="technomechanical_date" data-module="vehicle" data-plate="&PLACA" readonly>
+                        id="technomechanical_date&PLACA" data-id="technomechanical_date" data-module="vehicle" data-plate="&PLACA" readonly>
                 </div>
             </div>
         </div>

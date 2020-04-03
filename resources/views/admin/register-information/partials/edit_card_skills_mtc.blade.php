@@ -1,4 +1,4 @@
-<div class="card" id="card_single_vehicle&ID">
+<div class="card" id="card_single_vehicle_skillsA&ID">
     <div class="card-header" id="headingOne">
         <h5 class="mb-0">
             <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#collapseItem&ID"

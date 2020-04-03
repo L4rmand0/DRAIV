@@ -68,8 +68,8 @@
             </div>
             <div class="row mb-3">
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">Ciudad de
-                    Nacimiento:</div>
-                <div class="col-md-3"> <input type="text" class="form-control" name="" id="city_born"
+                    Residencia:</div>
+                <div class="col-md-3"> <input type="text" class="form-control" name="" id="city_residence_place"
                         value="" readonly>
                 </div>
                 <div class="col-md-3" style="display: flex;align-items: center;justify-content: center;">
