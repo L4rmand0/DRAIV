@@ -366,7 +366,7 @@
             if (result.value) {
                 let form_data = { 'fieldch': field, 'valuech': new_value, 'dni_id': dni_id };
                 if (typeof ($input.attr('data-plate')) !== "undefined") {
-                    form_data.plate = $input.data('plate');
+                    form_data.plate_id = $input.data('plate');
                 }
                 $.post($("#function-" + $input.data('module') + "-update").val(), form_data).done(function (response) {
                     if (Object.keys(response.errors).length > 0) {

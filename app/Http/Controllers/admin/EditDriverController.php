@@ -151,7 +151,7 @@ class EditDriverController extends Controller
                     ->select(DB::raw('
                     v.plate_id,
                     v.type_v,
-                    v.owner_v,
+                    IF(v.owner_v="Y","Sí","No") as owner_v,
                     v.taxi_type,
                     v.number_of_drivers,
                     v.soat_expi_date,

@@ -311,9 +311,9 @@ class VehicleController extends Controller
      */
     public function update(Request $request)
     {
-        echo '<pre>';
-        print_r($request->all());
-        die;
+        // echo '<pre>';
+        // print_r($request->all());
+        // die;
         $now = date("Y-m-d H:i:s");
         $data_updated = $request->all();
         $field = $data_updated['fieldch'];
@@ -328,7 +328,7 @@ class VehicleController extends Controller
             'user_id' => auth()->id(),
         ]);
         if ($response > 0) {
-            return response()->json(['response' => 'Información actualizada', 'error' => []]);
+            return response()->json(['response' => 'Información actualizada', 'errors' => []]);
         } else {
             return response()->json(['error' => ['response' => 'No se pudo actualizar la información']]);
         }
