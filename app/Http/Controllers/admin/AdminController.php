@@ -379,7 +379,11 @@ class AdminController extends Controller
             'values_hombreras' => Epp::VALUE_HOMBRERAS,
             'values_espalda' => Epp::VALUE_ESPALDA,
             'values_botas' => Epp::VALUE_BOTAS,
-            'values_guantes' => Epp::VALUE_GUANTES
+            'values_guantes' => Epp::VALUE_GUANTES,
+            //Vehículos
+            'list_type_v' => Vehicle::enum_type_v,
+            'list_service' => Vehicle::enum_service,
+            'list_taxi_type' => Vehicle::enum_taxi_type,
         ];
     }
 

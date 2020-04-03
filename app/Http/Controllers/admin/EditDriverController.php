@@ -151,7 +151,7 @@ class EditDriverController extends Controller
                     ->select(DB::raw('
                     v.plate_id,
                     v.type_v,
-                    v.owner_v,
+                    IF(v.owner_v="Y","Sí","No") as owner_v,
                     v.taxi_type,
                     v.number_of_drivers,
                     v.soat_expi_date,
@@ -174,7 +174,7 @@ class EditDriverController extends Controller
                 $soats_vencidos = [];
                 foreach ($vehicles as $key_v => $value_v) {
                     $fecha_actual = strtotime(date("Y-m-d"));
-                    $fecha_vencimiento = strtotime("2020-02-02");
+                    $fecha_vencimiento = strtotime($value_v->soat_expi_date);
                     if ($fecha_actual > $fecha_vencimiento) {
                         $soats_vencidos[] = $value_v->plate_id;
                     }

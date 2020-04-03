@@ -285,6 +285,8 @@ class EppController extends Controller
         $motorcycle_technology = $data_input['motorcycle_technology'];
         $doc_verification_vehicle = $data_input['doc_verification_vehicle'];
         $motorcycle_mechanical_conditions = !empty($data_input['motorcycle_mechanical_conditions']) ? $data_input['motorcycle_mechanical_conditions'] : false;
+        // print_r($motorcycle_mechanical_conditions);
+        // die;
         $epp = !empty($data_input['epp']) ? $data_input['epp'] : false;
         //Insertar información en la tabla de verificación documental de conductores
         $doc_verification_driver = DocVerificationDriver::create([
@@ -335,7 +337,7 @@ class EppController extends Controller
                     'user_vehicle_id' => $value_dva->id,
                 ]);
             }
-            if ($mt_data) {
+            if ($mt_mechanical_cond_data) {
                 MotorcycleMechanicalConditions::create([
                     'date_evaluation' => $now_date,
                     'tires' => $mt_mechanical_cond_data['tires'],
@@ -431,6 +433,7 @@ class EppController extends Controller
             ->where('di.company_id', '=', $company_id)
             ->where('e.operation', '!=', 'D')
             ->orderBy('e.start_date', 'desc')
+            ->groupBy('v.plate_id')
             ->get();
 
         $personal_element_protection = $this->dataQuery($personal_element_protection)->make([

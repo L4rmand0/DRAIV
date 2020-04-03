@@ -51,10 +51,20 @@
                         generateCardsVehicle(response.vehicles);
                         generateCardsHumanComponent(response);
                         generateCardsTechnicalComponent(response);
+
+                        if ($(".field_driver_info_date").hasClass("hasDatepicker")) {
+                            $(".field_driver_info_date").removeClass("hasDatepicker");
+                            $(".field_driver_info_date").datepicker({ dateFormat: 'yy-mm-dd', changeYear: true, yearRange: "-100:+0" });
+                        } else {
+                        }
+                        $(".field_driver_info_date").off('click');
                         $(".field_driver_info_date").datepicker({ dateFormat: 'yy-mm-dd', changeYear: true, yearRange: "-100:+0" });
                         $(".field_driver_info_date").on('click', function () {
                             let $input = $(this);
                             let field = $input.attr("id");
+                            if (typeof ($input.attr("data-id") !== "undefined")) {
+                                field = $input.data("id");
+                            }
                             let old_val = $input.val();
                             $input.on('change', function () {
                                 let new_val = $input.val();
@@ -218,13 +228,13 @@
         generateCardsSkillMtM(skill_m_t_m);
     }
 
-    function generateCardsTechnologyEvaluation(data){
+    function generateCardsTechnologyEvaluation(data) {
         let content_example = $("#example_card_mt_technology").html();
-        let content_cards= "";
+        let content_cards = "";
         // PROCESO DE GENERAR CARDS DE TECNOLOGÍA DE VEHÍCULOS
         $.each(data, function (i, value) {
             let plate = value.plate_id;
-            card = String(content_example).replace(/&amp;PLACA/g,''+plate);
+            card = String(content_example).replace(/&amp;PLACA/g, '' + plate);
             // Revisa cuáles inputs debe ocultar según el tipo de vehículo
             content_cards += card;
         });
@@ -240,13 +250,13 @@
         });
     }
 
-    function generateCardsMtMechanicalConditions(data){
+    function generateCardsMtMechanicalConditions(data) {
         let content_example = $("#example_card_mechanical_conditions").html();
-        let content_cards= "";
+        let content_cards = "";
         // PROCESO DE GENERAR CARDS DE TECNOLOGÍA DE VEHÍCULOS
         $.each(data, function (i, value) {
             let plate = value.plate_id;
-            card = String(content_example).replace(/&amp;PLACA/g,''+plate);
+            card = String(content_example).replace(/&amp;PLACA/g, '' + plate);
             // Revisa cuáles inputs debe ocultar según el tipo de vehículo
             content_cards += card;
         });
@@ -262,13 +272,13 @@
         });
     }
 
-    function generateCardsEpp(data){
+    function generateCardsEpp(data) {
         let content_example = $("#example_card_epe").html();
-        let content_cards= "";
+        let content_cards = "";
         // PROCESO DE GENERAR CARDS DE TECNOLOGÍA DE VEHÍCULOS
         $.each(data, function (i, value) {
             let plate = value.plate_id;
-            card = String(content_example).replace(/&amp;PLACA/g,''+plate);
+            card = String(content_example).replace(/&amp;PLACA/g, '' + plate);
             // Revisa cuáles inputs debe ocultar según el tipo de vehículo
             content_cards += card;
         });
@@ -301,8 +311,8 @@
     }
 
     function generateCardsSkillMtM(data) {
-        let data_skills_motos = data.Motos; 
-        let data_skills_autos = data.Autos; 
+        let data_skills_motos = data.Motos;
+        let data_skills_autos = data.Autos;
         let content_example_m = $("#example_card_skill_mtm").html();
         let content_example_a = $("#example_card_skill_mtc").html();
         let content_cards_m = "";
@@ -312,15 +322,17 @@
         $.each(data_skills_motos, function (i, value) {
             let date = value.date_evaluation;
             let id = value.reg_id;
-            card = String(content_example_m).replace(/&amp;ID/g,''+id);
+            card = String(content_example_m).replace(/&amp;ID/g, '' + id);
             card = card.replace(/&amp;FECHA/g, String(date));
             // Revisa cuáles inputs debe ocultar según el tipo de vehículo
             content_cards_m += card;
         });
         $("#accordion_skills_moto").html(content_cards_m);
         // PROCESO DE LLENAR LOS DATOS DE MOTOS
-        $container = $("#accordion_skills_moto");
+        // $container = $("#accordion_skills_moto");
         $.each(data_skills_motos, function (date, val_items_m) {
+            let id = val_items_m.reg_id;
+            let $container = $("#card_single_vehicle_skillsM" + id)
             $.each(val_items_m, function (field, val_skills_m) {
                 $container.find("#" + field).val(val_skills_m);
             });
@@ -330,15 +342,17 @@
         $.each(data_skills_autos, function (i, value) {
             let date = value.date_evaluation;
             let id = value.reg_id;
-            card = String(content_example_a).replace(/&amp;ID/g,''+id);
+            card = String(content_example_a).replace(/&amp;ID/g, '' + id);
             card = card.replace(/&amp;FECHA/g, String(date));
             // Revisa cuáles inputs debe ocultar según el tipo de vehículo
             content_cards_a += card;
         });
         $("#accordion_skills_auto").html(content_cards_a);
         // PROCESO DE LLENAR LOS DATOS DE AUTOS
-        $container = $("#accordion_skills_auto");
-        $.each(data_skills_motos, function (date, val_items_m) {
+        // $container = $("#accordion_skills_auto");
+        $.each(data_skills_autos, function (date, val_items_m) {
+            let id = val_items_m.reg_id;
+            let $container = $("#card_single_vehicle_skillsA" + id)
             $.each(val_items_m, function (field, val_skills_m) {
                 $container.find("#" + field).val(val_skills_m);
             });
@@ -366,7 +380,7 @@
             if (result.value) {
                 let form_data = { 'fieldch': field, 'valuech': new_value, 'dni_id': dni_id };
                 if (typeof ($input.attr('data-plate')) !== "undefined") {
-                    form_data.plate = $input.data('plate');
+                    form_data.plate_id = $input.data('plate');
                 }
                 $.post($("#function-" + $input.data('module') + "-update").val(), form_data).done(function (response) {
                     if (Object.keys(response.errors).length > 0) {
